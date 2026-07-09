@@ -20,10 +20,7 @@
 
   const serviceItems = [
     ["Doorstep EV Charging", "services/doorstep-ev-charging.html"],
-    ["Fleet Charging Solutions", "services/fleet-charging-solutions.html"],
-    ["Charging Station Installation", "services/charging-station-installation.html"],
-    ["AMC & Maintenance", "services/amc-maintenance.html"],
-    ["EV Consulting", "services/ev-consulting.html"]
+    ["Fleet Charging Solutions", "services/fleet-charging-solutions.html"]
   ];
 
   const industryItems = [
