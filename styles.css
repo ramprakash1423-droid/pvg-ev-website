@@ -1547,6 +1547,89 @@ textarea:focus {
   animation: dashboardTrace 8s ease-in-out infinite;
 }
 
+.station-road {
+  stroke-dasharray: 16 22;
+  animation: stationRoadDash 18s linear infinite;
+}
+
+.station-road-line {
+  stroke-dasharray: 18 20;
+  opacity: .86;
+  animation: stationLaneDash 16s linear infinite;
+}
+
+.station-energy-orbit {
+  stroke-dasharray: 88 1280;
+  stroke-dashoffset: 0;
+  opacity: .8;
+  animation: stationEnergyOrbit 10s linear infinite;
+}
+
+.orbit-car {
+  transform-box: view-box;
+  transform-origin: 380px 292px;
+}
+
+.orbit-car-low {
+  animation: lowRoadCarFade 10s ease-in-out infinite;
+}
+
+.station-vehicle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: stationVehicleIdle 8s ease-in-out infinite;
+}
+
+.station-charger-panel,
+.charge-port {
+  animation: chargerPanelGlow 10s ease-in-out infinite;
+}
+
+.station-cable {
+  opacity: 0;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  animation: stationCableDraw 10s ease-in-out infinite;
+}
+
+.station-energy-flow {
+  opacity: 0;
+  stroke-dasharray: 18 48;
+  stroke-dashoffset: 0;
+  animation: stationEnergyFlow 1.05s linear infinite, stationEnergyVisible 10s ease-in-out infinite;
+}
+
+.low-battery-car {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lowCarDock 10s ease-in-out infinite;
+}
+
+.low-battery-fill {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: lowBatteryCharge 10s ease-in-out infinite;
+}
+
+.charge-label {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.label-low {
+  animation: labelLowBattery 10s ease-in-out infinite;
+}
+
+.label-started {
+  animation: labelChargingStarted 10s ease-in-out infinite;
+}
+
+.label-full {
+  animation: labelBatteryFull 10s ease-in-out infinite;
+}
+
 .metric-band {
   padding: 16px 0 20px;
   background: var(--white);
@@ -2141,6 +2224,96 @@ textarea:focus {
 @keyframes dashboardTrace {
   0%, 18% { stroke-dashoffset: 140; }
   60%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes stationRoadDash {
+  to { stroke-dashoffset: -380; }
+}
+
+@keyframes stationLaneDash {
+  to { stroke-dashoffset: -190; }
+}
+
+@keyframes stationEnergyOrbit {
+  to { stroke-dashoffset: -1368; }
+}
+
+@keyframes carOrbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes lowRoadCarFade {
+  0%, 21% { opacity: 1; }
+  28%, 100% { opacity: 0; }
+}
+
+@keyframes stationVehicleIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes chargerPanelGlow {
+  0%, 22%, 88%, 100% { opacity: .82; }
+  34%, 72% { opacity: 1; }
+}
+
+@keyframes stationCableDraw {
+  0%, 24% { opacity: 0; stroke-dashoffset: 220; }
+  34%, 72% { opacity: 1; stroke-dashoffset: 0; }
+  84%, 100% { opacity: 0; stroke-dashoffset: -220; }
+}
+
+@keyframes stationEnergyFlow {
+  to { stroke-dashoffset: -132; }
+}
+
+@keyframes stationEnergyVisible {
+  0%, 30%, 78%, 100% { opacity: 0; }
+  38%, 72% { opacity: 1; }
+}
+
+@keyframes lowCarDock {
+  0%, 16% {
+    opacity: 0;
+    transform: translate(96px, -70px) scale(.92) rotate(-7deg);
+  }
+  23% {
+    opacity: 1;
+    transform: translate(44px, -28px) scale(.96) rotate(-3deg);
+  }
+  34%, 72% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  84% {
+    opacity: 1;
+    transform: translate(-72px, 64px) scale(.96) rotate(7deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-118px, 104px) scale(.92) rotate(12deg);
+  }
+}
+
+@keyframes lowBatteryCharge {
+  0%, 31% { transform: scaleX(.18); }
+  67%, 100% { transform: scaleX(1); }
+}
+
+@keyframes labelLowBattery {
+  0%, 5%, 31%, 100% { opacity: 0; transform: translateY(10px) scale(.96); }
+  10%, 25% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes labelChargingStarted {
+  0%, 30%, 72%, 100% { opacity: 0; transform: translateY(10px) scale(.96); }
+  38%, 64% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes labelBatteryFull {
+  0%, 68%, 100% { opacity: 0; transform: translateY(10px) scale(.96); }
+  76%, 91% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes heroCardPulse {
