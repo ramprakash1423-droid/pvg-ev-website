@@ -1441,25 +1441,76 @@ textarea:focus {
   bottom: 12%;
 }
 
+.hero-info-card.card-a,
+.hero-info-card.card-b,
+.hero-info-card.card-c,
+.hero-info-card.card-d {
+  animation: heroCardPulse 8s ease-in-out infinite;
+}
+
+.hero-info-card.card-b {
+  animation-delay: -2s;
+}
+
+.hero-info-card.card-c {
+  animation-delay: -4s;
+}
+
+.hero-info-card.card-d {
+  animation-delay: -6s;
+}
+
 .charging-ring {
   stroke-dasharray: 12 18;
-  animation: premiumRoad 18s linear infinite;
+  animation: premiumRoad 16s linear infinite;
 }
 
 .energy-ring {
-  stroke-dasharray: 72 900;
-  animation: premiumEnergyRing 5.8s linear infinite;
+  stroke-dasharray: 92 1130;
+  stroke-dashoffset: 0;
+  animation: premiumEnergyRing 8s linear infinite;
+}
+
+.orbiting-connector {
+  transform-box: view-box;
+  transform-origin: 380px 284px;
+  animation: connectorOrbit 16s linear infinite;
+}
+
+.orbit-two {
+  animation-delay: -5.333s;
+}
+
+.orbit-three {
+  animation-delay: -10.666s;
+}
+
+.orbit-module {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orbitModuleFloat 3.4s ease-in-out infinite;
+}
+
+.module-live {
+  animation: orbitModuleFloat 3.4s ease-in-out infinite, moduleGlow 8s ease-in-out infinite;
+}
+
+.energy-cable {
+  opacity: 0;
+  animation: cableVisibility 8s ease-in-out infinite;
 }
 
 .energy-pulse {
   stroke-dasharray: 34 150;
-  animation: premiumCableEnergy 2s linear infinite;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  animation: premiumCableEnergy 1.05s linear infinite, cablePulseVisibility 8s ease-in-out infinite;
 }
 
 .charging-connector {
   transform-box: fill-box;
   transform-origin: center;
-  animation: premiumConnector 5.8s ease-in-out infinite;
+  animation: premiumConnector 8s ease-in-out infinite;
 }
 
 .mobile-truck,
@@ -1474,13 +1525,26 @@ textarea:focus {
 }
 
 .battery-fill-loop {
-  animation: batteryWidth 5.8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: batteryChargeLoop 8s ease-in-out infinite;
+}
+
+.status-battery {
+  opacity: 0;
+  animation: statusBatteryShow 8s ease-in-out infinite;
+}
+
+.status-battery-fill {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: statusBatteryFill 8s ease-in-out infinite;
 }
 
 .dashboard-line {
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
-  animation: dashboardTrace 5.8s ease-in-out infinite;
+  animation: dashboardTrace 8s ease-in-out infinite;
 }
 
 .metric-band {
@@ -2012,11 +2076,11 @@ textarea:focus {
 }
 
 @keyframes premiumRoad {
-  to { stroke-dashoffset: -260; }
+  to { stroke-dashoffset: -360; }
 }
 
 @keyframes premiumEnergyRing {
-  to { stroke-dashoffset: -972; }
+  to { stroke-dashoffset: -1222; }
 }
 
 @keyframes premiumCableEnergy {
@@ -2024,8 +2088,34 @@ textarea:focus {
 }
 
 @keyframes premiumConnector {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  48%, 62% { transform: translate(-42px, 76px) rotate(12deg); }
+  0%, 16%, 100% { transform: translate(0, 0) rotate(-8deg); }
+  28%, 72% { transform: translate(-42px, 76px) rotate(12deg); }
+  86% { transform: translate(0, 0) rotate(-8deg); }
+}
+
+@keyframes connectorOrbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbitModuleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes moduleGlow {
+  0%, 100% { opacity: .72; }
+  45%, 70% { opacity: 1; }
+}
+
+@keyframes cableVisibility {
+  0%, 20%, 86%, 100% { opacity: 0; }
+  28%, 74% { opacity: 1; }
+}
+
+@keyframes cablePulseVisibility {
+  0%, 28%, 82%, 100% { opacity: 0; }
+  36%, 72% { opacity: 1; }
 }
 
 @keyframes vehicleLift {
@@ -2033,14 +2123,29 @@ textarea:focus {
   50% { transform: translateY(-4px); }
 }
 
-@keyframes batteryWidth {
-  0%, 18% { width: 8px; }
-  72%, 100% { width: 72px; }
+@keyframes batteryChargeLoop {
+  0%, 24% { transform: scaleX(.08); opacity: .82; }
+  66%, 100% { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes statusBatteryShow {
+  0%, 16%, 92%, 100% { opacity: 0; transform: translateY(8px); }
+  26%, 82% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes statusBatteryFill {
+  0%, 28% { transform: scaleX(.08); }
+  70%, 100% { transform: scaleX(1); }
 }
 
 @keyframes dashboardTrace {
-  0%, 16% { stroke-dashoffset: 140; }
-  62%, 100% { stroke-dashoffset: 0; }
+  0%, 18% { stroke-dashoffset: 140; }
+  60%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes heroCardPulse {
+  0%, 100% { transform: translateY(0); box-shadow: var(--shadow-soft); }
+  50% { transform: translateY(-4px); box-shadow: var(--shadow); }
 }
 
 @keyframes barPulse {
@@ -2234,6 +2339,7 @@ textarea:focus {
 
   .hero-info-card {
     position: static;
+    order: 2;
   }
 
   .premium-hero-stage {
@@ -2243,6 +2349,7 @@ textarea:focus {
 
   .premium-hero-stage svg {
     grid-column: 1 / -1;
+    order: 1;
   }
 
   .hero-info-card.card-a,
