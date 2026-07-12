@@ -8,8 +8,10 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 
 ## Key Changes Completed
 
+- Simplified the homepage into a shorter customer journey: compact hero, quick requirement selector, how mobile charging works, key benefits, PVG-EV × Setrans summary, Chennai pilot status, final enquiry CTA and footer.
+- Moved homepage detail into inner pages instead of removing it from the website: technical content remains on Mobile Charging Station, fleet detail on Fleet Solutions, supporting solutions on Solutions, company and sustainability context on About, partnership detail on PVG-EV × Setrans, pilot detail on Pilot Programme and articles on Insights.
 - Added `request-charging.html` with a seven-step charging requirement form, client-side validation, browser-session autosave, review step, bot honeypot, optional browser geolocation capture and a generated reference number.
-- Promoted "Request Charging" across the header, footer, homepage hero, persistent desktop quick enquiry widget and mobile sticky action bar.
+- Promoted the charging requirement action across the header, footer, homepage hero, persistent desktop quick enquiry widget and mobile sticky action bar.
 - Updated the shared header with the approved navigation set: Home, Mobile Charging Station, Solutions, Fleet Solutions, About PVG-EV, PVG-EV × Setrans, Pilot Programme, Insights and Contact actions.
 - Added a Solutions dropdown with direct routes to the main solution categories.
 - Updated the footer acknowledgement to the approved wording: "PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration."
@@ -35,6 +37,7 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 | Multi-step charging requirement form | Complete | Seven steps with validation, review and success reference. |
 | No fake backend | Complete | Form is client-side only and the success screen/report explicitly note production backend/CRM routing must be configured. |
 | Homepage CTA hierarchy | Complete | Hero now prioritises Request Charging, Explore Mobile Charging Station and Join Chennai Pilot. |
+| Shorter homepage customer journey | Complete | Homepage now contains only the requested eight sections and links to inner pages for full detail. |
 | Mobile Charging Station premium presentation | Complete | Existing spatial product page retained and improved; specification placeholders corrected. |
 | Solutions decision support | Complete | Decision assistant added before solution categories. |
 | Footer legal/availability caution | Complete | Shared footer includes approved acknowledgement and service/specification caution. |
@@ -57,6 +60,7 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 - `script.js`
 - `styles.css`
 - `index.html`
+- `about-pvg-ev.html`
 - `mobile-charging-station.html`
 - `solutions.html`
 - `contact.html`
