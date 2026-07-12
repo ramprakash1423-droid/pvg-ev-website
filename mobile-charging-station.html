@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260712m">
+    <link rel="stylesheet" href="styles.css?v=20260712p">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Setrans Mobile Charging Station introduced by PVG-EV","brand":{"@type":"Brand","name":"Setrans"},"manufacturer":{"@type":"Organization","name":"Setrans"},"category":"Mobile EV Charging Station","description":"A vehicle-mounted EV-charging system introduced to Tamil Nadu by PVG-EV for planned, on-demand and operational charging support.","areaServed":["Chennai","Tamil Nadu"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the PVG-EV mobile charging network live?","acceptedAnswer":{"@type":"Answer","text":"PVG-EV is preparing a Chennai pilot. The website should not label the network as live until operational readiness is confirmed."}},{"@type":"Question","name":"Who develops the Mobile Charging Station?","acceptedAnswer":{"@type":"Answer","text":"Setrans develops and engineers the Mobile Charging Station. PVG-EV introduces, deploys and operates it locally in Tamil Nadu under the collaboration."}},{"@type":"Question","name":"Are technical specifications final?","acceptedAnswer":{"@type":"Answer","text":"Technical specification values must be approved by Setrans before publication."}}]}</script>
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Mobile EV Charging Station in Tamil Nadu","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/mobile-charging-station.html"}]}</script>
@@ -76,8 +76,9 @@
             <p class="collab-line">Developed, engineered and manufactured by Setrans. Introduced, deployed and operated in Tamil Nadu by PVG-EV.</p>
           </div>
           <div class="hero-actions station-hero-actions reveal">
-            <a class="button button-primary" href="contact.html#contact-form">Request a Demonstration</a>
-            <a class="button button-secondary" href="#specification-table">Technical Specifications</a>
+            <a class="button button-primary" href="request-charging.html?type=Mobile%20EV%20charging" data-event="station_request_mobile_charging">Request Mobile Charging</a>
+            <a class="button button-secondary" href="contact.html#contact-form" data-event="station_request_demo">Request Demonstration</a>
+            <a class="button button-text-link" href="contact.html#contact-form" data-event="station_brochure_request">Download Technical Brochure</a>
           </div>
         </div>
       </section>
@@ -203,20 +204,36 @@
             <h2>Specification table pending Setrans approval.</h2>
             <p>The table below is prepared for publication, but all technical details must be approved by Setrans before values are shown publicly.</p>
           </div>
-          <div class="station-spec-grid reveal">
-            <details class="station-spec-card" open><summary><span>Charging capacity</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Charger type</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Connector standards</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Input power source</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Energy-storage capacity</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Supported vehicle categories</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Vehicle platform</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Safety protections</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Operating temperature</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Charging control</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Communication system</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Monitoring capability</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
-            <details class="station-spec-card"><summary><span>Certification status</span><strong>Pending Setrans Approval</strong></summary><p>Technical value pending Setrans approval before publication.</p></details>
+          <div class="spec-status-banner reveal"><strong>Pending Setrans Approval</strong><span>Technical values will be published only after Setrans review and approval.</span></div>
+          <div class="station-spec-grid station-spec-group-grid reveal">
+            <details class="station-spec-card" open>
+              <summary><span>Charging system</span><strong>Fields reserved</strong></summary>
+              <ul class="detail-list">
+                <li>Charging capacity</li>
+                <li>Charger type</li>
+                <li>Connector standards</li>
+                <li>Input power source</li>
+                <li>Energy-storage capacity</li>
+              </ul>
+            </details>
+            <details class="station-spec-card">
+              <summary><span>Vehicle and compatibility</span><strong>Fields reserved</strong></summary>
+              <ul class="detail-list">
+                <li>Supported vehicle categories</li>
+                <li>Vehicle platform</li>
+                <li>Operating temperature</li>
+              </ul>
+            </details>
+            <details class="station-spec-card">
+              <summary><span>Safety, control and monitoring</span><strong>Fields reserved</strong></summary>
+              <ul class="detail-list">
+                <li>Safety protections</li>
+                <li>Charging control</li>
+                <li>Communication system</li>
+                <li>Monitoring capability</li>
+                <li>Certification status</li>
+              </ul>
+            </details>
           </div>
           <p class="station-disclaimer-card reveal"><strong>Important disclaimer:</strong> Charging availability, output and service time will depend on vehicle compatibility, battery condition, location, operating conditions and Mobile Charging Station availability.</p>
         </div>
@@ -230,8 +247,9 @@
               <h2>Request Demonstration</h2>
             </div>
             <div class="hero-actions">
-              <a class="button button-primary" href="contact.html#contact-form">Request a Demonstration</a>
-              <a class="button button-secondary" href="contact.html#contact-form">Download Technical Brochure</a>
+              <a class="button button-primary" href="request-charging.html?type=Mobile%20EV%20charging" data-event="station_cta_request_charging">Request Mobile Charging</a>
+              <a class="button button-secondary" href="contact.html#contact-form" data-event="station_cta_demo">Request a Demonstration</a>
+              <a class="button button-secondary" href="contact.html#contact-form" data-event="station_cta_brochure">Download Technical Brochure</a>
               <a class="button button-secondary" href="pilot-programme.html#pilot-form">Register for Pilot Access</a>
               <a class="button button-secondary" href="fleet-solutions.html#fleet-assessment">Discuss a Fleet Application</a>
               <a class="button button-secondary" href="contact.html#contact-form">Contact PVG-EV</a>
@@ -255,6 +273,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260712m"></script>
+    <script src="script.js?v=20260712p"></script>
   </body>
 </html>
