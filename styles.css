@@ -4468,3 +4468,1486 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile Charging Station premium product page */
+.station-product-page {
+  background:
+    radial-gradient(circle at 10% 8%, rgba(14, 165, 255, .11), transparent 26%),
+    radial-gradient(circle at 92% 18%, rgba(8, 166, 106, .13), transparent 28%),
+    linear-gradient(180deg, #FFFFFF 0%, #F6FCFB 34%, #FFFFFF 68%, #F5FBF8 100%);
+}
+
+.station-wide-shell,
+.station-product-shell {
+  width: min(100% - 48px, 1400px);
+  margin: 0 auto;
+}
+
+.station-product-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 70px 0 78px;
+  background:
+    radial-gradient(circle at 78% 28%, rgba(14, 165, 255, .2), transparent 30%),
+    radial-gradient(circle at 84% 78%, rgba(8, 166, 106, .18), transparent 28%),
+    linear-gradient(115deg, rgba(255, 255, 255, .98), rgba(243, 255, 250, .78) 50%, rgba(237, 248, 255, .86));
+  isolation: isolate;
+}
+
+.station-product-hero::before,
+.station-product-hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.station-product-hero::before {
+  inset: 52px 3% 46px 42%;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 42px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .72), rgba(255, 255, 255, .22)),
+    radial-gradient(circle at 26% 22%, rgba(255, 255, 255, .92), transparent 26%),
+    radial-gradient(circle at 82% 74%, rgba(14, 165, 255, .17), transparent 35%);
+  box-shadow: 0 38px 110px rgba(10, 45, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .94);
+  backdrop-filter: blur(28px) saturate(1.6);
+  transform: rotateX(8deg) rotateY(-7deg);
+}
+
+.station-product-hero::after {
+  width: 720px;
+  height: 720px;
+  right: -240px;
+  top: -260px;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 18deg, rgba(8, 166, 106, .13) 0 8deg, transparent 8deg 20deg),
+    radial-gradient(circle, rgba(255, 255, 255, .45), transparent 64%);
+  opacity: .52;
+  animation: stationHaloSpin 24s linear infinite;
+}
+
+.station-product-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(480px, .95fr) minmax(560px, 1.05fr);
+  grid-template-areas:
+    "copy visual"
+    "panel visual"
+    "actions visual";
+  align-items: center;
+  gap: 44px;
+  perspective: 1200px;
+}
+
+.station-product-copy {
+  position: relative;
+  z-index: 2;
+  grid-area: copy;
+}
+
+.station-product-copy h1 {
+  max-width: 720px;
+  font-size: clamp(2.6rem, 4.6vw, 4.7rem);
+}
+
+.station-product-copy .page-lead {
+  max-width: 680px;
+  color: var(--text);
+  font-size: clamp(1.04rem, 1.4vw, 1.24rem);
+  font-weight: 720;
+}
+
+.station-hero-panel,
+.station-copy-panel,
+.station-cta-panel {
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .76), rgba(255, 255, 255, .26)),
+    rgba(255, 255, 255, .46);
+  box-shadow: 0 26px 72px rgba(10, 45, 56, .1), inset 0 1px 0 rgba(255, 255, 255, .92);
+  backdrop-filter: blur(22px) saturate(1.45);
+}
+
+.station-hero-panel {
+  grid-area: panel;
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 24px;
+}
+
+.station-hero-actions {
+  grid-area: actions;
+}
+
+.station-hero-panel h2,
+.station-copy-panel h2,
+.station-cta-panel h2 {
+  margin-bottom: 8px;
+  font-size: clamp(1.7rem, 2.25vw, 2.45rem);
+}
+
+.station-hero-panel p,
+.station-copy-panel p {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+.station-hero-panel .collab-line {
+  margin-bottom: 0;
+}
+
+.station-product-visual {
+  position: relative;
+  grid-area: visual;
+  align-self: center;
+  min-height: 650px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 36px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .66), rgba(255, 255, 255, .18)),
+    radial-gradient(circle at 26% 18%, rgba(255, 255, 255, .92), transparent 25%),
+    radial-gradient(circle at 70% 70%, rgba(8, 166, 106, .18), transparent 34%),
+    linear-gradient(135deg, rgba(236, 249, 255, .66), rgba(237, 255, 247, .55));
+  box-shadow: 0 40px 110px rgba(10, 45, 56, .16), inset 0 1px 0 rgba(255, 255, 255, .94);
+  backdrop-filter: blur(28px) saturate(1.55);
+  transform-style: preserve-3d;
+}
+
+.station-product-visual::before {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  border: 1px solid rgba(255, 255, 255, .58);
+  border-radius: 28px;
+  background:
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, .26) 0 1px, transparent 1px 18px),
+    radial-gradient(circle at 50% 58%, rgba(14, 165, 255, .16), transparent 42%);
+  opacity: .8;
+  pointer-events: none;
+  transform: translateZ(-24px) rotateX(7deg);
+}
+
+.station-energy-glow {
+  position: absolute;
+  inset: 9% 4% 4% 20%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 52% 44%, rgba(14, 165, 255, .22), transparent 32%),
+    radial-gradient(circle at 58% 58%, rgba(8, 166, 106, .18), transparent 38%);
+  filter: blur(6px);
+  animation: stationGlowBreath 7s ease-in-out infinite;
+}
+
+.station-stage {
+  position: absolute;
+  inset: 38px 24px 36px;
+  transform-style: preserve-3d;
+}
+
+.station-road,
+.station-road-light {
+  position: absolute;
+  left: 50%;
+  top: 51%;
+  width: min(78%, 560px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotateX(62deg) rotateZ(-12deg);
+}
+
+.station-road {
+  border: 34px solid rgba(214, 228, 231, .94);
+  box-shadow: 0 34px 70px rgba(10, 45, 56, .14), inset 0 0 0 5px rgba(255, 255, 255, .75);
+}
+
+.station-road::before,
+.station-road::after {
+  content: "";
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, .72);
+  animation: stationRoadDash 18s linear infinite;
+}
+
+.station-road::after {
+  inset: -8px;
+  border-color: rgba(16, 65, 72, .16);
+  animation-direction: reverse;
+}
+
+.station-road-light {
+  border: 8px solid transparent;
+  border-top-color: var(--blue);
+  border-right-color: var(--green);
+  filter: drop-shadow(0 0 18px rgba(14, 165, 255, .38));
+  animation: stationEnergyRing 8s linear infinite;
+}
+
+.station-vehicle {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 360px;
+  height: 160px;
+  border: 1px solid rgba(181, 206, 214, .95);
+  border-radius: 22px 42px 20px 20px;
+  background:
+    linear-gradient(115deg, #FFFFFF 0 58%, #EAF6FA 59% 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(233, 248, 250, .78));
+  box-shadow: 0 34px 58px rgba(10, 45, 56, .22), inset 0 1px 0 rgba(255, 255, 255, .96);
+  transform: translate(-50%, -32%) rotateY(-18deg) rotateZ(-2deg);
+  animation: stationVehicleFloat 7s ease-in-out infinite;
+}
+
+.station-vehicle::before {
+  content: "";
+  position: absolute;
+  right: 26px;
+  top: 34px;
+  width: 90px;
+  height: 56px;
+  border-radius: 13px 26px 8px 8px;
+  background: linear-gradient(135deg, #173241, #2C5160);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
+}
+
+.station-vehicle::after {
+  content: "";
+  position: absolute;
+  left: 44px;
+  right: 132px;
+  top: 26px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  box-shadow: 0 0 24px rgba(14, 165, 255, .42);
+}
+
+.station-vehicle i,
+.station-vehicle i::before {
+  position: absolute;
+  content: "";
+  bottom: -20px;
+  width: 46px;
+  height: 46px;
+  border: 9px solid #17202A;
+  border-radius: 50%;
+  background: #E9F8FA;
+}
+
+.station-vehicle i {
+  left: 56px;
+}
+
+.station-vehicle i::before {
+  left: 196px;
+  bottom: -9px;
+}
+
+.station-vehicle b {
+  position: absolute;
+  left: 58px;
+  top: 68px;
+  color: var(--green);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.station-vehicle b::before {
+  content: "PVG-EV";
+}
+
+.station-vehicle em {
+  position: absolute;
+  right: 138px;
+  top: 68px;
+  width: 50px;
+  height: 58px;
+  border: 1px solid rgba(8, 166, 106, .28);
+  border-radius: 12px;
+  background: #F7FEFB;
+}
+
+.station-vehicle em::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  box-shadow: 0 0 18px rgba(14, 165, 255, .44);
+}
+
+.station-connector {
+  position: absolute;
+  left: calc(50% - 31px);
+  top: calc(51% - 16px);
+  width: 62px;
+  height: 32px;
+  border: 1px solid rgba(55, 70, 76, .28);
+  border-radius: 12px 18px 18px 12px;
+  background:
+    linear-gradient(90deg, #717E84, #CCD5D8 45%, #88959A),
+    #AEB9BD;
+  box-shadow: 0 15px 28px rgba(10, 45, 56, .18), inset 0 1px 0 rgba(255, 255, 255, .48);
+  transform: rotate(var(--orbit-start)) translateY(-236px) rotate(90deg);
+  animation: stationConnectorOrbit 18s linear infinite;
+}
+
+.station-connector::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 7px;
+  right: 12px;
+  bottom: 7px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .32);
+}
+
+.station-connector::after {
+  content: "";
+  position: absolute;
+  right: -12px;
+  top: 9px;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+  box-shadow: 0 0 20px rgba(14, 165, 255, .56);
+}
+
+.station-connector-a {
+  --orbit-start: 20deg;
+}
+
+.station-connector-b {
+  --orbit-start: 142deg;
+  animation-delay: -6s;
+}
+
+.station-connector-c {
+  --orbit-start: 264deg;
+  animation-delay: -12s;
+}
+
+.station-cable,
+.station-energy-flow {
+  position: absolute;
+  left: calc(50% + 92px);
+  top: calc(51% - 10px);
+  width: 230px;
+  height: 124px;
+  border: 7px solid transparent;
+  border-top-color: #17202A;
+  border-right-color: #17202A;
+  border-radius: 50%;
+  transform: rotateZ(16deg);
+}
+
+.station-cable {
+  filter: drop-shadow(0 18px 16px rgba(10, 45, 56, .13));
+  animation: stationCableDraw 8s ease-in-out infinite;
+}
+
+.station-energy-flow {
+  border-top-color: var(--blue);
+  border-right-color: var(--green);
+  filter: drop-shadow(0 0 14px rgba(14, 165, 255, .48));
+  opacity: 0;
+  animation: stationCableEnergy 8s ease-in-out infinite;
+}
+
+.station-battery {
+  position: absolute;
+  right: 9%;
+  top: 76px;
+  width: 144px;
+  height: 50px;
+  border: 1px solid rgba(8, 166, 106, .35);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .78);
+  box-shadow: 0 18px 40px rgba(10, 45, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+
+.station-battery::after {
+  content: "";
+  position: absolute;
+  right: -9px;
+  top: 18px;
+  width: 8px;
+  height: 15px;
+  border-radius: 0 5px 5px 0;
+  background: rgba(8, 166, 106, .44);
+}
+
+.station-battery span {
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  bottom: 9px;
+  width: 10%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  box-shadow: 0 0 18px rgba(14, 165, 255, .4);
+  animation: stationBatteryFill 8s ease-in-out infinite;
+}
+
+.station-indicator {
+  position: absolute;
+  right: 8%;
+  top: 138px;
+  display: grid;
+  gap: 1px;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 18px 42px rgba(10, 45, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .9);
+  padding: 11px 14px;
+  backdrop-filter: blur(16px);
+}
+
+.station-indicator strong {
+  color: var(--ink);
+  font-size: .9rem;
+  line-height: 1;
+}
+
+.station-indicator small {
+  color: var(--green-dark);
+  font-weight: 900;
+}
+
+.station-orbit-car {
+  position: absolute;
+  left: calc(50% - 48px);
+  top: calc(51% - 20px);
+  width: 96px;
+  height: 38px;
+  border: 1px solid rgba(178, 203, 211, .9);
+  border-radius: 28px 34px 16px 16px;
+  background: linear-gradient(135deg, #FFFFFF, #EAF8FC);
+  box-shadow: 0 18px 28px rgba(10, 45, 56, .14);
+  animation: stationCarOrbit 16s linear infinite;
+}
+
+.station-orbit-car::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: -13px;
+  width: 42px;
+  height: 22px;
+  border-radius: 20px 20px 4px 4px;
+  background: linear-gradient(135deg, #173241, #284D5B);
+}
+
+.station-orbit-car::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -7px;
+  height: 12px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 18% 50%, #17202A 0 6px, transparent 7px),
+    radial-gradient(circle at 82% 50%, #17202A 0 6px, transparent 7px);
+}
+
+.station-orbit-car-b {
+  animation-delay: -8s;
+  transform: scale(.9);
+}
+
+.station-particle {
+  position: absolute;
+  z-index: 2;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  box-shadow: 0 0 18px rgba(14, 165, 255, .5);
+  animation: stationParticleFloat 7s ease-in-out infinite;
+}
+
+.particle-a {
+  left: 12%;
+  top: 20%;
+}
+
+.particle-b {
+  right: 18%;
+  top: 20%;
+  animation-delay: -2s;
+}
+
+.particle-c {
+  left: 18%;
+  bottom: 18%;
+  animation-delay: -4s;
+}
+
+.particle-d {
+  right: 24%;
+  bottom: 16%;
+  animation-delay: -5.4s;
+}
+
+.floating-spec-card {
+  position: absolute;
+  z-index: 4;
+  min-width: 214px;
+  display: grid;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, .76);
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .34)),
+    rgba(255, 255, 255, .56);
+  box-shadow: 0 22px 54px rgba(10, 45, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .94);
+  padding: 15px 16px;
+  backdrop-filter: blur(20px) saturate(1.45);
+  animation: stationCardFloat 8s ease-in-out infinite;
+}
+
+.floating-spec-card span {
+  color: var(--text);
+  font-size: .78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.floating-spec-card strong {
+  color: var(--green-dark);
+  font-size: .92rem;
+  line-height: 1.2;
+}
+
+.floating-spec-card.spec-a {
+  left: 22px;
+  top: 24px;
+}
+
+.floating-spec-card.spec-b {
+  right: 22px;
+  top: 230px;
+  animation-delay: -2.5s;
+}
+
+.floating-spec-card.spec-c {
+  left: 34px;
+  bottom: 34px;
+  animation-delay: -5s;
+}
+
+.station-intro-section,
+.station-deployment-section,
+.station-cta-section {
+  position: relative;
+}
+
+.station-story-row {
+  display: grid;
+  grid-template-columns: minmax(420px, .96fr) minmax(420px, 1.04fr);
+  align-items: center;
+  gap: 34px;
+}
+
+.station-story-row-reverse .station-story-visual {
+  order: 2;
+}
+
+.station-story-stack {
+  display: grid;
+  gap: 34px;
+}
+
+.station-copy-panel {
+  padding: 30px;
+}
+
+.station-copy-panel .eyebrow {
+  margin-bottom: 12px;
+}
+
+.station-story-visual {
+  position: relative;
+  min-height: 390px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 30px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .68), rgba(255, 255, 255, .2)),
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, .92), transparent 25%),
+    radial-gradient(circle at 78% 72%, rgba(14, 165, 255, .16), transparent 36%);
+  box-shadow: 0 28px 80px rgba(10, 45, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .92);
+  backdrop-filter: blur(22px) saturate(1.45);
+}
+
+.station-story-visual::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 38px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(14, 165, 255, .18), transparent 68%);
+  transform: rotateX(64deg);
+}
+
+.station-application-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.station-application-card,
+.station-benefit-card,
+.workflow-step,
+.station-spec-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .28)),
+    rgba(255, 255, 255, .5);
+  box-shadow: 0 22px 60px rgba(10, 45, 56, .1), inset 0 1px 0 rgba(255, 255, 255, .92);
+  backdrop-filter: blur(18px) saturate(1.45);
+  transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+}
+
+.station-application-card::before,
+.station-benefit-card::before,
+.workflow-step::before,
+.station-spec-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(8, 166, 106, .16), rgba(14, 165, 255, .12));
+  opacity: 0;
+  transition: opacity .24s ease;
+  pointer-events: none;
+}
+
+.station-application-card:hover,
+.station-application-card:focus-within,
+.station-benefit-card:hover,
+.station-spec-card:hover,
+.station-spec-card:focus-within,
+.workflow-step:hover {
+  transform: translateY(-7px) scale(1.01);
+  border-color: rgba(14, 165, 255, .36);
+  box-shadow: 0 30px 86px rgba(10, 45, 56, .15), 0 0 0 1px rgba(8, 166, 106, .18);
+}
+
+.station-application-card:hover::before,
+.station-benefit-card:hover::before,
+.workflow-step:hover::before,
+.station-spec-card:hover::before {
+  opacity: 1;
+}
+
+.station-application-card {
+  min-height: 176px;
+  display: grid;
+  align-content: space-between;
+  gap: 18px;
+  padding: 22px;
+}
+
+.station-icon {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: block;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(255, 255, 255, .38)),
+    linear-gradient(135deg, rgba(8, 166, 106, .2), rgba(14, 165, 255, .18));
+  box-shadow: 0 14px 30px rgba(10, 45, 56, .1), inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+
+.station-icon::before,
+.station-icon::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+}
+
+.station-icon::before {
+  left: 15px;
+  top: 17px;
+  width: 24px;
+  height: 15px;
+}
+
+.station-icon::after {
+  left: 18px;
+  bottom: 12px;
+  width: 18px;
+  height: 5px;
+}
+
+.station-application-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.station-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.station-benefit-card {
+  min-height: 248px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 26px;
+}
+
+.station-benefit-card span {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  color: var(--white);
+  font-weight: 900;
+  box-shadow: 0 16px 34px rgba(14, 165, 255, .2);
+}
+
+.station-benefit-card h3 {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.22;
+}
+
+.station-benefit-card p {
+  margin: 0;
+  color: var(--text);
+  font-weight: 650;
+}
+
+.station-workflow-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.station-workflow-grid::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(8, 166, 106, .22), rgba(14, 165, 255, .5), rgba(8, 166, 106, .22));
+}
+
+.workflow-step {
+  min-height: 150px;
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: 22px;
+}
+
+.workflow-step span {
+  position: relative;
+  z-index: 1;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  color: var(--white);
+  font-weight: 900;
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, .74), 0 16px 34px rgba(14, 165, 255, .2);
+}
+
+.workflow-step h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.03rem;
+}
+
+.workflow-visual .workflow-line {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  top: 48%;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue), var(--green));
+  box-shadow: 0 0 22px rgba(14, 165, 255, .28);
+  animation: stationEnergySweep 4s linear infinite;
+}
+
+.workflow-node {
+  position: absolute;
+  z-index: 2;
+  width: 72px;
+  height: 72px;
+  border: 1px solid rgba(255, 255, 255, .76);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .78);
+  box-shadow: 0 18px 42px rgba(10, 45, 56, .12), inset 0 1px 0 rgba(255, 255, 255, .94);
+}
+
+.workflow-node::before {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+}
+
+.node-a {
+  left: 14%;
+  top: 36%;
+}
+
+.node-b {
+  left: calc(50% - 36px);
+  top: 25%;
+}
+
+.node-c {
+  right: 14%;
+  top: 36%;
+}
+
+.workflow-vehicle {
+  position: absolute;
+  left: 38%;
+  bottom: 72px;
+  width: 168px;
+  height: 70px;
+  border-radius: 16px 28px 14px 14px;
+  background: linear-gradient(115deg, #FFFFFF 0 60%, #EAF6FA 61% 100%);
+  border: 1px solid rgba(181, 206, 214, .95);
+  box-shadow: 0 24px 42px rgba(10, 45, 56, .18);
+  transform: rotateY(-17deg);
+}
+
+.fleet-base,
+.commercial-bay {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 54px;
+  height: 74px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(8, 166, 106, .18), transparent 68%);
+  transform: rotateX(62deg);
+}
+
+.fleet-unit,
+.commercial-unit,
+.apartment-unit {
+  position: absolute;
+  width: 216px;
+  height: 96px;
+  border: 1px solid rgba(181, 206, 214, .95);
+  border-radius: 18px 30px 16px 16px;
+  background: linear-gradient(115deg, #FFFFFF 0 58%, #EAF6FA 59% 100%);
+  box-shadow: 0 28px 46px rgba(10, 45, 56, .18);
+}
+
+.fleet-unit {
+  left: 16%;
+  bottom: 120px;
+  transform: rotateY(-18deg) rotateZ(-2deg);
+}
+
+.fleet-unit::after,
+.commercial-unit::after,
+.apartment-unit::after {
+  content: "PVG-EV";
+  position: absolute;
+  left: 30px;
+  top: 42px;
+  color: var(--green);
+  font-weight: 900;
+}
+
+.fleet-car,
+.apartment-car {
+  position: absolute;
+  width: 120px;
+  height: 48px;
+  border: 1px solid rgba(178, 203, 211, .9);
+  border-radius: 26px 34px 16px 16px;
+  background: linear-gradient(135deg, #FFFFFF, #EAF8FC);
+  box-shadow: 0 18px 28px rgba(10, 45, 56, .14);
+}
+
+.car-one {
+  right: 18%;
+  bottom: 128px;
+}
+
+.car-two {
+  right: 32%;
+  bottom: 78px;
+  transform: scale(.86);
+}
+
+.fleet-charge-line,
+.commercial-energy,
+.apartment-cable {
+  position: absolute;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  box-shadow: 0 0 20px rgba(14, 165, 255, .38);
+  animation: stationEnergySweep 4s linear infinite;
+}
+
+.fleet-charge-line {
+  left: 43%;
+  right: 22%;
+  bottom: 146px;
+  transform: rotate(-8deg);
+}
+
+.commercial-building {
+  position: absolute;
+  left: 11%;
+  bottom: 96px;
+  width: 170px;
+  height: 178px;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 22px;
+  background:
+    repeating-linear-gradient(90deg, rgba(14, 165, 255, .18) 0 18px, transparent 18px 34px),
+    linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .28));
+  box-shadow: 0 26px 52px rgba(10, 45, 56, .13);
+}
+
+.commercial-unit {
+  right: 15%;
+  bottom: 122px;
+  transform: rotateY(-16deg);
+}
+
+.commercial-energy {
+  left: 43%;
+  right: 24%;
+  bottom: 154px;
+}
+
+.apartment-tower {
+  position: absolute;
+  bottom: 96px;
+  width: 118px;
+  height: 198px;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 24px;
+  background:
+    repeating-linear-gradient(180deg, rgba(14, 165, 255, .14) 0 16px, transparent 16px 32px),
+    linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(255, 255, 255, .3));
+  box-shadow: 0 26px 52px rgba(10, 45, 56, .12);
+}
+
+.tower-left {
+  left: 13%;
+}
+
+.tower-right {
+  left: 32%;
+  height: 232px;
+}
+
+.apartment-unit {
+  right: 14%;
+  bottom: 126px;
+  transform: rotateY(-16deg);
+}
+
+.apartment-car {
+  right: 27%;
+  bottom: 80px;
+}
+
+.apartment-cable {
+  left: 50%;
+  right: 30%;
+  bottom: 128px;
+  transform: rotate(-15deg);
+}
+
+.station-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.station-spec-card {
+  padding: 0;
+}
+
+.station-spec-card summary {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 30px;
+  align-items: center;
+  gap: 14px;
+  min-height: 78px;
+  padding: 20px 24px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.station-spec-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.station-spec-card summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  display: grid;
+  grid-column: 3;
+  grid-row: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(8, 166, 106, .1);
+  color: var(--green-dark);
+  font-weight: 900;
+}
+
+.station-spec-card[open] summary::after {
+  content: "-";
+}
+
+.station-spec-card summary:focus-visible {
+  outline: 3px solid rgba(14, 165, 255, .42);
+  outline-offset: 4px;
+  border-radius: 22px;
+}
+
+.station-spec-card summary span {
+  min-width: 0;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.station-spec-card summary strong {
+  justify-self: end;
+  border: 1px solid rgba(245, 158, 11, .32);
+  border-radius: 999px;
+  background: rgba(255, 246, 230, .82);
+  color: #8A4F00;
+  padding: 8px 11px;
+  font-size: .72rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.station-spec-card p {
+  position: relative;
+  z-index: 1;
+  margin: -4px 24px 22px;
+  border-top: 1px solid rgba(228, 236, 239, .9);
+  color: var(--text);
+  padding-top: 15px;
+  font-weight: 650;
+}
+
+.station-disclaimer-card {
+  margin: 24px 0 0;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .36)),
+    rgba(255, 255, 255, .56);
+  box-shadow: 0 24px 68px rgba(10, 45, 56, .1), inset 0 1px 0 rgba(255, 255, 255, .94);
+  color: var(--text);
+  padding: 22px 24px;
+  backdrop-filter: blur(18px) saturate(1.4);
+}
+
+.station-cta-panel {
+  display: grid;
+  grid-template-columns: minmax(280px, .72fr) minmax(520px, 1.28fr);
+  align-items: center;
+  gap: 24px;
+  padding: 34px;
+}
+
+.station-cta-panel .hero-actions {
+  justify-content: flex-end;
+}
+
+.reveal.reveal-scale {
+  transform: translateY(22px) scale(.96);
+}
+
+.reveal.reveal-slide-left {
+  transform: translateX(-32px);
+}
+
+.reveal.reveal-slide-right {
+  transform: translateX(32px);
+}
+
+.reveal.reveal-scale.is-visible,
+.reveal.reveal-slide-left.is-visible,
+.reveal.reveal-slide-right.is-visible {
+  transform: translate(0, 0) scale(1);
+}
+
+@keyframes stationHaloSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes stationGlowBreath {
+  0%, 100% { opacity: .56; transform: scale(.96); }
+  50% { opacity: .92; transform: scale(1.04); }
+}
+
+@keyframes stationRoadDash {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes stationEnergyRing {
+  to { transform: translate(-50%, -50%) rotateX(62deg) rotateZ(348deg); }
+}
+
+@keyframes stationConnectorOrbit {
+  from { transform: rotate(var(--orbit-start)) translateY(-236px) rotate(90deg); }
+  to { transform: rotate(calc(var(--orbit-start) + 360deg)) translateY(-236px) rotate(90deg); }
+}
+
+@keyframes stationVehicleFloat {
+  0%, 100% { transform: translate(-50%, -32%) rotateY(-18deg) rotateZ(-2deg); }
+  50% { transform: translate(-50%, -37%) rotateY(-18deg) rotateZ(-1deg); }
+}
+
+@keyframes stationCableDraw {
+  0%, 13%, 88%, 100% { opacity: 0; clip-path: inset(0 100% 0 0); }
+  28%, 72% { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes stationCableEnergy {
+  0%, 20%, 84%, 100% { opacity: 0; filter: drop-shadow(0 0 0 rgba(14, 165, 255, 0)); }
+  36%, 68% { opacity: .92; filter: drop-shadow(0 0 20px rgba(14, 165, 255, .52)); }
+}
+
+@keyframes stationBatteryFill {
+  0%, 16% { width: 10%; background: linear-gradient(90deg, #A8B3B9, #CDD6DA); }
+  58%, 82% { width: calc(100% - 18px); background: linear-gradient(90deg, var(--green), var(--blue)); }
+  100% { width: 10%; background: linear-gradient(90deg, #A8B3B9, #CDD6DA); }
+}
+
+@keyframes stationCarOrbit {
+  from { transform: rotate(30deg) translateY(-220px) rotate(-30deg); }
+  to { transform: rotate(390deg) translateY(-220px) rotate(-390deg); }
+}
+
+@keyframes stationParticleFloat {
+  0%, 100% { opacity: .32; transform: translate3d(0, 0, 0) scale(.8); }
+  50% { opacity: .92; transform: translate3d(14px, -18px, 0) scale(1.18); }
+}
+
+@keyframes stationCardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+@keyframes stationEnergySweep {
+  0% { opacity: .52; background-position: 0 0; }
+  50% { opacity: 1; }
+  100% { opacity: .52; background-position: 220px 0; }
+}
+
+@media (max-width: 1180px) {
+  .station-product-shell,
+  .station-story-row,
+  .station-cta-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .station-product-shell {
+    grid-template-areas:
+      "copy"
+      "visual"
+      "panel"
+      "actions";
+  }
+
+  .station-product-hero::before {
+    inset: 40% 3% 42px;
+  }
+
+  .station-product-visual {
+    min-height: 610px;
+  }
+
+  .station-story-row-reverse .station-story-visual {
+    order: 0;
+  }
+
+  .station-application-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .station-cta-panel .hero-actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .station-benefit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .station-spec-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .station-workflow-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .station-workflow-grid::before {
+    display: none;
+  }
+
+  .station-story-visual {
+    min-height: 340px;
+  }
+}
+
+@media (max-width: 680px) {
+  .station-wide-shell,
+  .station-product-shell {
+    width: min(100% - 24px, 1400px);
+  }
+
+  .station-product-hero {
+    padding: 48px 0 58px;
+  }
+
+  .station-product-copy h1 {
+    font-size: 2.22rem;
+  }
+
+  .station-product-copy .page-lead {
+    font-size: 1rem;
+  }
+
+  .station-hero-panel,
+  .station-copy-panel,
+  .station-cta-panel {
+    border-radius: 22px;
+    padding: 22px;
+  }
+
+  .station-product-visual {
+    min-height: auto;
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 26px;
+  }
+
+  .station-product-visual::before,
+  .station-energy-glow {
+    inset: 12px;
+  }
+
+  .station-stage {
+    position: relative;
+    inset: auto;
+    height: 340px;
+  }
+
+  .station-road,
+  .station-road-light {
+    width: 82%;
+  }
+
+  .station-road {
+    border-width: 24px;
+  }
+
+  .station-connector {
+    transform: rotate(var(--orbit-start)) translateY(-136px) rotate(90deg) scale(.72);
+    animation: none;
+  }
+
+  .station-vehicle {
+    width: 258px;
+    height: 116px;
+    transform: translate(-50%, -28%) rotateY(-18deg) rotateZ(-2deg) scale(.92);
+    animation: none;
+  }
+
+  .station-vehicle::before {
+    right: 18px;
+    top: 24px;
+    width: 64px;
+    height: 42px;
+  }
+
+  .station-vehicle::after {
+    left: 30px;
+    right: 96px;
+    top: 20px;
+  }
+
+  .station-vehicle i,
+  .station-vehicle i::before {
+    width: 34px;
+    height: 34px;
+    border-width: 7px;
+  }
+
+  .station-vehicle i {
+    left: 38px;
+    bottom: -16px;
+  }
+
+  .station-vehicle i::before {
+    left: 140px;
+    bottom: -7px;
+  }
+
+  .station-vehicle b {
+    left: 39px;
+    top: 49px;
+    font-size: 20px;
+  }
+
+  .station-vehicle em {
+    right: 98px;
+    top: 50px;
+    width: 38px;
+    height: 42px;
+  }
+
+  .station-cable,
+  .station-energy-flow {
+    left: calc(50% + 56px);
+    top: calc(51% - 2px);
+    width: 142px;
+    height: 76px;
+    border-width: 5px;
+  }
+
+  .station-orbit-car {
+    transform: scale(.72);
+    animation: none;
+    left: 62%;
+    top: 65%;
+  }
+
+  .station-orbit-car-b {
+    left: 14%;
+    top: 64%;
+  }
+
+  .station-battery {
+    right: 8%;
+    top: 38px;
+    width: 104px;
+    height: 40px;
+  }
+
+  .station-indicator {
+    right: 7%;
+    top: 88px;
+    padding: 9px 11px;
+  }
+
+  .floating-spec-card {
+    position: relative;
+    inset: auto;
+    min-width: 0;
+    animation: none;
+  }
+
+  .station-application-grid,
+  .station-workflow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .station-benefit-card {
+    min-height: auto;
+  }
+
+  .station-benefit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .station-spec-card summary {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .station-spec-card summary strong {
+    justify-self: start;
+    margin-right: 0;
+  }
+
+  .station-spec-card summary::after {
+    position: absolute;
+    right: 20px;
+    top: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .station-product-hero::after,
+  .station-energy-glow,
+  .station-road::before,
+  .station-road::after,
+  .station-road-light,
+  .station-vehicle,
+  .station-connector,
+  .station-cable,
+  .station-energy-flow,
+  .station-battery span,
+  .station-orbit-car,
+  .station-particle,
+  .floating-spec-card,
+  .workflow-visual .workflow-line,
+  .fleet-charge-line,
+  .commercial-energy,
+  .apartment-cable {
+    animation: none !important;
+  }
+
+  .reveal.reveal-scale,
+  .reveal.reveal-slide-left,
+  .reveal.reveal-slide-right {
+    opacity: 1;
+    transform: none;
+  }
+}
