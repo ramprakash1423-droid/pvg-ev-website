@@ -1,22 +1,19 @@
-# PVG EV Website
+# PVG-EV Website
 
-Premium multi-page static website for PVG EV - Prime Ventures Global.
+Production-ready static website for PVG-EV by Prime Ventures Global, aligned to the July 2026 client revision brief.
 
-## Pages
+## Main pages
 
 - Home
-- About Us
-- Products
-- Services
-- Technology
-- Industries
-- Sustainability
-- Contact Us
+- Mobile Charging Station
+- Solutions
+- Fleet Solutions
+- About PVG-EV
+- PVG-EV × Setrans
+- Pilot Programme
+- Insights
+- Contact
 
-## Run Locally
+## Notes
 
-```bash
-python3 -m http.server 4177
-```
-
-Then open `http://127.0.0.1:4177/index.html`.
+The site positions PVG-EV as the local market-development, deployment and operating partner, and Setrans as the technology, engineering and Mobile Charging Station manufacturing partner.

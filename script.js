@@ -3,33 +3,31 @@
   const footerMount = document.querySelector("[data-site-footer]");
   const currentYear = new Date().getFullYear();
 
-  const aboutItems = [
-    ["Company", "about/company.html"],
-    ["Vision & Mission", "about/vision-mission.html"],
-    ["Investors", "about/investors.html"],
-    ["Team", "about/team.html"]
+  const navItems = [
+    ["Home", "index.html", "home"],
+    ["Mobile Charging Station", "mobile-charging-station.html", "station"],
+    ["Solutions", "solutions.html", "solutions"],
+    ["Fleet Solutions", "fleet-solutions.html", "fleet"],
+    ["About PVG-EV", "about-pvg-ev.html", "about"],
+    ["PVG-EV × Setrans", "collaboration.html", "collaboration"],
+    ["Pilot Programme", "pilot-programme.html", "pilot"],
+    ["Insights", "insights.html", "insights"]
   ];
 
-  const productItems = [
-    ["Mobile EV Charger", "products/mobile-ev-charger.html"],
-    ["Fleet Charging Unit", "products/fleet-charging-unit.html"],
-    ["Commercial Charging Station", "products/commercial-charging-station.html"],
-    ["Home EV Charger", "products/home-ev-charger.html"],
-    ["Energy Management System", "products/energy-management-system.html"]
+  const footerLinks = [
+    ["Mobile Charging Station", "mobile-charging-station.html"],
+    ["Solutions", "solutions.html"],
+    ["Fleet Solutions", "fleet-solutions.html"],
+    ["PVG-EV × Setrans", "collaboration.html"],
+    ["Pilot Programme", "pilot-programme.html"],
+    ["Insights", "insights.html"]
   ];
 
-  const serviceItems = [
-    ["Doorstep EV Charging", "services/doorstep-ev-charging.html"],
-    ["Fleet Charging Solutions", "services/fleet-charging-solutions.html"]
-  ];
-
-  const industryItems = [
-    ["EV Owners", "industries.html#ev-owners"],
-    ["Apartments", "industries.html#apartments"],
-    ["Offices & IT Parks", "industries.html#offices"],
-    ["Malls & Hotels", "industries.html#destinations"],
-    ["Taxi Fleets", "industries.html#fleets"],
-    ["Government & Smart Cities", "industries.html#smart-cities"]
+  const policyLinks = [
+    ["Privacy Policy", "privacy-policy.html"],
+    ["Terms and Conditions", "terms-and-conditions.html"],
+    ["Cookie Policy", "cookie-policy.html"],
+    ["Sitemap", "sitemap.xml"]
   ];
 
   const normalizeRoot = (root) => {
@@ -39,20 +37,6 @@
 
   const url = (root, path) => `${normalizeRoot(root)}${path}`;
 
-  const dropdown = (label, active, root, items, section) => `
-    <div class="dropdown ${active === section ? "is-active" : ""}">
-      <div class="dropdown-head">
-        <a class="dropdown-link" href="${url(root, `${section}/index.html`)}">${label}</a>
-        <button class="dropdown-toggle" type="button" aria-label="Toggle ${label} menu" aria-expanded="false">
-          <svg aria-hidden="true" viewBox="0 0 20 20"><path d="m5 8 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </div>
-      <div class="dropdown-menu">
-        ${items.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
-      </div>
-    </div>
-  `;
-
   const renderHeader = () => {
     if (!headerMount) return;
     const root = headerMount.dataset.root || "";
@@ -60,25 +44,19 @@
 
     headerMount.innerHTML = `
       <header class="site-header" data-header>
-        <nav class="nav-shell" aria-label="Primary navigation">
-          <a class="brand" href="${url(root, "index.html")}" aria-label="PVG EV home">
+        <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
+          <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
             <span class="brand-mark" aria-hidden="true"><span class="brand-bolt"></span></span>
-            <span class="brand-text"><strong>PVG EV</strong><small>Prime Ventures Global</small></span>
+            <span class="brand-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
             <span></span><span></span><span></span>
           </button>
-          <div class="nav-menu" id="site-menu" data-nav-menu>
-            <a class="nav-link ${active === "home" ? "is-active" : ""}" href="${url(root, "index.html")}">Home</a>
-            ${dropdown("About Us", active, root, aboutItems, "about")}
-            ${dropdown("Products", active, root, productItems, "products")}
-            ${dropdown("Services", active, root, serviceItems, "services")}
-            <a class="nav-link ${active === "technology" ? "is-active" : ""}" href="${url(root, "technology.html")}">Technology</a>
-            <a class="nav-link ${active === "industries" ? "is-active" : ""}" href="${url(root, "industries.html")}">Industries</a>
-            <a class="nav-link ${active === "sustainability" ? "is-active" : ""}" href="${url(root, "sustainability.html")}">Sustainability</a>
-            <a class="nav-link mobile-contact-link ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}">Contact Us</a>
+          <div class="nav-menu nav-menu-client" id="site-menu" data-nav-menu>
+            ${navItems.map(([name, path, key]) => `<a class="nav-link ${active === key ? "is-active" : ""}" href="${url(root, path)}">${name}</a>`).join("")}
+            <a class="nav-link mobile-contact-link ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}">Contact</a>
           </div>
-          <a class="nav-cta" href="${url(root, "contact.html")}">Contact Us</a>
+          <a class="nav-cta ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}">Contact</a>
         </nav>
       </header>
     `;
@@ -90,48 +68,47 @@
 
     footerMount.innerHTML = `
       <footer class="site-footer">
-        <div class="footer-shell">
+        <div class="footer-shell footer-shell-client">
           <div class="footer-brand">
-            <a class="brand" href="${url(root, "index.html")}" aria-label="PVG EV home">
+            <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
               <span class="brand-mark" aria-hidden="true"><span class="brand-bolt"></span></span>
-              <span class="brand-text"><strong>PVG EV</strong><small>Prime Ventures Global</small></span>
+              <span class="brand-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
             </a>
-            <p>EV charging infrastructure, mobile EV charging, fleet charging and smart energy management from Prime Ventures Global.</p>
-            <div class="footer-social" aria-label="PVG EV social links">
-              <a href="${url(root, "contact.html")}">LinkedIn</a>
-              <a href="${url(root, "contact.html")}">X</a>
-              <a href="${url(root, "contact.html")}">YouTube</a>
-            </div>
+            <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed and manufactured by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
+            <p class="footer-note">Product specifications, charging availability, service coverage and launch dates are subject to testing, certification, operational readiness and local deployment conditions. Images may include development-stage or representative product configurations.</p>
           </div>
           <div class="footer-column">
-            <h2>About Us</h2>
-            ${aboutItems.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
+            <h2>Website</h2>
+            ${footerLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
           </div>
           <div class="footer-column">
-            <h2>Products</h2>
-            ${productItems.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
-          </div>
-          <div class="footer-column">
-            <h2>Services</h2>
-            ${serviceItems.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
-          </div>
-          <div class="footer-column">
-            <h2>Industries</h2>
-            ${industryItems.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
+            <h2>Solutions</h2>
+            <a href="${url(root, "solutions.html#mobile-ev-charging")}">Mobile EV Charging</a>
+            <a href="${url(root, "solutions.html#commercial-charging")}">Commercial EV Charging</a>
+            <a href="${url(root, "solutions.html#apartment-charging")}">Apartment Charging</a>
+            <a href="${url(root, "solutions.html#maintenance-support")}">Maintenance and Support</a>
           </div>
           <div class="footer-column">
             <h2>Contact</h2>
-            <a href="${url(root, "technology.html")}">Technology Platform</a>
-            <a href="${url(root, "industries.html")}">Industries</a>
-            <a href="${url(root, "sustainability.html")}">Sustainability</a>
-            <a href="${url(root, "contact.html")}">Request Consultation</a>
+            <a href="${url(root, "contact.html")}">Contact PVG-EV</a>
+            <a href="${url(root, "pilot-programme.html#pilot-form")}">Join the Chennai Pilot</a>
+            <a href="${url(root, "contact.html#contact-form")}">Request a Consultation</a>
+            <span class="footer-static">Chennai pilot market: Tamil Nadu, India</span>
+          </div>
+          <div class="footer-column">
+            <h2>Legal</h2>
+            ${policyLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
           </div>
         </div>
         <div class="footer-bottom">
-          <span>PVG EV by Prime Ventures Global</span>
+          <span>PVG-EV by Prime Ventures Global</span>
           <span>Copyright ${currentYear}. All rights reserved.</span>
         </div>
       </footer>
+      <div class="cookie-consent" data-cookie-banner hidden>
+        <p>PVG-EV uses essential cookies and may use analytics cookies after launch to understand website performance and enquiry conversions.</p>
+        <button class="button button-primary" type="button" data-cookie-accept>Accept</button>
+      </div>
     `;
   };
 
@@ -141,7 +118,6 @@
   const header = document.querySelector("[data-header]");
   const navToggle = document.querySelector("[data-nav-toggle]");
   const navMenu = document.querySelector("[data-nav-menu]");
-  const dropdownButtons = Array.from(document.querySelectorAll(".dropdown-toggle"));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const setMenu = (open) => {
@@ -156,39 +132,12 @@
     setMenu(navToggle.getAttribute("aria-expanded") !== "true");
   });
 
-  dropdownButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const parent = button.closest(".dropdown");
-      const open = !parent.classList.contains("is-open");
-      document.querySelectorAll(".dropdown.is-open").forEach((item) => {
-        if (item !== parent) {
-          item.classList.remove("is-open");
-          item.querySelector(".dropdown-toggle")?.setAttribute("aria-expanded", "false");
-        }
-      });
-      parent.classList.toggle("is-open", open);
-      button.setAttribute("aria-expanded", String(open));
-    });
-  });
-
-  document.addEventListener("click", (event) => {
-    if (!event.target.closest(".dropdown")) {
-      document.querySelectorAll(".dropdown.is-open").forEach((item) => {
-        item.classList.remove("is-open");
-        item.querySelector(".dropdown-toggle")?.setAttribute("aria-expanded", "false");
-      });
-    }
-  });
-
   document.querySelectorAll(".nav-menu a").forEach((link) => {
     link.addEventListener("click", () => setMenu(false));
   });
 
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      setMenu(false);
-      document.querySelectorAll(".dropdown.is-open").forEach((item) => item.classList.remove("is-open"));
-    }
+    if (event.key === "Escape") setMenu(false);
   });
 
   const syncHeader = () => {
@@ -208,7 +157,6 @@
         }
       });
     }, { threshold: 0.14 });
-
     revealItems.forEach((item) => revealObserver.observe(item));
   } else {
     revealItems.forEach((item) => item.classList.add("is-visible"));
@@ -251,34 +199,40 @@
     }
   }
 
-  const form = document.querySelector("[data-contact-form]");
-  const status = document.querySelector("[data-form-status]");
-
-  const messages = {
+  const forms = Array.from(document.querySelectorAll("[data-contact-form], [data-pilot-form]"));
+  const defaultMessages = {
     name: "Please enter your name.",
     email: "Please enter a valid email address.",
-    phone: "Please enter a valid phone number.",
-    requirement: "Please choose a requirement type.",
+    telephone: "Please enter a valid telephone number.",
+    phone: "Please enter a valid telephone number.",
     message: "Please share a short message."
   };
 
   const setError = (field, message) => {
-    const error = document.querySelector(`[data-error-for="${field.name}"]`);
+    const form = field.closest("form");
+    const error = form?.querySelector(`[data-error-for="${field.name}"]`);
     field.classList.toggle("is-invalid", Boolean(message));
     field.setAttribute("aria-invalid", message ? "true" : "false");
     if (error) error.textContent = message || "";
   };
 
+  const fieldLabel = (field) => {
+    const form = field.closest("form");
+    const label = form?.querySelector(`label[for="${field.id}"]`);
+    return label?.textContent?.replace("*", "").trim() || field.name;
+  };
+
   const validateField = (field) => {
-    const value = field.value.trim();
+    if (field.disabled || field.type === "hidden") return true;
+    const value = field.type === "checkbox" ? field.checked : field.value.trim();
     let error = "";
 
-    if (field.required && !value) {
-      error = messages[field.name] || "This field is required.";
+    if (field.required && (field.type === "checkbox" ? !field.checked : !value)) {
+      error = field.type === "checkbox" ? "Please confirm this option." : `${fieldLabel(field)} is required.`;
     } else if (field.type === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      error = messages.email;
+      error = defaultMessages.email;
     } else if (field.type === "tel" && value && !/^[0-9+\-\s()]{7,18}$/.test(value)) {
-      error = messages.phone;
+      error = defaultMessages.telephone;
     } else if (field.name === "message" && value && value.length < 12) {
       error = "Please add a little more detail.";
     }
@@ -287,12 +241,16 @@
     return !error;
   };
 
-  if (form) {
+  forms.forEach((form) => {
     const fields = Array.from(form.querySelectorAll("input, select, textarea"));
+    const status = form.querySelector("[data-form-status]");
 
     fields.forEach((field) => {
       field.addEventListener("blur", () => validateField(field));
       field.addEventListener("input", () => {
+        if (field.classList.contains("is-invalid")) validateField(field);
+      });
+      field.addEventListener("change", () => {
         if (field.classList.contains("is-invalid")) validateField(field);
       });
     });
@@ -307,9 +265,21 @@
         return;
       }
 
-      if (status) status.textContent = "Thank you. Your PVG EV enquiry has been received.";
+      if (status) status.textContent = form.dataset.pilotForm === "true"
+        ? "Thank you. Your Chennai pilot interest has been recorded for review."
+        : "Thank you. Your PVG-EV enquiry has been received.";
       form.reset();
       fields.forEach((field) => setError(field, ""));
     });
+  });
+
+  const cookieBanner = document.querySelector("[data-cookie-banner]");
+  const cookieAccept = document.querySelector("[data-cookie-accept]");
+  if (cookieBanner && !localStorage.getItem("pvgCookieConsent")) {
+    cookieBanner.hidden = false;
   }
+  cookieAccept?.addEventListener("click", () => {
+    localStorage.setItem("pvgCookieConsent", "accepted");
+    if (cookieBanner) cookieBanner.hidden = true;
+  });
 })();
