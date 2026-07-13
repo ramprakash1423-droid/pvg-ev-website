@@ -264,11 +264,21 @@
     header?.classList.toggle("is-scrolled", window.scrollY > 8);
     const hero = document.querySelector(".compact-home-hero, .request-hero, .page-hero, .hero");
     const trigger = hero ? hero.offsetTop + hero.offsetHeight * .72 : 180;
-    stickyCta?.classList.toggle("is-visible", window.scrollY > trigger);
+    const activeElement = document.activeElement;
+    const hasFormFocus = Boolean(activeElement?.matches?.("input, textarea, select, [contenteditable='true']"));
+    const blockingSections = Array.from(document.querySelectorAll(".compact-final-cta, .site-footer, [data-contact-form], [data-pilot-form], [data-request-form], .request-form-card"));
+    const isBlockedBySection = blockingSections.some((section) => {
+      const rect = section.getBoundingClientRect();
+      return rect.top < window.innerHeight - 70 && rect.bottom > 70;
+    });
+    stickyCta?.classList.toggle("is-visible", window.scrollY > trigger && !isBlockedBySection && !hasFormFocus && !document.body.classList.contains("menu-open"));
   };
 
   syncHeader();
   window.addEventListener("scroll", syncHeader, { passive: true });
+  window.addEventListener("resize", syncHeader);
+  document.addEventListener("focusin", syncHeader);
+  document.addEventListener("focusout", () => window.setTimeout(syncHeader, 0));
 
   const revealItems = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && !reduceMotion) {
@@ -567,12 +577,14 @@
     const beam = scene.querySelector("[data-journey-beam]");
     const batteryFill = scene.querySelector("[data-journey-battery-fill]");
     const batteryText = scene.querySelector("[data-journey-battery-text]");
+    const primaryLabel = scene.querySelector("[data-journey-primary-label]");
     const primary = scene.querySelector("[data-journey-primary]");
+    const secondaryLabel = scene.querySelector("[data-journey-secondary-label]");
     const secondary = scene.querySelector("[data-journey-secondary]");
     const route = scene.querySelector("[data-journey-route]");
     if (!ev || !unit || !beam || !batteryFill || !batteryText) return;
 
-    const duration = 15000;
+    const duration = 17000;
     let frameId = null;
     let startTime = performance.now();
 
@@ -613,16 +625,18 @@
       scene.dataset.battery = percent < 25 ? "low" : percent < 55 ? "medium" : "high";
     };
 
-    const setStatus = (stage, topText, bottomText) => {
+    const setStatus = (stage, topLabel, topText, bottomLabel, bottomText) => {
       scene.dataset.stage = stage;
+      if (primaryLabel) primaryLabel.textContent = topLabel;
       if (primary) primary.textContent = topText;
+      if (secondaryLabel) secondaryLabel.textContent = bottomLabel;
       if (secondary) secondary.textContent = bottomText;
     };
 
     const render = (time) => {
       const elapsed = (time - startTime) % duration;
       const progress = elapsed / duration;
-      let battery = 82;
+      let battery = 86;
       let evX = 13;
       let evY = 62;
       let evAngle = -3;
@@ -634,34 +648,34 @@
       let evOpacity = 1;
       let unitOpacity = 1;
 
-      if (progress < .22) {
-        const p = ease(progress / .22);
+      if (progress < .30) {
+        const p = ease(progress / .30);
         evX = lerp(18, 37, p);
         evY = lerp(62, 56, p);
         evAngle = lerp(-3, 5, p);
-        battery = lerp(82, 18, p);
+        battery = lerp(86, 18, p);
         evOpacity = progress < .05 ? progress / .05 : 1;
-        setStatus("drive", `Battery: ${Math.round(battery)}%`, "EV moving along route");
-      } else if (progress < .34) {
+        setStatus("drive", "Battery", `${Math.round(battery)}%`, "Status", "EV moving");
+      } else if (progress < .42) {
         evX = 37;
         evY = 56;
         evAngle = 3;
         battery = 18;
         routeActive = true;
-        setStatus("alert", "Battery: 18%", "Request Received");
-      } else if (progress < .52) {
-        const p = ease((progress - .34) / .18);
+        setStatus("alert", "Battery", "18%", "Request", "Received");
+      } else if (progress < .60) {
+        const p = ease((progress - .42) / .18);
         evX = 37;
         evY = 56;
         evAngle = 2;
-        unitX = lerp(67, 49, p);
-        unitY = lerp(43, 56, p);
+        unitX = lerp(70, 50, p);
+        unitY = lerp(41, 56, p);
         unitAngle = lerp(-4, -1, p);
         battery = 18;
         routeActive = true;
-        setStatus("dispatch", "Unit Dispatched", "ETA: Calculating");
-      } else if (progress < .82) {
-        const p = ease((progress - .52) / .30);
+        setStatus("dispatch", "Unit", "Dispatched", "Request", "Received");
+      } else if (progress < .86) {
+        const p = ease((progress - .60) / .26);
         evX = 37;
         evY = 56;
         unitX = 49;
@@ -670,9 +684,9 @@
         battery = lerp(18, 100, p);
         beamActive = true;
         routeActive = true;
-        setStatus("charge", `Battery: ${Math.round(battery)}%`, "Charging active");
+        setStatus("charge", "Charging", "Active", "Battery", `${Math.round(battery)}%`);
       } else {
-        const p = ease((progress - .82) / .18);
+        const p = ease((progress - .86) / .14);
         evX = lerp(37, 106, p);
         evY = lerp(56, 47, p);
         evAngle = lerp(2, -4, p);
@@ -683,7 +697,7 @@
         routeActive = true;
         evOpacity = p > .72 ? Math.max(0, 1 - (p - .72) / .28) : 1;
         unitOpacity = p > .72 ? Math.max(.72, 1 - (p - .72) / 1.1) : 1;
-        setStatus("complete", "Charge Complete", "EV continues moving");
+        setStatus("complete", "Status", "Charge complete", "Battery", "100%");
       }
 
       setPosition(ev, evX, evY, evAngle);
@@ -710,7 +724,7 @@
       setPosition(ev, 36, 55, 2);
       setPosition(unit, 48, 54, -1);
       setBattery(82);
-      setStatus("complete", "Charge Complete", "Representative journey");
+      setStatus("complete", "Status", "Charge complete", "Battery", "82%");
       scene.dataset.reducedMotion = "true";
       return;
     }
