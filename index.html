@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260713a">
+    <link rel="stylesheet" href="styles.css?v=20260713b">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"PVG-EV","alternateName":"Prime Ventures Global EV","url":"https://ramprakash1423-droid.github.io/pvg-ev-website/","description":"PVG-EV is introducing Setrans-powered Mobile Charging Station technology to Chennai, Tamil Nadu and South India.","brand":{"@type":"Brand","name":"PVG-EV"},"parentOrganization":{"@type":"Organization","name":"Prime Ventures Global"},"areaServed":["Chennai","Tamil Nadu","South India"],"knowsAbout":["Mobile EV charging","Fleet EV charging","Commercial EV charging"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"PVG-EV","url":"https://ramprakash1423-droid.github.io/pvg-ev-website/","areaServed":{"@type":"AdministrativeArea","name":"Tamil Nadu"},"address":{"@type":"PostalAddress","addressLocality":"Chennai","addressRegion":"Tamil Nadu","addressCountry":"IN"},"description":"PVG-EV is preparing a Chennai pilot for mobile EV charging services."}</script>
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"}]}</script>
@@ -41,12 +41,40 @@
               <a class="button button-text-link" href="pilot-programme.html#pilot-form" data-event="home_hero_join_pilot">Join Chennai Pilot</a>
             </div>
           </div>
-          <div class="client-hero-visual reveal" aria-label="Representative PVG-EV Mobile Charging Station visual for the Chennai pilot" role="img">
+          <div class="client-hero-visual reveal" aria-label="PVG-EV Mobile Charging Station vehicle with three EVs orbiting around it" role="img">
             <div class="visual-status-card status-a"><strong>Current Status</strong><span>Pilot preparation. Network not live.</span></div>
             <div class="visual-status-card status-b"><strong>Technology Partner</strong><span>Setrans</span></div>
             <div class="visual-status-card status-c"><strong>Operating Partner</strong><span>PVG-EV</span></div>
-            <div class="mcs-visual-shell">
-              <span class="mcs-road"></span><span class="mcs-energy"></span><span class="mcs-truck"><i></i><b></b><em></em></span><span class="mcs-car"></span><span class="mcs-cable"></span><span class="mcs-battery"></span>
+            <div class="orbit-container" id="orbitContainer">
+              <div class="orbit-ring" style="transform: rotate(0deg);"></div>
+              <div class="orbit-ring" style="transform: rotate(60deg);"></div>
+              <div class="orbit-ring" style="transform: rotate(120deg);"></div>
+
+              <div class="charging-vehicle">
+                <span class="station-pulse"></span>
+                <span class="station-pulse"></span>
+                <span class="station-pulse"></span>
+                <div class="station-content">
+                  <span class="station-icon">⚡</span>
+                  <span class="station-label">PVG.ev</span>
+                  <span class="station-sub">Mobile Charging Unit</span>
+                </div>
+              </div>
+
+              <div class="charge-beam" id="chargeBeam"></div>
+
+              <div class="ev-vehicle ev-1" id="ev1" data-angle="0">
+                <span class="label">EV-01</span>
+                <span class="battery-icon"><span class="fill" id="batt1"></span></span>
+              </div>
+              <div class="ev-vehicle ev-2" id="ev2" data-angle="120">
+                <span class="label">EV-02</span>
+                <span class="battery-icon"><span class="fill" id="batt2"></span></span>
+              </div>
+              <div class="ev-vehicle ev-3" id="ev3" data-angle="240">
+                <span class="label">EV-03</span>
+                <span class="battery-icon"><span class="fill" id="batt3"></span></span>
+              </div>
             </div>
           </div>
         </div>
@@ -136,6 +164,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260713a"></script>
+    <script src="script.js?v=20260713b"></script>
   </body>
 </html>

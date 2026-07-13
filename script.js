@@ -545,6 +545,128 @@
     });
   }
 
+  const initPvgOrbitAnimation = () => {
+    const container = document.getElementById("orbitContainer");
+    if (!container) return;
+
+    const vehicles = [
+      document.getElementById("ev1"),
+      document.getElementById("ev2"),
+      document.getElementById("ev3")
+    ].filter(Boolean);
+    const battFills = [
+      document.getElementById("batt1"),
+      document.getElementById("batt2"),
+      document.getElementById("batt3")
+    ].filter(Boolean);
+    const beam = document.getElementById("chargeBeam");
+    if (vehicles.length !== battFills.length || !vehicles.length) return;
+
+    const angles = vehicles.map((vehicle, index) => Number(vehicle.dataset.angle || index * 120));
+    const batteries = [0.34, 0.72, 0.46].slice(0, vehicles.length);
+    const isCharging = vehicles.map(() => false);
+    let frameId = null;
+    let lastTime = performance.now();
+
+    const radius = () => Math.min(container.offsetWidth, container.offsetHeight) * 0.37;
+
+    const setBeam = (vehicle) => {
+      if (!beam || !vehicle) {
+        beam?.classList.remove("is-active");
+        return;
+      }
+      const containerRect = container.getBoundingClientRect();
+      const vehicleRect = vehicle.getBoundingClientRect();
+      const startX = container.offsetWidth / 2;
+      const startY = container.offsetHeight / 2;
+      const endX = vehicleRect.left - containerRect.left + vehicleRect.width / 2;
+      const endY = vehicleRect.top - containerRect.top + vehicleRect.height / 2;
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const length = Math.hypot(dx, dy);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      beam.style.width = `${length}px`;
+      beam.style.transform = `rotate(${angle}deg)`;
+      beam.classList.add("is-active");
+    };
+
+    const updatePositions = () => {
+      const centerX = container.offsetWidth / 2;
+      const centerY = container.offsetHeight / 2;
+      const orbitRadius = radius();
+      vehicles.forEach((vehicle, index) => {
+        const angleRad = angles[index] * Math.PI / 180;
+        const x = centerX + orbitRadius * Math.cos(angleRad) - vehicle.offsetWidth / 2;
+        const y = centerY + orbitRadius * Math.sin(angleRad) - vehicle.offsetHeight / 2;
+        vehicle.style.left = `${x}px`;
+        vehicle.style.top = `${y}px`;
+        vehicle.style.transform = `rotate(${angles[index] + 90}deg)`;
+      });
+      const chargingVehicle = vehicles.find((_, index) => isCharging[index]);
+      setBeam(chargingVehicle);
+    };
+
+    const updateBatteries = (deltaSeconds) => {
+      vehicles.forEach((vehicle, index) => {
+        if (isCharging[index]) {
+          batteries[index] = Math.min(1, batteries[index] + 0.22 * deltaSeconds);
+        } else {
+          batteries[index] = Math.max(0, batteries[index] - 0.018 * deltaSeconds);
+        }
+
+        if (batteries[index] < 0.18 && !isCharging[index]) {
+          isCharging[index] = true;
+          vehicle.classList.add("charging");
+        }
+
+        if (batteries[index] >= 0.96 && isCharging[index]) {
+          isCharging[index] = false;
+          vehicle.classList.remove("charging");
+        }
+
+        vehicle.classList.toggle("low-battery", batteries[index] < 0.25 && !isCharging[index]);
+        battFills[index].style.width = `${Math.round(batteries[index] * 100)}%`;
+      });
+    };
+
+    const animate = (time) => {
+      const deltaSeconds = Math.min((time - lastTime) / 1000, 0.05);
+      lastTime = time;
+      vehicles.forEach((_, index) => {
+        angles[index] = (angles[index] + 22 * deltaSeconds) % 360;
+      });
+      updateBatteries(deltaSeconds);
+      updatePositions();
+      if (!reduceMotion) frameId = requestAnimationFrame(animate);
+    };
+
+    updateBatteries(0);
+    updatePositions();
+    if (!reduceMotion) frameId = requestAnimationFrame(animate);
+
+    const handleResize = () => updatePositions();
+    window.addEventListener("resize", handleResize, { passive: true });
+
+    window.__pvgeViz = {
+      destroy: () => {
+        if (frameId) cancelAnimationFrame(frameId);
+        frameId = null;
+        window.removeEventListener("resize", handleResize);
+      },
+      init: () => {
+        if (!frameId && !reduceMotion) {
+          lastTime = performance.now();
+          frameId = requestAnimationFrame(animate);
+        }
+      },
+      batteries,
+      isCharging,
+      angles
+    };
+  };
+
+  initPvgOrbitAnimation();
+
   const cookieBanner = document.querySelector("[data-cookie-banner]");
   const cookieAccept = document.querySelector("[data-cookie-accept]");
   if (cookieBanner && !localStorage.getItem("pvgCookieConsent")) {

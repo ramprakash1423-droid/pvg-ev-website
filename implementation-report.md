@@ -9,6 +9,7 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 ## Key Changes Completed
 
 - Simplified the homepage into a shorter customer journey: compact hero, quick requirement selector, how mobile charging works, key benefits, PVG-EV × Setrans summary, Chennai pilot status, final enquiry CTA and footer.
+- Replaced the homepage hero visual with the provided PVG.ev orbit animation: central mobile charging station vehicle, three EV cars driving around it, battery state changes and automatic charging behavior.
 - Moved homepage detail into inner pages instead of removing it from the website: technical content remains on Mobile Charging Station, fleet detail on Fleet Solutions, supporting solutions on Solutions, company and sustainability context on About, partnership detail on PVG-EV × Setrans, pilot detail on Pilot Programme and articles on Insights.
 - Added `request-charging.html` with a seven-step charging requirement form, client-side validation, browser-session autosave, review step, bot honeypot, optional browser geolocation capture and a generated reference number.
 - Promoted the charging requirement action across the header, footer, homepage hero, persistent desktop quick enquiry widget and mobile sticky action bar.

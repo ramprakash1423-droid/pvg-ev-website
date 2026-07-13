@@ -8747,3 +8747,540 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* Attached PVG.ev orbit animation for the homepage hero. */
+.home-compact .client-hero-visual {
+  position: relative;
+  width: 100%;
+  min-height: 580px;
+  display: grid;
+  place-items: center;
+  border-radius: 40px;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(14, 165, 255, .15), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(8, 166, 106, .10), transparent 50%),
+    linear-gradient(145deg, #1A2F3A, #0E1E26);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .06);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .06);
+  backdrop-filter: blur(26px) saturate(1.5);
+}
+
+.home-compact .visual-status-card {
+  position: absolute;
+  width: auto;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .6rem 1.2rem;
+  border-radius: 60px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .06);
+  color: rgba(255, 255, 255, .85);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  animation: none;
+}
+
+.home-compact .visual-status-card strong {
+  color: rgba(255, 255, 255, .5);
+  font-size: .65rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.home-compact .visual-status-card span {
+  color: rgba(255, 255, 255, .86);
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.home-compact .status-a {
+  top: 1.8rem;
+  left: 2rem;
+}
+
+.home-compact .status-b {
+  top: 1.8rem;
+  right: 2rem;
+}
+
+.home-compact .status-c {
+  bottom: 1.8rem;
+  left: 2rem;
+}
+
+.orbit-container {
+  position: relative;
+  width: 460px;
+  height: 460px;
+  display: grid;
+  place-items: center;
+}
+
+.charging-vehicle {
+  position: relative;
+  z-index: 10;
+  width: 160px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(14, 165, 255, .15);
+  border-radius: 16px 40px 16px 16px;
+  background: linear-gradient(145deg, #FFFFFF, #DCE8F0);
+  box-shadow:
+    0 20px 60px rgba(14, 165, 255, .2),
+    0 0 80px rgba(14, 165, 255, .08),
+    inset 0 -2px 20px rgba(0, 0, 0, .1),
+    inset 0 2px 20px rgba(255, 255, 255, .3);
+  transform: rotateY(-8deg) rotateZ(1deg);
+  animation: stationFloat 4s ease-in-out infinite;
+}
+
+.charging-vehicle::before {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 18px;
+  width: 50px;
+  height: 38px;
+  border-radius: 8px 20px 6px 6px;
+  background: linear-gradient(135deg, #173241, #274B5B);
+}
+
+.charging-vehicle::after {
+  content: "";
+  position: absolute;
+  left: 30px;
+  right: 80px;
+  top: 16px;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  box-shadow: 0 0 30px rgba(14, 165, 255, .2);
+}
+
+.station-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.station-icon {
+  margin-bottom: 2px;
+  font-size: 1.8rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 20px rgba(14, 165, 255, .3));
+}
+
+.station-label {
+  font-size: .85rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.station-sub {
+  margin-top: 1px;
+  padding: 2px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, .3);
+  color: rgba(255, 255, 255, .5);
+  font-size: .5rem;
+  letter-spacing: .05em;
+  backdrop-filter: blur(4px);
+}
+
+.station-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(14, 165, 255, .12);
+  transform: translate(-50%, -50%);
+  animation: pulseRing 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.station-pulse:nth-child(1) {
+  width: 200px;
+  height: 200px;
+}
+
+.station-pulse:nth-child(2) {
+  width: 250px;
+  height: 250px;
+  border-color: rgba(8, 166, 106, .08);
+  animation-delay: 1s;
+}
+
+.station-pulse:nth-child(3) {
+  width: 300px;
+  height: 300px;
+  border-color: rgba(14, 165, 255, .06);
+  animation-delay: 2s;
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, .04);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.orbit-ring::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 30px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(14, 165, 255, .2), transparent);
+  transform: translateX(-50%);
+}
+
+.charge-beam {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(8, 166, 106, .95), rgba(14, 165, 255, .95));
+  box-shadow: 0 0 20px rgba(14, 165, 255, .5);
+  transform-origin: left center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.charge-beam.is-active {
+  opacity: 1;
+  animation: chargeBeamPulse .7s ease-in-out infinite alternate;
+}
+
+.ev-vehicle {
+  position: absolute;
+  z-index: 5;
+  width: 72px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px 22px 8px 8px;
+  background: linear-gradient(135deg, #EAF0F5, #C8D8E0);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+  color: #1A2F3A;
+  font-size: .45rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  transform-origin: center;
+  transition: box-shadow .3s ease, border-color .3s ease;
+}
+
+.ev-vehicle::before {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 22px;
+  height: 14px;
+  border-radius: 6px 12px 4px 4px;
+  background: linear-gradient(135deg, #1D3B48, #2F5364);
+}
+
+.ev-vehicle::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: 20px;
+  height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  opacity: .7;
+}
+
+.ev-vehicle .label {
+  position: relative;
+  z-index: 2;
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .5);
+  color: #0E1E26;
+  font-size: .4rem;
+  font-weight: 800;
+  backdrop-filter: blur(4px);
+}
+
+.ev-vehicle .battery-icon {
+  position: absolute;
+  right: 30px;
+  bottom: 4px;
+  width: 18px;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, .15);
+}
+
+.ev-vehicle .battery-icon .fill {
+  width: 40%;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #F59E0B, #F4D56B);
+  transition: width .5s ease, background .3s ease;
+}
+
+.ev-vehicle.low-battery .battery-icon .fill {
+  background: linear-gradient(90deg, #EF4444, #F87171);
+  animation: batteryBlink .6s ease-in-out infinite alternate;
+}
+
+.ev-vehicle.charging {
+  border: 1px solid rgba(14, 165, 255, .2);
+  box-shadow: 0 0 40px rgba(14, 165, 255, .4), 0 8px 24px rgba(0, 0, 0, .3);
+}
+
+.ev-vehicle.charging .battery-icon .fill {
+  background: linear-gradient(90deg, var(--green), var(--blue));
+}
+
+.ev-1 {
+  background: linear-gradient(135deg, #FFFFFF, #D4E4EC);
+}
+
+.ev-2 {
+  background: linear-gradient(135deg, #F0F7FA, #C0D6E0);
+}
+
+.ev-3 {
+  background: linear-gradient(135deg, #E8F0F5, #B8CED8);
+}
+
+@keyframes stationFloat {
+  0%, 100% { transform: rotateY(-8deg) rotateZ(1deg) translateY(0); }
+  50% { transform: rotateY(-8deg) rotateZ(1deg) translateY(-6px); }
+}
+
+@keyframes pulseRing {
+  0%, 100% { transform: translate(-50%, -50%) scale(.95); opacity: .3; }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+}
+
+@keyframes batteryBlink {
+  from { opacity: 1; }
+  to { opacity: .3; }
+}
+
+@keyframes chargeBeamPulse {
+  from { filter: brightness(.86); }
+  to { filter: brightness(1.35); }
+}
+
+@media (max-width: 700px) {
+  .home-compact .client-hero-visual {
+    min-height: 480px;
+    border-radius: 28px;
+  }
+
+  .orbit-container {
+    width: 340px;
+    height: 340px;
+  }
+
+  .charging-vehicle {
+    width: 120px;
+    height: 68px;
+    border-radius: 12px 28px 12px 12px;
+  }
+
+  .charging-vehicle::before {
+    right: 10px;
+    top: 14px;
+    width: 36px;
+    height: 28px;
+  }
+
+  .charging-vehicle::after {
+    left: 20px;
+    right: 60px;
+    top: 12px;
+    height: 9px;
+  }
+
+  .station-icon { font-size: 1.4rem; }
+  .station-label { font-size: .65rem; }
+  .station-sub { font-size: .4rem; }
+  .station-pulse:nth-child(1) { width: 160px; height: 160px; }
+  .station-pulse:nth-child(2) { width: 200px; height: 200px; }
+  .station-pulse:nth-child(3) { width: 240px; height: 240px; }
+
+  .ev-vehicle {
+    width: 56px;
+    height: 28px;
+    border-radius: 8px 16px 6px 6px;
+  }
+
+  .ev-vehicle::before {
+    right: 4px;
+    top: 4px;
+    width: 16px;
+    height: 10px;
+  }
+
+  .ev-vehicle::after {
+    left: 6px;
+    top: 6px;
+    width: 14px;
+    height: 5px;
+  }
+
+  .ev-vehicle .label {
+    padding: 1px 4px;
+    font-size: .3rem;
+  }
+
+  .ev-vehicle .battery-icon {
+    right: 22px;
+    bottom: 3px;
+    width: 14px;
+    height: 5px;
+  }
+
+  .home-compact .visual-status-card {
+    padding: .4rem .9rem;
+    font-size: .65rem;
+  }
+
+  .home-compact .visual-status-card strong {
+    font-size: .5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-compact .client-hero-visual {
+    min-height: 400px;
+    border-radius: 20px;
+  }
+
+  .orbit-container {
+    width: 260px;
+    height: 260px;
+  }
+
+  .charging-vehicle {
+    width: 90px;
+    height: 52px;
+    border-radius: 10px 20px 10px 10px;
+  }
+
+  .charging-vehicle::before {
+    right: 8px;
+    top: 10px;
+    width: 26px;
+    height: 20px;
+  }
+
+  .charging-vehicle::after {
+    left: 14px;
+    right: 44px;
+    top: 9px;
+    height: 7px;
+  }
+
+  .station-icon { font-size: 1rem; }
+  .station-label { font-size: .5rem; }
+  .station-sub { padding: 1px 8px; font-size: .3rem; }
+  .station-pulse:nth-child(1) { width: 120px; height: 120px; }
+  .station-pulse:nth-child(2) { width: 150px; height: 150px; }
+  .station-pulse:nth-child(3) { width: 180px; height: 180px; }
+
+  .ev-vehicle {
+    width: 44px;
+    height: 22px;
+    border-radius: 6px 12px 4px 4px;
+  }
+
+  .ev-vehicle::before {
+    right: 3px;
+    top: 3px;
+    width: 12px;
+    height: 8px;
+  }
+
+  .ev-vehicle::after {
+    left: 4px;
+    top: 4px;
+    width: 10px;
+    height: 4px;
+  }
+
+  .ev-vehicle .label {
+    padding: 0 3px;
+    font-size: .25rem;
+  }
+
+  .ev-vehicle .battery-icon {
+    right: 16px;
+    bottom: 2px;
+    width: 10px;
+    height: 4px;
+  }
+
+  .home-compact .visual-status-card {
+    gap: .3rem;
+    padding: .3rem .6rem;
+    border-radius: 30px;
+    font-size: .5rem;
+  }
+
+  .home-compact .visual-status-card strong {
+    font-size: .4rem;
+  }
+
+  .home-compact .status-a {
+    top: .8rem;
+    left: .8rem;
+  }
+
+  .home-compact .status-b {
+    top: .8rem;
+    right: .8rem;
+  }
+
+  .home-compact .status-c {
+    bottom: .8rem;
+    left: .8rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .charging-vehicle,
+  .station-pulse,
+  .ev-vehicle,
+  .charge-beam {
+    animation: none !important;
+    transition: none !important;
+  }
+}
