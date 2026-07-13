@@ -150,6 +150,7 @@
   const renderQuickEnquiry = () => {
     const root = headerMount?.dataset.root || footerMount?.dataset.root || "";
     if (document.querySelector("[data-quick-enquiry]")) return;
+    if (document.querySelector(".station-product-page")) return;
     const widget = document.createElement("div");
     widget.className = "quick-enquiry sticky-request-cta";
     widget.setAttribute("data-quick-enquiry", "");

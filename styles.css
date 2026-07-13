@@ -12473,7 +12473,7 @@ body,
 
 .station-application-grid-v2 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
   margin-top: 28px;
 }
@@ -12689,11 +12689,15 @@ body,
 
 .station-story-stack-v2 {
   display: grid;
-  gap: clamp(28px, 5vw, 62px);
+  gap: clamp(22px, 3.4vw, 46px);
 }
 
 .station-scenario-visual {
-  min-height: 360px;
+  min-height: 310px;
+  background:
+    radial-gradient(circle at 28% 28%, rgba(14, 165, 255, .2), transparent 32%),
+    radial-gradient(circle at 74% 72%, rgba(8, 166, 106, .18), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(232, 249, 255, .82));
 }
 
 .scenario-ground,
@@ -12717,31 +12721,33 @@ body,
 
 .scenario-building {
   border: 1px solid rgba(8, 166, 106, .14);
-  background: linear-gradient(180deg, rgba(255, 255, 255, .92), rgba(222, 244, 255, .72));
-  box-shadow: 0 16px 34px rgba(10, 45, 56, .1);
+  background:
+    repeating-linear-gradient(90deg, rgba(14, 165, 255, .1) 0 18px, rgba(255, 255, 255, .86) 18px 34px),
+    linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(206, 238, 255, .82));
+  box-shadow: 0 18px 38px rgba(10, 45, 56, .14), inset 0 1px 0 rgba(255, 255, 255, .9);
 }
 
 .scenario-building.depot {
   left: 8%;
-  top: 18%;
+  top: 16%;
   width: 150px;
-  height: 128px;
+  height: 116px;
   border-radius: 12px;
 }
 
 .scenario-building.commercial {
   right: 9%;
-  top: 16%;
+  top: 14%;
   width: 165px;
-  height: 150px;
+  height: 136px;
   border-radius: 16px 16px 8px 8px;
 }
 
 .scenario-building.apartment-left,
 .scenario-building.apartment-right {
-  top: 13%;
+  top: 12%;
   width: 88px;
-  height: 182px;
+  height: 156px;
   border-radius: 14px 14px 8px 8px;
 }
 
@@ -12752,7 +12758,7 @@ body,
 .scenario-building.apartment-right {
   left: 28%;
   top: 20%;
-  height: 148px;
+  height: 128px;
 }
 
 .scenario-parking {
@@ -12766,12 +12772,12 @@ body,
 
 .scenario-unit {
   right: 14%;
-  bottom: 26%;
-  width: 156px;
-  height: 88px;
+  bottom: 24%;
+  width: 168px;
+  height: 94px;
   border-radius: 18px 32px 16px 16px;
   background: linear-gradient(145deg, #effaff, #cbeeff);
-  box-shadow: 0 18px 34px rgba(10, 45, 56, .14);
+  box-shadow: 0 20px 38px rgba(10, 45, 56, .18), inset 0 1px 0 rgba(255, 255, 255, .95);
 }
 
 .scenario-unit::before {
@@ -12785,11 +12791,14 @@ body,
 }
 
 .scenario-car {
-  width: 92px;
-  height: 42px;
+  width: 98px;
+  height: 46px;
   border-radius: 24px 30px 13px 13px;
-  background: linear-gradient(145deg, #ffffff, #ddecf5);
-  box-shadow: 0 14px 26px rgba(10, 45, 56, .12);
+  background:
+    radial-gradient(circle at 20% 100%, #153241 0 7px, transparent 8px),
+    radial-gradient(circle at 78% 100%, #153241 0 7px, transparent 8px),
+    linear-gradient(145deg, #ffffff, #ddecf5);
+  box-shadow: 0 14px 26px rgba(10, 45, 56, .16);
 }
 
 .scenario-car.one {
@@ -12807,11 +12816,12 @@ body,
   left: 48%;
   bottom: 34%;
   width: 27%;
-  height: 4px;
+  height: 5px;
   border-radius: 999px;
   background: linear-gradient(90deg, #13242e, var(--blue), var(--green));
   transform: rotate(-7deg);
   transform-origin: left center;
+  box-shadow: 0 0 18px rgba(14, 165, 255, .44);
 }
 
 .scenario-status {
@@ -13426,6 +13436,10 @@ body,
   .station-benefit-layout-v2,
   .station-tech-grid,
   .pilot-participant-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .station-application-grid-v2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
