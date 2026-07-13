@@ -262,16 +262,21 @@
 
   const syncHeader = () => {
     header?.classList.toggle("is-scrolled", window.scrollY > 8);
-    const hero = document.querySelector(".compact-home-hero, .request-hero, .page-hero, .hero");
+    const hero = document.querySelector(".compact-home-hero, .station-hero-v3, .pilot-hero-v2, .station-product-hero, .request-hero, .page-hero, .hero");
     const trigger = hero ? hero.offsetTop + hero.offsetHeight * .72 : 180;
     const activeElement = document.activeElement;
     const hasFormFocus = Boolean(activeElement?.matches?.("input, textarea, select, [contenteditable='true']"));
-    const blockingSections = Array.from(document.querySelectorAll(".compact-final-cta, .site-footer, [data-contact-form], [data-pilot-form], [data-request-form], .request-form-card"));
+    const cookieVisible = Boolean(document.querySelector("[data-cookie-banner]:not([hidden])"));
+    const blockingSections = Array.from(document.querySelectorAll(".compact-final-cta, [data-major-cta], .site-footer, [data-contact-form], [data-pilot-form], [data-request-form], .request-form-card"));
     const isBlockedBySection = blockingSections.some((section) => {
       const rect = section.getBoundingClientRect();
       return rect.top < window.innerHeight - 70 && rect.bottom > 70;
     });
-    stickyCta?.classList.toggle("is-visible", window.scrollY > trigger && !isBlockedBySection && !hasFormFocus && !document.body.classList.contains("menu-open"));
+    const visibleSubmit = Array.from(document.querySelectorAll(".form-submit, [data-request-submit]")).some((button) => {
+      const rect = button.getBoundingClientRect();
+      return rect.top < window.innerHeight - 80 && rect.bottom > 70;
+    });
+    stickyCta?.classList.toggle("is-visible", window.scrollY > trigger && !isBlockedBySection && !hasFormFocus && !visibleSubmit && !cookieVisible && !document.body.classList.contains("menu-open"));
   };
 
   syncHeader();
@@ -293,6 +298,16 @@
     revealItems.forEach((item) => revealObserver.observe(item));
   } else {
     revealItems.forEach((item) => item.classList.add("is-visible"));
+  }
+
+  const animatedScenes = document.querySelectorAll(".station-operational-visual, .station-process-visual, .station-scenario-visual, .pilot-map-visual, [data-charging-journey]");
+  if (animatedScenes.length && "IntersectionObserver" in window && !reduceMotion) {
+    const animationObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-paused", !entry.isIntersecting);
+      });
+    }, { threshold: 0.08 });
+    animatedScenes.forEach((scene) => animationObserver.observe(scene));
   }
 
   const counterItems = Array.from(document.querySelectorAll("[data-count]"));
@@ -379,6 +394,9 @@
   forms.forEach((form) => {
     const fields = Array.from(form.querySelectorAll("input, select, textarea"));
     const status = form.querySelector("[data-form-status]");
+    const submitButton = form.querySelector(".form-submit, [type='submit']");
+    const originalSubmitText = submitButton?.textContent || "";
+    let submitted = false;
 
     fields.forEach((field) => {
       field.addEventListener("blur", () => validateField(field));
@@ -392,20 +410,88 @@
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+      if (submitted) return;
       const isValid = fields.map(validateField).every(Boolean);
 
       if (!isValid) {
-        if (status) status.textContent = "Please fix the highlighted fields and submit again.";
+        if (status) {
+          status.textContent = "Please fix the highlighted fields and submit again.";
+          status.classList.remove("is-success");
+          status.classList.add("is-error");
+        }
         form.querySelector(".is-invalid")?.focus();
         return;
       }
 
-      if (status) status.textContent = form.dataset.pilotForm === "true"
-        ? "Thank you. Your Chennai pilot interest has been recorded for review."
-        : "Thank you. Your PVG-EV enquiry has been received.";
-      form.reset();
-      fields.forEach((field) => setError(field, ""));
+      if (navigator.onLine === false) {
+        if (status) {
+          status.textContent = "The browser appears to be offline. Please reconnect and submit again.";
+          status.classList.remove("is-success");
+          status.classList.add("is-error");
+        }
+        return;
+      }
+
+      submitted = true;
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.setAttribute("aria-busy", "true");
+        submitButton.textContent = "Submitting...";
+      }
+      if (status) {
+        status.textContent = "Submitting your details...";
+        status.classList.remove("is-error", "is-success");
+      }
+
+      window.setTimeout(() => {
+        if (status) {
+          status.textContent = form.dataset.pilotForm === "true"
+            ? "Thank you. Your Chennai pilot interest has been recorded for review."
+            : "Thank you. Your PVG-EV enquiry has been received.";
+          status.classList.remove("is-error");
+          status.classList.add("is-success");
+        }
+        fields.forEach((field) => setError(field, ""));
+        form.reset();
+        trackPvgEvent(form.dataset.pilotForm === "true" ? "pilot_registration_submit" : "contact_form_submit", { path: window.location.pathname });
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.removeAttribute("aria-busy");
+          submitButton.textContent = originalSubmitText;
+        }
+        submitted = false;
+      }, 520);
     });
+  });
+
+  document.querySelectorAll("[data-accordion]").forEach((accordion) => {
+    const triggers = Array.from(accordion.querySelectorAll("[data-accordion-trigger]"));
+    const panels = Array.from(accordion.querySelectorAll("[data-accordion-panel]"));
+    const setOpen = (activeTrigger) => {
+      triggers.forEach((trigger) => {
+        const isActive = trigger === activeTrigger;
+        const panel = document.getElementById(trigger.getAttribute("aria-controls"));
+        trigger.setAttribute("aria-expanded", String(isActive));
+        if (panel) panel.hidden = !isActive;
+      });
+    };
+    triggers.forEach((trigger, index) => {
+      const panel = document.getElementById(trigger.getAttribute("aria-controls"));
+      const isOpen = trigger.getAttribute("aria-expanded") === "true";
+      if (panel) panel.hidden = !isOpen;
+      trigger.addEventListener("click", () => setOpen(trigger));
+      trigger.addEventListener("keydown", (event) => {
+        if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        let nextIndex = index;
+        if (event.key === "ArrowDown") nextIndex = (index + 1) % triggers.length;
+        if (event.key === "ArrowUp") nextIndex = (index - 1 + triggers.length) % triggers.length;
+        if (event.key === "Home") nextIndex = 0;
+        if (event.key === "End") nextIndex = triggers.length - 1;
+        triggers[nextIndex]?.focus();
+      });
+    });
+    if (!panels.some((panel) => !panel.hidden) && triggers[0]) setOpen(triggers[0]);
   });
 
   const requestForm = document.querySelector("[data-request-form]");
@@ -744,9 +830,11 @@
   const cookieAccept = document.querySelector("[data-cookie-accept]");
   if (cookieBanner && !localStorage.getItem("pvgCookieConsent")) {
     cookieBanner.hidden = false;
+    syncHeader();
   }
   cookieAccept?.addEventListener("click", () => {
     localStorage.setItem("pvgCookieConsent", "accepted");
     if (cookieBanner) cookieBanner.hidden = true;
+    syncHeader();
   });
 })();
