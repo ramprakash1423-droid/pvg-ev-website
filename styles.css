@@ -10630,3 +10630,191 @@ body,
     transition: none !important;
   }
 }
+
+/* 2026-07 hero animation size and readability correction. */
+.home-cinematic .client-hero-shell {
+  width: min(100% - 48px, 1380px);
+  grid-template-columns: minmax(360px, .48fr) minmax(520px, .52fr);
+  gap: clamp(20px, 3vw, 42px);
+}
+
+.home-cinematic .charging-story-panel {
+  justify-self: center;
+  width: min(100%, 720px);
+  min-height: clamp(380px, 34vw, 500px);
+  padding: 18px;
+}
+
+.charging-journey-scene {
+  width: min(100% - 28px, 620px);
+  height: min(68%, 390px);
+  min-height: 330px;
+  margin-top: 22px;
+}
+
+.home-cinematic .visual-status-card {
+  display: grid;
+  gap: 2px;
+  align-items: start;
+  max-width: 230px;
+  padding: .48rem .72rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .085);
+}
+
+.home-cinematic .visual-status-card strong,
+.home-cinematic .visual-status-card span {
+  display: block;
+  white-space: normal;
+}
+
+.home-cinematic .visual-status-card strong {
+  font-size: .58rem !important;
+}
+
+.home-cinematic .visual-status-card span {
+  font-size: .76rem !important;
+}
+
+.home-cinematic .status-a {
+  top: 1rem;
+  left: 1rem;
+}
+
+.home-cinematic .status-b {
+  top: 1rem;
+  right: 1rem;
+  max-width: 170px;
+}
+
+.home-cinematic .status-c {
+  bottom: 1rem;
+  left: 1rem;
+  max-width: 170px;
+}
+
+.journey-card-primary {
+  left: 5%;
+  top: 30%;
+}
+
+.journey-card-secondary {
+  right: 4%;
+  bottom: 10%;
+}
+
+.journey-alert-card {
+  left: 28%;
+  top: 13%;
+}
+
+.journey-complete-card {
+  right: 8%;
+  top: 16%;
+}
+
+.journey-status-card,
+.journey-alert-card,
+.journey-complete-card {
+  min-width: 138px;
+  max-width: 188px;
+  padding: 9px 11px;
+}
+
+.journey-ev {
+  width: clamp(82px, 8.4vw, 116px);
+  height: clamp(38px, 4vw, 52px);
+}
+
+.journey-unit {
+  width: clamp(128px, 13vw, 176px);
+  height: clamp(72px, 7.2vw, 98px);
+}
+
+.journey-two-wheeler {
+  left: 20%;
+  top: 31%;
+  transform: scale(.86);
+}
+
+.journey-auto {
+  right: 15%;
+  top: 69%;
+  transform: scale(.86);
+}
+
+@media (max-width: 1280px) {
+  .home-cinematic .client-hero-shell {
+    grid-template-columns: 1fr;
+    max-width: 920px;
+  }
+
+  .home-cinematic .charging-story-panel {
+    width: min(100%, 760px);
+  }
+}
+
+@media (max-width: 640px) {
+  .home-cinematic .charging-story-panel {
+    min-height: 350px;
+    padding: 12px;
+  }
+
+  .charging-journey-scene {
+    width: min(100% - 12px, 420px);
+    min-height: 280px;
+    margin-top: 28px;
+  }
+
+  .home-cinematic .visual-status-card {
+    max-width: 138px;
+    padding: .36rem .48rem;
+  }
+
+  .home-cinematic .visual-status-card strong {
+    font-size: .46rem !important;
+  }
+
+  .home-cinematic .visual-status-card span {
+    font-size: .58rem !important;
+  }
+
+  .home-cinematic .status-a {
+    top: .55rem;
+    left: .55rem;
+  }
+
+  .home-cinematic .status-b {
+    top: .55rem;
+    right: .55rem;
+  }
+
+  .home-cinematic .status-c {
+    bottom: .55rem;
+    left: .55rem;
+  }
+
+  .journey-card-primary {
+    top: 32%;
+    left: 3%;
+  }
+
+  .journey-card-secondary {
+    display: none;
+  }
+
+  .journey-alert-card,
+  .journey-complete-card {
+    left: 36%;
+    right: auto;
+    top: 14%;
+    max-width: 132px;
+  }
+
+  .journey-status-card,
+  .journey-alert-card,
+  .journey-complete-card {
+    min-width: 112px;
+    padding: 7px 8px;
+  }
+}

@@ -572,12 +572,11 @@
     const route = scene.querySelector("[data-journey-route]");
     if (!ev || !unit || !beam || !batteryFill || !batteryText) return;
 
-    const duration = 16500;
+    const duration = 15000;
     let frameId = null;
     let startTime = performance.now();
 
     const lerp = (start, end, amount) => start + (end - start) * amount;
-    const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
     const ease = (value) => value < .5
       ? 4 * value * value * value
       : 1 - Math.pow(-2 * value + 2, 3) / 2;
@@ -632,59 +631,65 @@
       let unitAngle = -4;
       let beamActive = false;
       let routeActive = false;
+      let evOpacity = 1;
+      let unitOpacity = 1;
 
       if (progress < .22) {
         const p = ease(progress / .22);
-        evX = lerp(13, 36, p);
-        evY = lerp(62, 55, p);
+        evX = lerp(18, 37, p);
+        evY = lerp(62, 56, p);
         evAngle = lerp(-3, 5, p);
         battery = lerp(82, 18, p);
-        setStatus("drive", "Battery monitoring", "EV moving along route");
+        evOpacity = progress < .05 ? progress / .05 : 1;
+        setStatus("drive", `Battery: ${Math.round(battery)}%`, "EV moving along route");
       } else if (progress < .34) {
-        const p = ease((progress - .22) / .12);
-        evX = 36;
-        evY = 55;
+        evX = 37;
+        evY = 56;
         evAngle = 3;
         battery = 18;
         routeActive = true;
-        setStatus("alert", "Low battery detected", "Request Received");
+        setStatus("alert", "Battery: 18%", "Request Received");
       } else if (progress < .52) {
         const p = ease((progress - .34) / .18);
-        evX = 36;
-        evY = 55;
+        evX = 37;
+        evY = 56;
         evAngle = 2;
-        unitX = lerp(70, 48, p);
-        unitY = lerp(41, 54, p);
+        unitX = lerp(67, 49, p);
+        unitY = lerp(43, 56, p);
         unitAngle = lerp(-4, -1, p);
         battery = 18;
         routeActive = true;
         setStatus("dispatch", "Unit Dispatched", "ETA: Calculating");
       } else if (progress < .82) {
         const p = ease((progress - .52) / .30);
-        evX = 36;
-        evY = 55;
-        unitX = 48;
-        unitY = 54;
+        evX = 37;
+        evY = 56;
+        unitX = 49;
+        unitY = 56;
         unitAngle = -1;
         battery = lerp(18, 100, p);
         beamActive = true;
         routeActive = true;
-        setStatus("charge", `Battery: ${Math.round(battery)}%`, "Mobile charging active");
+        setStatus("charge", `Battery: ${Math.round(battery)}%`, "Charging active");
       } else {
         const p = ease((progress - .82) / .18);
-        evX = lerp(36, 88, p);
-        evY = lerp(55, 46, p);
+        evX = lerp(37, 106, p);
+        evY = lerp(56, 47, p);
         evAngle = lerp(2, -4, p);
-        unitX = lerp(48, 70, p);
-        unitY = lerp(54, 41, p);
+        unitX = lerp(49, 67, p);
+        unitY = lerp(56, 43, p);
         unitAngle = lerp(-1, -4, p);
         battery = 100;
         routeActive = true;
+        evOpacity = p > .72 ? Math.max(0, 1 - (p - .72) / .28) : 1;
+        unitOpacity = p > .72 ? Math.max(.72, 1 - (p - .72) / 1.1) : 1;
         setStatus("complete", "Charge Complete", "EV continues moving");
       }
 
       setPosition(ev, evX, evY, evAngle);
       setPosition(unit, unitX, unitY, unitAngle);
+      ev.style.opacity = evOpacity.toFixed(3);
+      unit.style.opacity = unitOpacity.toFixed(3);
       setBattery(battery);
       setBeam(beamActive);
       route?.classList.toggle("is-active", routeActive);
