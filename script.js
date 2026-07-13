@@ -84,10 +84,11 @@
           </button>
           <div class="nav-menu nav-menu-client" id="site-menu" data-nav-menu>
             ${navItems.map(navLink).join("")}
+            <a class="nav-link mobile-contact-link mobile-request-link ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="mobile_nav_request_charging">Request Mobile Charging</a>
             <a class="nav-link mobile-contact-link ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}">Contact</a>
           </div>
           <div class="nav-actions" aria-label="Primary actions">
-            <a class="nav-cta nav-cta-request ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="nav_request_charging">Submit Requirement</a>
+            <a class="nav-cta nav-cta-request ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="nav_request_charging">Request Mobile Charging</a>
             <a class="nav-cta ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}" data-event="nav_contact">Contact</a>
           </div>
         </nav>
@@ -150,22 +151,14 @@
     const root = headerMount?.dataset.root || footerMount?.dataset.root || "";
     if (document.querySelector("[data-quick-enquiry]")) return;
     const widget = document.createElement("div");
-    widget.className = "quick-enquiry";
+    widget.className = "quick-enquiry sticky-request-cta";
     widget.setAttribute("data-quick-enquiry", "");
     widget.innerHTML = `
-      <button class="quick-enquiry-button" type="button" aria-expanded="false" data-quick-toggle data-event="quick_enquiry_open">
-        <span>Need EV Charging?</span>
-      </button>
-      <div class="quick-enquiry-panel" data-quick-panel hidden>
-        <a href="${url(root, "request-charging.html")}" data-event="quick_request_charging"><strong>Submit charging requirement</strong><span>Tell PVG-EV what, where and when you need charging.</span></a>
-        <a href="${url(root, "pilot-programme.html#pilot-form")}" data-event="quick_join_pilot"><strong>Join Chennai pilot</strong><span>Register interest for the pilot programme.</span></a>
-        <a href="${url(root, "fleet-solutions.html#fleet-assessment")}" data-event="quick_fleet_assessment"><strong>Fleet assessment</strong><span>Share fleet size, routes and charging windows.</span></a>
-        <a href="${url(root, "contact.html#contact-form")}" data-event="quick_contact"><strong>Contact PVG-EV</strong><span>Speak with the team about partnerships or projects.</span></a>
-      </div>
+      <a class="quick-enquiry-button quick-enquiry-link" href="${url(root, "request-charging.html")}" data-event="sticky_request_mobile_charging">
+        <span>Request Mobile Charging</span>
+      </a>
       <nav class="mobile-action-bar" aria-label="Mobile quick actions">
         <a href="${url(root, "request-charging.html")}" data-event="mobile_request_charging">Request Charging</a>
-        <a href="${url(root, "contact.html")}" data-event="mobile_contact">Contact</a>
-        <button type="button" data-quick-toggle-mobile aria-expanded="false">More</button>
       </nav>
     `;
     document.body.appendChild(widget);
@@ -178,6 +171,7 @@
   const header = document.querySelector("[data-header]");
   const navToggle = document.querySelector("[data-nav-toggle]");
   const navMenu = document.querySelector("[data-nav-menu]");
+  const stickyCta = document.querySelector("[data-quick-enquiry]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const trackPvgEvent = (eventName, detail = {}) => {
@@ -268,6 +262,9 @@
 
   const syncHeader = () => {
     header?.classList.toggle("is-scrolled", window.scrollY > 8);
+    const hero = document.querySelector(".compact-home-hero, .request-hero, .page-hero, .hero");
+    const trigger = hero ? hero.offsetTop + hero.offsetHeight * .72 : 180;
+    stickyCta?.classList.toggle("is-visible", window.scrollY > trigger);
   };
 
   syncHeader();
@@ -357,8 +354,10 @@
       error = field.type === "checkbox" ? "Please confirm this option." : `${fieldLabel(field)} is required.`;
     } else if (field.type === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       error = defaultMessages.email;
-    } else if (field.type === "tel" && value && !/^[0-9+\-\s()]{7,18}$/.test(value)) {
-      error = defaultMessages.telephone;
+    } else if (field.type === "tel" && value) {
+      const digits = value.replace(/\D/g, "");
+      const isIndianMobile = /^([6-9]\d{9}|91[6-9]\d{9})$/.test(digits);
+      error = isIndianMobile ? "" : "Please enter a valid Indian mobile number.";
     } else if (field.name === "message" && value && value.length < 12) {
       error = "Please add a little more detail.";
     }
@@ -535,137 +534,192 @@
         return;
       }
       submitted = true;
+      const submitButton = requestForm.querySelector('[type="submit"]');
+      const originalSubmitText = submitButton?.textContent || "";
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.setAttribute("aria-busy", "true");
+        submitButton.textContent = "Submitting...";
+      }
       const reference = `PVG-EV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-      if (successRef) successRef.textContent = reference;
-      formCard?.setAttribute("hidden", "");
-      successCard?.removeAttribute("hidden");
-      sessionStorage.removeItem(storageKey);
-      trackPvgEvent("request_charging_submit", { reference, path: window.location.pathname });
-      successCard?.focus({ preventScroll: false });
+      window.setTimeout(() => {
+        if (successRef) successRef.textContent = reference;
+        formCard?.setAttribute("hidden", "");
+        successCard?.removeAttribute("hidden");
+        sessionStorage.removeItem(storageKey);
+        trackPvgEvent("request_charging_submit", { reference, path: window.location.pathname });
+        successCard?.focus({ preventScroll: false });
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.removeAttribute("aria-busy");
+          submitButton.textContent = originalSubmitText;
+        }
+      }, 520);
     });
   }
 
-  const initPvgOrbitAnimation = () => {
-    const container = document.getElementById("orbitContainer");
-    if (!container) return;
+  const initPvgChargingJourney = () => {
+    const scene = document.querySelector("[data-charging-journey]");
+    if (!scene) return;
 
-    const vehicles = [
-      document.getElementById("ev1"),
-      document.getElementById("ev2"),
-      document.getElementById("ev3")
-    ].filter(Boolean);
-    const battFills = [
-      document.getElementById("batt1"),
-      document.getElementById("batt2"),
-      document.getElementById("batt3")
-    ].filter(Boolean);
-    const beam = document.getElementById("chargeBeam");
-    if (vehicles.length !== battFills.length || !vehicles.length) return;
+    const ev = scene.querySelector("[data-journey-ev]");
+    const unit = scene.querySelector("[data-journey-unit]");
+    const beam = scene.querySelector("[data-journey-beam]");
+    const batteryFill = scene.querySelector("[data-journey-battery-fill]");
+    const batteryText = scene.querySelector("[data-journey-battery-text]");
+    const primary = scene.querySelector("[data-journey-primary]");
+    const secondary = scene.querySelector("[data-journey-secondary]");
+    const route = scene.querySelector("[data-journey-route]");
+    if (!ev || !unit || !beam || !batteryFill || !batteryText) return;
 
-    const angles = vehicles.map((vehicle, index) => Number(vehicle.dataset.angle || index * 120));
-    const batteries = [0.34, 0.72, 0.46].slice(0, vehicles.length);
-    const isCharging = vehicles.map(() => false);
+    const duration = 16500;
     let frameId = null;
-    let lastTime = performance.now();
+    let startTime = performance.now();
 
-    const radius = () => Math.min(container.offsetWidth, container.offsetHeight) * 0.37;
+    const lerp = (start, end, amount) => start + (end - start) * amount;
+    const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
+    const ease = (value) => value < .5
+      ? 4 * value * value * value
+      : 1 - Math.pow(-2 * value + 2, 3) / 2;
 
-    const setBeam = (vehicle) => {
-      if (!beam || !vehicle) {
-        beam?.classList.remove("is-active");
-        return;
-      }
-      const containerRect = container.getBoundingClientRect();
-      const vehicleRect = vehicle.getBoundingClientRect();
-      const startX = container.offsetWidth / 2;
-      const startY = container.offsetHeight / 2;
-      const endX = vehicleRect.left - containerRect.left + vehicleRect.width / 2;
-      const endY = vehicleRect.top - containerRect.top + vehicleRect.height / 2;
+    const setPosition = (element, x, y, angle = 0) => {
+      element.style.left = `${x}%`;
+      element.style.top = `${y}%`;
+      element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    };
+
+    const setBeam = (active) => {
+      beam.classList.toggle("is-active", active);
+      if (!active) return;
+      const sceneRect = scene.getBoundingClientRect();
+      const evRect = ev.getBoundingClientRect();
+      const unitRect = unit.getBoundingClientRect();
+      const startX = unitRect.left - sceneRect.left + unitRect.width * .62;
+      const startY = unitRect.top - sceneRect.top + unitRect.height * .54;
+      const endX = evRect.left - sceneRect.left + evRect.width * .28;
+      const endY = evRect.top - sceneRect.top + evRect.height * .56;
       const dx = endX - startX;
       const dy = endY - startY;
-      const length = Math.hypot(dx, dy);
-      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-      beam.style.width = `${length}px`;
-      beam.style.transform = `rotate(${angle}deg)`;
-      beam.classList.add("is-active");
+      beam.style.left = `${startX}px`;
+      beam.style.top = `${startY}px`;
+      beam.style.width = `${Math.hypot(dx, dy)}px`;
+      beam.style.transform = `rotate(${Math.atan2(dy, dx) * 180 / Math.PI}deg)`;
     };
 
-    const updatePositions = () => {
-      const centerX = container.offsetWidth / 2;
-      const centerY = container.offsetHeight / 2;
-      const orbitRadius = radius();
-      vehicles.forEach((vehicle, index) => {
-        const angleRad = angles[index] * Math.PI / 180;
-        const x = centerX + orbitRadius * Math.cos(angleRad) - vehicle.offsetWidth / 2;
-        const y = centerY + orbitRadius * Math.sin(angleRad) - vehicle.offsetHeight / 2;
-        vehicle.style.left = `${x}px`;
-        vehicle.style.top = `${y}px`;
-        vehicle.style.transform = `rotate(${angles[index] + 90}deg)`;
-      });
-      const chargingVehicle = vehicles.find((_, index) => isCharging[index]);
-      setBeam(chargingVehicle);
+    const setBattery = (level) => {
+      const percent = Math.round(level);
+      batteryFill.style.width = `${percent}%`;
+      batteryText.textContent = `${percent}%`;
+      scene.style.setProperty("--battery-level", `${percent}%`);
+      scene.dataset.battery = percent < 25 ? "low" : percent < 55 ? "medium" : "high";
     };
 
-    const updateBatteries = (deltaSeconds) => {
-      vehicles.forEach((vehicle, index) => {
-        if (isCharging[index]) {
-          batteries[index] = Math.min(1, batteries[index] + 0.22 * deltaSeconds);
-        } else {
-          batteries[index] = Math.max(0, batteries[index] - 0.018 * deltaSeconds);
-        }
-
-        if (batteries[index] < 0.18 && !isCharging[index]) {
-          isCharging[index] = true;
-          vehicle.classList.add("charging");
-        }
-
-        if (batteries[index] >= 0.96 && isCharging[index]) {
-          isCharging[index] = false;
-          vehicle.classList.remove("charging");
-        }
-
-        vehicle.classList.toggle("low-battery", batteries[index] < 0.25 && !isCharging[index]);
-        battFills[index].style.width = `${Math.round(batteries[index] * 100)}%`;
-      });
+    const setStatus = (stage, topText, bottomText) => {
+      scene.dataset.stage = stage;
+      if (primary) primary.textContent = topText;
+      if (secondary) secondary.textContent = bottomText;
     };
 
-    const animate = (time) => {
-      const deltaSeconds = Math.min((time - lastTime) / 1000, 0.05);
-      lastTime = time;
-      vehicles.forEach((_, index) => {
-        angles[index] = (angles[index] + 22 * deltaSeconds) % 360;
-      });
-      updateBatteries(deltaSeconds);
-      updatePositions();
-      if (!reduceMotion) frameId = requestAnimationFrame(animate);
+    const render = (time) => {
+      const elapsed = (time - startTime) % duration;
+      const progress = elapsed / duration;
+      let battery = 82;
+      let evX = 13;
+      let evY = 62;
+      let evAngle = -3;
+      let unitX = 70;
+      let unitY = 41;
+      let unitAngle = -4;
+      let beamActive = false;
+      let routeActive = false;
+
+      if (progress < .22) {
+        const p = ease(progress / .22);
+        evX = lerp(13, 36, p);
+        evY = lerp(62, 55, p);
+        evAngle = lerp(-3, 5, p);
+        battery = lerp(82, 18, p);
+        setStatus("drive", "Battery monitoring", "EV moving along route");
+      } else if (progress < .34) {
+        const p = ease((progress - .22) / .12);
+        evX = 36;
+        evY = 55;
+        evAngle = 3;
+        battery = 18;
+        routeActive = true;
+        setStatus("alert", "Low battery detected", "Request Received");
+      } else if (progress < .52) {
+        const p = ease((progress - .34) / .18);
+        evX = 36;
+        evY = 55;
+        evAngle = 2;
+        unitX = lerp(70, 48, p);
+        unitY = lerp(41, 54, p);
+        unitAngle = lerp(-4, -1, p);
+        battery = 18;
+        routeActive = true;
+        setStatus("dispatch", "Unit Dispatched", "ETA: Calculating");
+      } else if (progress < .82) {
+        const p = ease((progress - .52) / .30);
+        evX = 36;
+        evY = 55;
+        unitX = 48;
+        unitY = 54;
+        unitAngle = -1;
+        battery = lerp(18, 100, p);
+        beamActive = true;
+        routeActive = true;
+        setStatus("charge", `Battery: ${Math.round(battery)}%`, "Mobile charging active");
+      } else {
+        const p = ease((progress - .82) / .18);
+        evX = lerp(36, 88, p);
+        evY = lerp(55, 46, p);
+        evAngle = lerp(2, -4, p);
+        unitX = lerp(48, 70, p);
+        unitY = lerp(54, 41, p);
+        unitAngle = lerp(-1, -4, p);
+        battery = 100;
+        routeActive = true;
+        setStatus("complete", "Charge Complete", "EV continues moving");
+      }
+
+      setPosition(ev, evX, evY, evAngle);
+      setPosition(unit, unitX, unitY, unitAngle);
+      setBattery(battery);
+      setBeam(beamActive);
+      route?.classList.toggle("is-active", routeActive);
+      frameId = requestAnimationFrame(render);
     };
 
-    updateBatteries(0);
-    updatePositions();
-    if (!reduceMotion) frameId = requestAnimationFrame(animate);
-
-    const handleResize = () => updatePositions();
-    window.addEventListener("resize", handleResize, { passive: true });
-
-    window.__pvgeViz = {
-      destroy: () => {
-        if (frameId) cancelAnimationFrame(frameId);
-        frameId = null;
-        window.removeEventListener("resize", handleResize);
-      },
-      init: () => {
-        if (!frameId && !reduceMotion) {
-          lastTime = performance.now();
-          frameId = requestAnimationFrame(animate);
-        }
-      },
-      batteries,
-      isCharging,
-      angles
+    const pause = () => {
+      if (frameId) cancelAnimationFrame(frameId);
+      frameId = null;
     };
+    const play = () => {
+      if (reduceMotion || frameId) return;
+      startTime = performance.now();
+      frameId = requestAnimationFrame(render);
+    };
+
+    if (reduceMotion) {
+      setPosition(ev, 36, 55, 2);
+      setPosition(unit, 48, 54, -1);
+      setBattery(82);
+      setStatus("complete", "Charge Complete", "Representative journey");
+      scene.dataset.reducedMotion = "true";
+      return;
+    }
+
+    play();
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) pause();
+      else play();
+    });
+
+    window.__pvgeViz = { destroy: pause, init: play };
   };
 
-  initPvgOrbitAnimation();
+  initPvgChargingJourney();
 
   const cookieBanner = document.querySelector("[data-cookie-banner]");
   const cookieAccept = document.querySelector("[data-cookie-accept]");

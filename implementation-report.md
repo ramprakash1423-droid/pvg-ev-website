@@ -23,6 +23,9 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 - Added analytics-safe event hooks using `data-event`, `window.dataLayer` and a local `pvg:analytics` browser event, without hardcoded analytics IDs.
 - Updated sitemap coverage to include the new Request Charging page.
 - Added a shared critical typography layer in `styles.css` with reusable scale tokens for hero, page title, section title, subheading, card title, body, small text, labels, navigation and buttons.
+- Redesigned the homepage into a cinematic conversion-focused flow with a new "Charging Comes to Your EV." hero, story-led mobile charging animation, trust/use-case strip, three-step workflow, real-world EV operations grid, pilot-status progress section and truthful project fact cards.
+- Replaced the floating "Need EV Charging?" interaction with a simpler sticky "Request Mobile Charging" CTA and a compact mobile "Request Charging" action.
+- Improved the request form with the updated requirement-type options, contact-person field, Indian mobile-number validation, vehicle make/model, battery level, preferred time, requirement scope, loading state and the approved success message.
 
 ## Requirements Traceability Matrix
 
@@ -47,6 +50,8 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 | Accessibility | Complete with residual QA | Keyboard-accessible dropdowns, skip links, labels, field errors and reduced-motion rules are present. |
 | Performance | Complete with residual QA | CSS/SVG animation remains asset-light and local; no paid external animation assets. |
 | Compact global typography | Complete | A single global token system now caps oversized headings, body copy, navigation, labels and buttons across every static page. |
+| Cinematic homepage redesign | Complete | Homepage now communicates what PVG-EV does, how mobile charging works, who it serves, pilot status and how to submit a requirement within the first journey. |
+| Requirement form UX | Complete | Multi-step form preserves autosave/review behavior and adds improved fields, validation and duplicate-submit prevention. |
 
 ## Remaining Production Dependencies
 
@@ -79,5 +84,7 @@ Run after implementation:
 - HTML link/reference check
 - Responsive visual check across desktop, laptop, tablet and mobile widths
 - Typography browser audit across 26 pages at 320px, 375px, 430px, 768px, 1024px, 1280px, 1440px and 1920px
+- Homepage and request-form browser audit across 320px, 375px, 390px, 430px, 768px, 1024px, 1280px, 1440px and 1920px
+- All-page browser smoke test across 26 pages at 390px and 1440px
 - Form validation and multistep request-flow smoke test
 - GitHub Pages push verification
