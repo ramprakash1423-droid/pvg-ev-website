@@ -9284,3 +9284,135 @@ textarea:focus {
     transition: none !important;
   }
 }
+
+/* 2026-07 critical global typography system.
+   This final layer intentionally caps every page to compact premium type sizes. */
+:root {
+  --font-hero: clamp(2rem, 3.2vw, 3rem);
+  --font-page-title: clamp(1.8rem, 2.8vw, 2.625rem);
+  --font-section-title: clamp(1.6rem, 2.2vw, 2.125rem);
+  --font-subheading: clamp(1.3rem, 1.7vw, 1.625rem);
+  --font-card-title: clamp(1.05rem, 1.25vw, 1.25rem);
+  --font-body: clamp(.95rem, 1vw, 1.075rem);
+  --font-small: clamp(.82rem, .9vw, .95rem);
+  --font-label: clamp(.68rem, .76vw, .8125rem);
+  --font-nav: clamp(.8125rem, .78vw, .875rem);
+  --font-button: clamp(.875rem, .9vw, 1rem);
+}
+
+html {
+  font-size: 16px;
+}
+
+body,
+:where(p, li, dd, dt, input, select, textarea, summary, td, th, figcaption, .copy-stack p, .page-lead, .hero-copy, .section-subtitle, .solution-availability, .footer-note) {
+  font-size: var(--font-body) !important;
+  line-height: 1.58;
+}
+
+:where(.home-compact .hero-copy-wrap h1, .client-hero .hero-copy-wrap h1, .premium-hero h1) {
+  max-width: 760px;
+  font-size: var(--font-hero) !important;
+  line-height: 1.06 !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(main h1, .page-hero h1, .station-product-copy h1, .solutions-hero-copy h1, .request-hero-copy h1, .article-hero h1) {
+  max-width: 880px;
+  font-size: var(--font-page-title) !important;
+  line-height: 1.08 !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(main h2, .section-heading h2, .cta-inner h2, .request-success-card h2, .request-form legend, .contact-panel h2, .station-hero-panel h2, .solution-showcase-copy h2) {
+  max-width: 860px;
+  font-size: var(--font-section-title) !important;
+  line-height: 1.14 !important;
+  font-weight: 820 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.request-progress-panel h2, .footer-column h2, .footer-brand h2) {
+  font-size: var(--font-subheading) !important;
+  line-height: 1.35 !important;
+  font-weight: 760 !important;
+}
+
+:where(main h3, main h4, .card-title, .info-card h3, .detail-card h3, .service-card h3, .mini-feature h3, .solution-category-card h3, .station-application-card h3, .station-benefit-card h3, .workflow-step h3, .process-timeline h3, .quick-requirement-grid strong, .quick-contact-grid strong, .request-assurance strong, .compact-status-panel strong, .visual-status-card span) {
+  font-size: var(--font-card-title) !important;
+  line-height: 1.22 !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.nav-link, .dropdown-link, .mobile-contact-link, .nav-cta, .mobile-action-bar a, .mobile-action-bar button) {
+  font-size: var(--font-nav) !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.button, button, .form-submit, .geo-button, .quick-enquiry-button) {
+  font-size: var(--font-button) !important;
+  line-height: 1.1 !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.nav-link, .dropdown-link, .dropdown-toggle, .mobile-contact-link, .nav-cta, .mobile-action-bar a, .mobile-action-bar button) {
+  font-size: var(--font-nav) !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.eyebrow, .status-pill, .solution-status, .breadcrumb, .visual-status-card strong, .station-sub, .station-label, .field-error, .form-status, .geo-status, .footer-static, .brand-text small, .request-progress dt, .request-review dt, .quick-enquiry-panel span, .quick-requirement-grid span, .quick-contact-grid span, .ecosystem-card span, .floating-spec-card span) {
+  font-size: var(--font-label) !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.brand-text strong) {
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem) !important;
+  line-height: 1 !important;
+}
+
+:where(.metric-grid strong, .benefit-band strong, .sustainability-panel strong, .market-grid span, .process-timeline article span, .station-benefit-card span, .workflow-step span, .request-progress span, .solution-question-grid span) {
+  font-size: var(--font-card-title) !important;
+  line-height: 1.15 !important;
+  font-weight: 820 !important;
+}
+
+:where(.request-review dd, .footer-column a, .footer-brand p, .footer-bottom, .cookie-consent p, .quick-enquiry-panel strong, .request-progress li) {
+  font-size: var(--font-small) !important;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --font-hero: clamp(2rem, 4vw, 2.5rem);
+    --font-page-title: clamp(1.75rem, 3.6vw, 2.25rem);
+    --font-section-title: clamp(1.55rem, 3vw, 1.875rem);
+    --font-subheading: clamp(1.2rem, 2.4vw, 1.5rem);
+    --font-card-title: clamp(1.05rem, 2vw, 1.1875rem);
+    --font-body: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --font-hero: clamp(2rem, 8vw, 2.125rem);
+    --font-page-title: clamp(1.65rem, 7vw, 1.875rem);
+    --font-section-title: clamp(1.45rem, 6vw, 1.625rem);
+    --font-subheading: clamp(1.12rem, 4.8vw, 1.3125rem);
+    --font-card-title: clamp(1rem, 4vw, 1.125rem);
+    --font-body: clamp(.9375rem, 3.8vw, 1rem);
+    --font-small: clamp(.8rem, 3.4vw, .9rem);
+    --font-label: clamp(.68rem, 3vw, .8125rem);
+    --font-nav: clamp(.875rem, 3.8vw, .9375rem);
+    --font-button: clamp(.875rem, 3.8vw, .9375rem);
+  }
+
+  :where(.home-compact .hero-copy-wrap h1, .client-hero .hero-copy-wrap h1, .premium-hero h1, main h1, .page-hero h1, .station-product-copy h1, .solutions-hero-copy h1, .request-hero-copy h1, .article-hero h1) {
+    max-width: 100%;
+  }
+}

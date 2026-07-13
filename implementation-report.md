@@ -22,6 +22,7 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 - Added a decision-assistant section to the Solutions page.
 - Added analytics-safe event hooks using `data-event`, `window.dataLayer` and a local `pvg:analytics` browser event, without hardcoded analytics IDs.
 - Updated sitemap coverage to include the new Request Charging page.
+- Added a shared critical typography layer in `styles.css` with reusable scale tokens for hero, page title, section title, subheading, card title, body, small text, labels, navigation and buttons.
 
 ## Requirements Traceability Matrix
 
@@ -45,6 +46,7 @@ The PVG-EV static website has been updated as a production-ready GitHub Pages bu
 | SEO titles/descriptions | Complete | Existing page metadata retained; Request Charging metadata added. |
 | Accessibility | Complete with residual QA | Keyboard-accessible dropdowns, skip links, labels, field errors and reduced-motion rules are present. |
 | Performance | Complete with residual QA | CSS/SVG animation remains asset-light and local; no paid external animation assets. |
+| Compact global typography | Complete | A single global token system now caps oversized headings, body copy, navigation, labels and buttons across every static page. |
 
 ## Remaining Production Dependencies
 
@@ -76,5 +78,6 @@ Run after implementation:
 - JavaScript syntax check
 - HTML link/reference check
 - Responsive visual check across desktop, laptop, tablet and mobile widths
+- Typography browser audit across 26 pages at 320px, 375px, 430px, 768px, 1024px, 1280px, 1440px and 1920px
 - Form validation and multistep request-flow smoke test
 - GitHub Pages push verification
