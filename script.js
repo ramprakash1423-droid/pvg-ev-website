@@ -692,9 +692,9 @@
       const sceneRect = scene.getBoundingClientRect();
       const evRect = ev.getBoundingClientRect();
       const unitRect = unit.getBoundingClientRect();
-      const startX = unitRect.left - sceneRect.left + unitRect.width * .62;
-      const startY = unitRect.top - sceneRect.top + unitRect.height * .54;
-      const endX = evRect.left - sceneRect.left + evRect.width * .28;
+      const startX = unitRect.left - sceneRect.left + unitRect.width * .01;
+      const startY = unitRect.top - sceneRect.top + unitRect.height * .56;
+      const endX = evRect.left - sceneRect.left + evRect.width * .9;
       const endY = evRect.top - sceneRect.top + evRect.height * .56;
       const dx = endX - startX;
       const dy = endY - startY;
@@ -727,7 +727,7 @@
       let evX = 13;
       let evY = 62;
       let evAngle = -3;
-      let unitX = 70;
+      let unitX = 86;
       let unitY = 41;
       let unitAngle = -4;
       let beamActive = false;
@@ -755,7 +755,7 @@
         evX = 37;
         evY = 56;
         evAngle = 2;
-        unitX = lerp(70, 50, p);
+        unitX = lerp(86, 82, p);
         unitY = lerp(41, 56, p);
         unitAngle = lerp(-4, -1, p);
         battery = 18;
@@ -765,7 +765,7 @@
         const p = ease((progress - .60) / .26);
         evX = 37;
         evY = 56;
-        unitX = 49;
+        unitX = 82;
         unitY = 56;
         unitAngle = -1;
         battery = lerp(18, 100, p);
@@ -777,7 +777,7 @@
         evX = lerp(37, 106, p);
         evY = lerp(56, 47, p);
         evAngle = lerp(2, -4, p);
-        unitX = lerp(49, 67, p);
+        unitX = lerp(82, 67, p);
         unitY = lerp(56, 43, p);
         unitAngle = lerp(-1, -4, p);
         battery = 100;
