@@ -12700,6 +12700,68 @@ body,
     linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(232, 249, 255, .82));
 }
 
+.station-photo-card {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(300px, 25vw, 390px);
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, .78);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .74);
+  box-shadow: var(--repair-panel-shadow), inset 0 1px 0 rgba(255, 255, 255, .86);
+  isolation: isolate;
+}
+
+.station-photo-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 26, 36, .04), transparent 42%),
+    linear-gradient(0deg, rgba(7, 26, 36, .44), transparent 46%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.station-photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  transform: scale(1.02);
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.station-photo-fleet img {
+  object-position: 35% 50%;
+}
+
+.station-photo-commercial img {
+  object-position: 44% 50%;
+}
+
+.station-photo-apartment img {
+  object-position: 50% 52%;
+}
+
+.station-photo-card figcaption {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: 2;
+  padding: 9px 13px;
+  border: 1px solid rgba(255, 255, 255, .62);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(8, 56, 65, .56);
+  box-shadow: 0 12px 28px rgba(7, 26, 36, .18), inset 0 1px 0 rgba(255, 255, 255, .32);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  font-size: var(--font-label) !important;
+  font-weight: 900;
+}
+
 .scenario-ground,
 .scenario-building,
 .scenario-unit,
@@ -13467,7 +13529,8 @@ body,
   .station-operational-visual,
   .pilot-map-visual,
   .station-process-visual,
-  .station-scenario-visual {
+  .station-scenario-visual,
+  .station-photo-card {
     min-height: 350px;
   }
 
@@ -13598,7 +13661,8 @@ body,
   }
 
   .station-operational-visual,
-  .pilot-map-visual {
+  .pilot-map-visual,
+  .station-photo-card {
     min-height: 312px;
     border-radius: 18px;
   }
