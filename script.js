@@ -698,8 +698,9 @@
       const endY = evRect.top - sceneRect.top + evRect.height * .56;
       const dx = endX - startX;
       const dy = endY - startY;
+      const cableHeight = beam.offsetHeight || 62;
       beam.style.left = `${startX}px`;
-      beam.style.top = `${startY}px`;
+      beam.style.top = `${startY - cableHeight / 2}px`;
       beam.style.width = `${Math.hypot(dx, dy)}px`;
       beam.style.transform = `rotate(${Math.atan2(dy, dx) * 180 / Math.PI}deg)`;
     };
