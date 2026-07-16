@@ -13935,3 +13935,543 @@ body,
     transform: scaleX(.82);
   }
 }
+
+/* 2026-07 ClickaCook-style density pass: compact glass, tighter rhythm, no oversized type. */
+:root {
+  --font-hero: clamp(2rem, 2.65vw, 2.625rem);
+  --font-page-title: clamp(1.75rem, 2.35vw, 2.375rem);
+  --font-section-title: clamp(1.45rem, 1.8vw, 1.875rem);
+  --font-subheading: clamp(1.1rem, 1.35vw, 1.375rem);
+  --font-card-title: clamp(1rem, 1vw, 1.125rem);
+  --font-body: clamp(.9375rem, .82vw, 1rem);
+  --font-small: clamp(.8rem, .74vw, .9rem);
+  --font-label: clamp(.66rem, .58vw, .75rem);
+}
+
+.section,
+.compact-section,
+.station-product-v2 .section,
+.pilot-page .section,
+.solutions-portal-page .section,
+.charging-request-page .section,
+.fact-section,
+.pilot-ecosystem-section,
+.cinematic-process-section {
+  padding-block: clamp(34px, 4vw, 58px) !important;
+}
+
+.section-heading {
+  margin-bottom: clamp(16px, 2.2vw, 28px) !important;
+}
+
+.section-heading h2,
+.section h2,
+.cta-inner h2,
+.solution-showcase-copy h2,
+.request-success-card h2,
+.station-hero-panel h2 {
+  max-width: 860px;
+  font-size: var(--font-section-title) !important;
+  line-height: 1.14 !important;
+}
+
+.page-hero h1,
+.client-page-hero h1,
+.article-hero h1,
+.station-product-copy h1,
+.solutions-hero-copy h1,
+.request-hero-copy h1,
+.station-hero-copy-v3 h1,
+.pilot-hero-copy h1,
+main h1 {
+  font-size: var(--font-page-title) !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+.home-cinematic .hero-copy-wrap h1,
+.client-hero .hero-copy-wrap h1,
+.premium-hero h1 {
+  font-size: var(--font-hero) !important;
+  line-height: 1.06 !important;
+}
+
+main h3,
+.card h3,
+.solution-category-card h3,
+.station-application-card-v2 h3,
+.station-benefit-group h3,
+.pilot-mini-card h3,
+.use-case-grid h3,
+.charging-steps h3 {
+  font-size: var(--font-card-title) !important;
+  line-height: 1.18 !important;
+}
+
+.hero-copy,
+.page-lead,
+.section-heading p,
+.station-product-copy .page-lead,
+.solutions-hero-copy .page-lead,
+.request-hero-copy .page-lead,
+.pilot-hero-copy .page-lead,
+.station-hero-copy-v3 .page-lead {
+  font-size: var(--font-body) !important;
+  line-height: 1.5 !important;
+}
+
+.hero-copy-wrap,
+.station-hero-copy-v3,
+.pilot-hero-copy,
+.request-hero-copy,
+.solutions-hero-copy,
+.station-copy-panel,
+.station-hero-panel,
+.station-cta-panel,
+.solution-finder-card,
+.solution-category-card,
+.solution-showcase-copy,
+.pilot-evaluation-panel,
+.pilot-roadmap-card,
+.request-form-card,
+.request-progress-panel,
+.contact-panel,
+.client-page-hero .section-shell,
+.page-hero-inner {
+  border-radius: 8px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .5)),
+    rgba(255, 255, 255, .66) !important;
+  border-color: rgba(255, 255, 255, .64) !important;
+  box-shadow: 0 18px 46px rgba(10, 45, 56, .1), inset 0 1px 0 rgba(255, 255, 255, .88) !important;
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+}
+
+.home-cinematic .home-cinematic-hero,
+.station-hero-v3,
+.pilot-hero-v2,
+.solutions-hero,
+.request-hero,
+.page-hero,
+.client-page-hero,
+.article-hero {
+  min-height: auto !important;
+  padding-block: clamp(38px, 4.4vw, 66px) clamp(32px, 4vw, 54px) !important;
+}
+
+.home-cinematic .client-hero-shell,
+.station-hero-grid-v3,
+.pilot-hero-grid,
+.solutions-hero-grid,
+.request-hero-grid {
+  gap: clamp(18px, 2.5vw, 34px) !important;
+}
+
+.home-cinematic .hero-copy-wrap,
+.station-hero-copy-v3,
+.pilot-hero-copy,
+.request-hero-copy,
+.solutions-hero-copy {
+  padding: clamp(18px, 2.2vw, 28px) !important;
+}
+
+.home-cinematic .charging-story-panel,
+.station-hero-visual-v3,
+.pilot-map-visual,
+.request-hero-visual,
+.solutions-ecosystem {
+  min-height: clamp(320px, 30vw, 460px) !important;
+  border-radius: 8px !important;
+}
+
+.charging-journey-scene {
+  min-height: clamp(260px, 24vw, 340px) !important;
+  height: min(70%, 360px) !important;
+}
+
+.station-operational-visual,
+.station-process-visual,
+.station-mobile-scene,
+.station-deployment-copy,
+.pilot-map-visual,
+.request-hero-visual {
+  min-height: clamp(290px, 26vw, 420px) !important;
+}
+
+.station-story-stack-v2,
+.solution-showcase-stack {
+  gap: clamp(16px, 2vw, 28px) !important;
+}
+
+.station-story-row,
+.solution-showcase-row,
+.station-operational-row {
+  gap: clamp(18px, 2.4vw, 32px) !important;
+}
+
+.station-copy-panel,
+.station-deployment-copy,
+.solution-showcase-copy,
+.station-technical-panel,
+.station-cta-panel-v2,
+.pilot-ecosystem-card,
+.cta-inner {
+  padding: clamp(18px, 2.6vw, 30px) !important;
+}
+
+.station-application-card-v2,
+.station-benefit-group,
+.pilot-mini-card,
+.solution-category-card,
+.use-case-grid article,
+.charging-steps article,
+.trust-strip a,
+.station-tech-grid article,
+.pilot-process-panel article,
+.request-progress-panel,
+.request-form-card {
+  min-height: 0 !important;
+  padding: clamp(14px, 1.6vw, 20px) !important;
+  border-radius: 8px !important;
+}
+
+.station-application-grid-v2,
+.station-benefit-layout-v2,
+.pilot-participant-grid,
+.solutions-category-grid,
+.solution-question-grid,
+.use-case-grid,
+.charging-steps,
+.station-tech-grid,
+.pilot-process-panel {
+  gap: clamp(12px, 1.8vw, 20px) !important;
+}
+
+.trust-strip-section {
+  margin-top: -10px !important;
+  padding-bottom: clamp(24px, 3vw, 40px) !important;
+}
+
+.trust-strip {
+  padding: 10px !important;
+  border-radius: 8px !important;
+}
+
+.trust-strip a {
+  min-height: 74px !important;
+}
+
+.solution-card-visual,
+.solution-showcase-visual,
+.station-process-visual,
+.station-mobile-scene {
+  border-radius: 8px !important;
+}
+
+.solutions-ecosystem {
+  min-height: clamp(330px, 32vw, 500px) !important;
+}
+
+.station-workflow-rail {
+  gap: clamp(10px, 1.5vw, 16px) !important;
+}
+
+.station-workflow-rail li {
+  padding: clamp(12px, 1.6vw, 18px) !important;
+}
+
+.request-layout {
+  align-items: start !important;
+  gap: clamp(18px, 2.8vw, 34px) !important;
+}
+
+.contact-form fieldset {
+  padding: clamp(16px, 2vw, 24px) !important;
+}
+
+@media (max-width: 900px) {
+  .section,
+  .compact-section,
+  .station-product-v2 .section,
+  .pilot-page .section,
+  .solutions-portal-page .section,
+  .charging-request-page .section {
+    padding-block: 32px !important;
+  }
+
+  .home-cinematic .home-cinematic-hero,
+  .station-hero-v3,
+  .pilot-hero-v2,
+  .solutions-hero,
+  .request-hero,
+  .page-hero,
+  .client-page-hero,
+  .article-hero {
+    padding-block: 72px 28px !important;
+  }
+
+  .home-cinematic .client-hero-shell,
+  .station-hero-grid-v3,
+  .pilot-hero-grid,
+  .solutions-hero-grid,
+  .request-hero-grid {
+    gap: 16px !important;
+  }
+
+  .home-cinematic .charging-story-panel,
+  .station-hero-visual-v3,
+  .pilot-map-visual,
+  .request-hero-visual,
+  .solutions-ecosystem {
+    min-height: 300px !important;
+  }
+
+  .charging-journey-scene {
+    min-height: 250px !important;
+    margin-top: 22px !important;
+  }
+
+  .station-operational-visual,
+  .station-process-visual,
+  .station-mobile-scene,
+  .station-deployment-copy,
+  .pilot-map-visual,
+  .request-hero-visual {
+    min-height: 280px !important;
+  }
+
+  .station-story-row-reverse > :first-child,
+  .solution-showcase-reverse > :first-child {
+    order: 0 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --font-hero: clamp(1.9rem, 7vw, 2rem);
+    --font-page-title: clamp(1.62rem, 6.4vw, 1.8rem);
+    --font-section-title: clamp(1.35rem, 5.4vw, 1.55rem);
+    --font-subheading: clamp(1.05rem, 4.6vw, 1.2rem);
+    --font-card-title: clamp(.98rem, 4vw, 1.05rem);
+    --font-body: clamp(.9rem, 3.7vw, .98rem);
+  }
+
+  .section-heading {
+    margin-bottom: 16px !important;
+  }
+
+  .home-cinematic .hero-copy-wrap,
+  .station-hero-copy-v3,
+  .pilot-hero-copy,
+  .request-hero-copy,
+  .solutions-hero-copy,
+  .station-copy-panel,
+  .solution-showcase-copy,
+  .pilot-ecosystem-card,
+  .cta-inner {
+    padding: 16px !important;
+  }
+
+  .home-cinematic .charging-story-panel,
+  .station-hero-visual-v3,
+  .pilot-map-visual,
+  .request-hero-visual,
+  .solutions-ecosystem {
+    min-height: 260px !important;
+  }
+
+  .charging-journey-scene {
+    min-height: 220px !important;
+    width: min(100% - 10px, 390px) !important;
+  }
+
+  .home-cinematic .visual-status-card.status-c,
+  .journey-card-secondary {
+    display: none !important;
+  }
+
+  .station-operational-visual,
+  .station-process-visual,
+  .station-mobile-scene,
+  .station-deployment-copy,
+  .request-hero-visual {
+    min-height: 250px !important;
+  }
+
+  .hero-actions,
+  .station-hero-actions-v3,
+  .station-tech-actions,
+  .station-cta-actions,
+  .compact-final-cta .hero-actions {
+    gap: 10px !important;
+  }
+}
+
+/* 2026-07 mobile polish: tighter first screens and lighter consent panel. */
+@media (max-width: 900px) {
+  .home-cinematic .home-cinematic-hero,
+  .station-hero-v3,
+  .pilot-hero-v2,
+  .solutions-hero,
+  .request-hero,
+  .page-hero,
+  .client-page-hero,
+  .article-hero {
+    padding-block: 56px 22px !important;
+  }
+
+  .home-cinematic .client-hero-shell,
+  .station-hero-grid-v3,
+  .pilot-hero-grid,
+  .solutions-hero-grid,
+  .request-hero-grid {
+    gap: 12px !important;
+  }
+
+  .home-cinematic .charging-story-panel,
+  .station-hero-visual-v3,
+  .pilot-map-visual,
+  .request-hero-visual,
+  .solutions-ecosystem {
+    min-height: 260px !important;
+  }
+
+  .charging-journey-scene {
+    min-height: 220px !important;
+    margin-top: 12px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --font-hero: clamp(1.75rem, 6.6vw, 1.9rem);
+    --font-page-title: clamp(1.52rem, 6vw, 1.72rem);
+    --font-section-title: clamp(1.28rem, 5vw, 1.46rem);
+    --font-subheading: clamp(1rem, 4.2vw, 1.14rem);
+    --font-card-title: clamp(.94rem, 3.8vw, 1.02rem);
+    --font-body: clamp(.88rem, 3.5vw, .95rem);
+  }
+
+  .home-cinematic .home-cinematic-hero,
+  .station-hero-v3,
+  .pilot-hero-v2,
+  .solutions-hero,
+  .request-hero,
+  .page-hero,
+  .client-page-hero,
+  .article-hero {
+    padding-block: 46px 18px !important;
+  }
+
+  .home-cinematic .hero-copy-wrap,
+  .station-hero-copy-v3,
+  .pilot-hero-copy,
+  .request-hero-copy,
+  .solutions-hero-copy,
+  .station-copy-panel,
+  .solution-showcase-copy,
+  .pilot-ecosystem-card,
+  .cta-inner {
+    padding: 14px !important;
+  }
+
+  .home-cinematic .hero-copy-wrap h1,
+  .station-hero-copy-v3 h1,
+  .pilot-hero-copy h1,
+  .request-hero-copy h1,
+  .solutions-hero-copy h1 {
+    margin-bottom: 10px !important;
+    line-height: 1.05 !important;
+  }
+
+  .eyebrow,
+  .breadcrumb,
+  .status-badge,
+  .pilot-status-badge,
+  .spec-status-badge {
+    margin-bottom: 10px !important;
+  }
+
+  .home-cinematic .hero-copy,
+  .hero-support,
+  .page-lead,
+  .station-partnership-note,
+  .pilot-hero-copy p,
+  .request-hero-copy p,
+  .solutions-hero-copy p {
+    margin-bottom: 10px !important;
+  }
+
+  .station-partnership-note {
+    margin-top: 10px !important;
+    padding: 12px 14px !important;
+  }
+
+  .hero-actions,
+  .station-hero-actions-v3,
+  .station-tech-actions,
+  .station-cta-actions,
+  .compact-final-cta .hero-actions {
+    margin-top: 12px !important;
+  }
+
+  .home-cinematic .hero-reassurance,
+  .station-hero-actions-v3 + p,
+  .pilot-status-badge {
+    margin-top: 10px !important;
+  }
+
+  .home-cinematic .charging-story-panel,
+  .station-hero-visual-v3,
+  .pilot-map-visual,
+  .request-hero-visual,
+  .solutions-ecosystem {
+    min-height: 220px !important;
+  }
+
+  .station-hero-v3 .station-hero-visual-v3 {
+    min-height: 170px !important;
+  }
+
+  .charging-journey-scene {
+    min-height: 188px !important;
+    height: 210px !important;
+    margin-top: 6px !important;
+  }
+
+  .home-cinematic .visual-status-card {
+    padding: 8px 9px !important;
+    border-radius: 8px !important;
+  }
+
+  .cookie-consent {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(62px + env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 16px 42px rgba(10, 45, 56, .16) !important;
+  }
+
+  .cookie-consent p {
+    font-size: .78rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .cookie-consent .button {
+    min-height: 34px !important;
+    min-width: 88px !important;
+    padding: 8px 12px !important;
+    font-size: .82rem !important;
+    white-space: nowrap !important;
+  }
+
+  .station-hero-actions-v3 .button {
+    min-height: 42px !important;
+    padding-block: 9px !important;
+  }
+}
