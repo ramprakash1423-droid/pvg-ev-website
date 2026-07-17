@@ -435,6 +435,115 @@
     });
   });
 
+  document.querySelectorAll("[data-contact-form]").forEach((form) => {
+    const requirementSelect = form.querySelector("[data-requirement-select]");
+    const categoryButtons = Array.from(document.querySelectorAll("[data-contact-category]"));
+    const actionItems = Array.from(document.querySelectorAll("[data-contact-action]"));
+    const conditionalGroups = Array.from(form.querySelectorAll("[data-conditional-group]"));
+    const phoneInputs = Array.from(form.querySelectorAll("[data-phone-input]"));
+    const successPanel = form.querySelector("[data-form-success]");
+    const status = form.querySelector("[data-form-status]");
+    let highlightTimer;
+
+    const setFormHighlight = () => {
+      window.clearTimeout(highlightTimer);
+      form.classList.add("is-highlighted");
+      highlightTimer = window.setTimeout(() => form.classList.remove("is-highlighted"), 1100);
+    };
+
+    const syncConditionalFields = (value) => {
+      conditionalGroups.forEach((group) => {
+        const isActive = group.dataset.conditionalGroup === value;
+        group.hidden = !isActive;
+        group.querySelectorAll("[data-conditional-field]").forEach((field) => {
+          field.disabled = !isActive;
+          if (!isActive) {
+            field.classList.remove("is-invalid");
+            field.removeAttribute("aria-invalid");
+          }
+        });
+      });
+    };
+
+    const setRequirement = (value, options = {}) => {
+      if (requirementSelect && value && Array.from(requirementSelect.options).some((option) => option.value === value || option.textContent === value)) {
+        requirementSelect.value = value;
+      }
+
+      const selected = requirementSelect?.value || value || "";
+      categoryButtons.forEach((button) => {
+        const isActive = button.dataset.contactType === selected;
+        button.classList.toggle("is-selected", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+      syncConditionalFields(selected);
+
+      if (options.focusForm) {
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+        setFormHighlight();
+        requirementSelect?.focus({ preventScroll: true });
+      }
+    };
+
+    categoryButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setRequirement(button.dataset.contactType || "", { focusForm: true });
+        if (status) status.textContent = "";
+        if (successPanel) successPanel.hidden = true;
+      });
+    });
+
+    actionItems.forEach((item) => {
+      item.addEventListener("click", (event) => {
+        const type = item.dataset.contactType;
+        if (!type) return;
+        event.preventDefault();
+        setRequirement(type, { focusForm: true });
+        if (status) status.textContent = "";
+        if (successPanel) successPanel.hidden = true;
+      });
+    });
+
+    requirementSelect?.addEventListener("change", () => {
+      setRequirement(requirementSelect.value);
+      if (successPanel) successPanel.hidden = true;
+    });
+
+    phoneInputs.forEach((input) => {
+      input.addEventListener("focus", () => {
+        if (!input.value.trim()) input.value = "+91 ";
+      });
+      input.addEventListener("input", () => {
+        const digits = input.value.replace(/\D/g, "");
+        const localDigits = digits.startsWith("91") ? digits.slice(2, 12) : digits.slice(0, 10);
+        input.value = localDigits ? `+91 ${localDigits}` : "+91 ";
+      });
+    });
+
+    form.querySelectorAll("[data-new-enquiry]").forEach((button) => {
+      button.addEventListener("click", () => {
+        form.reset();
+        phoneInputs.forEach((input) => { input.value = "+91 "; });
+        if (status) status.textContent = "";
+        if (successPanel) successPanel.hidden = true;
+        setRequirement("");
+        setFormHighlight();
+        form.querySelector("input, select, textarea")?.focus();
+      });
+    });
+
+    form.addEventListener("reset", () => {
+      window.setTimeout(() => {
+        phoneInputs.forEach((input) => {
+          if (!input.value.trim()) input.value = "+91 ";
+        });
+        setRequirement(requirementSelect?.value || "");
+      }, 0);
+    });
+
+    setRequirement(requirementSelect?.value || "");
+  });
+
   const forms = Array.from(document.querySelectorAll("[data-contact-form], [data-pilot-form]"));
   const defaultMessages = {
     name: "Please enter your name.",
@@ -483,7 +592,8 @@
     const fields = Array.from(form.querySelectorAll("input, select, textarea"));
     const status = form.querySelector("[data-form-status]");
     const submitButton = form.querySelector(".form-submit, [type='submit']");
-    const originalSubmitText = submitButton?.textContent || "";
+    const successPanel = form.querySelector("[data-form-success]");
+    const originalSubmitText = submitButton?.innerHTML || submitButton?.textContent || "";
     let submitted = false;
 
     fields.forEach((field) => {
@@ -523,9 +633,11 @@
       submitted = true;
       if (submitButton) {
         submitButton.disabled = true;
+        submitButton.classList.add("is-loading");
         submitButton.setAttribute("aria-busy", "true");
-        submitButton.textContent = "Submitting...";
+        submitButton.innerHTML = "<span aria-hidden=\"true\">↻</span> Submitting...";
       }
+      if (successPanel) successPanel.hidden = true;
       if (status) {
         status.textContent = "Submitting your details...";
         status.classList.remove("is-error", "is-success");
@@ -533,19 +645,24 @@
 
       window.setTimeout(() => {
         if (status) {
-          status.textContent = form.dataset.pilotForm === "true"
+          status.textContent = form.dataset.staticContactForm === "true"
+            ? "Thank you. Your enquiry has been received."
+            : form.dataset.pilotForm === "true"
             ? "Thank you. Your Chennai pilot interest has been recorded for review."
             : "Thank you. Your PVG-EV enquiry has been received.";
           status.classList.remove("is-error");
           status.classList.add("is-success");
         }
+        if (successPanel) successPanel.hidden = false;
         fields.forEach((field) => setError(field, ""));
+        // TODO: Replace this simulated frontend submission with the verified production enquiry endpoint.
         form.reset();
         trackPvgEvent(form.dataset.pilotForm === "true" ? "pilot_registration_submit" : "contact_form_submit", { path: window.location.pathname });
         if (submitButton) {
           submitButton.disabled = false;
+          submitButton.classList.remove("is-loading");
           submitButton.removeAttribute("aria-busy");
-          submitButton.textContent = originalSubmitText;
+          submitButton.innerHTML = originalSubmitText;
         }
         submitted = false;
       }, 520);
