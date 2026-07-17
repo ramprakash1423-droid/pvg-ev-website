@@ -109,6 +109,12 @@
               <span class="brand-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
             </a>
             <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
+            <div class="footer-social" aria-label="PVG-EV social channels">
+              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on LinkedIn"><span class="social-icon">in</span><span>LinkedIn</span></a>
+              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on YouTube"><span class="social-icon">▶</span><span>YouTube</span></a>
+              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on Facebook"><span class="social-icon">f</span><span>Facebook</span></a>
+              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on Instagram"><span class="social-icon">◎</span><span>Instagram</span></a>
+            </div>
             <p class="footer-note">Product specifications, charging availability, service coverage and launch dates are subject to testing, certification, operational readiness and local deployment conditions. Images may include development-stage or representative product configurations.</p>
           </div>
           <div class="footer-column">
@@ -128,11 +134,22 @@
             <a href="${url(root, "contact.html")}">Contact PVG-EV</a>
             <a href="${url(root, "pilot-programme.html#pilot-form")}">Join the Chennai Pilot</a>
             <a href="${url(root, "contact.html#contact-form")}">Request a Consultation</a>
+            <a class="footer-whatsapp" href="https://wa.me/?text=I%20want%20to%20discuss%20PVG-EV%20mobile%20charging" target="_blank" rel="noopener">WhatsApp quick contact</a>
             <span class="footer-static">Chennai pilot market: Tamil Nadu, India</span>
           </div>
           <div class="footer-column">
             <h2>Legal</h2>
             ${policyLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
+          </div>
+          <div class="footer-column footer-newsletter">
+            <h2>EV Updates</h2>
+            <p>Get pilot notes, charging explainers and fleet-readiness resources.</p>
+            <form data-footer-newsletter novalidate>
+              <label class="sr-only" for="footer-newsletter-email">Email address</label>
+              <input id="footer-newsletter-email" type="email" name="email" placeholder="Email address" autocomplete="email" required>
+              <button type="submit" aria-label="Subscribe to PVG-EV updates">Subscribe</button>
+              <span class="footer-newsletter-status" data-footer-newsletter-status aria-live="polite"></span>
+            </form>
           </div>
         </div>
         <div class="footer-bottom">
@@ -347,6 +364,76 @@
       counterItems.forEach(animateCounter);
     }
   }
+
+  const insightSearch = document.querySelector("[data-insight-search]");
+  const insightCards = Array.from(document.querySelectorAll("[data-insight-card]"));
+  const insightChips = Array.from(document.querySelectorAll("[data-filter-chip]"));
+  const insightEmpty = document.querySelector("[data-insights-empty]");
+  let activeInsightFilter = "all";
+
+  const applyInsightFilters = () => {
+    if (!insightCards.length) return;
+    const query = (insightSearch?.value || "").trim().toLowerCase();
+    let visibleCount = 0;
+
+    insightCards.forEach((card, index) => {
+      const categories = (card.dataset.category || "").toLowerCase().split(/\s+/);
+      const searchable = `${card.dataset.title || ""} ${card.dataset.summary || ""} ${card.textContent || ""}`.toLowerCase();
+      const matchesFilter = activeInsightFilter === "all" || categories.includes(activeInsightFilter);
+      const matchesSearch = !query || searchable.includes(query);
+      const isVisible = matchesFilter && matchesSearch;
+      card.hidden = !isVisible;
+      card.style.setProperty("--stagger-index", String(index % 6));
+      if (isVisible) visibleCount += 1;
+    });
+
+    if (insightEmpty) insightEmpty.hidden = visibleCount !== 0;
+  };
+
+  if (insightCards.length) {
+    insightSearch?.addEventListener("input", applyInsightFilters);
+    insightChips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        activeInsightFilter = chip.dataset.filter || "all";
+        insightChips.forEach((item) => {
+          const isActive = item === chip;
+          item.classList.toggle("is-active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+        applyInsightFilters();
+      });
+      chip.setAttribute("aria-pressed", String(chip.classList.contains("is-active")));
+    });
+    document.querySelectorAll("[data-tag-filter]").forEach((tag) => {
+      tag.addEventListener("click", () => {
+        const target = tag.dataset.tagFilter || "all";
+        const chip = insightChips.find((item) => item.dataset.filter === target);
+        chip?.click();
+        insightSearch?.focus({ preventScroll: true });
+      });
+    });
+    applyInsightFilters();
+  }
+
+  document.querySelectorAll("[data-footer-newsletter]").forEach((form) => {
+    const input = form.querySelector("input[type='email']");
+    const status = form.querySelector("[data-footer-newsletter-status]");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const value = input?.value.trim() || "";
+      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      if (!valid) {
+        if (status) status.textContent = "Enter a valid email address.";
+        input?.setAttribute("aria-invalid", "true");
+        input?.focus();
+        return;
+      }
+      input?.setAttribute("aria-invalid", "false");
+      if (status) status.textContent = "Thank you. Updates will be shared after launch.";
+      form.reset();
+      trackPvgEvent("footer_newsletter_submit", { path: window.location.pathname });
+    });
+  });
 
   const forms = Array.from(document.querySelectorAll("[data-contact-form], [data-pilot-form]"));
   const defaultMessages = {
