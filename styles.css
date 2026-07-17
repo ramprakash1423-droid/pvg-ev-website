@@ -14475,3 +14475,437 @@ main h3,
     padding-block: 9px !important;
   }
 }
+
+/* 2026-07 release QA patch: prevent mobile first-viewport clipping. */
+@media (max-width: 760px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .home-cinematic .client-hero-shell,
+  .section-shell,
+  .hero-shell {
+    width: calc(100% - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  .home-cinematic .hero-copy-wrap,
+  .home-cinematic .charging-story-panel,
+  .trust-strip-section,
+  .trust-strip {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .home-cinematic .hero-copy-wrap {
+    overflow: hidden;
+  }
+
+  .home-cinematic .hero-copy-wrap h1 {
+    font-size: clamp(1.62rem, 6vw, 1.78rem) !important;
+    overflow-wrap: anywhere;
+  }
+
+  .home-cinematic .hero-copy,
+  .home-cinematic .collab-line,
+  .section-heading p {
+    overflow-wrap: anywhere;
+  }
+
+  .home-cinematic .hero-actions {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .home-cinematic .hero-actions .button,
+  .compact-center-action .button,
+  .compact-final-cta .button {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding-inline: 12px !important;
+    white-space: normal;
+  }
+
+  .home-cinematic .charging-story-panel {
+    width: 100% !important;
+    overflow: hidden;
+  }
+
+  .charging-journey-scene {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .trust-strip {
+    width: 100%;
+  }
+}
+
+/* 2026-07 release QA patch: fit the homepage into real phone screenshots. */
+@media (max-width: 560px) {
+  .home-cinematic .home-cinematic-hero,
+  .home-cinematic .trust-strip-section {
+    overflow-x: hidden !important;
+  }
+
+  .home-cinematic .client-hero-shell,
+  .home-cinematic .trust-strip,
+  .home-cinematic .section-shell,
+  .home-cinematic .hero-shell,
+  .home-cinematic .cta-inner {
+    width: min(calc(100% - 24px), 366px) !important;
+    max-width: 366px !important;
+    margin-left: 12px !important;
+    margin-right: auto !important;
+  }
+
+  .home-cinematic .hero-copy-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 14px !important;
+  }
+
+  .home-cinematic .hero-copy-wrap h1 {
+    max-width: 100% !important;
+    font-size: clamp(1.45rem, 5.6vw, 1.62rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .home-cinematic .eyebrow {
+    max-width: 100% !important;
+    font-size: .66rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .home-cinematic .hero-copy,
+  .home-cinematic .collab-line,
+  .home-cinematic .hero-reassurance {
+    max-width: 100% !important;
+    font-size: .88rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .home-cinematic .collab-line {
+    padding: 12px 12px 12px 16px !important;
+  }
+
+  .home-cinematic .hero-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .home-cinematic .hero-actions .button {
+    min-height: 42px !important;
+    font-size: .86rem !important;
+  }
+
+  .home-cinematic .charging-story-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 250px !important;
+    padding: 10px !important;
+  }
+
+  .home-cinematic .visual-status-card {
+    min-width: 0 !important;
+    max-width: 150px !important;
+    padding: 7px 8px !important;
+  }
+
+  .home-cinematic .visual-status-card strong {
+    font-size: .58rem !important;
+  }
+
+  .home-cinematic .visual-status-card span {
+    font-size: .72rem !important;
+  }
+
+  .home-cinematic .status-a {
+    left: 10px !important;
+    top: 10px !important;
+  }
+
+  .home-cinematic .status-b {
+    display: none !important;
+  }
+
+  .charging-journey-scene {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 198px !important;
+    height: 210px !important;
+    margin-top: 30px !important;
+    overflow: hidden !important;
+  }
+
+  .journey-route {
+    inset: 24% 3% 14% !important;
+  }
+
+  .journey-status-card,
+  .journey-alert-card,
+  .journey-complete-card {
+    min-width: 96px !important;
+    max-width: 118px !important;
+    padding: 7px 8px !important;
+  }
+
+  .journey-status-card strong,
+  .journey-alert-card strong,
+  .journey-complete-card strong {
+    font-size: .56rem !important;
+  }
+
+  .journey-status-card span,
+  .journey-alert-card span,
+  .journey-complete-card span {
+    font-size: .76rem !important;
+  }
+
+  .journey-card-primary {
+    left: 4% !important;
+    top: 33% !important;
+  }
+
+  .journey-alert-card,
+  .journey-complete-card {
+    right: 4% !important;
+    top: 18% !important;
+  }
+
+  .journey-ev {
+    width: 82px !important;
+    height: 39px !important;
+  }
+
+  .journey-unit {
+    width: 118px !important;
+    height: 70px !important;
+  }
+
+  .unit-body strong {
+    font-size: .8rem !important;
+  }
+
+  .unit-body small {
+    max-width: 70px !important;
+    font-size: .48rem !important;
+  }
+
+  .journey-energy-beam {
+    height: 44px !important;
+  }
+
+  .journey-cable-shadow {
+    stroke-width: 20 !important;
+  }
+
+  .journey-cable-sheath {
+    stroke-width: 16 !important;
+  }
+
+  .journey-cable-highlight {
+    stroke-width: 4 !important;
+  }
+
+  .journey-cable-connector {
+    width: 30px !important;
+    height: 21px !important;
+    right: -15px !important;
+  }
+
+  .home-cinematic .trust-strip {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    overflow: visible !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    scroll-snap-type: none !important;
+  }
+
+  .home-cinematic .trust-strip a {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    flex: initial !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    align-items: center !important;
+    padding: 12px !important;
+  }
+
+  .home-cinematic .trust-strip small {
+    display: block !important;
+  }
+
+  .cookie-consent {
+    left: 12px !important;
+    right: auto !important;
+    width: min(calc(100% - 24px), 366px) !important;
+    max-width: 366px !important;
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 2026-07 release QA patch: share the compact phone shell across inner pages. */
+@media (max-width: 560px) {
+  .hero-shell,
+  .section-shell,
+  .station-wide-shell,
+  .station-product-shell,
+  .station-hero-grid-v3,
+  .pilot-hero-grid,
+  .solutions-hero-grid,
+  .request-hero-grid,
+  .request-layout,
+  .contact-layout,
+  .page-hero-inner,
+  .client-page-hero .section-shell,
+  .article-shell,
+  .footer-shell-client,
+  .cta-inner {
+    width: min(calc(100% - 24px), 366px) !important;
+    max-width: 366px !important;
+    margin-left: 12px !important;
+    margin-right: auto !important;
+  }
+
+  .hero-copy-wrap,
+  .station-hero-copy-v3,
+  .pilot-hero-copy,
+  .request-hero-copy,
+  .solutions-hero-copy,
+  .station-copy-panel,
+  .station-hero-panel,
+  .station-cta-panel,
+  .solution-showcase-copy,
+  .request-form-card,
+  .request-progress-panel,
+  .contact-panel,
+  .pilot-ecosystem-card,
+  .page-hero-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .station-hero-visual-v3,
+  .pilot-map-visual,
+  .request-hero-visual,
+  .solutions-ecosystem,
+  .solution-showcase-visual,
+  .station-operational-visual,
+  .station-process-visual,
+  .station-mobile-scene {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  li,
+  .page-lead,
+  .hero-copy,
+  .section-heading p,
+  .station-partnership-note,
+  .station-copy-panel p,
+  .solution-showcase-copy p,
+  .request-hero-copy p,
+  .contact-panel p {
+    max-width: 100% !important;
+    overflow-wrap: anywhere;
+  }
+
+  .button,
+  .nav-cta,
+  .form-submit,
+  .geo-button,
+  .quick-enquiry-button,
+  .mobile-action-bar a,
+  .mobile-action-bar button {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+
+  .station-hero-actions-v3,
+  .station-tech-actions,
+  .station-cta-actions,
+  .pilot-hero-actions,
+  .request-hero-actions,
+  .hero-actions {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .station-hero-v3 .station-hero-visual-v3 {
+    min-height: 220px !important;
+  }
+
+  .station-hero-v3 .operational-grid {
+    inset: 48% 5% 10% !important;
+  }
+
+  .station-hero-v3 .operational-route,
+  .station-hero-v3 .operational-route-light {
+    top: 52% !important;
+    width: 88% !important;
+  }
+
+  .station-hero-v3 .operational-label.label-two,
+  .station-hero-v3 .operational-battery {
+    display: none !important;
+  }
+
+  .station-hero-v3 .operational-label.label-one {
+    left: 7% !important;
+    top: 9% !important;
+    min-width: 128px !important;
+  }
+
+  .station-hero-v3 .operational-car.charging-car {
+    left: 26% !important;
+    top: 58% !important;
+    width: 72px !important;
+    height: 35px !important;
+  }
+
+  .station-hero-v3 .operational-unit {
+    right: 4% !important;
+    top: 43% !important;
+    width: 112px !important;
+    height: 66px !important;
+  }
+
+  .station-hero-v3 .operational-unit strong {
+    left: 13px !important;
+    top: 17px !important;
+    font-size: .72rem !important;
+  }
+
+  .station-hero-v3 .operational-unit small {
+    left: 13px !important;
+    top: 34px !important;
+    max-width: 58px !important;
+    font-size: .44rem !important;
+  }
+
+  .station-hero-v3 .operational-unit i {
+    right: 12px !important;
+    top: 15px !important;
+    width: 32px !important;
+    height: 25px !important;
+  }
+
+  .station-hero-v3 .operational-cable,
+  .station-hero-v3 .operational-energy {
+    left: calc(26% + 48px) !important;
+    top: 57% !important;
+    width: 28% !important;
+  }
+}
