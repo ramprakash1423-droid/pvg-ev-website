@@ -62,7 +62,7 @@
       return `
         <div class="nav-dropdown ${active === item.key ? "is-active" : ""}" data-dropdown>
           <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" data-dropdown-toggle>
-            ${item.name}<span aria-hidden="true">▾</span>
+            ${item.name}<span class="dropdown-caret" aria-hidden="true"></span>
           </button>
           <div class="dropdown-menu" data-dropdown-menu>
             <a class="dropdown-link dropdown-link-main" href="${url(root, item.path)}">Solutions Overview</a>
@@ -109,11 +109,11 @@
               <span class="brand-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
             </a>
             <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
-            <div class="footer-social" aria-label="PVG-EV social channels">
-              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on LinkedIn"><span class="social-icon">in</span><span>LinkedIn</span></a>
-              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on YouTube"><span class="social-icon">▶</span><span>YouTube</span></a>
-              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on Facebook"><span class="social-icon">f</span><span>Facebook</span></a>
-              <a href="${url(root, "contact.html#contact-form")}" aria-label="Connect with PVG-EV on Instagram"><span class="social-icon">◎</span><span>Instagram</span></a>
+            <div class="footer-social" aria-label="PVG-EV social channels pending verification">
+              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-linkedin" aria-hidden="true"></span><span>LinkedIn</span></span>
+              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-youtube" aria-hidden="true"></span><span>YouTube</span></span>
+              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-facebook" aria-hidden="true"></span><span>Facebook</span></span>
+              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-instagram" aria-hidden="true"></span><span>Instagram</span></span>
             </div>
             <p class="footer-note">Product specifications, charging availability, service coverage and launch dates are subject to testing, certification, operational readiness and local deployment conditions. Images may include development-stage or representative product configurations.</p>
           </div>
@@ -134,7 +134,7 @@
             <a href="${url(root, "contact.html")}">Contact PVG-EV</a>
             <a href="${url(root, "pilot-programme.html#pilot-form")}">Join the Chennai Pilot</a>
             <a href="${url(root, "contact.html#contact-form")}">Request a Consultation</a>
-            <a class="footer-whatsapp" href="https://wa.me/?text=I%20want%20to%20discuss%20PVG-EV%20mobile%20charging" target="_blank" rel="noopener">WhatsApp quick contact</a>
+            <span class="footer-static footer-unverified">WhatsApp quick contact pending verification</span>
             <span class="footer-static">Chennai pilot market: Tamil Nadu, India</span>
           </div>
           <div class="footer-column">
@@ -635,7 +635,7 @@
         submitButton.disabled = true;
         submitButton.classList.add("is-loading");
         submitButton.setAttribute("aria-busy", "true");
-        submitButton.innerHTML = "<span aria-hidden=\"true\">↻</span> Submitting...";
+        submitButton.innerHTML = "<span class=\"pvg-line-icon icon-loading\" aria-hidden=\"true\"></span> Submitting...";
       }
       if (successPanel) successPanel.hidden = true;
       if (status) {
