@@ -17105,34 +17105,38 @@ button.contact-disabled-action {
 
 /* 2026-07-19 final PVG-EV unified public-site design system. */
 :root {
-  --pvg-primary: #10B981;
-  --pvg-primary-dark: #059669;
-  --pvg-primary-soft: #D1FAE5;
-  --pvg-teal: #0D9488;
-  --pvg-teal-dark: #0F766E;
-  --pvg-teal-soft: #CCFBF1;
-  --pvg-blue: #0EA5E9;
-  --pvg-blue-dark: #0284C7;
-  --pvg-blue-soft: #E0F2FE;
-  --pvg-navy: #0F172A;
-  --pvg-navy-soft: #16283A;
-  --pvg-dark: #071821;
+  --pvg-primary: #0891B2;
+  --pvg-primary-dark: #0E7490;
+  --pvg-primary-soft: #CFFAFE;
+  --pvg-teal: #0891B2;
+  --pvg-teal-dark: #0E7490;
+  --pvg-teal-soft: #CFFAFE;
+  --pvg-blue: #3B82F6;
+  --pvg-blue-dark: #2563EB;
+  --pvg-blue-soft: #DBEAFE;
+  --pvg-emerald: #10B981;
+  --pvg-emerald-dark: #059669;
+  --pvg-emerald-soft: #D1FAE5;
+  --pvg-navy: #0B1220;
+  --pvg-navy-soft: #111827;
+  --pvg-dark: #050A14;
   --pvg-background: #F8FAFC;
   --pvg-background-soft: #F1F5F9;
   --pvg-surface: #FFFFFF;
-  --pvg-text-primary: #0F172A;
+  --pvg-text-primary: #0B1220;
   --pvg-text-secondary: #475569;
   --pvg-text-muted: #64748B;
   --pvg-border: #E2E8F0;
   --pvg-border-strong: #CBD5E1;
-  --pvg-success: #16A34A;
+  --pvg-success: #10B981;
   --pvg-warning: #F59E0B;
   --pvg-error: #DC2626;
-  --pvg-gradient-brand: linear-gradient(135deg, #10B981 0%, #0D9488 48%, #0EA5E9 100%);
-  --pvg-gradient-dark: linear-gradient(135deg, #071821 0%, #0B2530 55%, #0F3140 100%);
+  --pvg-gradient-brand: linear-gradient(135deg, #0891B2 0%, #3B82F6 78%, #3B82F6 94%, #10B981 100%);
+  --pvg-gradient-dark: linear-gradient(135deg, #050A14 0%, #0B1220 52%, #0E2A3B 100%);
   --pvg-ambient:
-    radial-gradient(circle at top left, rgba(16, 185, 129, .11), transparent 36%),
-    radial-gradient(circle at top right, rgba(14, 165, 233, .11), transparent 36%);
+    radial-gradient(circle at top left, rgba(8, 145, 178, .1), transparent 36%),
+    radial-gradient(circle at top right, rgba(59, 130, 246, .09), transparent 36%),
+    radial-gradient(circle at bottom left, rgba(16, 185, 129, .035), transparent 34%);
   --pvg-card-shadow: 0 12px 32px rgba(15, 23, 42, .06);
   --pvg-card-shadow-hover: 0 20px 44px rgba(15, 23, 42, .1);
   --pvg-glass-bg: rgba(255, 255, 255, .74);
@@ -17160,9 +17164,9 @@ button.contact-disabled-action {
   --text-2xl: 2rem;
   --text-3xl: clamp(2.15rem, 4vw, 3rem);
   --text-hero: clamp(2.2rem, 4.2vw, 3.45rem);
-  --green: var(--pvg-primary);
-  --green-dark: var(--pvg-primary-dark);
-  --green-soft: var(--pvg-primary-soft);
+  --green: var(--pvg-emerald);
+  --green-dark: var(--pvg-emerald-dark);
+  --green-soft: var(--pvg-emerald-soft);
   --blue: var(--pvg-blue);
   --blue-dark: var(--pvg-blue-dark);
   --ink: var(--pvg-text-primary);
@@ -17924,4 +17928,97 @@ textarea:focus,
   .nav-menu-client > .mobile-contact-link {
     display: none !important;
   }
+}
+
+/* 2026-07-19 PVG-EV palette ratio:
+   55% soft white, 20% midnight navy, 10% deep cyan, 10% electric blue, 5% emerald. */
+body {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(8, 145, 178, .075), transparent 30%),
+    radial-gradient(circle at 88% 12%, rgba(59, 130, 246, .07), transparent 31%),
+    radial-gradient(circle at 6% 88%, rgba(16, 185, 129, .035), transparent 24%),
+    linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 42%, #F8FAFC 100%) !important;
+}
+
+::selection {
+  background: rgba(59, 130, 246, .18) !important;
+}
+
+.site-header {
+  background:
+    linear-gradient(115deg, rgba(248, 250, 252, .92), rgba(255, 255, 255, .78) 46%, rgba(239, 246, 255, .72)),
+    rgba(248, 250, 252, .84) !important;
+  box-shadow: inset 0 -1px 0 rgba(8, 145, 178, .08) !important;
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 18px 44px rgba(11, 18, 32, .1), inset 0 -1px 0 rgba(255, 255, 255, .9) !important;
+}
+
+:where(.page-hero, .client-page-hero, .solutions-hero, .station-hero-v3, .request-hero, .pilot-hero-v2, .home-cinematic .home-cinematic-hero, .insights-hub-hero, .contact-hero-premium) {
+  background:
+    var(--pvg-ambient),
+    linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 54%, #EFF6FF 100%) !important;
+}
+
+.section-soft,
+.cinematic-process-section,
+.pilot-ecosystem-section,
+.solutions-journey-section,
+.insights-engagement-section,
+.station-workflow-section {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(8, 145, 178, .07), transparent 30%),
+    radial-gradient(circle at 88% 20%, rgba(59, 130, 246, .065), transparent 32%),
+    radial-gradient(circle at 18% 88%, rgba(16, 185, 129, .03), transparent 24%),
+    #F8FAFC !important;
+}
+
+.brand-mark {
+  color: var(--pvg-primary) !important;
+  box-shadow: 0 12px 30px rgba(8, 145, 178, .16) !important;
+}
+
+.brand-bolt {
+  background: linear-gradient(135deg, var(--pvg-blue), var(--pvg-emerald)) !important;
+}
+
+.brand-text strong {
+  color: var(--pvg-navy) !important;
+}
+
+.brand-text small {
+  color: var(--pvg-teal-dark) !important;
+}
+
+:where(.button-primary, .nav-cta-request, .contact-submit-button, .quick-enquiry-button, .footer-newsletter button, .mobile-action-bar a:first-child) {
+  background: var(--pvg-gradient-brand) !important;
+  box-shadow: 0 14px 30px rgba(59, 130, 246, .2), 0 4px 14px rgba(8, 145, 178, .12) !important;
+}
+
+:where(.button-primary, .nav-cta-request, .contact-submit-button, .quick-enquiry-button, .footer-newsletter button):hover,
+:where(.button-primary, .nav-cta-request, .contact-submit-button, .quick-enquiry-button, .footer-newsletter button):focus-visible {
+  box-shadow: 0 18px 38px rgba(59, 130, 246, .24), 0 6px 18px rgba(8, 145, 178, .14) !important;
+}
+
+:where(.nav-menu-client > .nav-link:hover, .nav-menu-client > .nav-link:focus-visible, .nav-menu-client > .nav-link.is-active, .nav-menu-client > .nav-dropdown:hover > .dropdown-toggle, .nav-menu-client > .nav-dropdown:focus-within > .dropdown-toggle, .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle) {
+  color: var(--pvg-primary-dark) !important;
+  background: rgba(207, 250, 254, .72) !important;
+}
+
+:where(.eyebrow, .breadcrumb, .status-pill, .solution-status, .article-meta-row, .category-badge) {
+  color: var(--pvg-primary-dark) !important;
+}
+
+:where(.form-row input:focus, .form-row select:focus, .form-row textarea:focus, .request-form input:focus, .request-form select:focus, .request-form textarea:focus) {
+  border-color: var(--pvg-blue) !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, .14) !important;
+}
+
+.site-footer {
+  background:
+    radial-gradient(circle at 12% 16%, rgba(8, 145, 178, .16), transparent 28%),
+    radial-gradient(circle at 86% 8%, rgba(59, 130, 246, .14), transparent 28%),
+    radial-gradient(circle at 52% 100%, rgba(16, 185, 129, .05), transparent 26%),
+    var(--pvg-gradient-dark) !important;
 }
