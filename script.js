@@ -190,7 +190,7 @@
   const navToggle = document.querySelector("[data-nav-toggle]");
   const navMenu = document.querySelector("[data-nav-menu]");
   const stickyCta = document.querySelector("[data-quick-enquiry]");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = true;
 
   const trackPvgEvent = (eventName, detail = {}) => {
     if (!eventName) return;
