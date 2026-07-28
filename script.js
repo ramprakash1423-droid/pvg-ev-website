@@ -190,7 +190,7 @@
   const navToggle = document.querySelector("[data-nav-toggle]");
   const navMenu = document.querySelector("[data-nav-menu]");
   const stickyCta = document.querySelector("[data-quick-enquiry]");
-  const reduceMotion = true;
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
   const trackPvgEvent = (eventName, detail = {}) => {
     if (!eventName) return;
@@ -304,6 +304,15 @@
   document.addEventListener("focusout", () => window.setTimeout(syncHeader, 0));
 
   const revealItems = document.querySelectorAll(".reveal");
+  const revealVisibleItems = () => {
+    revealItems.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 1.08 && rect.bottom > -80) {
+        item.classList.add("is-visible");
+      }
+    });
+  };
+
   if ("IntersectionObserver" in window && !reduceMotion) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -317,6 +326,9 @@
   } else {
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
+  window.requestAnimationFrame(revealVisibleItems);
+  window.setTimeout(revealVisibleItems, 180);
+  window.setTimeout(revealVisibleItems, 700);
 
   const animatedScenes = document.querySelectorAll(".station-operational-visual, .station-process-visual, .station-scenario-visual, .pilot-map-visual, [data-charging-journey]");
   if (animatedScenes.length && "IntersectionObserver" in window && !reduceMotion) {
@@ -369,9 +381,42 @@
   const insightCards = Array.from(document.querySelectorAll("[data-insight-card]"));
   const insightChips = Array.from(document.querySelectorAll("[data-filter-chip]"));
   const insightEmpty = document.querySelector("[data-insights-empty]");
+  const insightClear = document.querySelector("[data-insight-clear]");
+  const insightCount = document.querySelector("[data-insight-count]");
   let activeInsightFilter = "all";
+  const allowedInsightFilters = new Set(["all", ...insightChips.map((chip) => chip.dataset.filter || "all")]);
 
-  const applyInsightFilters = () => {
+  const syncInsightUrl = () => {
+    if (!insightCards.length || !("URLSearchParams" in window) || !window.history?.replaceState) return;
+    const params = new URLSearchParams(window.location.search);
+    const query = (insightSearch?.value || "").trim();
+
+    if (query) params.set("q", query);
+    else params.delete("q");
+
+    if (activeInsightFilter && activeInsightFilter !== "all") params.set("category", activeInsightFilter);
+    else params.delete("category");
+
+    const nextQuery = params.toString();
+    const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ""}${window.location.hash || ""}`;
+    window.history.replaceState(null, "", nextUrl);
+  };
+
+  const syncInsightChips = () => {
+    insightChips.forEach((chip) => {
+      const isActive = (chip.dataset.filter || "all") === activeInsightFilter;
+      chip.classList.toggle("is-active", isActive);
+      chip.setAttribute("aria-pressed", String(isActive));
+    });
+  };
+
+  const setActiveInsightFilter = (filter, options = {}) => {
+    activeInsightFilter = allowedInsightFilters.has(filter) ? filter : "all";
+    syncInsightChips();
+    applyInsightFilters(options);
+  };
+
+  const applyInsightFilters = (options = {}) => {
     if (!insightCards.length) return;
     const query = (insightSearch?.value || "").trim().toLowerCase();
     let visibleCount = 0;
@@ -388,32 +433,58 @@
     });
 
     if (insightEmpty) insightEmpty.hidden = visibleCount !== 0;
+    if (insightCount) {
+      const filterLabel = activeInsightFilter === "all" ? "all categories" : `${activeInsightFilter.replace(/-/g, " ")} insights`;
+      insightCount.textContent = `Showing ${visibleCount} of ${insightCards.length} insights in ${filterLabel}`;
+    }
+    if (insightClear) {
+      const hasActiveFilters = Boolean(query) || activeInsightFilter !== "all";
+      insightClear.hidden = !hasActiveFilters;
+    }
+    if (options.updateUrl !== false) syncInsightUrl();
   };
 
   if (insightCards.length) {
-    insightSearch?.addEventListener("input", applyInsightFilters);
+    if ("URLSearchParams" in window) {
+      const params = new URLSearchParams(window.location.search);
+      const initialQuery = params.get("q") || "";
+      const initialFilter = params.get("category") || "all";
+      if (insightSearch && initialQuery) insightSearch.value = initialQuery;
+      activeInsightFilter = allowedInsightFilters.has(initialFilter) ? initialFilter : "all";
+    }
+
+    insightSearch?.addEventListener("input", () => applyInsightFilters());
     insightChips.forEach((chip) => {
       chip.addEventListener("click", () => {
-        activeInsightFilter = chip.dataset.filter || "all";
-        insightChips.forEach((item) => {
-          const isActive = item === chip;
-          item.classList.toggle("is-active", isActive);
-          item.setAttribute("aria-pressed", String(isActive));
-        });
-        applyInsightFilters();
+        setActiveInsightFilter(chip.dataset.filter || "all");
       });
-      chip.setAttribute("aria-pressed", String(chip.classList.contains("is-active")));
+    });
+    insightClear?.addEventListener("click", () => {
+      if (insightSearch) insightSearch.value = "";
+      setActiveInsightFilter("all");
+      insightSearch?.focus({ preventScroll: true });
     });
     document.querySelectorAll("[data-tag-filter]").forEach((tag) => {
-      tag.addEventListener("click", () => {
+      tag.addEventListener("click", (event) => {
+        event.preventDefault();
         const target = tag.dataset.tagFilter || "all";
-        const chip = insightChips.find((item) => item.dataset.filter === target);
-        chip?.click();
+        setActiveInsightFilter(target);
+        document.querySelector("#latest-insights")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
         insightSearch?.focus({ preventScroll: true });
       });
     });
+    syncInsightChips();
     applyInsightFilters();
   }
+
+  document.querySelectorAll("[data-faq-toggle]").forEach((button) => {
+    const panel = document.getElementById(button.getAttribute("aria-controls") || "");
+    button.addEventListener("click", () => {
+      const isOpen = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!isOpen));
+      if (panel) panel.hidden = isOpen;
+    });
+  });
 
   document.querySelectorAll("[data-footer-newsletter]").forEach((form) => {
     const input = form.querySelector("input[type='email']");
