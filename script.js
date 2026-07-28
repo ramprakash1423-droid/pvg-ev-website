@@ -476,6 +476,12 @@
         button.classList.toggle("is-selected", isActive);
         button.setAttribute("aria-pressed", String(isActive));
       });
+      actionItems.forEach((item) => {
+        if (!item.classList.contains("contact-option-card")) return;
+        const isActive = item.dataset.contactType === selected;
+        item.classList.toggle("is-selected", isActive);
+        item.setAttribute("aria-pressed", String(isActive));
+      });
       syncConditionalFields(selected);
 
       if (options.focusForm) {
