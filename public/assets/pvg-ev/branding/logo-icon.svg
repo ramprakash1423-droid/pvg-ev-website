@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">PVG-EV icon</title>
+  <defs>
+    <linearGradient id="pvgIconGradient" x1="92" x2="420" y1="84" y2="432" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#12B981"/>
+      <stop offset=".58" stop-color="#0A8C86"/>
+      <stop offset="1" stop-color="#11A8E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="#F6FAF9"/>
+  <path fill="none" stroke="url(#pvgIconGradient)" stroke-linecap="round" stroke-width="38" d="M347 137a146 146 0 1 1-92-33"/>
+  <path fill="url(#pvgIconGradient)" d="M279 84 152 262h88l-33 166 147-210h-89z"/>
+  <path fill="#11A8E5" d="M82 169h104a19 19 0 0 1 0 38H82a19 19 0 0 1 0-38Zm52 136h112a19 19 0 0 1 0 38H134a19 19 0 0 1 0-38Z"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 180" role="img" aria-labelledby="title">
+  <title id="title">PVG-EV Prime Ventures Global logo</title>
+  <defs>
+    <linearGradient id="pvgPrimaryGradient" x1="22" x2="154" y1="26" y2="158" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#12B981"/>
+      <stop offset=".58" stop-color="#0A8C86"/>
+      <stop offset="1" stop-color="#11A8E5"/>
+    </linearGradient>
+  </defs>
+  <rect width="620" height="180" rx="32" fill="none"/>
+  <g>
+    <path fill="none" stroke="url(#pvgPrimaryGradient)" stroke-linecap="round" stroke-width="14" d="M122 47a55 55 0 1 1-35-12"/>
+    <path fill="url(#pvgPrimaryGradient)" d="M96 28 49 96h33l-12 62 55-79H91z"/>
+    <path fill="#11A8E5" d="M22 61h39a7 7 0 0 1 0 14H22a7 7 0 0 1 0-14Zm20 51h42a7 7 0 0 1 0 14H42a7 7 0 0 1 0-14Z"/>
+  </g>
+  <text x="174" y="83" fill="#07866A" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="-1">PVG-EV</text>
+  <text x="177" y="119" fill="#64747D" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700">Prime Ventures Global</text>
+</svg>
