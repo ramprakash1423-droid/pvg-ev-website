@@ -641,7 +641,7 @@
   const fieldLabel = (field) => {
     const form = field.closest("form");
     const label = form?.querySelector(`label[for="${field.id}"]`);
-    return label?.textContent?.replace("*", "").replace(/\((optional|default 1|approx\.)\)/gi, "").trim() || field.name;
+    return field.dataset.reviewLabel || label?.textContent?.replace("*", "").replace(/\((optional|default 1|approx\.)\)/gi, "").trim() || field.name;
   };
 
   const validateField = (field) => {
@@ -786,6 +786,7 @@
     const successRef = document.querySelector("[data-success-reference]");
     const geoButton = requestForm.querySelector("[data-geo-button]");
     const geoStatus = requestForm.querySelector("[data-geo-status]");
+    const geoMapLink = requestForm.querySelector("[data-geo-map-link]");
     const storageKey = "pvgChargingRequirementDraft";
     let currentStep = 0;
     let submitted = false;
@@ -824,14 +825,31 @@
       }
     };
 
+    const updateGeoUi = () => {
+      const gpsUrl = requestForm.elements.gps_location?.value || "";
+      const accuracy = requestForm.elements.gps_accuracy?.value || "";
+      if (!geoMapLink) return;
+      geoMapLink.hidden = !gpsUrl;
+      geoMapLink.href = gpsUrl || "#";
+      geoMapLink.textContent = accuracy
+        ? `Open captured GPS location in Google Maps (${accuracy} m accuracy)`
+        : "Open captured GPS location in Google Maps";
+    };
+
     const updateReview = () => {
       if (!reviewOutput) return;
       const rows = requestFields
-        .filter((field) => field.type !== "hidden" && field.name !== "consent")
+        .filter((field) => (field.type !== "hidden" || field.name === "gps_location" || field.name === "gps_accuracy") && field.name !== "consent")
         .filter((field) => field.required || field.value.trim())
         .map((field) => {
           const label = fieldLabel(field);
           const value = field.value || "Not provided";
+          if (field.name === "gps_location" && field.value) {
+            return `<div><dt>${label}</dt><dd><a href="${field.value}" target="_blank" rel="noopener">Open in Google Maps</a></dd></div>`;
+          }
+          if (field.name === "gps_accuracy" && field.value) {
+            return `<div><dt>${label}</dt><dd>${field.value} m</dd></div>`;
+          }
           return `<div><dt>${label}</dt><dd>${value}</dd></div>`;
         }).join("");
       reviewOutput.innerHTML = `<dl>${rows}</dl>`;
@@ -859,6 +877,7 @@
     };
 
     hydrateDraft();
+    updateGeoUi();
     showStep(0);
 
     requestFields.forEach((field) => {
@@ -913,15 +932,30 @@
         if (geoStatus) geoStatus.textContent = "Location capture is not supported by this browser.";
         return;
       }
-      if (geoStatus) geoStatus.textContent = "Requesting browser permission for location capture...";
+      geoButton.disabled = true;
+      geoButton.setAttribute("aria-busy", "true");
+      if (geoStatus) geoStatus.textContent = "Requesting GPS permission. Please allow location access in the browser prompt.";
       navigator.geolocation.getCurrentPosition((position) => {
-        requestForm.elements.latitude.value = position.coords.latitude.toFixed(6);
-        requestForm.elements.longitude.value = position.coords.longitude.toFixed(6);
-        if (geoStatus) geoStatus.textContent = "Approximate coordinates added to the draft.";
+        const latitude = position.coords.latitude.toFixed(6);
+        const longitude = position.coords.longitude.toFixed(6);
+        const accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : "";
+        const gpsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        requestForm.elements.latitude.value = latitude;
+        requestForm.elements.longitude.value = longitude;
+        requestForm.elements.gps_accuracy.value = accuracy;
+        requestForm.elements.gps_location.value = gpsUrl;
+        updateGeoUi();
+        if (geoStatus) geoStatus.textContent = accuracy
+          ? `GPS location captured. Accuracy is about ${accuracy} metres.`
+          : "GPS location captured.";
+        geoButton.disabled = false;
+        geoButton.removeAttribute("aria-busy");
         writeDraft();
       }, () => {
-        if (geoStatus) geoStatus.textContent = "Location was not added. You can continue with the address fields.";
-      }, { enableHighAccuracy: false, timeout: 9000, maximumAge: 60000 });
+        if (geoStatus) geoStatus.textContent = "GPS location was not added. Please allow location permission or continue with the landmark field.";
+        geoButton.disabled = false;
+        geoButton.removeAttribute("aria-busy");
+      }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
     });
 
     requestForm.addEventListener("submit", (event) => {

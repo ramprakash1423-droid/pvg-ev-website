@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260729h">
+    <link rel="stylesheet" href="styles.css?v=20260729i">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html"}]}</script>
   </head>
   <body>
@@ -71,6 +71,8 @@
               <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="latitude">
               <input type="hidden" name="longitude">
+              <input type="hidden" name="gps_accuracy" data-review-label="GPS Accuracy">
+              <input type="hidden" name="gps_location" data-review-label="GPS Location">
 
               <fieldset class="request-step" data-request-step>
                 <legend>What do you need right now?</legend>
@@ -161,8 +163,15 @@
                     <small class="field-error" data-error-for="address"></small>
                   </div>
                 </div>
-                <button class="geo-button" type="button" data-geo-button>Add approximate browser location</button>
-                <p class="geo-status" data-geo-status aria-live="polite"></p>
+                <div class="geo-capture-panel">
+                  <div>
+                    <strong>GPS location for faster review</strong>
+                    <span>Tap once and allow location permission. PVG-EV will receive a Google Maps link with your current coordinates.</span>
+                  </div>
+                  <button class="geo-button" type="button" data-geo-button>Use My GPS Location</button>
+                  <p class="geo-status" data-geo-status aria-live="polite"></p>
+                  <a class="geo-map-link" href="#" target="_blank" rel="noopener" data-geo-map-link hidden>Open captured location in Google Maps</a>
+                </div>
                 <div class="request-step-actions"><button class="button button-secondary" type="button" data-request-back>Back</button><button class="button button-primary" type="button" data-request-next>Continue</button></div>
               </fieldset>
 
@@ -334,6 +343,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260729b"></script>
+    <script src="script.js?v=20260729c"></script>
   </body>
 </html>
