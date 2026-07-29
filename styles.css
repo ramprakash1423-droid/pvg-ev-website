@@ -25765,3 +25765,138 @@ html {
     padding-top: max(var(--floating-nav-clearance), 88px) !important;
   }
 }
+
+/* Final nav normalization: defeats older page-specific reference-page rules. */
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-shell-client {
+  min-height: 68px !important;
+  height: auto !important;
+}
+
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client {
+  height: auto !important;
+  min-height: 0 !important;
+  justify-content: center !important;
+}
+
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-link,
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  display: inline-flex !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 38px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 clamp(6px, .52vw, 10px) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0B1220 !important;
+  line-height: 1.1 !important;
+}
+
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-link.is-active,
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-link:hover,
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-link:focus-visible,
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-dropdown:hover > .dropdown-toggle,
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-dropdown:focus-within > .dropdown-toggle {
+  color: #067A50 !important;
+  background: rgba(232, 250, 242, .9) !important;
+  border-radius: 999px !important;
+  box-shadow: inset 0 0 0 1px rgba(8, 166, 106, .16) !important;
+}
+
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-actions {
+  display: flex !important;
+  width: auto !important;
+  height: auto !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+}
+
+:where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-actions .nav-cta-request {
+  display: inline-flex !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 40px !important;
+}
+
+.fleet-reference-body .nav-menu-client > .nav-link,
+.fleet-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+.setrans-reference-body .nav-menu-client > .nav-link,
+.setrans-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+.contact-reference-body .nav-menu-client > .nav-link,
+.contact-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+.insights-premium-body .nav-menu-client > .nav-link,
+.insights-premium-body .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  width: auto !important;
+  height: auto !important;
+  min-height: 38px !important;
+  border-radius: 999px !important;
+  padding: 0 clamp(6px, .52vw, 10px) !important;
+}
+
+.fleet-reference-body .nav-menu-client > .nav-link.is-active,
+.fleet-reference-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+.setrans-reference-body .nav-menu-client > .nav-link.is-active,
+.setrans-reference-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+.contact-reference-body .nav-menu-client > .nav-link.is-active,
+.contact-reference-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+.insights-premium-body .nav-menu-client > .nav-link.is-active,
+.insights-premium-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+  height: auto !important;
+  min-height: 38px !important;
+  border-radius: 999px !important;
+}
+
+.home-reference-body .nav-menu-client > .mobile-request-link,
+.fleet-reference-body .nav-menu-client > .mobile-request-link,
+.setrans-reference-body .nav-menu-client > .mobile-request-link,
+.contact-reference-body .nav-menu-client > .mobile-request-link,
+.insights-premium-body .nav-menu-client > .mobile-request-link {
+  display: none !important;
+}
+
+@media (max-width: 1280px) {
+  :where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-shell-client {
+    min-height: 66px !important;
+  }
+
+  :where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client {
+    height: calc(100svh - var(--floating-nav-clearance) - 22px) !important;
+  }
+
+  :where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-actions {
+    display: none !important;
+  }
+
+  :where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-link,
+  :where(.home-reference-body, .fleet-reference-body, .setrans-reference-body, .contact-reference-body, .insights-premium-body) .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    width: 100% !important;
+    min-height: 52px !important;
+    justify-content: space-between !important;
+  }
+
+  .fleet-reference-body .nav-menu-client > .nav-link,
+  .fleet-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .setrans-reference-body .nav-menu-client > .nav-link,
+  .setrans-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .contact-reference-body .nav-menu-client > .nav-link,
+  .contact-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .insights-premium-body .nav-menu-client > .nav-link,
+  .insights-premium-body .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 52px !important;
+    border-radius: 999px !important;
+  }
+
+  .home-reference-body .nav-menu-client > .mobile-request-link,
+  .fleet-reference-body .nav-menu-client > .mobile-request-link,
+  .setrans-reference-body .nav-menu-client > .mobile-request-link,
+  .contact-reference-body .nav-menu-client > .mobile-request-link,
+  .insights-premium-body .nav-menu-client > .mobile-request-link {
+    display: inline-flex !important;
+  }
+}
