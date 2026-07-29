@@ -10468,8 +10468,7 @@ textarea:focus {
 }
 
 .geo-capture-panel strong,
-.geo-capture-panel span,
-.geo-map-link {
+.geo-capture-panel span {
   display: block;
 }
 
@@ -10509,13 +10508,14 @@ textarea:focus {
   font-size: .9rem;
 }
 
-.geo-map-link {
+.geo-output-row {
   grid-column: 1 / -1;
-  width: fit-content;
-  color: var(--green-dark);
-  font-weight: 900;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+}
+
+.geo-output-row input[readonly] {
+  background: rgba(255, 255, 255, .82);
+  color: var(--ink);
+  cursor: default;
 }
 
 .honeypot {

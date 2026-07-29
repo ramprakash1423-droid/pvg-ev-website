@@ -786,7 +786,6 @@
     const successRef = document.querySelector("[data-success-reference]");
     const geoButton = requestForm.querySelector("[data-geo-button]");
     const geoStatus = requestForm.querySelector("[data-geo-status]");
-    const geoMapLink = requestForm.querySelector("[data-geo-map-link]");
     const storageKey = "pvgChargingRequirementDraft";
     let currentStep = 0;
     let submitted = false;
@@ -826,27 +825,22 @@
     };
 
     const updateGeoUi = () => {
-      const gpsUrl = requestForm.elements.gps_location?.value || "";
+      const gpsLocation = requestForm.elements.gps_location?.value || "";
       const accuracy = requestForm.elements.gps_accuracy?.value || "";
-      if (!geoMapLink) return;
-      geoMapLink.hidden = !gpsUrl;
-      geoMapLink.href = gpsUrl || "#";
-      geoMapLink.textContent = accuracy
-        ? `Open captured GPS location in Google Maps (${accuracy} m accuracy)`
-        : "Open captured GPS location in Google Maps";
+      if (!gpsLocation || !geoStatus) return;
+      geoStatus.textContent = accuracy
+        ? `GPS location captured. Accuracy is about ${accuracy} metres.`
+        : "GPS location captured.";
     };
 
     const updateReview = () => {
       if (!reviewOutput) return;
       const rows = requestFields
-        .filter((field) => (field.type !== "hidden" || field.name === "gps_location" || field.name === "gps_accuracy") && field.name !== "consent")
+        .filter((field) => (field.type !== "hidden" || field.name === "gps_accuracy") && field.name !== "consent")
         .filter((field) => field.required || field.value.trim())
         .map((field) => {
           const label = fieldLabel(field);
           const value = field.value || "Not provided";
-          if (field.name === "gps_location" && field.value) {
-            return `<div><dt>${label}</dt><dd><a href="${field.value}" target="_blank" rel="noopener">Open in Google Maps</a></dd></div>`;
-          }
           if (field.name === "gps_accuracy" && field.value) {
             return `<div><dt>${label}</dt><dd>${field.value} m</dd></div>`;
           }
@@ -939,15 +933,12 @@
         const latitude = position.coords.latitude.toFixed(6);
         const longitude = position.coords.longitude.toFixed(6);
         const accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : "";
-        const gpsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+        const gpsLocation = `Lat ${latitude}, Long ${longitude}`;
         requestForm.elements.latitude.value = latitude;
         requestForm.elements.longitude.value = longitude;
         requestForm.elements.gps_accuracy.value = accuracy;
-        requestForm.elements.gps_location.value = gpsUrl;
+        requestForm.elements.gps_location.value = gpsLocation;
         updateGeoUi();
-        if (geoStatus) geoStatus.textContent = accuracy
-          ? `GPS location captured. Accuracy is about ${accuracy} metres.`
-          : "GPS location captured.";
         geoButton.disabled = false;
         geoButton.removeAttribute("aria-busy");
         writeDraft();
