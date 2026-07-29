@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260729f">
+    <link rel="stylesheet" href="styles.css?v=20260729g">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html"}]}</script>
   </head>
   <body>
@@ -52,20 +52,17 @@
       <section class="section request-form-section">
         <div class="request-shell request-layout">
           <aside class="request-progress-panel reveal" aria-label="Request progress">
-            <h2>Requirement Review</h2>
-            <p>Autosaves in this browser while you complete the steps.</p>
+            <h2>Quick Requirement Review</h2>
+            <p>For a stranded or low-battery EV, submit only the essentials first. Planning details can be added later.</p>
             <ol class="request-progress" data-request-progress>
-              <li class="is-active"><span>01</span>Requirement</li>
-              <li><span>02</span>Contact</li>
-              <li><span>03</span>Location</li>
-              <li><span>04</span>Vehicle</li>
-              <li><span>05</span>Charging Need</li>
-              <li><span>06</span>Timing</li>
-              <li><span>07</span>Review</li>
+              <li class="is-active"><span>01</span>Need</li>
+              <li><span>02</span>Contact & Location</li>
+              <li><span>03</span>Vehicle</li>
+              <li><span>04</span>Review</li>
             </ol>
             <div class="request-assurance">
-              <strong>No unsupported commitments</strong>
-              <span>This form collects requirement information only. Final service availability depends on pilot readiness, vehicle compatibility and operational review.</span>
+              <strong>Emergency-first form</strong>
+              <span>Phone, location and vehicle details are enough to start a review. Final service availability still depends on pilot readiness and operational review.</span>
             </div>
           </aside>
 
@@ -76,8 +73,22 @@
               <input type="hidden" name="longitude">
 
               <fieldset class="request-step" data-request-step>
-                <legend>What do you need?</legend>
-                <p>Select the closest charging requirement so PVG-EV can route the enquiry correctly.</p>
+                <legend>What do you need right now?</legend>
+                <p>If the vehicle is stranded or low on battery, use the fast path. PVG-EV can collect extra planning details later if needed.</p>
+                <div class="request-fast-panel" aria-label="Fast request options">
+                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Low battery / stranded vehicle" data-customer="Individual EV owner" data-location-type="Roadside or stranded location">
+                    <strong>Stranded / low battery</strong>
+                    <span>Fastest path: phone, location and vehicle.</span>
+                  </button>
+                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Fleet charging" data-customer="Fleet operator">
+                    <strong>Fleet or depot support</strong>
+                    <span>For operators planning charging support.</span>
+                  </button>
+                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Residential or community requirement" data-customer="Apartment community">
+                    <strong>Apartment / site enquiry</strong>
+                    <span>For community or commercial review.</span>
+                  </button>
+                </div>
                 <div class="form-row form-full">
                   <label for="requirement_type">Requirement Type</label>
                   <select id="requirement_type" name="requirement_type" required>
@@ -94,8 +105,8 @@
                   <small class="field-error" data-error-for="requirement_type"></small>
                 </div>
                 <div class="form-row form-full">
-                  <label for="customer_type">Customer Type</label>
-                  <select id="customer_type" name="customer_type" required>
+                  <label for="customer_type">Customer Type <span class="optional-label">(optional)</span></label>
+                  <select id="customer_type" name="customer_type">
                     <option value="">Select customer type</option>
                     <option>Individual EV owner</option>
                     <option>Fleet operator</option>
@@ -112,49 +123,29 @@
               </fieldset>
 
               <fieldset class="request-step" data-request-step hidden>
-                <legend>Your contact details</legend>
+                <legend>Contact and location</legend>
+                <p>For urgent help, a mobile number and clear current location are the most important details.</p>
                 <div class="form-grid-two">
                   <div class="form-row">
-                    <label for="request_name">Customer or Organisation Name</label>
-                    <input id="request_name" name="name" type="text" autocomplete="name" required>
-                    <small class="field-error" data-error-for="name"></small>
-                  </div>
-                  <div class="form-row">
-                    <label for="request_contact_person">Contact Person</label>
-                    <input id="request_contact_person" name="contact_person" type="text" autocomplete="name" required>
-                    <small class="field-error" data-error-for="contact_person"></small>
-                  </div>
-                  <div class="form-row">
                     <label for="request_phone">Mobile Number</label>
-                    <input id="request_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+                    <input id="request_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91" required>
                     <small class="field-error" data-error-for="phone"></small>
                   </div>
                   <div class="form-row">
-                    <label for="request_email">Email</label>
-                    <input id="request_email" name="email" type="email" autocomplete="email" required>
-                    <small class="field-error" data-error-for="email"></small>
+                    <label for="request_name">Name <span class="optional-label">(optional)</span></label>
+                    <input id="request_name" name="name" type="text" autocomplete="name" placeholder="Your name">
+                    <small class="field-error" data-error-for="name"></small>
                   </div>
-                  <div class="form-row">
-                    <label for="request_company">Company / Community</label>
-                    <input id="request_company" name="company" type="text" autocomplete="organization">
-                    <small class="field-error" data-error-for="company"></small>
-                  </div>
-                </div>
-                <div class="request-step-actions"><button class="button button-secondary" type="button" data-request-back>Back</button><button class="button button-primary" type="button" data-request-next>Continue</button></div>
-              </fieldset>
-
-              <fieldset class="request-step" data-request-step hidden>
-                <legend>Where is charging required?</legend>
-                <div class="form-grid-two">
                   <div class="form-row">
                     <label for="request_city">City / Area</label>
-                    <input id="request_city" name="city" type="text" autocomplete="address-level2" required>
+                    <input id="request_city" name="city" type="text" autocomplete="address-level2" placeholder="Example: Chennai, OMR, Guindy" required>
                     <small class="field-error" data-error-for="city"></small>
                   </div>
                   <div class="form-row">
-                    <label for="request_location_type">Location Type</label>
-                    <select id="request_location_type" name="location_type" required>
+                    <label for="request_location_type">Location Type <span class="optional-label">(optional)</span></label>
+                    <select id="request_location_type" name="location_type">
                       <option value="">Select location type</option>
+                      <option>Roadside or stranded location</option>
                       <option>Home or apartment parking</option>
                       <option>Office or IT park</option>
                       <option>Fleet depot</option>
@@ -165,8 +156,8 @@
                     <small class="field-error" data-error-for="location_type"></small>
                   </div>
                   <div class="form-row form-full">
-                    <label for="request_address">Address / Landmark</label>
-                    <textarea id="request_address" name="address" rows="3" required></textarea>
+                    <label for="request_address">Current Location / Landmark</label>
+                    <textarea id="request_address" name="address" rows="3" required placeholder="Share the nearest landmark, parking spot, building gate or roadside location."></textarea>
                     <small class="field-error" data-error-for="address"></small>
                   </div>
                 </div>
@@ -177,6 +168,7 @@
 
               <fieldset class="request-step" data-request-step hidden>
                 <legend>Vehicle information</legend>
+                <p>Keep this short for urgent requests. If you do not know the connector type, PVG-EV can confirm during review.</p>
                 <div class="form-grid-two">
                   <div class="form-row">
                     <label for="vehicle_category">Vehicle Category</label>
@@ -193,123 +185,124 @@
                     <small class="field-error" data-error-for="vehicle_category"></small>
                   </div>
                   <div class="form-row">
-                    <label for="vehicle_model">Vehicle Make / Model</label>
+                    <label for="vehicle_model">Vehicle Make / Model <span class="optional-label">(optional)</span></label>
                     <input id="vehicle_model" name="vehicle_model" type="text" placeholder="Example: Tata Nexon EV, e-auto, e-scooter">
                     <small class="field-error" data-error-for="vehicle_model"></small>
                   </div>
                   <div class="form-row">
-                    <label for="vehicle_count">Number of Vehicles</label>
-                    <input id="vehicle_count" name="vehicle_count" type="number" min="1" inputmode="numeric" required>
+                    <label for="vehicle_count">Number of Vehicles <span class="optional-label">(default 1)</span></label>
+                    <input id="vehicle_count" name="vehicle_count" type="number" min="1" inputmode="numeric" value="1">
                     <small class="field-error" data-error-for="vehicle_count"></small>
                   </div>
                   <div class="form-row">
-                    <label for="connector_type">Connector / Charging Standard</label>
-                    <select id="connector_type" name="connector_type" required>
-                      <option value="">Select connector status</option>
-                      <option>Known connector type</option>
-                      <option>Not sure</option>
-                      <option>To be confirmed by PVG-EV</option>
-                    </select>
-                    <small class="field-error" data-error-for="connector_type"></small>
-                  </div>
-                  <div class="form-row">
-                    <label for="current_battery_level">Current Battery Level</label>
+                    <label for="current_battery_level">Current Battery Level <span class="optional-label">(approx.)</span></label>
                     <input id="current_battery_level" name="current_battery_level" type="number" min="0" max="100" inputmode="numeric" placeholder="Approximate %">
                     <small class="field-error" data-error-for="current_battery_level"></small>
                   </div>
-                  <div class="form-row">
-                    <label for="battery_status">Battery Status</label>
-                    <select id="battery_status" name="battery_status" required>
-                      <option value="">Select battery status</option>
-                      <option>Low battery now</option>
-                      <option>Scheduled top-up required</option>
-                      <option>Fleet planning requirement</option>
-                      <option>Commercial site planning requirement</option>
-                    </select>
-                    <small class="field-error" data-error-for="battery_status"></small>
-                  </div>
-                </div>
-                <div class="request-step-actions"><button class="button button-secondary" type="button" data-request-back>Back</button><button class="button button-primary" type="button" data-request-next>Continue</button></div>
-              </fieldset>
-
-              <fieldset class="request-step" data-request-step hidden>
-                <legend>Charging requirement</legend>
-                <div class="form-grid-two">
-                  <div class="form-row">
-                    <label for="charging_need">Charging Need</label>
-                    <select id="charging_need" name="charging_need" required>
-                      <option value="">Select charging need</option>
-                      <option>Immediate assistance</option>
-                      <option>Same-day charging</option>
-                      <option>Scheduled mobile charging</option>
-                      <option>Regular fleet charging support</option>
-                      <option>Temporary event charging</option>
-                      <option>Site assessment for future charging</option>
-                    </select>
-                    <small class="field-error" data-error-for="charging_need"></small>
-                  </div>
-                  <div class="form-row">
-                    <label for="preferred_window">Preferred Charging Window</label>
-                    <select id="preferred_window" name="preferred_window" required>
-                      <option value="">Select preferred window</option>
-                      <option>Morning</option>
-                      <option>Afternoon</option>
-                      <option>Evening</option>
-                      <option>Night / depot downtime</option>
-                      <option>Flexible</option>
-                    </select>
-                    <small class="field-error" data-error-for="preferred_window"></small>
-                  </div>
-                  <div class="form-row">
-                    <label for="preferred_time">Preferred Time</label>
-                    <input id="preferred_time" name="preferred_time" type="time">
-                    <small class="field-error" data-error-for="preferred_time"></small>
-                  </div>
-                  <div class="form-row">
-                    <label for="requirement_scope">Fleet or Individual Requirement</label>
-                    <select id="requirement_scope" name="requirement_scope" required>
-                      <option value="">Select requirement scope</option>
-                      <option>Individual vehicle requirement</option>
-                      <option>Fleet requirement</option>
-                      <option>Site or community requirement</option>
-                      <option>Institutional or pilot requirement</option>
-                    </select>
-                    <small class="field-error" data-error-for="requirement_scope"></small>
-                  </div>
                   <div class="form-row form-full">
-                    <label for="charging_details">Charging Details</label>
-                    <textarea id="charging_details" name="charging_details" rows="4" required placeholder="Share vehicle model, location access, parking constraints, daily route or fleet operating notes."></textarea>
+                    <label for="charging_details">What happened? <span class="optional-label">(optional)</span></label>
+                    <textarea id="charging_details" name="charging_details" rows="3" placeholder="Example: Battery is low at office parking, vehicle cannot reach a charger, or fleet needs mobile top-up review."></textarea>
                     <small class="field-error" data-error-for="charging_details"></small>
                   </div>
                 </div>
-                <div class="request-step-actions"><button class="button button-secondary" type="button" data-request-back>Back</button><button class="button button-primary" type="button" data-request-next>Continue</button></div>
-              </fieldset>
-
-              <fieldset class="request-step" data-request-step hidden>
-                <legend>Timing and pilot interest</legend>
-                <div class="form-grid-two">
-                  <div class="form-row">
-                    <label for="target_date">Target Date</label>
-                    <input id="target_date" name="target_date" type="date" required>
-                    <small class="field-error" data-error-for="target_date"></small>
+                <details class="request-advanced-details">
+                  <summary>Optional planning details for fleet, apartment or commercial enquiries</summary>
+                  <div class="form-grid-two">
+                    <div class="form-row">
+                      <label for="request_email">Email <span class="optional-label">(optional)</span></label>
+                      <input id="request_email" name="email" type="email" autocomplete="email">
+                      <small class="field-error" data-error-for="email"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="request_company">Company / Community <span class="optional-label">(optional)</span></label>
+                      <input id="request_company" name="company" type="text" autocomplete="organization">
+                      <small class="field-error" data-error-for="company"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="connector_type">Connector / Charging Standard <span class="optional-label">(optional)</span></label>
+                      <select id="connector_type" name="connector_type">
+                        <option value="">Select connector status</option>
+                        <option>Known connector type</option>
+                        <option>Not sure</option>
+                        <option>To be confirmed by PVG-EV</option>
+                      </select>
+                      <small class="field-error" data-error-for="connector_type"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="battery_status">Battery Status <span class="optional-label">(optional)</span></label>
+                      <select id="battery_status" name="battery_status">
+                        <option value="">Select battery status</option>
+                        <option>Low battery now</option>
+                        <option>Scheduled top-up required</option>
+                        <option>Fleet planning requirement</option>
+                        <option>Commercial site planning requirement</option>
+                      </select>
+                      <small class="field-error" data-error-for="battery_status"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="charging_need">Charging Need <span class="optional-label">(optional)</span></label>
+                      <select id="charging_need" name="charging_need">
+                        <option value="">Select charging need</option>
+                        <option>Immediate assistance</option>
+                        <option>Same-day charging</option>
+                        <option>Scheduled mobile charging</option>
+                        <option>Regular fleet charging support</option>
+                        <option>Temporary event charging</option>
+                        <option>Site assessment for future charging</option>
+                      </select>
+                      <small class="field-error" data-error-for="charging_need"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="preferred_window">Preferred Charging Window <span class="optional-label">(optional)</span></label>
+                      <select id="preferred_window" name="preferred_window">
+                        <option value="">Select preferred window</option>
+                        <option>Morning</option>
+                        <option>Afternoon</option>
+                        <option>Evening</option>
+                        <option>Night / depot downtime</option>
+                        <option>Flexible</option>
+                      </select>
+                      <small class="field-error" data-error-for="preferred_window"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="preferred_time">Preferred Time <span class="optional-label">(optional)</span></label>
+                      <input id="preferred_time" name="preferred_time" type="time">
+                      <small class="field-error" data-error-for="preferred_time"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="requirement_scope">Requirement Scope <span class="optional-label">(optional)</span></label>
+                      <select id="requirement_scope" name="requirement_scope">
+                        <option value="">Select requirement scope</option>
+                        <option>Individual vehicle requirement</option>
+                        <option>Fleet requirement</option>
+                        <option>Site or community requirement</option>
+                        <option>Institutional or pilot requirement</option>
+                      </select>
+                      <small class="field-error" data-error-for="requirement_scope"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="target_date">Target Date <span class="optional-label">(optional)</span></label>
+                      <input id="target_date" name="target_date" type="date">
+                      <small class="field-error" data-error-for="target_date"></small>
+                    </div>
+                    <div class="form-row">
+                      <label for="pilot_interest">Pilot Interest <span class="optional-label">(optional)</span></label>
+                      <select id="pilot_interest" name="pilot_interest">
+                        <option value="">Select pilot interest</option>
+                        <option>I want to join the Chennai pilot</option>
+                        <option>I want future service updates</option>
+                        <option>I need a commercial discussion</option>
+                        <option>I only want general information</option>
+                      </select>
+                      <small class="field-error" data-error-for="pilot_interest"></small>
+                    </div>
+                    <div class="form-row form-full">
+                      <label for="additional_notes">Additional Notes <span class="optional-label">(optional)</span></label>
+                      <textarea id="additional_notes" name="additional_notes" rows="3"></textarea>
+                      <small class="field-error" data-error-for="additional_notes"></small>
+                    </div>
                   </div>
-                  <div class="form-row">
-                    <label for="pilot_interest">Pilot Interest</label>
-                    <select id="pilot_interest" name="pilot_interest" required>
-                      <option value="">Select pilot interest</option>
-                      <option>I want to join the Chennai pilot</option>
-                      <option>I want future service updates</option>
-                      <option>I need a commercial discussion</option>
-                      <option>I only want general information</option>
-                    </select>
-                    <small class="field-error" data-error-for="pilot_interest"></small>
-                  </div>
-                  <div class="form-row form-full">
-                    <label for="additional_notes">Additional Notes</label>
-                    <textarea id="additional_notes" name="additional_notes" rows="3"></textarea>
-                    <small class="field-error" data-error-for="additional_notes"></small>
-                  </div>
-                </div>
+                </details>
                 <div class="request-step-actions"><button class="button button-secondary" type="button" data-request-back>Back</button><button class="button button-primary" type="button" data-request-next>Review Requirement</button></div>
               </fieldset>
 
@@ -341,6 +334,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260729a"></script>
+    <script src="script.js?v=20260729b"></script>
   </body>
 </html>

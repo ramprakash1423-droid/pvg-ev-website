@@ -641,7 +641,7 @@
   const fieldLabel = (field) => {
     const form = field.closest("form");
     const label = form?.querySelector(`label[for="${field.id}"]`);
-    return label?.textContent?.replace("*", "").trim() || field.name;
+    return label?.textContent?.replace("*", "").replace(/\((optional|default 1|approx\.)\)/gi, "").trim() || field.name;
   };
 
   const validateField = (field) => {
@@ -828,6 +828,7 @@
       if (!reviewOutput) return;
       const rows = requestFields
         .filter((field) => field.type !== "hidden" && field.name !== "consent")
+        .filter((field) => field.required || field.value.trim())
         .map((field) => {
           const label = fieldLabel(field);
           const value = field.value || "Not provided";
@@ -869,6 +870,29 @@
       field.addEventListener("change", () => {
         writeDraft();
         if (field.classList.contains("is-invalid")) validateField(field);
+      });
+    });
+
+    const setRequestValue = (name, value) => {
+      if (!value) return;
+      const field = requestForm.elements[name];
+      if (!field) return;
+      field.value = value;
+      setError(field, "");
+    };
+
+    requestForm.querySelectorAll("[data-fast-request]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setRequestValue("requirement_type", button.dataset.requirement);
+        setRequestValue("customer_type", button.dataset.customer);
+        setRequestValue("location_type", button.dataset.locationType);
+        setRequestValue("battery_status", button.dataset.batteryStatus);
+        setRequestValue("charging_need", button.dataset.chargingNeed);
+        setRequestValue("requirement_scope", button.dataset.requirementScope);
+        setRequestValue("vehicle_count", requestForm.elements.vehicle_count?.value || "1");
+        writeDraft();
+        showStep(Math.min(1, steps.length - 1));
+        document.getElementById("request_phone")?.focus({ preventScroll: false });
       });
     });
 
