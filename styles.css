@@ -10344,6 +10344,7 @@ textarea:focus {
 }
 
 .request-form {
+  display: block;
   box-shadow: none;
   border: 0;
   background: transparent;
@@ -10376,15 +10377,16 @@ textarea:focus {
 
 .request-fast-panel {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 12px;
   margin: 18px 0;
 }
 
 .request-fast-card {
   display: grid;
+  align-content: start;
   gap: 6px;
-  min-height: 122px;
+  min-height: 104px;
   padding: 16px;
   border: 1px solid rgba(8, 166, 106, .16);
   border-radius: 18px;
@@ -10404,6 +10406,15 @@ textarea:focus {
   border-color: rgba(14, 165, 255, .42);
   box-shadow: 0 20px 42px rgba(10, 45, 56, .13), 0 0 0 4px rgba(14, 165, 255, .1);
   outline: 0;
+}
+
+.request-fast-card:first-child {
+  grid-column: 1 / -1;
+  min-height: 86px;
+  background:
+    radial-gradient(circle at 96% 12%, rgba(14, 165, 255, .2), transparent 26%),
+    linear-gradient(135deg, rgba(8, 166, 106, .12), rgba(14, 165, 255, .1)),
+    rgba(255, 255, 255, .86);
 }
 
 .request-fast-card strong {
