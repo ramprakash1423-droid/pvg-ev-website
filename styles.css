@@ -13742,7 +13742,7 @@ body,
   font-size: .84rem !important;
 }
 
-@media (min-width: 1121px) and (max-width: 1280px) {
+@media (min-width: 1281px) and (max-width: 1280px) {
   .home-cinematic .client-hero-shell {
     grid-template-columns: minmax(330px, .42fr) minmax(510px, .58fr);
     max-width: 1180px;
@@ -21849,6 +21849,7 @@ textarea:focus,
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 62% center;
   transition: transform .32s ease;
 }
 
@@ -26369,7 +26370,7 @@ button {
   letter-spacing: 0 !important;
 }
 
-@media (min-width: 1121px) {
+@media (min-width: 1281px) {
   .nav-shell-client,
   .site-header.is-scrolled .nav-shell-client,
   .fleet-reference-body .nav-shell-client,
@@ -26526,5 +26527,475 @@ button {
 
   .solutions-ecosystem .card-energy {
     display: none !important;
+  }
+}
+
+/* 2026-07-29 About page quality pass: less stacking, clearer visuals, denser premium rhythm. */
+.about-premium-body {
+  --about-shadow: 0 18px 48px rgba(2, 12, 27, .075);
+  --about-radius: 20px;
+}
+
+.about-premium-main {
+  background:
+    radial-gradient(circle at 11% 8%, rgba(11, 183, 131, .09), transparent 25%),
+    radial-gradient(circle at 88% 10%, rgba(14, 165, 255, .1), transparent 24%),
+    linear-gradient(180deg, #F7FAFC 0%, #FFFFFF 46%, #F7FAFC 100%) !important;
+}
+
+.about-section-v4 {
+  padding-top: clamp(36px, 4vw, 54px) !important;
+}
+
+.about-section-v4:last-of-type {
+  padding-bottom: clamp(44px, 5vw, 64px) !important;
+}
+
+.about-hero-v4 {
+  min-height: clamp(540px, 58vw, 640px) !important;
+  padding-bottom: clamp(28px, 3vw, 40px) !important;
+}
+
+.about-hero-overlay {
+  background:
+    linear-gradient(90deg, rgba(4, 13, 23, .9) 0%, rgba(4, 13, 23, .74) 39%, rgba(4, 13, 23, .3) 68%, rgba(4, 13, 23, .54) 100%),
+    radial-gradient(circle at 66% 54%, rgba(11, 183, 131, .22), transparent 30%),
+    linear-gradient(180deg, rgba(4, 13, 23, .1), rgba(4, 13, 23, .7)) !important;
+}
+
+.about-hero-grid {
+  grid-template-columns: minmax(0, 1.05fr) minmax(330px, .8fr) !important;
+  align-items: center !important;
+  gap: clamp(22px, 3vw, 34px) !important;
+}
+
+.about-hero-copy {
+  max-width: 650px !important;
+}
+
+.about-breadcrumb {
+  margin-bottom: 12px !important;
+}
+
+.about-kicker,
+.about-section-label {
+  margin-bottom: 10px !important;
+}
+
+.about-hero-copy > p {
+  max-width: 560px !important;
+  margin-top: 14px !important;
+}
+
+.about-hero-actions,
+.about-cta-actions {
+  margin-top: 18px !important;
+}
+
+.about-proof-row {
+  max-width: 600px !important;
+  margin-top: 22px !important;
+  border-radius: 16px !important;
+}
+
+.about-proof-row span {
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+}
+
+.about-hero-card {
+  min-height: clamp(300px, 30vw, 390px) !important;
+  border-radius: 22px !important;
+}
+
+.about-hero-card > img {
+  object-position: center !important;
+}
+
+.about-hero-card figcaption {
+  left: 14px !important;
+  right: 14px !important;
+  bottom: 14px !important;
+  padding: 14px !important;
+  border-radius: 16px !important;
+}
+
+.about-floating-stat {
+  min-width: 96px !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+}
+
+.about-floating-stat strong {
+  font-size: .92rem !important;
+}
+
+.about-floating-stat span {
+  font-size: .62rem !important;
+}
+
+.stat-one {
+  left: 12px !important;
+}
+
+.stat-two {
+  right: 12px !important;
+}
+
+.stat-three {
+  right: 16px !important;
+  bottom: 94px !important;
+}
+
+.about-company-grid,
+.about-market-grid {
+  grid-template-columns: minmax(0, .92fr) minmax(420px, 1.08fr) !important;
+  gap: clamp(18px, 2.2vw, 26px) !important;
+  align-items: start !important;
+}
+
+.about-copy-panel,
+.about-map-card,
+.about-glass-card,
+.about-why-card,
+.about-value-card,
+.about-cta-card {
+  border-radius: 20px !important;
+}
+
+.about-copy-panel {
+  padding: clamp(22px, 2.6vw, 34px) !important;
+}
+
+.about-copy-panel p {
+  margin: 10px 0 0 !important;
+}
+
+.about-image-bento {
+  grid-template-rows: minmax(230px, 1fr) auto !important;
+  gap: 14px !important;
+}
+
+.about-photo-card {
+  min-height: 260px !important;
+  border-radius: 20px !important;
+}
+
+.about-glass-card {
+  min-height: 148px !important;
+  padding: 18px !important;
+}
+
+.about-glass-card h3,
+.about-why-card h3,
+.about-value-card h3,
+.about-timeline h3 {
+  margin: 10px 0 6px !important;
+}
+
+.about-mini-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 13px !important;
+}
+
+.about-market-v4 {
+  padding-top: clamp(34px, 3.6vw, 46px) !important;
+}
+
+.about-map-card {
+  min-height: 0 !important;
+  padding: clamp(18px, 2.2vw, 28px) !important;
+}
+
+.tn-map-visual {
+  min-height: clamp(190px, 22vw, 270px) !important;
+  margin: 12px 0 8px !important;
+  overflow: hidden !important;
+  background: #EAF7F4 !important;
+}
+
+.tn-map-visual::before {
+  display: none !important;
+}
+
+.tn-map-visual > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  opacity: .92;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.map-node {
+  padding: 6px 8px !important;
+  font-size: .64rem !important;
+  box-shadow: 0 10px 22px rgba(2, 12, 27, .08) !important;
+}
+
+.about-why-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin-top: 18px !important;
+}
+
+.about-why-card,
+.about-value-card {
+  min-height: 142px !important;
+  padding: 18px !important;
+}
+
+.about-section-heading {
+  margin-bottom: 18px !important;
+}
+
+.about-solution-grid {
+  grid-template-columns: repeat(5, minmax(160px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.about-solution-card {
+  min-height: 218px !important;
+  padding: 16px !important;
+  border-radius: 18px !important;
+}
+
+.about-solution-card::after {
+  background: linear-gradient(180deg, transparent 30%, rgba(4, 13, 23, .78)) !important;
+}
+
+.about-solution-card p {
+  max-width: 190px !important;
+}
+
+.about-values-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.about-timeline {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.about-timeline article {
+  min-height: 168px !important;
+  padding: 48px 18px 18px !important;
+  border-radius: 18px !important;
+}
+
+.about-timeline article span {
+  min-width: 58px !important;
+  min-height: 38px !important;
+  left: 18px !important;
+  border-radius: 14px !important;
+}
+
+.about-cta-v4 {
+  padding-top: clamp(34px, 3.8vw, 52px) !important;
+}
+
+.about-cta-card {
+  padding: clamp(22px, 2.4vw, 32px) !important;
+  border-radius: 20px !important;
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .about-hero-grid {
+    grid-template-columns: minmax(0, 680px) !important;
+  }
+
+  .about-hero-card {
+    display: none !important;
+  }
+
+  .about-company-grid,
+  .about-market-grid {
+    grid-template-columns: minmax(0, .95fr) minmax(360px, 1.05fr) !important;
+  }
+
+  .about-solution-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+
+  .about-values-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .about-floating-stat {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1181px) and (max-width: 1280px) {
+  .about-hero-grid {
+    grid-template-columns: minmax(0, 720px) !important;
+  }
+
+  .about-hero-card {
+    display: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .about-hero-v4 {
+    min-height: auto !important;
+  }
+
+  .about-hero-grid,
+  .about-company-grid,
+  .about-market-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .about-hero-copy {
+    max-width: none !important;
+  }
+
+  .about-hero-card {
+    min-height: clamp(260px, 48vw, 360px) !important;
+  }
+
+  .about-why-grid,
+  .about-values-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .about-solution-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .about-timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .about-hero-card {
+    display: none !important;
+  }
+
+  .about-floating-stat {
+    display: none !important;
+  }
+
+  .about-why-grid,
+  .about-values-grid,
+  .about-solution-grid,
+  .about-timeline {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .about-proof-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .about-photo-card {
+    min-height: 220px !important;
+  }
+
+  .about-image-bento {
+    grid-template-rows: auto !important;
+  }
+
+  .tn-map-visual {
+    min-height: 220px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .nav-toggle,
+  .fleet-reference-body .nav-toggle,
+  .setrans-reference-body .nav-toggle,
+  .contact-reference-body .nav-toggle,
+  .insights-premium-body .nav-toggle {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    justify-self: end !important;
+    transform: none !important;
+  }
+
+  .nav-shell-client,
+  .site-header.is-scrolled .nav-shell-client,
+  .fleet-reference-body .nav-shell-client,
+  .setrans-reference-body .nav-shell-client,
+  .contact-reference-body .nav-shell-client,
+  .insights-premium-body .nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 46px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  html,
+  body,
+  .about-premium-body,
+  .about-premium-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .about-container,
+  .about-container.about-hero-grid,
+  .about-container.about-company-grid,
+  .about-container.about-market-grid,
+  .about-container.about-why-grid {
+    width: min(calc(100% - 28px), 362px) !important;
+    max-width: min(calc(100% - 28px), 362px) !important;
+    margin-inline: auto !important;
+  }
+
+  .about-hero-grid,
+  .about-company-grid,
+  .about-market-grid,
+  .about-why-grid,
+  .about-values-grid,
+  .about-solution-grid,
+  .about-timeline,
+  .about-copy-panel,
+  .about-map-card,
+  .about-glass-card,
+  .about-why-card,
+  .about-value-card,
+  .about-cta-card,
+  .about-image-bento {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .about-hero-actions,
+  .about-cta-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .about-copy-panel h2,
+  .about-section-heading h2,
+  .about-cta-card h2,
+  .about-copy-panel p,
+  .about-map-card p,
+  .about-glass-card p,
+  .about-why-card p,
+  .about-value-card p,
+  .about-timeline p {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .nav-shell-client,
+  .site-header.is-scrolled .nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 44px !important;
+  }
+
+  .nav-toggle {
+    display: inline-flex !important;
+    justify-self: end !important;
+    z-index: 3 !important;
   }
 }
