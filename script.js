@@ -865,9 +865,25 @@
     };
 
     const validateStep = () => {
-      const valid = getVisibleFields().map(validateField).every(Boolean);
+      const fieldsValid = getVisibleFields().map(validateField).every(Boolean);
+      const locationValid = currentStep === 1 ? validateRequestLocation() : true;
+      const valid = fieldsValid && locationValid;
       if (!valid) steps[currentStep]?.querySelector(".is-invalid")?.focus();
       return valid;
+    };
+
+    const validateRequestLocation = () => {
+      const addressField = requestForm.elements.address;
+      const gpsField = requestForm.elements.gps_location;
+      const hasAddress = Boolean(addressField?.value.trim());
+      const hasGps = Boolean(gpsField?.value.trim());
+      if (hasAddress || hasGps) {
+        if (addressField) setError(addressField, "");
+        if (gpsField) setError(gpsField, "");
+        return true;
+      }
+      if (addressField) setError(addressField, "Add GPS location or a nearby landmark.");
+      return false;
     };
 
     hydrateDraft();
@@ -954,9 +970,10 @@
       if (submitted) return;
       const website = requestForm.elements.website?.value;
       if (website) return;
-      const isValid = requestFields.map(validateField).every(Boolean);
-      if (!isValid) {
-        const invalidStep = steps.findIndex((step) => step.querySelector(".is-invalid"));
+      const fieldsValid = requestFields.map(validateField).every(Boolean);
+      const locationValid = validateRequestLocation();
+      if (!fieldsValid || !locationValid) {
+        const invalidStep = locationValid ? steps.findIndex((step) => step.querySelector(".is-invalid")) : 1;
         showStep(invalidStep >= 0 ? invalidStep : currentStep);
         return;
       }

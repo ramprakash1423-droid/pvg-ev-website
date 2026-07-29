@@ -26036,3 +26036,495 @@ html {
     display: inline-flex !important;
   }
 }
+
+/* 2026-07 global repair pass: 15% smaller typography, calmer visuals, friendlier request flow. */
+:root {
+  --font-hero: clamp(1.7rem, 2.25vw, 2.23rem);
+  --font-page-title: clamp(1.49rem, 2vw, 2.02rem);
+  --font-section-title: clamp(1.23rem, 1.53vw, 1.59rem);
+  --font-subheading: clamp(.94rem, 1.15vw, 1.17rem);
+  --font-card-title: clamp(.85rem, .85vw, .96rem);
+  --font-body: clamp(.8rem, .7vw, .85rem);
+  --font-small: clamp(.68rem, .63vw, .77rem);
+  --font-label: clamp(.56rem, .5vw, .64rem);
+  --font-nav: clamp(.69rem, .61vw, .74rem);
+  --font-button: clamp(.74rem, .7vw, .8rem);
+}
+
+body,
+input,
+select,
+textarea,
+button {
+  font-size: var(--font-body) !important;
+}
+
+:where(
+  .home-cinematic .hero-copy-wrap h1,
+  .client-hero .hero-copy-wrap h1,
+  .premium-hero h1,
+  .contact-hero-copy h1,
+  .insights-premium-copy h1,
+  .fleet-hero h1,
+  .setrans-hero h1,
+  .about-hero-v4 h1,
+  main h1
+) {
+  max-width: 820px;
+  font-size: var(--font-hero) !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(.section-heading h2, .section h2, .cta-inner h2, .request-form legend, .request-progress-panel h2, .request-success-card h2, main h2) {
+  font-size: var(--font-section-title) !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(main h3, .card h3, .solution-category-card h3, .station-application-card-v2 h3, .station-benefit-group h3, .request-fast-card strong, .contact-action-card h3, .insight-card h3) {
+  font-size: var(--font-card-title) !important;
+  line-height: 1.2 !important;
+}
+
+:where(p, li, .page-lead, .hero-copy, .section-heading p, .request-form fieldset > p, .request-progress-panel p, .form-row input, .form-row select, .form-row textarea) {
+  font-size: var(--font-body) !important;
+  line-height: 1.5 !important;
+}
+
+:where(.eyebrow, .breadcrumb, .field-error, .optional-label, .geo-status, .request-progress li, .dropdown-link, .nav-link, .dropdown-toggle, .nav-cta, .button, .card-link) {
+  font-size: var(--font-label) !important;
+}
+
+.nav-menu-client > .nav-link,
+.nav-menu-client > .nav-dropdown > .dropdown-toggle,
+.nav-actions .nav-cta {
+  font-size: var(--font-nav) !important;
+}
+
+:where(.button, .nav-cta, .geo-button, .form-submit, .contact-submit-button) {
+  min-height: 42px !important;
+  padding: 10px 16px !important;
+  font-size: var(--font-button) !important;
+}
+
+:where(.section, .compact-section, .solutions-portal-page .section, .charging-request-page .section, .station-product-v2 .section, .pilot-page .section) {
+  padding-block: clamp(28px, 3.3vw, 48px) !important;
+}
+
+:where(.solutions-hero, .request-hero, .station-hero-v3, .pilot-hero-v2, .page-hero, .client-page-hero, .article-hero) {
+  padding-block: clamp(96px, 8vw, 124px) clamp(28px, 3.5vw, 46px) !important;
+}
+
+:where(.section-heading) {
+  margin-bottom: clamp(12px, 1.6vw, 22px) !important;
+}
+
+:where(.hero-actions, .station-hero-actions-v3, .request-step-actions) {
+  gap: 10px !important;
+}
+
+/* Replace the unstable Solutions animation with a crisp PVG-EV operating visual. */
+.solutions-ecosystem {
+  isolation: isolate;
+  min-height: clamp(300px, 30vw, 430px) !important;
+  padding: clamp(14px, 2vw, 22px) !important;
+  overflow: hidden !important;
+  border-radius: 22px !important;
+  background: #EAF7F5 !important;
+}
+
+.solutions-ecosystem::before {
+  display: none !important;
+}
+
+.solutions-ecosystem::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(3, 21, 31, .32), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(3, 21, 31, .08));
+}
+
+.solutions-ecosystem-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% center;
+  filter: saturate(1.12) contrast(1.08);
+}
+
+.solutions-ecosystem :where(.solution-glow, .solution-particle, .ecosystem-stage, .ecosystem-map-card) {
+  display: none !important;
+}
+
+.solutions-ecosystem .ecosystem-card {
+  z-index: 2;
+  width: min(42%, 240px) !important;
+  padding: 12px 14px !important;
+  border: 1px solid rgba(255, 255, 255, .7) !important;
+  border-radius: 16px !important;
+  color: #FFFFFF !important;
+  background: rgba(7, 24, 33, .66) !important;
+  box-shadow: 0 16px 38px rgba(7, 24, 33, .22) !important;
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  animation: none !important;
+}
+
+.solutions-ecosystem .ecosystem-card span {
+  color: rgba(255, 255, 255, .78) !important;
+  font-size: var(--font-label) !important;
+}
+
+.solutions-ecosystem .ecosystem-card strong {
+  color: #FFFFFF !important;
+  font-size: var(--font-card-title) !important;
+}
+
+.solutions-ecosystem .card-mobile {
+  top: 22px !important;
+  right: 22px !important;
+  left: auto !important;
+}
+
+.solutions-ecosystem .card-fleet {
+  right: 22px !important;
+  bottom: 22px !important;
+}
+
+.solutions-ecosystem .card-energy {
+  left: 22px !important;
+  bottom: 22px !important;
+}
+
+/* Request page: keep stranded users moving, push planning detail into optional areas. */
+.charging-request-page .request-hero {
+  padding-bottom: clamp(18px, 2.4vw, 28px) !important;
+}
+
+.charging-request-page .request-hero-grid {
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr) !important;
+  align-items: center !important;
+}
+
+.charging-request-page .request-hero-visual {
+  min-height: clamp(260px, 24vw, 360px) !important;
+  border-radius: 22px !important;
+}
+
+.charging-request-page .request-layout {
+  grid-template-columns: minmax(250px, 330px) minmax(0, 1fr) !important;
+  gap: clamp(16px, 2.2vw, 28px) !important;
+  align-items: stretch !important;
+}
+
+.charging-request-page .request-progress-panel,
+.charging-request-page .request-form-card {
+  border-radius: 22px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(245, 251, 248, .66)),
+    rgba(255, 255, 255, .72) !important;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .9) !important;
+}
+
+.charging-request-page .request-progress-panel {
+  position: sticky !important;
+  top: calc(var(--header-height) + 24px) !important;
+  align-self: start !important;
+  padding: clamp(16px, 1.8vw, 22px) !important;
+}
+
+.charging-request-page .request-progress {
+  gap: 7px !important;
+  margin: 16px 0 !important;
+}
+
+.charging-request-page .request-progress li {
+  min-height: 38px !important;
+  padding: 7px 10px !important;
+  border-radius: 12px !important;
+}
+
+.charging-request-page .request-progress span {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.charging-request-page .request-assurance {
+  border: 1px solid rgba(14, 165, 233, .14);
+  border-radius: 16px !important;
+}
+
+.charging-request-page .request-form-card {
+  padding: clamp(18px, 2.2vw, 28px) !important;
+}
+
+.charging-request-page .request-form fieldset > p {
+  max-width: 620px;
+  margin-bottom: 14px !important;
+}
+
+.charging-request-page .request-need-fields {
+  margin-top: 12px;
+}
+
+.charging-request-page .request-fast-panel {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin: 14px 0 !important;
+}
+
+.charging-request-page .request-fast-card,
+.charging-request-page .request-fast-card:first-child {
+  grid-column: auto !important;
+  min-height: 112px !important;
+  padding: 14px !important;
+  border-radius: 16px !important;
+}
+
+.charging-request-page .request-fast-card:first-child {
+  border-color: rgba(14, 165, 233, .4) !important;
+  box-shadow: 0 18px 40px rgba(14, 165, 233, .12), 0 0 0 4px rgba(14, 165, 233, .08) !important;
+}
+
+.charging-request-page .form-grid-two {
+  gap: 14px !important;
+}
+
+.charging-request-page .request-form textarea {
+  min-height: 92px !important;
+}
+
+.charging-request-page .geo-capture-panel {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px 14px !important;
+  padding: 14px !important;
+  border-radius: 16px !important;
+}
+
+.charging-request-page .geo-output-row input[readonly] {
+  min-height: 42px !important;
+  font-weight: 760;
+  color: #067A50 !important;
+  background: rgba(255, 255, 255, .88) !important;
+}
+
+.charging-request-page .request-advanced-details {
+  margin-top: 14px !important;
+  border-radius: 16px !important;
+}
+
+.charging-request-page .request-review dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.charging-request-page .consent-row {
+  border: 1px solid rgba(8, 166, 106, .14);
+  background: rgba(236, 253, 245, .72) !important;
+}
+
+/* Calm down any remaining hero animation that can drift out of alignment. */
+:where(.request-hero-visual *, .solutions-ecosystem *, .charging-journey-scene *) {
+  animation-duration: 16s !important;
+}
+
+:where(.solutions-ecosystem *) {
+  animation: none !important;
+}
+
+.fleet-reference-body .fleet-hero h1,
+.setrans-reference-body .setrans-hero h1,
+.insights-premium-body .insights-premium-copy h1 {
+  max-width: 760px !important;
+  font-size: var(--font-hero) !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+.fleet-reference-body .fleet-hero-copy > p:not(.fleet-eyebrow, .fleet-trust-line),
+.setrans-reference-body .setrans-hero-content > p:not(.setrans-pill),
+.insights-premium-body .insights-premium-copy > p:not(.insights-eyebrow),
+.insights-premium-body .insights-trust-line {
+  max-width: 620px !important;
+  font-size: var(--font-body) !important;
+  line-height: 1.5 !important;
+}
+
+.fleet-reference-body .fleet-section-heading h2,
+.setrans-reference-body .setrans-section-copy h2,
+.setrans-reference-body .setrans-role-card h2,
+.insights-premium-body .insights-filter-heading h2,
+.insights-premium-body .insights-featured-copy h2,
+.insights-premium-body .insights-section-heading h2 {
+  font-size: var(--font-section-title) !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (min-width: 1121px) {
+  .nav-shell-client,
+  .site-header.is-scrolled .nav-shell-client,
+  .fleet-reference-body .nav-shell-client,
+  .setrans-reference-body .nav-shell-client,
+  .contact-reference-body .nav-shell-client,
+  .insights-premium-body .nav-shell-client {
+    grid-template-columns: minmax(178px, 214px) minmax(0, 1fr) auto !important;
+    width: min(100% - 48px, 1680px) !important;
+    min-height: 66px !important;
+    padding: 8px 14px !important;
+  }
+
+  .nav-toggle,
+  .fleet-reference-body .nav-toggle,
+  .setrans-reference-body .nav-toggle,
+  .contact-reference-body .nav-toggle,
+  .insights-premium-body .nav-toggle {
+    display: none !important;
+  }
+
+  .nav-menu-client,
+  .fleet-reference-body .nav-menu-client,
+  .setrans-reference-body .nav-menu-client,
+  .contact-reference-body .nav-menu-client,
+  .insights-premium-body .nav-menu-client {
+    position: static !important;
+    inset: auto !important;
+    display: flex !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(5px, .45vw, 10px) !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .nav-menu-client > .nav-link,
+  .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .fleet-reference-body .nav-menu-client > .nav-link,
+  .fleet-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .setrans-reference-body .nav-menu-client > .nav-link,
+  .setrans-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .contact-reference-body .nav-menu-client > .nav-link,
+  .contact-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .insights-premium-body .nav-menu-client > .nav-link,
+  .insights-premium-body .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    width: auto !important;
+    min-height: 36px !important;
+    padding: 0 clamp(5px, .45vw, 9px) !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-actions,
+  .fleet-reference-body .nav-actions,
+  .setrans-reference-body .nav-actions,
+  .contact-reference-body .nav-actions,
+  .insights-premium-body .nav-actions {
+    display: flex !important;
+  }
+
+  .nav-actions .nav-cta:not(.nav-cta-request) {
+    display: none !important;
+  }
+
+  .nav-actions .nav-cta-request {
+    min-height: 40px !important;
+    padding-inline: 16px !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-menu-client > .mobile-contact-link,
+  .nav-menu-client > .mobile-request-link {
+    display: none !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .charging-request-page .request-hero-grid,
+  .charging-request-page .request-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .charging-request-page .request-progress-panel {
+    position: static !important;
+  }
+
+  .charging-request-page .request-progress {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --font-hero: clamp(1.5rem, 5.6vw, 1.7rem);
+    --font-page-title: clamp(1.3rem, 5.1vw, 1.55rem);
+    --font-section-title: clamp(1.1rem, 4.25vw, 1.32rem);
+    --font-subheading: clamp(.9rem, 3.6vw, 1rem);
+    --font-card-title: clamp(.82rem, 3.2vw, .92rem);
+    --font-body: clamp(.78rem, 3.1vw, .86rem);
+  }
+
+  .charging-request-page .request-fast-panel,
+  .charging-request-page .form-grid-two,
+  .charging-request-page .request-review dl {
+    grid-template-columns: 1fr !important;
+  }
+
+  .charging-request-page .request-hero {
+    padding-bottom: 12px !important;
+  }
+
+  .charging-request-page .request-hero-visual,
+  .charging-request-page .request-progress-panel {
+    display: none !important;
+  }
+
+  .charging-request-page .request-form-section {
+    padding-top: 12px !important;
+  }
+
+  .charging-request-page .request-progress {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .charging-request-page .geo-capture-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  .solutions-ecosystem .ecosystem-card {
+    width: calc(100% - 28px) !important;
+    max-width: 320px !important;
+  }
+
+  .solutions-ecosystem .card-mobile {
+    top: 14px !important;
+    right: 14px !important;
+  }
+
+  .solutions-ecosystem .card-fleet {
+    right: 14px !important;
+    bottom: 14px !important;
+  }
+
+  .solutions-ecosystem .card-energy {
+    display: none !important;
+  }
+}

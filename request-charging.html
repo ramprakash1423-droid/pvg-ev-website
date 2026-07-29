@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260729j">
+    <link rel="stylesheet" href="styles.css?v=20260729l">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html"}]}</script>
   </head>
   <body>
@@ -32,8 +32,8 @@
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Request Charging</span></nav>
             <p class="eyebrow">Charging Requirement</p>
             <h1>Tell Us Your Charging Requirement</h1>
-            <p class="page-lead">Share your vehicle, location, timing and charging context so PVG-EV can review the requirement for the Chennai pilot and future Tamil Nadu deployment planning.</p>
-            <p class="request-note">Current status: pilot preparation. Charging availability, service coverage and response timing must be confirmed by PVG-EV before any customer commitment.</p>
+            <p class="page-lead">Share only the essentials first. PVG-EV can review your requirement faster when your phone number, location and vehicle type are clear.</p>
+            <p class="request-note">Pilot preparation is in progress. Service availability and response timing are confirmed only after PVG-EV reviews the request.</p>
           </div>
           <div class="request-hero-visual reveal reveal-scale" role="img" aria-label="PVG-EV mobile charging requirement review workflow">
             <span class="request-glow" aria-hidden="true"></span>
@@ -52,17 +52,17 @@
       <section class="section request-form-section">
         <div class="request-shell request-layout">
           <aside class="request-progress-panel reveal" aria-label="Request progress">
-            <h2>Quick Requirement Review</h2>
-            <p>For a stranded or low-battery EV, submit only the essentials first. Planning details can be added later.</p>
+            <h2>Fast Request Review</h2>
+            <p>For a stranded or low-battery EV, start with the fast path. Detailed planning can be added after the PVG-EV team contacts you.</p>
             <ol class="request-progress" data-request-progress>
               <li class="is-active"><span>01</span>Need</li>
-              <li><span>02</span>Contact & Location</li>
+              <li><span>02</span>Contact</li>
               <li><span>03</span>Vehicle</li>
-              <li><span>04</span>Review</li>
+              <li><span>04</span>Submit</li>
             </ol>
             <div class="request-assurance">
-              <strong>Emergency-first form</strong>
-              <span>Phone, location and vehicle details are enough to start a review. Final service availability still depends on pilot readiness and operational review.</span>
+              <strong>2-minute emergency path</strong>
+              <span>Phone, current area, GPS location and vehicle type are enough to begin review. Optional business details can wait.</span>
             </div>
           </aside>
 
@@ -75,22 +75,23 @@
 
               <fieldset class="request-step" data-request-step>
                 <legend>What do you need right now?</legend>
-                <p>If the vehicle is stranded or low on battery, use the fast path. PVG-EV can collect extra planning details later if needed.</p>
+                <p>Choose the closest situation. Stranded or low-battery owners should use the emergency path first.</p>
                 <div class="request-fast-panel" aria-label="Fast request options">
-                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Low battery / stranded vehicle" data-customer="Individual EV owner" data-location-type="Roadside or stranded location">
-                    <strong>Stranded / low battery</strong>
-                    <span>Fastest path: phone, location and vehicle.</span>
+                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Low battery / stranded vehicle" data-customer="Individual EV owner" data-location-type="Roadside or stranded location" data-battery-status="Low battery now" data-charging-need="Immediate assistance" data-requirement-scope="Individual vehicle requirement">
+                    <strong>Stranded or low battery</strong>
+                    <span>Fast path for one EV needing help now.</span>
                   </button>
-                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Fleet charging" data-customer="Fleet operator">
+                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Fleet charging" data-customer="Fleet operator" data-requirement-scope="Fleet requirement" data-charging-need="Regular fleet charging support">
                     <strong>Fleet or depot support</strong>
-                    <span>For operators planning charging support.</span>
+                    <span>For planned operator or depot charging review.</span>
                   </button>
-                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Residential or community requirement" data-customer="Apartment community">
-                    <strong>Apartment / site enquiry</strong>
-                    <span>For community or commercial review.</span>
+                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Residential or community requirement" data-customer="Apartment community" data-requirement-scope="Site or community requirement">
+                    <strong>Apartment or site enquiry</strong>
+                    <span>For community, office or commercial review.</span>
                   </button>
                 </div>
-                <div class="form-row form-full">
+                <div class="form-grid-two request-need-fields">
+                <div class="form-row">
                   <label for="requirement_type">Requirement Type</label>
                   <select id="requirement_type" name="requirement_type" required>
                     <option value="">Select a requirement</option>
@@ -105,7 +106,7 @@
                   </select>
                   <small class="field-error" data-error-for="requirement_type"></small>
                 </div>
-                <div class="form-row form-full">
+                <div class="form-row">
                   <label for="customer_type">Customer Type <span class="optional-label">(optional)</span></label>
                   <select id="customer_type" name="customer_type">
                     <option value="">Select customer type</option>
@@ -120,12 +121,13 @@
                   </select>
                   <small class="field-error" data-error-for="customer_type"></small>
                 </div>
+                </div>
                 <div class="request-step-actions"><button class="button button-primary" type="button" data-request-next>Continue</button></div>
               </fieldset>
 
               <fieldset class="request-step" data-request-step hidden>
                 <legend>Contact and location</legend>
-                <p>For urgent help, a mobile number and clear current location are the most important details.</p>
+                <p>For urgent help, your mobile number and current area are the most important details. Add GPS for faster review.</p>
                 <div class="form-grid-two">
                   <div class="form-row">
                     <label for="request_phone">Mobile Number</label>
@@ -138,7 +140,7 @@
                     <small class="field-error" data-error-for="name"></small>
                   </div>
                   <div class="form-row">
-                    <label for="request_city">City / Area</label>
+                    <label for="request_city">Current Area</label>
                     <input id="request_city" name="city" type="text" autocomplete="address-level2" placeholder="Example: Chennai, OMR, Guindy" required>
                     <small class="field-error" data-error-for="city"></small>
                   </div>
@@ -157,15 +159,15 @@
                     <small class="field-error" data-error-for="location_type"></small>
                   </div>
                   <div class="form-row form-full">
-                    <label for="request_address">Current Location / Landmark</label>
-                    <textarea id="request_address" name="address" rows="3" required placeholder="Share the nearest landmark, parking spot, building gate or roadside location."></textarea>
+                    <label for="request_address">Landmark or Exact Spot <span class="optional-label">(optional if GPS is captured)</span></label>
+                    <textarea id="request_address" name="address" rows="3" placeholder="Nearest landmark, parking spot, building gate or roadside location."></textarea>
                     <small class="field-error" data-error-for="address"></small>
                   </div>
                 </div>
                 <div class="geo-capture-panel">
                   <div>
-                    <strong>GPS location for faster review</strong>
-                    <span>Tap once and allow location permission. PVG-EV will receive your current latitude and longitude.</span>
+                    <strong>Add GPS for faster review</strong>
+                    <span>Tap once and allow location permission. Your current latitude and longitude will appear below.</span>
                   </div>
                   <button class="geo-button" type="button" data-geo-button>Use My GPS Location</button>
                   <p class="geo-status" data-geo-status aria-live="polite"></p>
@@ -346,6 +348,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260729d"></script>
+    <script src="script.js?v=20260729f"></script>
   </body>
 </html>
