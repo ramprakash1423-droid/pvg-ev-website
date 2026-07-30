@@ -26999,3 +26999,368 @@ button {
     z-index: 3 !important;
   }
 }
+
+/* Final phone pass: compact floating navigation and About-page mobile fit. */
+@media (max-width: 760px) {
+  :root {
+    --header-height: 62px;
+    --floating-nav-top: max(8px, env(safe-area-inset-top));
+    --floating-nav-clearance: calc(var(--header-height) + 10px);
+  }
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+  }
+
+  .site-header {
+    padding-top: var(--floating-nav-top) !important;
+  }
+
+  .nav-shell-client,
+  .site-header.is-scrolled .nav-shell-client,
+  .fleet-reference-body .nav-shell-client,
+  .setrans-reference-body .nav-shell-client,
+  .contact-reference-body .nav-shell-client,
+  .insights-premium-body .nav-shell-client {
+    display: grid !important;
+    width: calc(100% - 20px) !important;
+    min-height: 56px !important;
+    grid-template-columns: minmax(0, 1fr) 42px !important;
+    gap: 8px !important;
+    padding: 7px 9px !important;
+    border-radius: 18px !important;
+  }
+
+  .nav-shell-client .brand {
+    min-width: 0 !important;
+    gap: 8px !important;
+  }
+
+  .nav-shell-client .brand-mark,
+  .fleet-reference-body .nav-shell-client .brand-mark,
+  .setrans-reference-body .nav-shell-client .brand-mark,
+  .contact-reference-body .nav-shell-client .brand-mark,
+  .insights-premium-body .nav-shell-client .brand-mark {
+    width: 38px !important;
+    height: 38px !important;
+    flex-basis: 38px !important;
+  }
+
+  .nav-shell-client .brand-text strong {
+    max-width: min(180px, calc(100vw - 136px)) !important;
+    font-size: clamp(1.04rem, 5vw, 1.28rem) !important;
+    line-height: .95 !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-shell-client .brand-text small {
+    max-width: min(180px, calc(100vw - 136px)) !important;
+    font-size: clamp(.58rem, 2.6vw, .72rem) !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-toggle,
+  .fleet-reference-body .nav-toggle,
+  .setrans-reference-body .nav-toggle,
+  .contact-reference-body .nav-toggle,
+  .insights-premium-body .nav-toggle {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 15px !important;
+  }
+
+  .nav-toggle span {
+    width: 18px !important;
+  }
+
+  .nav-menu-client,
+  .fleet-reference-body .nav-menu-client,
+  .setrans-reference-body .nav-menu-client,
+  .contact-reference-body .nav-menu-client,
+  .insights-premium-body .nav-menu-client {
+    inset: calc(var(--floating-nav-clearance) + 8px) 16px auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-height: calc(100svh - var(--floating-nav-clearance) - 22px) !important;
+    min-height: 0 !important;
+    display: grid !important;
+    align-content: start !important;
+    justify-content: stretch !important;
+    gap: 7px !important;
+    padding: 16px !important;
+    border-radius: 24px !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .97), rgba(244, 255, 250, .9) 58%, rgba(241, 250, 255, .92)),
+      rgba(255, 255, 255, .92) !important;
+  }
+
+  .nav-menu-client > .nav-link,
+  .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .nav-menu-client > .mobile-contact-link,
+  .nav-menu-client > .mobile-request-link,
+  .fleet-reference-body .nav-menu-client > .nav-link,
+  .fleet-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .setrans-reference-body .nav-menu-client > .nav-link,
+  .setrans-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .contact-reference-body .nav-menu-client > .nav-link,
+  .contact-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .insights-premium-body .nav-menu-client > .nav-link,
+  .insights-premium-body .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    width: 100% !important;
+    min-height: 42px !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 0 14px !important;
+    border-radius: 999px !important;
+    font-size: .9rem !important;
+    line-height: 1.15 !important;
+    text-align: left !important;
+  }
+
+  .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    justify-content: space-between !important;
+  }
+
+  .nav-menu-client > .nav-link.is-active,
+  .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+    min-height: 42px !important;
+    background: rgba(232, 250, 242, .82) !important;
+    box-shadow: inset 0 0 0 1px rgba(8, 166, 106, .18) !important;
+  }
+
+  .nav-menu-client > .mobile-request-link,
+  .home-reference-body .nav-menu-client > .mobile-request-link,
+  .fleet-reference-body .nav-menu-client > .mobile-request-link,
+  .setrans-reference-body .nav-menu-client > .mobile-request-link,
+  .contact-reference-body .nav-menu-client > .mobile-request-link,
+  .insights-premium-body .nav-menu-client > .mobile-request-link {
+    display: inline-flex !important;
+    order: 100 !important;
+    min-height: 46px !important;
+    margin-top: 4px !important;
+    justify-content: center !important;
+    color: #fff !important;
+    background: linear-gradient(135deg, #08A66A, #0EA5FF) !important;
+    box-shadow: 0 14px 30px rgba(14, 165, 255, .18) !important;
+  }
+
+  .nav-menu-client > .mobile-contact-link:not(.mobile-request-link) {
+    order: 90 !important;
+  }
+
+  .dropdown-menu {
+    position: static !important;
+    width: 100% !important;
+    margin: 2px 0 4px !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+    transform: none !important;
+  }
+
+  .dropdown-link {
+    min-height: 38px !important;
+    padding: 9px 12px !important;
+    font-size: .84rem !important;
+  }
+
+  .menu-open .quick-enquiry,
+  .menu-open .mobile-action-bar {
+    display: none !important;
+  }
+
+  .quick-enquiry {
+    position: fixed !important;
+    right: 0 !important;
+    left: 0 !important;
+    bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    z-index: 850 !important;
+    display: none !important;
+    justify-content: center !important;
+    justify-items: center !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  .quick-enquiry.is-visible {
+    display: flex !important;
+  }
+
+  .quick-enquiry-button,
+  .quick-enquiry-panel {
+    display: none !important;
+  }
+
+  .mobile-action-bar {
+    position: static !important;
+    display: flex !important;
+    width: min(calc(100% - 28px), 360px) !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    pointer-events: auto !important;
+  }
+
+  .quick-enquiry:not(.is-visible) .mobile-action-bar {
+    display: none !important;
+  }
+
+  .mobile-action-bar a {
+    min-height: 48px !important;
+    width: 100% !important;
+    border-radius: 17px !important;
+    background: linear-gradient(135deg, #08A66A, #0EA5FF) !important;
+    color: #fff !important;
+    box-shadow: 0 18px 40px rgba(8, 166, 106, .2) !important;
+    font-size: .92rem !important;
+  }
+
+  .about-hero-v4 {
+    min-height: auto !important;
+    padding: calc(var(--floating-nav-clearance) + 26px) 0 30px !important;
+  }
+
+  .about-hero-grid {
+    width: min(calc(100% - 30px), 420px) !important;
+    max-width: min(calc(100% - 30px), 420px) !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px !important;
+  }
+
+  .about-breadcrumb {
+    margin-bottom: 18px !important;
+    font-size: .78rem !important;
+  }
+
+  .about-kicker {
+    display: grid !important;
+    grid-template-columns: 17px minmax(0, 1fr) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
+    border-radius: 18px !important;
+    font-size: .62rem !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .about-kicker-icon {
+    width: 17px !important;
+    height: 17px !important;
+    box-shadow: 0 0 0 5px rgba(11, 183, 131, .12) !important;
+  }
+
+  .about-hero-copy h1,
+  .about-premium-body .about-hero-copy h1 {
+    max-width: 100% !important;
+    font-size: clamp(1.82rem, 8vw, 2.28rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .about-hero-copy > p {
+    margin-top: 16px !important;
+    font-size: .98rem !important;
+    line-height: 1.56 !important;
+  }
+
+  .about-hero-actions,
+  .about-cta-actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-top: 18px !important;
+  }
+
+  .about-button,
+  .about-cta-actions .about-button {
+    width: 100% !important;
+    min-height: 48px !important;
+    border-radius: 16px !important;
+    padding: 0 16px !important;
+    font-size: .92rem !important;
+  }
+
+  .about-proof-row {
+    margin-top: 18px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    border-radius: 18px !important;
+  }
+
+  .about-proof-row span {
+    min-height: 62px !important;
+    padding: 10px !important;
+  }
+
+  .about-proof-row strong {
+    font-size: .95rem !important;
+  }
+
+  .about-proof-row small {
+    font-size: .72rem !important;
+  }
+
+  .about-section-v4,
+  .about-market-v4,
+  .about-cta-v4 {
+    padding-top: 34px !important;
+  }
+
+  .about-copy-panel,
+  .about-map-card,
+  .about-glass-card,
+  .about-why-card,
+  .about-value-card,
+  .about-cta-card {
+    border-radius: 18px !important;
+  }
+
+  .about-copy-panel h2,
+  .about-section-heading h2,
+  .about-cta-card h2 {
+    font-size: clamp(1.22rem, 5.8vw, 1.55rem) !important;
+    line-height: 1.16 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-shell-client .brand-text strong {
+    font-size: clamp(1rem, 5vw, 1.18rem) !important;
+  }
+
+  .nav-shell-client .brand-text small {
+    font-size: .6rem !important;
+  }
+
+  .nav-menu-client,
+  .fleet-reference-body .nav-menu-client,
+  .setrans-reference-body .nav-menu-client,
+  .contact-reference-body .nav-menu-client,
+  .insights-premium-body .nav-menu-client {
+    inset-inline: 12px !important;
+    padding: 14px !important;
+    gap: 6px !important;
+  }
+
+  .about-hero-copy h1,
+  .about-premium-body .about-hero-copy h1 {
+    font-size: clamp(1.74rem, 7.7vw, 2.08rem) !important;
+  }
+}
