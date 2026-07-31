@@ -60,12 +60,13 @@
         return `<a class="nav-link ${active === item.key ? "is-active" : ""}" href="${url(root, item.path)}">${item.name}</a>`;
       }
 
+      const menuId = `nav-submenu-${item.key}`;
       return `
         <div class="nav-dropdown ${active === item.key ? "is-active" : ""}" data-dropdown>
-          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" data-dropdown-toggle>
+          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="${menuId}" data-dropdown-toggle>
             ${item.name}<span class="dropdown-caret" aria-hidden="true"></span>
           </button>
-          <div class="dropdown-menu" data-dropdown-menu>
+          <div class="dropdown-menu" id="${menuId}" data-dropdown-menu>
             <a class="dropdown-link dropdown-link-main" href="${url(root, item.path)}">Solutions Overview</a>
             ${item.children.map(([name, path]) => `<a class="dropdown-link" href="${url(root, path)}">${name}</a>`).join("")}
           </div>
@@ -233,6 +234,7 @@
   const navMenu = document.querySelector("[data-nav-menu]");
   const stickyCta = document.querySelector("[data-quick-enquiry]");
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  let lastMenuFocus = null;
   document.documentElement.classList.add("animations-ready");
 
   const trackPvgEvent = (eventName, detail = {}) => {
@@ -244,12 +246,18 @@
 
   const setMenu = (open) => {
     if (!navToggle || !navMenu) return;
+    const wasOpen = navMenu.classList.contains("is-open");
+    if (open && !wasOpen) lastMenuFocus = document.activeElement instanceof HTMLElement ? document.activeElement : navToggle;
     navToggle.setAttribute("aria-expanded", String(open));
     navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     navMenu.classList.toggle("is-open", open);
     document.body.classList.toggle("menu-open", open);
     document.documentElement.classList.toggle("menu-open", open);
     document.body.style.overflow = open ? "hidden" : "";
+    if (!open) {
+      closeDropdowns();
+      if (wasOpen) window.requestAnimationFrame(() => (lastMenuFocus || navToggle).focus?.({ preventScroll: true }));
+    }
   };
 
   navToggle?.addEventListener("click", () => {
@@ -293,12 +301,30 @@
   });
 
   window.addEventListener("keydown", (event) => {
+    if (event.key === "Tab" && navMenu?.classList.contains("is-open")) {
+      const focusable = Array.from(navMenu.querySelectorAll("a[href], button:not([disabled])"))
+        .filter((element) => element instanceof HTMLElement && element.offsetParent !== null);
+      if (focusable.length) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    }
     if (event.key === "Escape") {
       setMenu(false);
       closeDropdowns();
       setQuickPanel(false);
     }
   });
+
+  window.addEventListener("pageshow", () => setMenu(false));
+  window.addEventListener("popstate", () => setMenu(false));
 
   const quickPanel = document.querySelector("[data-quick-panel]");
   const quickToggles = document.querySelectorAll("[data-quick-toggle], [data-quick-toggle-mobile]");
