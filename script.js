@@ -784,8 +784,10 @@
     const successCard = document.querySelector("[data-request-success]");
     const reviewOutput = document.querySelector("[data-review-output]");
     const successRef = document.querySelector("[data-success-reference]");
+    const whatsappRetry = document.querySelector("[data-whatsapp-retry]");
     const geoButton = requestForm.querySelector("[data-geo-button]");
     const geoStatus = requestForm.querySelector("[data-geo-status]");
+    const whatsappNumber = "919751083000";
     const storageKey = "pvgChargingRequirementDraft";
     let currentStep = 0;
     let submitted = false;
@@ -847,6 +849,78 @@
           return `<div><dt>${label}</dt><dd>${value}</dd></div>`;
         }).join("");
       reviewOutput.innerHTML = `<dl>${rows}</dl>`;
+    };
+
+    const getRequestValue = (name) => {
+      const field = requestForm.elements[name];
+      if (!field) return "";
+      if (field.type === "checkbox") return field.checked ? "Yes" : "";
+      return String(field.value || "").trim();
+    };
+
+    const buildWhatsappMessage = (reference) => {
+      const lines = [
+        "PVG-EV charging requirement",
+        `Reference: ${reference}`,
+        ""
+      ];
+      const addSection = (title) => {
+        if (lines[lines.length - 1] !== "") lines.push("");
+        lines.push(title);
+      };
+      const addLine = (label, value, always = false) => {
+        const cleanValue = String(value || "").trim();
+        if (cleanValue || always) lines.push(`- ${label}: ${cleanValue || "Not provided"}`);
+      };
+
+      addSection("Need");
+      addLine("Requirement type", getRequestValue("requirement_type"), true);
+      addLine("Customer type", getRequestValue("customer_type"));
+      addLine("Requirement scope", getRequestValue("requirement_scope"));
+
+      addSection("Contact and location");
+      addLine("Phone", getRequestValue("phone"), true);
+      addLine("Name", getRequestValue("name"));
+      addLine("Current area", getRequestValue("city"), true);
+      addLine("Location type", getRequestValue("location_type"));
+      addLine("Landmark / exact spot", getRequestValue("address"));
+      addLine("Captured GPS location", getRequestValue("gps_location"));
+      addLine("GPS accuracy", getRequestValue("gps_accuracy") ? `${getRequestValue("gps_accuracy")} metres` : "");
+
+      addSection("Vehicle");
+      addLine("Vehicle category", getRequestValue("vehicle_category"), true);
+      addLine("Vehicle make / model", getRequestValue("vehicle_model"));
+      addLine("Number of vehicles", getRequestValue("vehicle_count") || "1");
+      addLine("Connector type", getRequestValue("connector_type"));
+      addLine("Battery status", getRequestValue("battery_status"));
+      addLine("Current battery level", getRequestValue("current_battery_level") ? `${getRequestValue("current_battery_level")}%` : "");
+      addLine("Charging need", getRequestValue("charging_need"));
+      addLine("What happened", getRequestValue("charging_details"));
+
+      addSection("Optional planning details");
+      addLine("Email", getRequestValue("email"));
+      addLine("Company / organisation", getRequestValue("company"));
+      addLine("Preferred window", getRequestValue("preferred_window"));
+      addLine("Preferred date", getRequestValue("target_date"));
+      addLine("Preferred time", getRequestValue("preferred_time"));
+      addLine("Pilot interest", getRequestValue("pilot_interest"));
+      addLine("Additional notes", getRequestValue("additional_notes"));
+
+      lines.push("");
+      lines.push("Please review and respond with feasibility, timing and next steps.");
+      return lines.join("\n");
+    };
+
+    const openWhatsapp = (url) => {
+      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (isMobile) {
+        window.location.href = url;
+        return true;
+      }
+      const popup = window.open(url, "_blank");
+      if (popup) popup.opener = null;
+      if (!popup) window.location.href = url;
+      return Boolean(popup);
     };
 
     const showStep = (index) => {
@@ -983,22 +1057,23 @@
       if (submitButton) {
         submitButton.disabled = true;
         submitButton.setAttribute("aria-busy", "true");
-        submitButton.textContent = "Submitting...";
+        submitButton.textContent = "Opening WhatsApp...";
       }
       const reference = `PVG-EV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-      window.setTimeout(() => {
-        if (successRef) successRef.textContent = reference;
-        formCard?.setAttribute("hidden", "");
-        successCard?.removeAttribute("hidden");
-        sessionStorage.removeItem(storageKey);
-        trackPvgEvent("request_charging_submit", { reference, path: window.location.pathname });
-        successCard?.focus({ preventScroll: false });
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.removeAttribute("aria-busy");
-          submitButton.textContent = originalSubmitText;
-        }
-      }, 520);
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildWhatsappMessage(reference))}`;
+      if (successRef) successRef.textContent = reference;
+      if (whatsappRetry) whatsappRetry.href = whatsappUrl;
+      formCard?.setAttribute("hidden", "");
+      successCard?.removeAttribute("hidden");
+      sessionStorage.removeItem(storageKey);
+      trackPvgEvent("request_charging_whatsapp_open", { reference, path: window.location.pathname });
+      successCard?.focus({ preventScroll: false });
+      openWhatsapp(whatsappUrl);
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.removeAttribute("aria-busy");
+        submitButton.textContent = originalSubmitText;
+      }
     });
   }
 
