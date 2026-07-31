@@ -33781,3 +33781,561 @@ html body .site-header .nav-cta-request:active::before {
     max-height: 44px !important;
   }
 }
+
+/* ClickaCook-style final navigation rebuild.
+   This intentionally avoids image-based header branding so the logo and CTA
+   cannot visually swap, resize, brighten, or darken while scrolling. */
+:root {
+  --floating-nav-top: max(12px, env(safe-area-inset-top));
+  --floating-nav-clearance: 96px;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled,
+html body.home-reference-body .site-header,
+html body.fleet-reference-body .site-header,
+html body.setrans-reference-body .site-header,
+html body.contact-reference-body .site-header,
+html body.station-product-body .site-header,
+html body.insights-premium-body .site-header,
+html body.about-premium-body .site-header,
+html body.request-reference-body .site-header {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  z-index: 5000 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: var(--floating-nav-top) 12px 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body.home-reference-body .site-header .nav-shell.nav-shell-client,
+html body.fleet-reference-body .site-header .nav-shell.nav-shell-client,
+html body.setrans-reference-body .site-header .nav-shell.nav-shell-client,
+html body.contact-reference-body .site-header .nav-shell.nav-shell-client,
+html body.station-product-body .site-header .nav-shell.nav-shell-client,
+html body.insights-premium-body .site-header .nav-shell.nav-shell-client,
+html body.about-premium-body .site-header .nav-shell.nav-shell-client,
+html body.request-reference-body .site-header .nav-shell.nav-shell-client {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  width: min(100%, 1500px) !important;
+  min-height: 64px !important;
+  height: 64px !important;
+  margin: 0 auto !important;
+  padding: 10px 16px !important;
+  border: 1px solid rgba(255, 255, 255, .52) !important;
+  border-radius: 8px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .82), rgba(255, 255, 255, .68)) !important;
+  box-shadow:
+    0 18px 42px rgba(2, 12, 27, .10),
+    inset 0 1px 0 rgba(255, 255, 255, .88) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.18) !important;
+  backdrop-filter: blur(22px) saturate(1.18) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::before,
+html body .site-header .nav-shell.nav-shell-client::after {
+  display: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client .brand,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand,
+html body .site-header .nav-shell.nav-shell-client .brand:hover,
+html body .site-header .nav-shell.nav-shell-client .brand:focus-visible {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  flex: 0 0 auto !important;
+  width: 210px !important;
+  min-width: 210px !important;
+  max-width: 210px !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #087b62 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .site-header .nav-logo-mark {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  border: 3px solid #12b981 !important;
+  border-left-color: rgba(18, 185, 129, .22) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .96), rgba(237, 250, 255, .80)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .90), 0 8px 18px rgba(14, 165, 255, .10) !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-logo-mark::before,
+html body .site-header .nav-logo-mark::after {
+  content: "" !important;
+  position: absolute !important;
+  height: 4px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #12b981, #0ea5ff) !important;
+}
+
+html body .site-header .nav-logo-mark::before {
+  width: 22px !important;
+  left: 2px !important;
+  top: 15px !important;
+}
+
+html body .site-header .nav-logo-mark::after {
+  width: 21px !important;
+  right: 2px !important;
+  bottom: 15px !important;
+}
+
+html body .site-header .nav-logo-bolt {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 14px !important;
+  height: 24px !important;
+  background: linear-gradient(145deg, #0ea5ff, #08a66a) !important;
+  clip-path: polygon(58% 0, 14% 50%, 47% 50%, 32% 100%, 86% 38%, 53% 38%) !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-logo-text {
+  display: grid !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-logo-text strong {
+  display: block !important;
+  color: #07866a !important;
+  font-size: 1.22rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+  line-height: .95 !important;
+  white-space: nowrap !important;
+}
+
+html body .site-header .nav-logo-text small {
+  display: block !important;
+  color: #64747d !important;
+  font-size: .70rem !important;
+  font-weight: 760 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.05 !important;
+  white-space: nowrap !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client .brand-logo-real {
+  display: none !important;
+}
+
+html body .site-header .nav-menu.nav-menu-client,
+html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 auto !important;
+  gap: 4px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+html body .site-header.is-scrolled .nav-menu-client > .nav-link,
+html body .site-header.is-scrolled .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: 0 10px !important;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #0b1220 !important;
+  font-size: .78rem !important;
+  font-weight: 820 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link::after,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle::after {
+  display: none !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link:hover,
+html body .site-header .nav-menu-client > .nav-link:focus-visible,
+html body .site-header .nav-menu-client > .nav-link.is-active,
+html body .site-header .nav-menu-client > .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-menu-client > .nav-dropdown:focus-within > .dropdown-toggle,
+html body .site-header .nav-menu-client > .nav-dropdown.is-open > .dropdown-toggle,
+html body .site-header .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+  border-color: rgba(8, 166, 106, .18) !important;
+  background: rgba(8, 166, 106, .09) !important;
+  color: #087b62 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body .site-header .nav-actions,
+html body .site-header.is-scrolled .nav-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+  gap: 10px !important;
+  min-width: max-content !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-actions .nav-cta:not(.nav-cta-request) {
+  display: none !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:visited,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active,
+html body .site-header .nav-cta-request.is-active {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 184px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 18px !important;
+  border: 1px solid rgba(255, 255, 255, .58) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #08a66a, #0ea5ff) !important;
+  color: #ffffff !important;
+  font-size: .82rem !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-decoration: none !important;
+  box-shadow:
+    0 14px 28px rgba(14, 165, 255, .20),
+    inset 0 1px 0 rgba(255, 255, 255, .34) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-cta-request::before,
+html body .site-header .nav-cta-request::after {
+  display: none !important;
+}
+
+html body .site-header .dropdown-menu {
+  top: calc(100% + 10px) !important;
+  border: 1px solid rgba(255, 255, 255, .56) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, .90) !important;
+  box-shadow: 0 20px 52px rgba(2, 12, 27, .14), inset 0 1px 0 rgba(255, 255, 255, .90) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.18) !important;
+  backdrop-filter: blur(24px) saturate(1.18) !important;
+}
+
+html body .site-header .dropdown-link {
+  text-transform: none !important;
+  font-size: .82rem !important;
+  font-weight: 760 !important;
+  letter-spacing: 0 !important;
+}
+
+html body .site-header .nav-toggle {
+  display: none !important;
+}
+
+html body .site-header .nav-menu-client > .mobile-request-link {
+  display: none !important;
+}
+
+@media (max-width: 1320px) {
+  :root {
+    --floating-nav-top: max(10px, env(safe-area-inset-top));
+    --floating-nav-clearance: 88px;
+  }
+
+  html body .site-header,
+  html body .site-header.is-scrolled {
+    padding: var(--floating-nav-top) 10px 0 !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    display: flex !important;
+    min-height: 64px !important;
+    height: 64px !important;
+    width: min(100%, 760px) !important;
+    padding: 8px 10px 8px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand {
+    width: 208px !important;
+    min-width: 208px !important;
+    max-width: calc(100% - 62px) !important;
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  html body .site-header .nav-logo-mark {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  html body .site-header .nav-logo-text strong {
+    font-size: 1.34rem !important;
+  }
+
+  html body .site-header .nav-logo-text small {
+    font-size: .78rem !important;
+  }
+
+  html body .site-header .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border: 1px solid rgba(8, 166, 106, .20) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, .88) !important;
+    color: #0b1220 !important;
+    box-shadow: 0 10px 24px rgba(2, 12, 27, .08), inset 0 1px 0 rgba(255, 255, 255, .90) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.12) !important;
+    backdrop-filter: blur(18px) saturate(1.12) !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-toggle span {
+    width: 22px !important;
+    height: 3px !important;
+    border-radius: 999px !important;
+    background: currentColor !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    inset: calc(var(--floating-nav-top) + 76px) 12px auto 12px !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: stretch !important;
+    gap: 6px !important;
+    width: auto !important;
+    max-width: 420px !important;
+    max-height: calc(100svh - var(--floating-nav-top) - 92px) !important;
+    margin: 0 auto !important;
+    padding: 14px !important;
+    overflow: auto !important;
+    border: 1px solid rgba(255, 255, 255, .64) !important;
+    border-radius: 16px !important;
+    background: linear-gradient(145deg, rgba(255, 255, 255, .94), rgba(242, 255, 251, .86)) !important;
+    box-shadow: 0 24px 74px rgba(2, 12, 27, .18), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(1.20) !important;
+    backdrop-filter: blur(26px) saturate(1.20) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-8px) !important;
+    pointer-events: none !important;
+    transition: opacity .18s ease, transform .18s ease, visibility .18s ease !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 14px !important;
+    font-size: .92rem !important;
+    font-weight: 820 !important;
+    text-align: left !important;
+  }
+
+  html body .site-header .nav-menu-client > .mobile-request-link,
+  html body .site-header .nav-menu-client > .mobile-request-link:hover,
+  html body .site-header .nav-menu-client > .mobile-request-link:focus-visible,
+  html body .site-header .nav-menu-client > .mobile-request-link:active,
+  html body .site-header .nav-menu-client > .mobile-request-link.is-active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    margin-top: 6px !important;
+    padding: 0 16px !important;
+    border: 1px solid rgba(255, 255, 255, .58) !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, #08a66a, #0ea5ff) !important;
+    color: #ffffff !important;
+    font-size: .92rem !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    box-shadow: 0 14px 28px rgba(14, 165, 255, .20), inset 0 1px 0 rgba(255, 255, 255, .34) !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-menu-client .nav-dropdown {
+    width: 100% !important;
+  }
+
+  html body .site-header .nav-menu-client .dropdown-menu {
+    position: static !important;
+    display: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 4px 0 2px !important;
+    padding: 8px !important;
+    border-radius: 12px !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-menu-client .nav-dropdown.is-open .dropdown-menu {
+    display: grid !important;
+  }
+}
+
+@media (max-width: 520px) {
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: min(100%, 440px) !important;
+    height: 62px !important;
+    min-height: 62px !important;
+    padding: 8px 10px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand {
+    width: 200px !important;
+    min-width: 200px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+
+  html body .site-header .nav-logo-mark {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+  }
+
+  html body .site-header .nav-logo-text strong {
+    font-size: 1.24rem !important;
+  }
+
+  html body .site-header .nav-logo-text small {
+    font-size: .72rem !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    inset: calc(var(--floating-nav-top) + 72px) 12px auto 12px !important;
+    max-height: calc(100svh - var(--floating-nav-top) - 86px) !important;
+  }
+}
