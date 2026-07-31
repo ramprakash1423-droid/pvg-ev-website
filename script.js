@@ -451,14 +451,56 @@
     }
   }
 
-  const insightSearch = document.querySelector("[data-insight-search]");
+  const insightSearchInputs = Array.from(document.querySelectorAll("[data-insight-search]"));
+  const insightSearch = insightSearchInputs[0];
   const insightCards = Array.from(document.querySelectorAll("[data-insight-card]"));
   const insightChips = Array.from(document.querySelectorAll("[data-filter-chip]"));
   const insightEmpty = document.querySelector("[data-insights-empty]");
   const insightClear = document.querySelector("[data-insight-clear]");
+  const insightSearchClearButtons = Array.from(document.querySelectorAll("[data-insight-search-clear]"));
   const insightCount = document.querySelector("[data-insight-count]");
+  const insightLoadMore = document.querySelector("[data-insight-load-more]");
   let activeInsightFilter = "all";
-  const allowedInsightFilters = new Set(["all", ...insightChips.map((chip) => chip.dataset.filter || "all")]);
+  let insightVisibleLimit = window.matchMedia?.("(max-width: 640px)").matches ? 5 : 9;
+  let insightLastKey = "";
+  const allowedInsightFilters = new Set([
+    "all",
+    "mobile",
+    "commercial",
+    "apartment",
+    "pilot",
+    "chennai",
+    "sustainability",
+    "business",
+    ...insightChips.map((chip) => chip.dataset.filter || "all")
+  ]);
+  const insightFilterLabels = {
+    all: "all categories",
+    "ev-industry": "EV industry",
+    "tamil-nadu": "Tamil Nadu",
+    "future-mobility": "future mobility"
+  };
+  const getInsightPageSize = () => window.matchMedia?.("(max-width: 640px)").matches ? 5 : 9;
+  const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  })[char]);
+  const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const highlightInsightText = (node, query) => {
+    if (!node) return;
+    if (!node.dataset.originalText) node.dataset.originalText = node.textContent || "";
+    const original = node.dataset.originalText;
+    if (!query) {
+      node.textContent = original;
+      return;
+    }
+    const pattern = new RegExp(`(${escapeRegExp(query)})`, "ig");
+    node.innerHTML = escapeHtml(original).replace(pattern, "<mark>$1</mark>");
+  };
+  let insightSearchTimer = 0;
 
   const syncInsightUrl = () => {
     if (!insightCards.length || !("URLSearchParams" in window) || !window.history?.replaceState) return;
@@ -487,13 +529,24 @@
   const setActiveInsightFilter = (filter, options = {}) => {
     activeInsightFilter = allowedInsightFilters.has(filter) ? filter : "all";
     syncInsightChips();
-    applyInsightFilters(options);
+    applyInsightFilters({ ...options, resetLimit: true });
+  };
+
+  const syncInsightSearchInputs = (value, source) => {
+    insightSearchInputs.forEach((input) => {
+      if (input !== source) input.value = value;
+    });
   };
 
   const applyInsightFilters = (options = {}) => {
     if (!insightCards.length) return;
     const query = (insightSearch?.value || "").trim().toLowerCase();
-    let visibleCount = 0;
+    const stateKey = `${activeInsightFilter}|${query}`;
+    if (options.resetLimit || stateKey !== insightLastKey) {
+      insightVisibleLimit = getInsightPageSize();
+      insightLastKey = stateKey;
+    }
+    const matchingCards = [];
 
     insightCards.forEach((card, index) => {
       const categories = (card.dataset.category || "").toLowerCase().split(/\s+/);
@@ -501,19 +554,34 @@
       const matchesFilter = activeInsightFilter === "all" || categories.includes(activeInsightFilter);
       const matchesSearch = !query || searchable.includes(query);
       const isVisible = matchesFilter && matchesSearch;
-      card.hidden = !isVisible;
+      if (isVisible) matchingCards.push(card);
+      card.hidden = true;
       card.style.setProperty("--stagger-index", String(index % 6));
-      if (isVisible) visibleCount += 1;
+      highlightInsightText(card.querySelector("h3"), query);
+      highlightInsightText(card.querySelector(".insights-card-body p"), query);
     });
 
-    if (insightEmpty) insightEmpty.hidden = visibleCount !== 0;
+    matchingCards.forEach((card, index) => {
+      card.hidden = index >= insightVisibleLimit;
+      card.classList.toggle("is-newly-visible", index >= insightVisibleLimit - getInsightPageSize());
+    });
+
+    const visibleCount = Math.min(matchingCards.length, insightVisibleLimit);
+    if (insightEmpty) insightEmpty.hidden = matchingCards.length !== 0;
     if (insightCount) {
-      const filterLabel = activeInsightFilter === "all" ? "all categories" : `${activeInsightFilter.replace(/-/g, " ")} insights`;
-      insightCount.textContent = `Showing ${visibleCount} of ${insightCards.length} insights in ${filterLabel}`;
+      const filterLabel = insightFilterLabels[activeInsightFilter] || `${activeInsightFilter.replace(/-/g, " ")} insights`;
+      insightCount.textContent = `Showing ${visibleCount} of ${matchingCards.length} insights in ${filterLabel}`;
     }
     if (insightClear) {
       const hasActiveFilters = Boolean(query) || activeInsightFilter !== "all";
       insightClear.hidden = !hasActiveFilters;
+    }
+    insightSearchClearButtons.forEach((button) => {
+      button.hidden = !query;
+    });
+    if (insightLoadMore) {
+      insightLoadMore.hidden = matchingCards.length <= insightVisibleLimit;
+      insightLoadMore.textContent = `Load More Insights (${Math.max(matchingCards.length - insightVisibleLimit, 0)} left)`;
     }
     if (options.updateUrl !== false) syncInsightUrl();
   };
@@ -523,20 +591,44 @@
       const params = new URLSearchParams(window.location.search);
       const initialQuery = params.get("q") || "";
       const initialFilter = params.get("category") || "all";
-      if (insightSearch && initialQuery) insightSearch.value = initialQuery;
+      if (initialQuery) insightSearchInputs.forEach((input) => { input.value = initialQuery; });
       activeInsightFilter = allowedInsightFilters.has(initialFilter) ? initialFilter : "all";
     }
 
-    insightSearch?.addEventListener("input", () => applyInsightFilters());
+    insightSearchInputs.forEach((input) => {
+      input.addEventListener("input", () => {
+        syncInsightSearchInputs(input.value, input);
+        window.clearTimeout(insightSearchTimer);
+        insightSearchTimer = window.setTimeout(() => applyInsightFilters({ resetLimit: true }), 120);
+      });
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && input.value) {
+          input.value = "";
+          syncInsightSearchInputs("", input);
+          applyInsightFilters({ resetLimit: true });
+        }
+      });
+    });
     insightChips.forEach((chip) => {
       chip.addEventListener("click", () => {
         setActiveInsightFilter(chip.dataset.filter || "all");
       });
     });
     insightClear?.addEventListener("click", () => {
-      if (insightSearch) insightSearch.value = "";
+      insightSearchInputs.forEach((input) => { input.value = ""; });
       setActiveInsightFilter("all");
       insightSearch?.focus({ preventScroll: true });
+    });
+    insightSearchClearButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        insightSearchInputs.forEach((input) => { input.value = ""; });
+        applyInsightFilters({ resetLimit: true });
+        insightSearch?.focus({ preventScroll: true });
+      });
+    });
+    insightLoadMore?.addEventListener("click", () => {
+      insightVisibleLimit += getInsightPageSize();
+      applyInsightFilters({ updateUrl: false });
     });
     document.querySelectorAll("[data-tag-filter]").forEach((tag) => {
       tag.addEventListener("click", (event) => {
@@ -547,8 +639,12 @@
         insightSearch?.focus({ preventScroll: true });
       });
     });
+    window.addEventListener("resize", () => {
+      insightVisibleLimit = Math.max(insightVisibleLimit, getInsightPageSize());
+      applyInsightFilters({ updateUrl: false });
+    });
     syncInsightChips();
-    applyInsightFilters();
+    applyInsightFilters({ updateUrl: false });
   }
 
   document.querySelectorAll("[data-faq-toggle]").forEach((button) => {

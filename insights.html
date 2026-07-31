@@ -11,7 +11,7 @@
     <meta property="og:description" content="Explore PVG-EV insights on mobile EV charging, fleet charging, commercial infrastructure, apartment charging and Chennai pilot planning.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ramprakash1423-droid.github.io/pvg-ev-website/insights.html">
-    <meta property="og:image" content="https://ramprakash1423-droid.github.io/pvg-ev-website/public/assets/pvg-ev/hero/hero-real-vehicle.jpg">
+    <meta property="og:image" content="https://ramprakash1423-droid.github.io/pvg-ev-website/public/assets/pvg-ev/hero/hero-mobile-charging.webp">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PVG-EV Insights | EV Charging Guides for Chennai and Tamil Nadu">
     <meta name="twitter:description" content="Explore PVG-EV insights on mobile EV charging, fleet charging, commercial infrastructure, apartment charging and Chennai pilot planning.">
@@ -19,8 +19,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="preload" as="image" href="public/assets/pvg-ev/hero/hero-real-vehicle.jpg" type="image/jpeg">
-    <link rel="stylesheet" href="styles.css?v=20260731i">
+    <link rel="preload" as="image" href="public/assets/pvg-ev/hero/hero-mobile-charging.webp" type="image/webp">
+    <link rel="stylesheet" href="styles.css?v=20260731m">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Insights","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/insights.html"}]}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"PVG-EV EV Charging Insights","itemListElement":[{"@type":"ListItem","position":1,"url":"https://ramprakash1423-droid.github.io/pvg-ev-website/insights/what-is-a-mobile-ev-charging-station.html","name":"What Is a Mobile EV Charging Station?"},{"@type":"ListItem","position":2,"url":"https://ramprakash1423-droid.github.io/pvg-ev-website/insights/how-mobile-charging-can-support-ev-fleets.html","name":"How Mobile Charging Can Support EV Fleets"},{"@type":"ListItem","position":3,"url":"https://ramprakash1423-droid.github.io/pvg-ev-website/insights/reducing-fleet-downtime-through-flexible-charging.html","name":"Reducing Fleet Downtime Through Flexible Charging"},{"@type":"ListItem","position":4,"url":"https://ramprakash1423-droid.github.io/pvg-ev-website/insights/ev-charging-challenges-in-chennai.html","name":"EV-Charging Challenges in Chennai"},{"@type":"ListItem","position":5,"url":"https://ramprakash1423-droid.github.io/pvg-ev-website/insights/chennai-mobile-charging-pilot-updates.html","name":"Chennai Mobile Charging Pilot Updates"}]}</script>
   </head>
@@ -41,9 +41,29 @@
               <a class="button button-secondary" href="#knowledge-hub" data-event="insights_explore_hub">Explore Knowledge Hub</a>
             </div>
             <span class="insights-trust-line">Practical information for fleets, businesses, apartments and pilot partners.</span>
+            <div class="insights-hero-search-panel" aria-label="Search PVG-EV insights">
+              <label class="insights-premium-search insights-search-compact">
+                <span>Search knowledge hub</span>
+                <div class="insights-search-control">
+                  <input type="search" placeholder="Search insights..." autocomplete="off" data-insight-search>
+                  <button class="insights-search-clear" type="button" data-insight-search-clear aria-label="Clear insight search" hidden>Clear</button>
+                </div>
+              </label>
+              <div class="insights-chip-row insights-hero-chip-row" role="list" aria-label="Featured insight categories">
+                <button class="filter-chip is-active" type="button" data-filter-chip data-filter="all" role="listitem">All</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="technology" role="listitem">Technology</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="infrastructure" role="listitem">Infrastructure</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="fleet" role="listitem">Fleet</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="charging" role="listitem">Charging</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="ev-industry" role="listitem">EV Industry</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="policy" role="listitem">Policy</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="tamil-nadu" role="listitem">Tamil Nadu</button>
+                <button class="filter-chip" type="button" data-filter-chip data-filter="future-mobility" role="listitem">Future Mobility</button>
+              </div>
+            </div>
           </div>
           <figure class="insights-premium-visual reveal">
-            <img src="public/assets/pvg-ev/hero/hero-real-vehicle.jpg" alt="PVG-EV mobile charging van and charger supporting an electric vehicle in Chennai" width="2560" height="1440" decoding="async" fetchpriority="high">
+            <img src="public/assets/pvg-ev/hero/hero-mobile-charging.webp" alt="PVG-EV mobile charging vehicle supporting an EV in Chennai" width="2560" height="1440" decoding="async" fetchpriority="high">
             <figcaption class="insights-feature-float">
               <span>Mobile EV Charging</span>
               <strong>What Is a Mobile EV Charging Station?</strong>
@@ -94,18 +114,21 @@
             </div>
             <label class="insights-premium-search">
               <span>Search articles, guides and resources</span>
-              <input type="search" placeholder="Search articles, guides and resources..." autocomplete="off" data-insight-search>
+              <div class="insights-search-control">
+                <input type="search" placeholder="Search articles, guides and resources..." autocomplete="off" data-insight-search>
+                <button class="insights-search-clear" type="button" data-insight-search-clear aria-label="Clear insight search" hidden>Clear</button>
+              </div>
             </label>
             <div class="insights-chip-row" role="list" aria-label="Insight categories">
               <button class="filter-chip is-active" type="button" data-filter-chip data-filter="all" role="listitem">All</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="mobile" role="listitem">Mobile Charging</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="fleet" role="listitem">Fleet Charging</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="commercial" role="listitem">Commercial</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="apartment" role="listitem">Apartment</button>
               <button class="filter-chip" type="button" data-filter-chip data-filter="technology" role="listitem">Technology</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="pilot" role="listitem">Pilot Programme</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="chennai" role="listitem">Chennai</button>
-              <button class="filter-chip" type="button" data-filter-chip data-filter="sustainability" role="listitem">Sustainability</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="infrastructure" role="listitem">Infrastructure</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="fleet" role="listitem">Fleet</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="charging" role="listitem">Charging</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="ev-industry" role="listitem">EV Industry</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="policy" role="listitem">Policy</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="tamil-nadu" role="listitem">Tamil Nadu</button>
+              <button class="filter-chip" type="button" data-filter-chip data-filter="future-mobility" role="listitem">Future Mobility</button>
             </div>
             <div class="insights-filter-status">
               <span data-insight-count aria-live="polite">Showing all insights</span>
@@ -124,8 +147,8 @@
           </div>
 
           <div class="insights-bento-grid" data-insight-grid>
-            <article class="insights-article-card is-lead reveal" data-insight-card data-category="mobile technology fleet chennai" data-title="What Is a Mobile EV Charging Station?" data-summary="vehicle-mounted mobile EV charging systems on demand guide chennai fleet technology">
-              <a class="insights-card-media" href="insights/what-is-a-mobile-ev-charging-station.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-side.jpg" alt="PVG-EV mobile charging van prepared for vehicle-mounted charging support" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card is-lead reveal" data-insight-card data-category="mobile technology fleet chennai charging infrastructure tamil-nadu" data-title="What Is a Mobile EV Charging Station?" data-summary="vehicle-mounted mobile EV charging systems on demand guide chennai fleet technology">
+              <a class="insights-card-media" href="insights/what-is-a-mobile-ev-charging-station.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-angle.jpg" alt="PVG-EV mobile charging van prepared for vehicle-mounted charging support" width="836" height="455" loading="eager" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Mobile Charging</span><span>6 min read</span><span>July 12, 2026</span></div>
                 <h3>What Is a Mobile EV Charging Station?</h3>
@@ -135,8 +158,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="fleet mobile business" data-title="How Mobile Charging Can Support EV Fleets" data-summary="fleet charging operating windows routes taxi logistics charging access mobile">
-              <a class="insights-card-media" href="insights/how-mobile-charging-can-support-ev-fleets.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg" alt="PVG-EV fleet vehicles for mobile charging fleet support planning" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="fleet mobile business charging infrastructure" data-title="How Mobile Charging Can Support EV Fleets" data-summary="fleet charging operating windows routes taxi logistics charging access mobile">
+              <a class="insights-card-media" href="insights/how-mobile-charging-can-support-ev-fleets.html"><img src="public/assets/pvg-ev/fleet/fleet-charging-depot.webp" alt="PVG-EV fleet depot charging support planning" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Fleet Charging</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>How Mobile Charging Can Support EV Fleets</h3>
@@ -146,8 +169,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="fleet commercial business" data-title="Reducing Fleet Downtime Through Flexible Charging" data-summary="fleet downtime flexible charging operating bases commercial utilisation">
-              <a class="insights-card-media" href="insights/reducing-fleet-downtime-through-flexible-charging.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-angle.jpg" alt="Fleet charging depot scene for downtime planning" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="fleet commercial business charging infrastructure" data-title="Reducing Fleet Downtime Through Flexible Charging" data-summary="fleet downtime flexible charging operating bases commercial utilisation">
+              <a class="insights-card-media" href="insights/reducing-fleet-downtime-through-flexible-charging.html"><img src="public/assets/pvg-ev/fleet/fleet-logistics.webp" alt="Electric logistics fleet charging support scene" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Fleet Charging</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>Reducing Fleet Downtime Through Flexible Charging</h3>
@@ -157,8 +180,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="chennai pilot commercial" data-title="EV-Charging Challenges in Chennai" data-summary="chennai access congestion fleet needs infrastructure planning">
-              <a class="insights-card-media" href="insights/ev-charging-challenges-in-chennai.html"><img src="public/assets/pvg-ev/backgrounds/marina-road.webp" alt="Chennai road context for EV charging access and infrastructure planning" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="chennai pilot commercial infrastructure policy tamil-nadu" data-title="EV-Charging Challenges in Chennai" data-summary="chennai access congestion fleet needs infrastructure planning">
+              <a class="insights-card-media" href="insights/ev-charging-challenges-in-chennai.html"><img src="public/assets/pvg-ev/backgrounds/marina-road.webp" alt="Chennai road context for EV charging access and infrastructure planning" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Chennai</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>EV-Charging Challenges in Chennai</h3>
@@ -168,8 +191,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="pilot chennai sustainability" data-title="The Future of Mobile EV Charging in Tamil Nadu" data-summary="tamil nadu south india pilot-led deployment mobile ev charging sustainable mobility">
-              <a class="insights-card-media" href="insights/future-of-mobile-ev-charging-in-tamil-nadu.html"><img src="public/assets/pvg-ev/maps/coverage-map.webp" alt="PVG-EV coverage map for Tamil Nadu mobile charging planning" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="pilot chennai sustainability future-mobility tamil-nadu ev-industry" data-title="The Future of Mobile EV Charging in Tamil Nadu" data-summary="tamil nadu south india pilot-led deployment mobile ev charging sustainable mobility">
+              <a class="insights-card-media" href="insights/future-of-mobile-ev-charging-in-tamil-nadu.html"><img src="public/assets/pvg-ev/maps/coverage-map.webp" alt="PVG-EV coverage map for Tamil Nadu mobile charging planning" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Pilot Programme</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>The Future of Mobile EV Charging in Tamil Nadu</h3>
@@ -179,8 +202,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="apartment chennai mobile" data-title="Apartment EV Charging: Key Considerations" data-summary="apartment residential community gated parking EV charging access">
-              <a class="insights-card-media" href="insights/apartment-ev-charging-key-considerations.html"><img src="public/assets/pvg-ev/apartment/residential-charging.webp" alt="Residential parking charging scene for apartment EV charging planning" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="apartment chennai mobile charging infrastructure" data-title="Apartment EV Charging: Key Considerations" data-summary="apartment residential community gated parking EV charging access">
+              <a class="insights-card-media" href="insights/apartment-ev-charging-key-considerations.html"><img src="public/assets/pvg-ev/apartment/residential-charging.webp" alt="Residential parking charging scene for apartment EV charging planning" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Apartment</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>Apartment EV Charging: Key Considerations</h3>
@@ -190,8 +213,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="mobile technology chennai" data-title="Emergency Charging for Electric Vehicles" data-summary="emergency charging low-charge EVs mobile energy assistance">
-              <a class="insights-card-media" href="insights/emergency-charging-for-electric-vehicles.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-angle.jpg" alt="PVG-EV emergency mobile charging support scene" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="mobile technology chennai charging" data-title="Emergency Charging for Electric Vehicles" data-summary="emergency charging low-charge EVs mobile energy assistance">
+              <a class="insights-card-media" href="insights/emergency-charging-for-electric-vehicles.html"><img src="public/assets/pvg-ev/vehicles/emergency-mobile-charging.webp" alt="PVG-EV emergency mobile charging support scene" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Mobile Charging</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>Emergency Charging for Electric Vehicles</h3>
@@ -201,8 +224,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="commercial business chennai" data-title="How Businesses Can Prepare for EV Adoption" data-summary="business EV adoption charging access parking power fleet planning">
-              <a class="insights-card-media" href="insights/how-businesses-can-prepare-for-ev-adoption.html"><img src="public/assets/pvg-ev/commercial/office-charging.webp" alt="PVG-EV commercial office charging deployment scene" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="commercial business chennai ev-industry infrastructure" data-title="How Businesses Can Prepare for EV Adoption" data-summary="business EV adoption charging access parking power fleet planning">
+              <a class="insights-card-media" href="insights/how-businesses-can-prepare-for-ev-adoption.html"><img src="public/assets/pvg-ev/commercial/office-charging.webp" alt="PVG-EV commercial office charging deployment scene" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Commercial</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>How Businesses Can Prepare for EV Adoption</h3>
@@ -212,8 +235,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="technology commercial mobile" data-title="Mobile EV Charging Versus Fixed Charging" data-summary="mobile EV charging versus fixed charging permanent infrastructure commercial depot">
-              <a class="insights-card-media" href="insights/mobile-ev-charging-versus-fixed-charging.html"><img src="public/assets/pvg-ev/chargers/pvg-ev-fast-charger-side.webp" alt="PVG-EV charging station side view with connector cable" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="technology commercial mobile charging infrastructure" data-title="Mobile EV Charging Versus Fixed Charging" data-summary="mobile EV charging versus fixed charging permanent infrastructure commercial depot">
+              <a class="insights-card-media" href="insights/mobile-ev-charging-versus-fixed-charging.html"><img src="public/assets/pvg-ev/chargers/pvg-ev-fast-charger-side.webp" alt="PVG-EV charging station side view with connector cable" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Technology</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>Mobile EV Charging Versus Fixed Charging</h3>
@@ -223,8 +246,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="pilot technology business" data-title="The PVG-EV and Setrans Collaboration" data-summary="PVG-EV Setrans collaboration technology local operating capability pilot">
-              <a class="insights-card-media" href="insights/pvg-ev-and-setrans-collaboration.html"><img src="public/assets/pvg-ev/engineers/engineer-operating-charger.webp" alt="PVG-EV engineer operating a charging station" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="pilot technology business ev-industry" data-title="The PVG-EV and Setrans Collaboration" data-summary="PVG-EV Setrans collaboration technology local operating capability pilot">
+              <a class="insights-card-media" href="insights/pvg-ev-and-setrans-collaboration.html"><img src="public/assets/pvg-ev/engineers/engineer-operating-charger.webp" alt="PVG-EV engineer operating a charging station" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Technology</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>The PVG-EV and Setrans Collaboration</h3>
@@ -234,8 +257,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="pilot chennai mobile" data-title="Chennai Mobile Charging Pilot Updates" data-summary="chennai mobile charging pilot preparation wider service expansion">
-              <a class="insights-card-media" href="insights/chennai-mobile-charging-pilot-updates.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-angle.jpg" alt="PVG-EV mobile charging van in a night pilot deployment context" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="pilot chennai mobile tamil-nadu future-mobility" data-title="Chennai Mobile Charging Pilot Updates" data-summary="chennai mobile charging pilot preparation wider service expansion">
+              <a class="insights-card-media" href="insights/chennai-mobile-charging-pilot-updates.html"><img src="public/assets/pvg-ev/vehicles/pvg-ev-mobile-van-night.webp" alt="PVG-EV mobile charging van in a night pilot deployment context" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Pilot Programme</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>Chennai Mobile Charging Pilot Updates</h3>
@@ -245,8 +268,8 @@
               </div>
             </article>
 
-            <article class="insights-article-card reveal" data-insight-card data-category="commercial business mobile" data-title="Mobile Charging for Temporary Locations and Events" data-summary="temporary locations events exhibitions projects temporary fleets high demand locations">
-              <a class="insights-card-media" href="insights/mobile-charging-for-temporary-locations-and-events.html"><img src="public/assets/pvg-ev/commercial/mall-charging.webp" alt="PVG-EV temporary mobile charging support at a commercial venue" width="1200" height="800" loading="eager" decoding="async"></a>
+            <article class="insights-article-card reveal" data-insight-card data-category="commercial business mobile charging infrastructure" data-title="Mobile Charging for Temporary Locations and Events" data-summary="temporary locations events exhibitions projects temporary fleets high demand locations">
+              <a class="insights-card-media" href="insights/mobile-charging-for-temporary-locations-and-events.html"><img src="public/assets/pvg-ev/commercial/mall-charging.webp" alt="PVG-EV temporary mobile charging support at a commercial venue" width="1200" height="800" loading="lazy" decoding="async"></a>
               <div class="insights-card-body">
                 <div class="insights-meta-row"><span class="category-badge">Commercial</span><span>5 min read</span><span>July 12, 2026</span></div>
                 <h3>Mobile Charging for Temporary Locations and Events</h3>
@@ -257,6 +280,7 @@
             </article>
           </div>
           <p class="insights-empty" data-insights-empty hidden>No matching insights found. Try another search term or clear the selected category.</p>
+          <button class="insights-load-more" type="button" data-insight-load-more hidden>Load More Insights</button>
         </div>
       </section>
 
@@ -268,19 +292,19 @@
           </div>
           <div class="insights-guide-grid">
             <article class="insights-guide-card reveal">
-              <img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg" alt="Fleet depot EV charging assessment scene" width="1200" height="800" loading="eager" decoding="async">
+              <img src="public/assets/pvg-ev/fleet/fleet-depot.webp" alt="Fleet depot EV charging assessment scene" width="1200" height="800" loading="lazy" decoding="async">
               <div><span>Fleet Guide</span><h3>Fleet Charging Planning Guide</h3><p>Route, depot and operating-window considerations for electric fleets.</p><a href="fleet-solutions.html">View Guide</a></div>
             </article>
             <article class="insights-guide-card reveal">
-              <img src="public/assets/pvg-ev/commercial/industrial-charging.webp" alt="Commercial site EV charging assessment scene" width="1200" height="800" loading="eager" decoding="async">
+              <img src="public/assets/pvg-ev/commercial/industrial-charging.webp" alt="Commercial site EV charging assessment scene" width="1200" height="800" loading="lazy" decoding="async">
               <div><span>Commercial Guide</span><h3>Commercial Site Assessment Guide</h3><p>Site-access, parking and deployment-readiness questions for businesses.</p><a href="solutions.html#commercial-charging">View Guide</a></div>
             </article>
             <article class="insights-guide-card reveal">
-              <img src="public/assets/pvg-ev/apartment/community-charging.webp" alt="Apartment community EV charging readiness scene" width="1200" height="800" loading="eager" decoding="async">
+              <img src="public/assets/pvg-ev/apartment/community-charging.webp" alt="Apartment community EV charging readiness scene" width="1200" height="800" loading="lazy" decoding="async">
               <div><span>Apartment Guide</span><h3>Apartment Charging Readiness Guide</h3><p>Property, parking and resident-use considerations for communities.</p><a href="solutions.html#apartment-charging">View Guide</a></div>
             </article>
             <article class="insights-guide-card reveal">
-              <img src="public/assets/pvg-ev/hero/hero-real-vehicle.jpg" alt="PVG-EV pilot programme deployment planning scene" width="2560" height="1440" loading="eager" decoding="async">
+              <img src="public/assets/pvg-ev/hero/hero-pilot.webp" alt="PVG-EV pilot programme deployment planning scene" width="2560" height="1440" loading="lazy" decoding="async">
               <div><span>Pilot Guide</span><h3>Mobile Charging Pilot Checklist</h3><p>Information to prepare before discussing pilot participation.</p><a href="pilot-programme.html">View Guide</a></div>
             </article>
           </div>
@@ -414,7 +438,7 @@
                 <span class="footer-newsletter-status" data-footer-newsletter-status aria-live="polite"></span>
               </form>
             </div>
-            <img src="public/assets/pvg-ev/chargers/charging-cable.webp" alt="PVG-EV charging cable close-up" width="1200" height="800" loading="eager" decoding="async">
+            <img src="public/assets/pvg-ev/chargers/charging-cable.webp" alt="PVG-EV charging cable close-up" width="1200" height="800" loading="lazy" decoding="async">
           </div>
         </div>
       </section>
@@ -430,11 +454,11 @@
               <a class="button button-ghost-light" href="contact.html" data-event="insights_contact_pvg">Contact PVG-EV</a>
             </div>
           </div>
-          <img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg" alt="Official PVG-EV mobile charging van for charging requirement support" width="1200" height="800" loading="eager" decoding="async">
+          <img src="public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg" alt="Official PVG-EV mobile charging van for charging requirement support" width="1200" height="800" loading="lazy" decoding="async">
         </div>
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260731i"></script>
+    <script src="script.js?v=20260731j"></script>
   </body>
 </html>
