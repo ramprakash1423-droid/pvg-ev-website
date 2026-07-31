@@ -19,10 +19,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260731h">
+    <link rel="stylesheet" href="styles.css?v=20260731i">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html"}]}</script>
   </head>
-  <body>
+  <body class="request-reference-body">
     <a class="skip-link" href="#main">Skip to content</a>
     <div data-site-header data-root="" data-active="request"></div>
     <main id="main" class="main charging-request-page">
@@ -33,7 +33,7 @@
             <p class="eyebrow">Charging Requirement</p>
             <h1>Tell Us Your Charging Requirement</h1>
             <p class="page-lead">Share only the essentials first. PVG-EV can review your requirement faster when your phone number, location and vehicle type are clear.</p>
-            <p class="request-note">Pilot preparation is in progress. Service availability and response timing are confirmed only after PVG-EV reviews the request.</p>
+            <p class="request-note"><strong>Pilot preparation in progress</strong><span>Service availability and response timing are confirmed only after PVG-EV reviews the request.</span></p>
           </div>
           <div class="request-hero-visual reveal reveal-scale" role="img" aria-label="PVG-EV mobile charging requirement review workflow">
             <span class="request-glow" aria-hidden="true"></span>
@@ -73,27 +73,33 @@
               <input type="hidden" name="longitude">
               <input type="hidden" name="gps_accuracy" data-review-label="GPS Accuracy">
 
+              <p class="request-form-status" data-request-status aria-live="polite"></p>
+
               <fieldset class="request-step" data-request-step>
                 <legend>What do you need right now?</legend>
                 <p>Choose the closest situation. Stranded or low-battery owners should use the emergency path first.</p>
-                <div class="request-fast-panel" aria-label="Fast request options">
-                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Low battery / stranded vehicle" data-customer="Individual EV owner" data-location-type="Roadside or stranded location" data-battery-status="Low battery now" data-charging-need="Immediate assistance" data-requirement-scope="Individual vehicle requirement">
-                    <strong>Stranded or low battery</strong>
-                    <span>Fast path for one EV needing help now.</span>
+                <div class="request-fast-panel" role="radiogroup" aria-label="Fast request options">
+                  <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Low battery / stranded vehicle" data-customer="Individual EV owner" data-location-type="Roadside or stranded location" data-battery-status="Low battery now" data-charging-need="Immediate assistance" data-requirement-scope="Individual vehicle requirement">
+                    <span class="request-fast-icon" aria-hidden="true">!</span>
+                    <span class="request-fast-copy"><strong>Stranded or low battery</strong><span>Fast path for one EV needing help now.</span></span>
+                    <span class="request-fast-check" aria-hidden="true"></span>
                   </button>
-                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Fleet charging" data-customer="Fleet operator" data-requirement-scope="Fleet requirement" data-charging-need="Regular fleet charging support">
-                    <strong>Fleet or depot support</strong>
-                    <span>For planned operator or depot charging review.</span>
+                  <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Fleet charging" data-customer="Fleet operator" data-requirement-scope="Fleet requirement" data-charging-need="Regular fleet charging support">
+                    <span class="request-fast-icon" aria-hidden="true">F</span>
+                    <span class="request-fast-copy"><strong>Fleet or depot support</strong><span>For planned operator or depot charging review.</span></span>
+                    <span class="request-fast-check" aria-hidden="true"></span>
                   </button>
-                  <button class="request-fast-card" type="button" data-fast-request data-requirement="Residential or community requirement" data-customer="Apartment community" data-requirement-scope="Site or community requirement">
-                    <strong>Apartment or site enquiry</strong>
-                    <span>For community, office or commercial review.</span>
+                  <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Residential or community requirement" data-customer="Apartment community" data-requirement-scope="Site or community requirement">
+                    <span class="request-fast-icon" aria-hidden="true">A</span>
+                    <span class="request-fast-copy"><strong>Apartment or site enquiry</strong><span>For community, office or commercial review.</span></span>
+                    <span class="request-fast-check" aria-hidden="true"></span>
                   </button>
                 </div>
-                <div class="form-grid-two request-need-fields">
+                <small class="field-error request-choice-error" data-error-for="requirement_choice"></small>
+                <div class="form-grid-two request-need-fields request-backend-fields" aria-hidden="true">
                 <div class="form-row">
                   <label for="requirement_type">Requirement Type</label>
-                  <select id="requirement_type" name="requirement_type" required>
+                  <select id="requirement_type" name="requirement_type" tabindex="-1">
                     <option value="">Select a requirement</option>
                     <option>Low battery / stranded vehicle</option>
                     <option>Fleet charging</option>
@@ -348,6 +354,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260731h"></script>
+    <script src="script.js?v=20260731i"></script>
   </body>
 </html>

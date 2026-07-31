@@ -99,6 +99,15 @@
   const renderFooter = () => {
     if (!footerMount) return;
     const root = footerMount.dataset.root || "";
+    const footerSection = (title, id, content) => `
+      <div class="footer-column footer-accordion" data-footer-accordion>
+        <button class="footer-accordion-trigger" type="button" aria-expanded="true" aria-controls="${id}" data-footer-accordion-trigger>
+          <span>${title}</span>
+          <span class="footer-chevron" aria-hidden="true"></span>
+        </button>
+        <div class="footer-accordion-panel" id="${id}" data-footer-accordion-panel>${content}</div>
+      </div>
+    `;
 
     footerMount.innerHTML = `
       <footer class="site-footer">
@@ -115,32 +124,27 @@
               <span class="footer-social-item is-disabled"><span class="social-icon social-icon-facebook" aria-hidden="true"></span><span>Facebook</span></span>
               <span class="footer-social-item is-disabled"><span class="social-icon social-icon-instagram" aria-hidden="true"></span><span>Instagram</span></span>
             </div>
-            <p class="footer-note">Product specifications, charging availability, service coverage and launch dates are subject to testing, certification, operational readiness and local deployment conditions. Images may include development-stage or representative product configurations.</p>
+            <details class="footer-note-details">
+              <summary>Service disclaimer</summary>
+              <p class="footer-note">Product specifications, charging availability, service coverage and launch dates are subject to testing, certification, operational readiness and local deployment conditions. Images may include development-stage or representative product configurations.</p>
+            </details>
           </div>
-          <div class="footer-column">
-            <h2>Website</h2>
-            ${footerLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
-          </div>
-          <div class="footer-column">
-            <h2>Solutions</h2>
+          ${footerSection("Website", "footer-website-links", footerLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join(""))}
+          ${footerSection("Solutions", "footer-solution-links", `
             <a href="${url(root, "solutions.html#mobile-ev-charging")}">Mobile EV Charging</a>
             <a href="${url(root, "solutions.html#commercial-charging")}">Commercial EV Charging</a>
             <a href="${url(root, "solutions.html#apartment-charging")}">Apartment Charging</a>
             <a href="${url(root, "solutions.html#maintenance-support")}">Maintenance and Support</a>
-          </div>
-          <div class="footer-column">
-            <h2>Contact</h2>
+          `)}
+          ${footerSection("Contact", "footer-contact-links", `
             <a href="${url(root, "request-charging.html")}">Request Charging</a>
             <a href="${url(root, "contact.html")}">Contact PVG-EV</a>
             <a href="${url(root, "pilot-programme.html#pilot-form")}">Join the Chennai Pilot</a>
             <a href="${url(root, "contact.html#contact-form")}">Request a Consultation</a>
             <a href="https://wa.me/919751083000" target="_blank" rel="noopener">WhatsApp: +91 97510 83000</a>
             <span class="footer-static">Chennai pilot market: Tamil Nadu, India</span>
-          </div>
-          <div class="footer-column">
-            <h2>Legal</h2>
-            ${policyLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join("")}
-          </div>
+          `)}
+          ${footerSection("Legal", "footer-legal-links", policyLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join(""))}
           <div class="footer-column footer-newsletter">
             <h2>EV Updates</h2>
             <p>Get pilot notes, charging explainers and fleet-readiness resources.</p>
@@ -182,9 +186,47 @@
     document.body.appendChild(widget);
   };
 
+  const initFooterAccordions = () => {
+    const accordions = Array.from(document.querySelectorAll("[data-footer-accordion]"));
+    if (!accordions.length) return;
+    const mobileQuery = window.matchMedia("(max-width: 640px)");
+
+    const setFooterPanel = (accordion, open, persist = true) => {
+      const trigger = accordion.querySelector("[data-footer-accordion-trigger]");
+      const panel = accordion.querySelector("[data-footer-accordion-panel]");
+      if (!trigger || !panel) return;
+      trigger.setAttribute("aria-expanded", String(open));
+      panel.hidden = !open;
+      if (persist) accordion.dataset.footerOpen = String(open);
+    };
+
+    const syncFooterMode = () => {
+      accordions.forEach((accordion) => {
+        if (!mobileQuery.matches) {
+          setFooterPanel(accordion, true, false);
+          return;
+        }
+        setFooterPanel(accordion, accordion.dataset.footerOpen === "true");
+      });
+    };
+
+    accordions.forEach((accordion) => {
+      accordion.dataset.footerOpen = "false";
+      accordion.querySelector("[data-footer-accordion-trigger]")?.addEventListener("click", () => {
+        if (!mobileQuery.matches) return;
+        setFooterPanel(accordion, accordion.dataset.footerOpen !== "true");
+      });
+    });
+
+    if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", syncFooterMode);
+    else mobileQuery.addListener?.(syncFooterMode);
+    syncFooterMode();
+  };
+
   renderHeader();
   renderFooter();
   renderQuickEnquiry();
+  initFooterAccordions();
 
   const header = document.querySelector("[data-header]");
   const navToggle = document.querySelector("[data-nav-toggle]");
@@ -206,6 +248,8 @@
     navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     navMenu.classList.toggle("is-open", open);
     document.body.classList.toggle("menu-open", open);
+    document.documentElement.classList.toggle("menu-open", open);
+    document.body.style.overflow = open ? "hidden" : "";
   };
 
   navToggle?.addEventListener("click", () => {
@@ -243,6 +287,9 @@
 
   document.addEventListener("click", (event) => {
     if (!event.target.closest("[data-dropdown]")) closeDropdowns();
+    if (navMenu?.classList.contains("is-open") && !event.target.closest("[data-header]")) {
+      setMenu(false);
+    }
   });
 
   window.addEventListener("keydown", (event) => {
@@ -788,6 +835,9 @@
     const whatsappRetry = document.querySelector("[data-whatsapp-retry]");
     const geoButton = requestForm.querySelector("[data-geo-button]");
     const geoStatus = requestForm.querySelector("[data-geo-status]");
+    const requestStatus = requestForm.querySelector("[data-request-status]");
+    const fastCards = Array.from(requestForm.querySelectorAll("[data-fast-request]"));
+    const choiceError = requestForm.querySelector('[data-error-for="requirement_choice"]');
     const whatsappNumber = "919751083000";
     const storageKey = "pvgChargingRequirementDraft";
     let currentStep = 0;
@@ -831,6 +881,7 @@
       const gpsLocation = requestForm.elements.gps_location?.value || "";
       const accuracy = requestForm.elements.gps_accuracy?.value || "";
       if (!gpsLocation || !geoStatus) return;
+      geoStatus.classList.add("is-success");
       geoStatus.textContent = accuracy
         ? `GPS location captured. Accuracy is about ${accuracy} metres.`
         : "GPS location captured.";
@@ -857,6 +908,59 @@
       if (!field) return "";
       if (field.type === "checkbox") return field.checked ? "Yes" : "";
       return String(field.value || "").trim();
+    };
+
+    const setRequestStatus = (message, type = "") => {
+      if (!requestStatus) return;
+      requestStatus.textContent = message || "";
+      requestStatus.dataset.statusType = type;
+    };
+
+    const setChoiceError = (message) => {
+      if (choiceError) choiceError.textContent = message || "";
+      fastCards.forEach((card) => card.classList.toggle("is-invalid", Boolean(message)));
+    };
+
+    const setRequestValue = (name, value) => {
+      if (!value) return;
+      const field = requestForm.elements[name];
+      if (!field) return;
+      field.value = value;
+      setError(field, "");
+    };
+
+    const syncFastSelection = () => {
+      const selectedRequirement = getRequestValue("requirement_type");
+      fastCards.forEach((card) => {
+        const selected = card.dataset.requirement === selectedRequirement;
+        card.classList.toggle("is-selected", selected);
+        card.setAttribute("aria-checked", String(selected));
+      });
+    };
+
+    const selectFastRequest = (button) => {
+      setRequestValue("requirement_type", button.dataset.requirement);
+      setRequestValue("customer_type", button.dataset.customer);
+      setRequestValue("location_type", button.dataset.locationType);
+      setRequestValue("battery_status", button.dataset.batteryStatus);
+      setRequestValue("charging_need", button.dataset.chargingNeed);
+      setRequestValue("requirement_scope", button.dataset.requirementScope);
+      setRequestValue("vehicle_count", requestForm.elements.vehicle_count?.value || "1");
+      setChoiceError("");
+      setRequestStatus(`${button.dataset.requirement} selected. Continue when ready.`, "success");
+      syncFastSelection();
+      writeDraft();
+    };
+
+    const validateRequestNeed = () => {
+      if (getRequestValue("requirement_type")) {
+        setChoiceError("");
+        return true;
+      }
+      setChoiceError("Select the closest requirement to continue.");
+      setRequestStatus("Select one requirement option first.", "error");
+      fastCards[0]?.focus({ preventScroll: true });
+      return false;
     };
 
     const buildWhatsappMessage = (reference) => {
@@ -936,13 +1040,15 @@
         item.classList.toggle("is-complete", itemIndex < currentStep);
       });
       if (currentStep === steps.length - 1) updateReview();
-      steps[currentStep]?.querySelector("input, select, textarea, button")?.focus({ preventScroll: true });
+      setRequestStatus("");
+      steps[currentStep]?.querySelector("input:not([tabindex='-1']), select:not([tabindex='-1']), textarea, button")?.focus({ preventScroll: true });
     };
 
     const validateStep = () => {
       const fieldsValid = getVisibleFields().map(validateField).every(Boolean);
+      const needValid = currentStep === 0 ? validateRequestNeed() : true;
       const locationValid = currentStep === 1 ? validateRequestLocation() : true;
-      const valid = fieldsValid && locationValid;
+      const valid = fieldsValid && needValid && locationValid;
       if (!valid) steps[currentStep]?.querySelector(".is-invalid")?.focus();
       return valid;
     };
@@ -963,6 +1069,7 @@
 
     hydrateDraft();
     updateGeoUi();
+    syncFastSelection();
     showStep(0);
 
     requestFields.forEach((field) => {
@@ -977,27 +1084,8 @@
       });
     });
 
-    const setRequestValue = (name, value) => {
-      if (!value) return;
-      const field = requestForm.elements[name];
-      if (!field) return;
-      field.value = value;
-      setError(field, "");
-    };
-
     requestForm.querySelectorAll("[data-fast-request]").forEach((button) => {
-      button.addEventListener("click", () => {
-        setRequestValue("requirement_type", button.dataset.requirement);
-        setRequestValue("customer_type", button.dataset.customer);
-        setRequestValue("location_type", button.dataset.locationType);
-        setRequestValue("battery_status", button.dataset.batteryStatus);
-        setRequestValue("charging_need", button.dataset.chargingNeed);
-        setRequestValue("requirement_scope", button.dataset.requirementScope);
-        setRequestValue("vehicle_count", requestForm.elements.vehicle_count?.value || "1");
-        writeDraft();
-        showStep(Math.min(1, steps.length - 1));
-        document.getElementById("request_phone")?.focus({ preventScroll: false });
-      });
+      button.addEventListener("click", () => selectFastRequest(button));
     });
 
     requestForm.querySelectorAll("[data-request-next]").forEach((button) => {
@@ -1045,11 +1133,13 @@
       if (submitted) return;
       const website = requestForm.elements.website?.value;
       if (website) return;
+      const needValid = Boolean(getRequestValue("requirement_type"));
       const fieldsValid = requestFields.map(validateField).every(Boolean);
       const locationValid = validateRequestLocation();
-      if (!fieldsValid || !locationValid) {
-        const invalidStep = locationValid ? steps.findIndex((step) => step.querySelector(".is-invalid")) : 1;
+      if (!needValid || !fieldsValid || !locationValid) {
+        const invalidStep = !needValid ? 0 : locationValid ? steps.findIndex((step) => step.querySelector(".is-invalid")) : 1;
         showStep(invalidStep >= 0 ? invalidStep : currentStep);
+        if (!needValid) validateRequestNeed();
         return;
       }
       submitted = true;
