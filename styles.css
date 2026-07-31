@@ -27364,3 +27364,158 @@ button {
     font-size: clamp(1.74rem, 7.7vw, 2.08rem) !important;
   }
 }
+
+/* Final mobile drawer correction: compact, readable, and iPhone-toolbar safe. */
+@media (max-width: 760px) {
+  .nav-menu-client,
+  .fleet-reference-body .nav-menu-client,
+  .setrans-reference-body .nav-menu-client,
+  .contact-reference-body .nav-menu-client,
+  .insights-premium-body .nav-menu-client {
+    inset: calc(var(--floating-nav-clearance) + 10px) 22px auto !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: min(520px, calc(100svh - var(--floating-nav-clearance) - 108px)) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+    padding: 14px !important;
+    border-radius: 22px !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin !important;
+  }
+
+  .nav-menu-client > .nav-link,
+  .nav-menu-client > .nav-dropdown,
+  .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .nav-menu-client > .mobile-contact-link,
+  .nav-menu-client > .mobile-request-link,
+  .fleet-reference-body .nav-menu-client > a[href="mobile-charging-station.html"],
+  .fleet-reference-body .nav-menu-client > a[href="collaboration.html"],
+  .fleet-reference-body .nav-menu-client > .nav-link,
+  .fleet-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .setrans-reference-body .nav-menu-client > a[href="mobile-charging-station.html"],
+  .setrans-reference-body .nav-menu-client > a[href="collaboration.html"],
+  .setrans-reference-body .nav-menu-client > .nav-link,
+  .setrans-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .contact-reference-body .nav-menu-client > a[href="mobile-charging-station.html"],
+  .contact-reference-body .nav-menu-client > a[href="collaboration.html"],
+  .contact-reference-body .nav-menu-client > .nav-link,
+  .contact-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .insights-premium-body .nav-menu-client > .nav-link,
+  .insights-premium-body .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #0B1220 !important;
+    font-size: .82rem !important;
+    font-weight: 850 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0 !important;
+    text-align: left !important;
+    white-space: normal !important;
+  }
+
+  .nav-menu-client > .nav-dropdown {
+    padding: 0 !important;
+  }
+
+  .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    justify-content: space-between !important;
+  }
+
+  .nav-menu-client > .nav-link.is-active,
+  .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+  .fleet-reference-body .nav-menu-client > .nav-link.is-active,
+  .fleet-reference-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+  .setrans-reference-body .nav-menu-client > .nav-link.is-active,
+  .setrans-reference-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+  .contact-reference-body .nav-menu-client > .nav-link.is-active,
+  .contact-reference-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle,
+  .insights-premium-body .nav-menu-client > .nav-link.is-active,
+  .insights-premium-body .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+    color: #067A50 !important;
+    background: rgba(232, 250, 242, .78) !important;
+    box-shadow: inset 0 0 0 1px rgba(8, 166, 106, .16) !important;
+  }
+
+  .nav-menu-client > .mobile-contact-link:not(.mobile-request-link) {
+    order: 90 !important;
+  }
+
+  .nav-menu-client > .mobile-request-link,
+  .home-reference-body .nav-menu-client > .mobile-request-link,
+  .fleet-reference-body .nav-menu-client > .mobile-request-link,
+  .setrans-reference-body .nav-menu-client > .mobile-request-link,
+  .contact-reference-body .nav-menu-client > .mobile-request-link,
+  .insights-premium-body .nav-menu-client > .mobile-request-link {
+    order: 100 !important;
+    min-height: 42px !important;
+    margin-top: 6px !important;
+    justify-content: center !important;
+    border-radius: 16px !important;
+    color: #fff !important;
+    font-size: .86rem !important;
+    background: linear-gradient(135deg, #08A66A, #0EA5FF) !important;
+    box-shadow: 0 14px 28px rgba(14, 165, 255, .18) !important;
+  }
+
+  .dropdown-menu {
+    margin: 2px 0 5px !important;
+    padding: 6px !important;
+    border-radius: 14px !important;
+  }
+
+  .dropdown-link {
+    min-height: 34px !important;
+    padding: 8px 10px !important;
+    border-radius: 12px !important;
+    font-size: .78rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-menu-client,
+  .fleet-reference-body .nav-menu-client,
+  .setrans-reference-body .nav-menu-client,
+  .contact-reference-body .nav-menu-client,
+  .insights-premium-body .nav-menu-client {
+    inset-inline: 24px !important;
+    padding: 13px !important;
+    gap: 3px !important;
+    max-height: min(500px, calc(100svh - var(--floating-nav-clearance) - 104px)) !important;
+  }
+
+  .nav-menu-client > .nav-link,
+  .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .nav-menu-client > .mobile-contact-link,
+  .fleet-reference-body .nav-menu-client > a[href="mobile-charging-station.html"],
+  .fleet-reference-body .nav-menu-client > a[href="collaboration.html"],
+  .fleet-reference-body .nav-menu-client > .nav-link,
+  .fleet-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .setrans-reference-body .nav-menu-client > a[href="mobile-charging-station.html"],
+  .setrans-reference-body .nav-menu-client > a[href="collaboration.html"],
+  .setrans-reference-body .nav-menu-client > .nav-link,
+  .setrans-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .contact-reference-body .nav-menu-client > a[href="mobile-charging-station.html"],
+  .contact-reference-body .nav-menu-client > a[href="collaboration.html"],
+  .contact-reference-body .nav-menu-client > .nav-link,
+  .contact-reference-body .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  .insights-premium-body .nav-menu-client > .nav-link,
+  .insights-premium-body .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    min-height: 36px !important;
+    font-size: .78rem !important;
+  }
+}
