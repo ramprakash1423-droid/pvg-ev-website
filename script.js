@@ -78,7 +78,7 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <img class="brand-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-header.jpg")}" alt="PVG-EV Prime Ventures Global logo" width="540" height="300" decoding="async">
+            <img class="brand-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg")}" alt="PVG-EV Prime Ventures Global logo" width="620" height="180" decoding="async">
             <span class="sr-only">PVG-EV Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
@@ -115,7 +115,7 @@
         <div class="footer-shell footer-shell-client">
           <div class="footer-brand">
             <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-              <img class="brand-logo-real footer-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-header.jpg")}" alt="PVG-EV Prime Ventures Global logo" width="540" height="300" loading="lazy" decoding="async">
+              <img class="brand-logo-real footer-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-white.svg")}" alt="PVG-EV Prime Ventures Global logo" width="620" height="180" loading="lazy" decoding="async">
               <span class="sr-only">PVG-EV Prime Ventures Global</span>
             </a>
             <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
