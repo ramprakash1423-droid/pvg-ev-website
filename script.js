@@ -76,8 +76,8 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <span class="brand-mark" aria-hidden="true"><span class="brand-bolt"></span></span>
-            <span class="brand-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
+            <img class="brand-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-wordmark.jpg")}" alt="" width="520" height="155" decoding="async">
+            <span class="sr-only">PVG-EV Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
             <span></span><span></span><span></span>
@@ -105,8 +105,8 @@
         <div class="footer-shell footer-shell-client">
           <div class="footer-brand">
             <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-              <span class="brand-mark" aria-hidden="true"><span class="brand-bolt"></span></span>
-              <span class="brand-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
+              <img class="brand-logo-real footer-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-header.jpg")}" alt="" width="540" height="300" loading="lazy" decoding="async">
+              <span class="sr-only">PVG-EV Prime Ventures Global</span>
             </a>
             <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
             <div class="footer-social" aria-label="PVG-EV social channels pending verification">
@@ -134,7 +134,7 @@
             <a href="${url(root, "contact.html")}">Contact PVG-EV</a>
             <a href="${url(root, "pilot-programme.html#pilot-form")}">Join the Chennai Pilot</a>
             <a href="${url(root, "contact.html#contact-form")}">Request a Consultation</a>
-            <span class="footer-static footer-unverified">WhatsApp quick contact pending verification</span>
+            <a href="https://wa.me/919751083000" target="_blank" rel="noopener">WhatsApp: +91 97510 83000</a>
             <span class="footer-static">Chennai pilot market: Tamil Nadu, India</span>
           </div>
           <div class="footer-column">

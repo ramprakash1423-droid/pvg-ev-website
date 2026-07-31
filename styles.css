@@ -220,7 +220,7 @@
   border-radius: 22px;
   background:
     linear-gradient(90deg, rgba(7, 31, 43, .32), rgba(7, 31, 43, .05) 45%, rgba(7, 31, 43, .18)),
-    url("public/assets/pvg-ev/hero/hero-home-chennai.webp") 62% 54% / cover no-repeat;
+    url("public/assets/pvg-ev/hero/hero-real-vehicle.jpg") 62% 54% / cover no-repeat;
   box-shadow: 0 26px 78px rgba(5, 35, 42, .18);
 }
 
@@ -1351,7 +1351,7 @@
   overflow: hidden;
   background:
     linear-gradient(90deg, rgba(7, 28, 41, .12), rgba(7, 28, 41, .01) 44%, rgba(7, 28, 41, .08)),
-    url("public/assets/pvg-ev/hero/hero-home-chennai.webp") 64% 54% / cover no-repeat,
+    url("public/assets/pvg-ev/hero/hero-real-vehicle.jpg") 64% 54% / cover no-repeat,
     #eef8f6;
   box-shadow: 0 28px 90px rgba(5, 22, 31, .24);
 }
@@ -2208,6 +2208,38 @@
   }
 }
 
+.nav-shell-client .brand-logo-real,
+.fleet-reference-body .nav-shell-client .brand-logo-real,
+.setrans-reference-body .nav-shell-client .brand-logo-real,
+.contact-reference-body .nav-shell-client .brand-logo-real,
+.insights-premium-body .nav-shell-client .brand-logo-real {
+  width: 168px !important;
+  height: 50px !important;
+  flex: 0 0 auto !important;
+}
+
+.site-footer .brand-logo-real {
+  width: 168px !important;
+  height: 92px !important;
+}
+
+@media (max-width: 760px) {
+  .nav-shell-client .brand-logo-real,
+  .fleet-reference-body .nav-shell-client .brand-logo-real,
+  .setrans-reference-body .nav-shell-client .brand-logo-real,
+  .contact-reference-body .nav-shell-client .brand-logo-real,
+  .insights-premium-body .nav-shell-client .brand-logo-real {
+    width: min(154px, calc(100vw - 132px)) !important;
+    height: 46px !important;
+    border-radius: 10px !important;
+  }
+
+  .site-footer .brand-logo-real {
+    width: 148px !important;
+    height: 82px !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-reference-body *,
   .home-reference-body *::before,
@@ -2384,6 +2416,24 @@ svg {
   color: var(--muted);
   font-size: .72rem;
   font-weight: 700;
+}
+
+.brand-logo-real {
+  display: block;
+  width: 168px;
+  height: 50px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+  background: #07111d;
+  box-shadow: 0 12px 28px rgba(4, 14, 27, .13), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+.site-footer .brand-logo-real {
+  width: 168px;
+  height: 92px;
+  object-position: center 38%;
+  border-radius: 14px;
 }
 
 .nav-menu {
@@ -22274,7 +22324,7 @@ textarea:focus,
   color: #fff;
   background:
     linear-gradient(120deg, rgba(0, 107, 104, .98), rgba(11, 183, 131, .92), rgba(14, 165, 255, .76)),
-    url("public/assets/pvg-ev/hero/hero-home-chennai.webp") center / cover no-repeat;
+    url("public/assets/pvg-ev/hero/hero-real-vehicle.jpg") center / cover no-repeat;
   box-shadow: 0 24px 70px rgba(0, 107, 104, .22);
 }
 
@@ -23251,7 +23301,7 @@ textarea:focus,
   color: #fff;
   background:
     linear-gradient(135deg, rgba(7, 31, 43, .92), rgba(5, 54, 55, .88)),
-    url("public/assets/pvg-ev/fleet/fleet-depot.webp") center / cover no-repeat;
+    url("public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg") center / cover no-repeat;
   box-shadow: 0 16px 42px rgba(7, 31, 43, .18);
 }
 
@@ -25223,15 +25273,15 @@ textarea:focus,
 }
 
 .home-ref-usecase-card:nth-child(1) {
-  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/vehicles/emergency-mobile-charging.webp");
+  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-angle.jpg");
 }
 
 .home-ref-usecase-card:nth-child(2) {
-  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/vehicles/fleet-lineup.webp");
+  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg");
 }
 
 .home-ref-usecase-card:nth-child(3) {
-  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/fleet/fleet-depot.webp");
+  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg");
 }
 
 .home-ref-usecase-card:nth-child(4) {
@@ -25251,7 +25301,7 @@ textarea:focus,
 }
 
 .home-ref-usecase-card:nth-child(8) {
-  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/hero/hero-pilot.webp");
+  background-image: linear-gradient(180deg, rgba(7, 28, 41, .1), rgba(7, 28, 41, .86)), url("public/assets/pvg-ev/hero/hero-real-vehicle.jpg");
 }
 
 .home-ref-usecase-card {
@@ -25311,7 +25361,7 @@ textarea:focus,
 }
 
 .station-scene-fleet {
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(7, 26, 36, .08)), url("public/assets/pvg-ev/fleet/fleet-depot.webp") !important;
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(7, 26, 36, .08)), url("public/assets/pvg-ev/vehicles/pvg-ev-real-vehicle-board.jpg") !important;
 }
 
 .station-scene-commercial {
