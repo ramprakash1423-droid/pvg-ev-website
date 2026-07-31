@@ -22,7 +22,8 @@
     { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
     { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" },
     { name: "Pilot Programme", path: "pilot-programme.html", key: "pilot" },
-    { name: "Insights", path: "insights.html", key: "insights" }
+    { name: "Insights", path: "insights.html", key: "insights" },
+    { name: "Contact", path: "contact.html", key: "contact" }
   ];
 
   const footerLinks = [
@@ -76,7 +77,7 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <img class="brand-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-wordmark.jpg")}" alt="" width="520" height="155" decoding="async">
+            <img class="brand-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-header.jpg")}" alt="PVG-EV Prime Ventures Global logo" width="540" height="300" decoding="async">
             <span class="sr-only">PVG-EV Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
@@ -85,7 +86,6 @@
           <div class="nav-menu nav-menu-client" id="site-menu" data-nav-menu>
             ${navItems.map(navLink).join("")}
             <a class="nav-link mobile-contact-link mobile-request-link ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="mobile_nav_request_charging">Request Mobile Charging</a>
-            <a class="nav-link mobile-contact-link ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}">Contact</a>
           </div>
           <div class="nav-actions" aria-label="Primary actions">
             <a class="nav-cta nav-cta-request ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="nav_request_charging">Request Mobile Charging</a>
@@ -105,7 +105,7 @@
         <div class="footer-shell footer-shell-client">
           <div class="footer-brand">
             <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-              <img class="brand-logo-real footer-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-header.jpg")}" alt="" width="540" height="300" loading="lazy" decoding="async">
+              <img class="brand-logo-real footer-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-real-header.jpg")}" alt="PVG-EV Prime Ventures Global logo" width="540" height="300" loading="lazy" decoding="async">
               <span class="sr-only">PVG-EV Prime Ventures Global</span>
             </a>
             <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
@@ -191,6 +191,7 @@
   const navMenu = document.querySelector("[data-nav-menu]");
   const stickyCta = document.querySelector("[data-quick-enquiry]");
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+  document.documentElement.classList.add("animations-ready");
 
   const trackPvgEvent = (eventName, detail = {}) => {
     if (!eventName) return;
@@ -280,7 +281,7 @@
 
   const syncHeader = () => {
     header?.classList.toggle("is-scrolled", window.scrollY > 8);
-    const hero = document.querySelector(".compact-home-hero, .station-hero-v3, .pilot-hero-v2, .station-product-hero, .request-hero, .page-hero, .hero");
+    const hero = document.querySelector(".home-ref-hero, .compact-home-hero, .station-hero-v3, .pilot-hero-v2, .station-product-hero, .request-hero, .page-hero, .hero");
     const trigger = hero ? hero.offsetTop + hero.offsetHeight * .72 : 180;
     const activeElement = document.activeElement;
     const hasFormFocus = Boolean(activeElement?.matches?.("input, textarea, select, [contenteditable='true']"));
