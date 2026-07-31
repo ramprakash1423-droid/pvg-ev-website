@@ -353,7 +353,7 @@
   });
 
   const syncHeader = () => {
-    header?.classList.toggle("is-scrolled", window.scrollY > 8);
+    header?.classList.remove("is-scrolled");
     const hero = document.querySelector(".home-ref-hero, .compact-home-hero, .station-hero-v3, .pilot-hero-v2, .station-product-hero, .request-hero, .page-hero, .hero");
     const trigger = hero ? hero.offsetTop + hero.offsetHeight * .72 : 180;
     const activeElement = document.activeElement;

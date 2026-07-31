@@ -33590,6 +33590,12 @@ html body.request-reference-body .site-header .nav-shell.nav-shell-client {
     inset 0 -1px 0 rgba(8, 166, 106, .08) !important;
   -webkit-backdrop-filter: blur(34px) saturate(1.28) brightness(1.04) !important;
   backdrop-filter: blur(34px) saturate(1.28) brightness(1.04) !important;
+  transition: none !important;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled {
+  transition: none !important;
 }
 
 @media (max-width: 1320px) {
