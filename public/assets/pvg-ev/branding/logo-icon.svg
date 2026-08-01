@@ -3,12 +3,12 @@
   <defs>
     <linearGradient id="pvgIconGradient" x1="92" x2="420" y1="84" y2="432" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#12B981"/>
-      <stop offset=".58" stop-color="#0A8C86"/>
-      <stop offset="1" stop-color="#11A8E5"/>
+      <stop offset=".58" stop-color="#08A66A"/>
+      <stop offset="1" stop-color="#047857"/>
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="116" fill="#F6FAF9"/>
   <path fill="none" stroke="url(#pvgIconGradient)" stroke-linecap="round" stroke-width="38" d="M347 137a146 146 0 1 1-92-33"/>
   <path fill="url(#pvgIconGradient)" d="M279 84 152 262h88l-33 166 147-210h-89z"/>
-  <path fill="#11A8E5" d="M82 169h104a19 19 0 0 1 0 38H82a19 19 0 0 1 0-38Zm52 136h112a19 19 0 0 1 0 38H134a19 19 0 0 1 0-38Z"/>
+  <path fill="#047857" d="M82 169h104a19 19 0 0 1 0 38H82a19 19 0 0 1 0-38Zm52 136h112a19 19 0 0 1 0 38H134a19 19 0 0 1 0-38Z"/>
 </svg>

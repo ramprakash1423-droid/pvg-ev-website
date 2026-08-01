@@ -78,7 +78,7 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg")}" alt="PVG-EV — Endless Power, Endless Journey" width="620" height="180" decoding="async">
+            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg?v=20260801greentheme")}" alt="PVG-EV — Endless Power, Endless Journey" width="620" height="180" decoding="async">
             <span class="sr-only">PVG-EV — Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
