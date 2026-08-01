@@ -37695,9 +37695,9 @@ html body .site-header .nav-toggle {
 .pilot-workflow-zigzag {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-  padding: 16px 0 0 !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  padding: 8px 0 0 !important;
   margin: 0;
   list-style: none;
 }
@@ -37705,9 +37705,9 @@ html body .site-header .nav-toggle {
 .pilot-workflow-zigzag::before {
   content: "";
   position: absolute;
-  top: 52px;
-  left: 6%;
-  right: 6%;
+  top: 34px;
+  left: 5%;
+  right: 5%;
   height: 2px;
   background: linear-gradient(90deg, rgba(8, 166, 106, .18), rgba(14, 165, 255, .50), rgba(8, 166, 106, .18));
   animation: pilotLineGrow 1.2s ease both;
@@ -37716,29 +37716,54 @@ html body .site-header .nav-toggle {
 .pilot-workflow-zigzag li {
   position: relative;
   z-index: 1;
-  min-height: 142px;
-  padding: 20px;
-  border-radius: var(--pilot-radius-sm);
+  display: flex !important;
+  min-height: 78px !important;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px !important;
+  border-radius: 18px;
   transition: transform .28s ease, box-shadow .28s ease;
 }
 
 .pilot-workflow-zigzag li:nth-child(even) {
-  transform: translateY(24px);
+  transform: none;
 }
 
 .pilot-workflow-zigzag li:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--pilot-shadow);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(2, 12, 27, .10);
 }
 
 .pilot-workflow-zigzag li:nth-child(even):hover {
-  transform: translateY(18px);
+  transform: translateY(-3px);
 }
 
 .pilot-workflow-zigzag h3 {
-  margin: 16px 0 0;
-  font-size: clamp(1rem, 1.1vw, 1.14rem);
-  line-height: 1.25;
+  margin: 0;
+  font-size: clamp(.95rem, 1vw, 1.05rem);
+  line-height: 1.2;
+}
+
+#pilot-journey {
+  padding-block: clamp(30px, 3vw, 46px) !important;
+}
+
+#pilot-journey .section-heading {
+  margin-bottom: clamp(14px, 1.6vw, 20px) !important;
+}
+
+#pilot-journey .section-heading h2 {
+  max-width: 760px;
+  font-size: clamp(1.55rem, 2vw, 2rem) !important;
+  line-height: 1.14;
+}
+
+.pilot-workflow-zigzag li span {
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  font-size: .84rem;
 }
 
 .pilot-roadmap-tracker {
@@ -38102,7 +38127,7 @@ html body .site-header .nav-toggle {
   }
 
   .pilot-workflow-zigzag {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 
   .pilot-workflow-zigzag li:nth-child(even),
@@ -38200,7 +38225,7 @@ html body .site-header .nav-toggle {
   .pilot-workflow-zigzag,
   .pilot-form-grid,
   .pilot-check-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .pilot-visual-strip article {
@@ -38209,7 +38234,19 @@ html body .site-header .nav-toggle {
 
   .pilot-mini-card,
   .pilot-workflow-zigzag li {
-    min-height: auto;
+    min-height: auto !important;
+  }
+
+  .pilot-workflow-zigzag {
+    gap: 10px !important;
+  }
+
+  .pilot-workflow-zigzag::before {
+    display: none;
+  }
+
+  .pilot-workflow-zigzag li {
+    padding: 12px 14px !important;
   }
 
   .pilot-roadmap-tracker {
