@@ -36449,3 +36449,794 @@ html body ::selection {
   color: #FFFFFF;
   background: #08A66A;
 }
+
+/* 2026-08-01 shared navigation lock.
+   One fixed matte-glass header for every page, with identical logo and CTA
+   dimensions before and after scrolling. */
+:root {
+  --pvg-nav-top: 14px;
+  --pvg-nav-shell-height: 78px;
+  --pvg-nav-shell-radius: 20px;
+  --pvg-nav-logo-width: 190px;
+  --pvg-nav-cta-width: 196px;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled,
+html body.home-reference-body .site-header,
+html body.fleet-reference-body .site-header,
+html body.setrans-reference-body .site-header,
+html body.contact-reference-body .site-header,
+html body.insights-premium-body .site-header,
+html body.station-product-body .site-header,
+html body.request-reference-body .site-header,
+html body.about-premium-body .site-header {
+  position: fixed !important;
+  top: var(--pvg-nav-top) !important;
+  right: 0 !important;
+  left: 0 !important;
+  z-index: 10000 !important;
+  width: 100% !important;
+  height: var(--pvg-nav-shell-height) !important;
+  min-height: var(--pvg-nav-shell-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body.home-reference-body .site-header .nav-shell.nav-shell-client,
+html body.fleet-reference-body .site-header .nav-shell.nav-shell-client,
+html body.setrans-reference-body .site-header .nav-shell.nav-shell-client,
+html body.contact-reference-body .site-header .nav-shell.nav-shell-client,
+html body.insights-premium-body .site-header .nav-shell.nav-shell-client,
+html body.station-product-body .site-header .nav-shell.nav-shell-client,
+html body.request-reference-body .site-header .nav-shell.nav-shell-client,
+html body.about-premium-body .site-header .nav-shell.nav-shell-client {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: var(--pvg-nav-logo-width) minmax(0, 1fr) var(--pvg-nav-cta-width) !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: min(calc(100% - 32px), 1360px) !important;
+  height: var(--pvg-nav-shell-height) !important;
+  min-height: var(--pvg-nav-shell-height) !important;
+  margin: 0 auto !important;
+  padding: 10px 16px !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+  border: 1px solid rgba(255, 255, 255, .72) !important;
+  border-radius: var(--pvg-nav-shell-radius) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .76), rgba(248, 255, 252, .58) 52%, rgba(236, 253, 245, .62)),
+    radial-gradient(circle at 16% 0%, rgba(8, 166, 106, .11), transparent 34%) !important;
+  box-shadow:
+    0 24px 66px rgba(4, 41, 29, .14),
+    inset 0 1px 0 rgba(255, 255, 255, .92),
+    inset 0 -1px 0 rgba(8, 166, 106, .08) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.24) !important;
+  backdrop-filter: blur(22px) saturate(1.24) !important;
+  transform: none !important;
+  transition: box-shadow 180ms ease, border-color 180ms ease, background 180ms ease !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 1px !important;
+  z-index: -1 !important;
+  border-radius: calc(var(--pvg-nav-shell-radius) - 1px) !important;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, .50), rgba(255, 255, 255, .12) 38%, rgba(8, 166, 106, .07)),
+    radial-gradient(circle at 75% 0%, rgba(255, 255, 255, .55), transparent 34%) !important;
+  opacity: .92 !important;
+  pointer-events: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: auto 18px 0 !important;
+  height: 1px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, transparent, rgba(8, 166, 106, .22), transparent) !important;
+  pointer-events: none !important;
+}
+
+html body .site-header .brand,
+html body .site-header.is-scrolled .brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: var(--pvg-nav-logo-width) !important;
+  min-width: var(--pvg-nav-logo-width) !important;
+  height: 58px !important;
+  min-height: 58px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html body .site-header .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+  display: block !important;
+  width: var(--pvg-nav-logo-width) !important;
+  max-width: var(--pvg-nav-logo-width) !important;
+  height: 54px !important;
+  max-height: 54px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+html body .site-header .nav-logo-mark,
+html body .site-header .nav-logo-text,
+html body .site-header .brand-mark,
+html body .site-header .brand-text {
+  display: none !important;
+}
+
+html body .site-header .nav-menu.nav-menu-client,
+html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  height: 42px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  color: #0E1B2A !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: clamp(.78rem, .70vw, .86rem) !important;
+  line-height: 1 !important;
+  font-weight: 760 !important;
+  letter-spacing: 0 !important;
+  text-decoration: none !important;
+  transform: none !important;
+  transition: color 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease !important;
+}
+
+html body .site-header .nav-menu-client > .nav-dropdown {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link::after,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 12px !important;
+  bottom: 6px !important;
+  left: 12px !important;
+  width: auto !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, rgba(8, 166, 106, 0), rgba(8, 166, 106, .95), rgba(8, 166, 106, 0)) !important;
+  opacity: 0 !important;
+  transform: none !important;
+  transition: opacity 180ms ease !important;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  color: #047857 !important;
+  border-color: rgba(8, 166, 106, .20) !important;
+  background: rgba(236, 253, 245, .78) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .86), 0 8px 18px rgba(8, 166, 106, .08) !important;
+}
+
+html body .site-header .nav-link.is-active::after,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle::after {
+  opacity: .9 !important;
+}
+
+html body .site-header .dropdown-caret {
+  display: inline-block !important;
+  width: 7px !important;
+  height: 7px !important;
+  margin-top: -3px !important;
+  border-right: 2px solid currentColor !important;
+  border-bottom: 2px solid currentColor !important;
+  transform: rotate(45deg) !important;
+  transition: transform 180ms ease !important;
+}
+
+html body .site-header .nav-dropdown.is-open > .dropdown-toggle .dropdown-caret,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle .dropdown-caret {
+  transform: rotate(225deg) translate(-2px, -2px) !important;
+}
+
+html body .site-header .dropdown-menu {
+  position: absolute !important;
+  top: calc(100% + 12px) !important;
+  left: 50% !important;
+  z-index: 10002 !important;
+  display: grid !important;
+  min-width: 250px !important;
+  padding: 10px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .74) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .90), rgba(246, 255, 250, .76)),
+    radial-gradient(circle at 15% 0%, rgba(8, 166, 106, .10), transparent 40%) !important;
+  box-shadow: 0 24px 56px rgba(4, 41, 29, .16), inset 0 1px 0 rgba(255, 255, 255, .90) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.18) !important;
+  backdrop-filter: blur(24px) saturate(1.18) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translate(-50%, 8px) !important;
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease !important;
+}
+
+html body .site-header .nav-dropdown.is-open .dropdown-menu,
+html body .site-header .nav-dropdown:focus-within .dropdown-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translate(-50%, 0) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html body .site-header .nav-dropdown:hover .dropdown-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translate(-50%, 0) !important;
+  }
+}
+
+html body .site-header .dropdown-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 42px !important;
+  padding: 10px 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 12px !important;
+  color: #0E1B2A !important;
+  background: transparent !important;
+  font-size: .88rem !important;
+  font-weight: 720 !important;
+  line-height: 1.22 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease !important;
+}
+
+html body .site-header .dropdown-link:hover,
+html body .site-header .dropdown-link:focus-visible,
+html body .site-header .dropdown-link.is-active {
+  color: #047857 !important;
+  border-color: rgba(8, 166, 106, .18) !important;
+  background: rgba(236, 253, 245, .82) !important;
+  transform: translateX(2px) !important;
+}
+
+html body .site-header .dropdown-link.is-active::after {
+  content: "" !important;
+  width: 7px !important;
+  height: 7px !important;
+  margin-left: 12px !important;
+  border-radius: 999px !important;
+  background: #08A66A !important;
+  box-shadow: 0 0 0 5px rgba(8, 166, 106, .11) !important;
+}
+
+html body .site-header .nav-actions,
+html body .site-header.is-scrolled .nav-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  width: var(--pvg-nav-cta-width) !important;
+  min-width: var(--pvg-nav-cta-width) !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+html body .site-header .nav-actions .nav-cta:not(.nav-cta-request) {
+  display: none !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:visited,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active,
+html body .site-header .nav-cta-request.is-active {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--pvg-nav-cta-width) !important;
+  min-width: var(--pvg-nav-cta-width) !important;
+  max-width: var(--pvg-nav-cta-width) !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 18px !important;
+  border: 1px solid rgba(8, 166, 106, .22) !important;
+  border-radius: 999px !important;
+  color: #FFFFFF !important;
+  background: linear-gradient(135deg, #08A66A 0%, #047857 100%) !important;
+  box-shadow: 0 15px 30px rgba(8, 166, 106, .20), inset 0 1px 0 rgba(255, 255, 255, .34) !important;
+  font-size: .86rem !important;
+  font-weight: 820 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  transform: none !important;
+}
+
+html body .site-header .mobile-contact-link.mobile-request-link {
+  display: none !important;
+}
+
+html body .site-header .nav-toggle {
+  display: none !important;
+}
+
+@media (max-width: 1120px) and (min-width: 1024px) {
+  :root {
+    --pvg-nav-logo-width: 176px;
+    --pvg-nav-cta-width: 184px;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    gap: 10px !important;
+    width: min(calc(100% - 24px), 1360px) !important;
+    padding: 10px 12px !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client {
+    gap: 4px !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    padding: 0 8px !important;
+    font-size: .78rem !important;
+  }
+
+  html body .site-header .nav-cta-request,
+  html body .site-header.is-scrolled .nav-cta-request {
+    font-size: .78rem !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --pvg-nav-top: calc(env(safe-area-inset-top, 0px) + 10px);
+    --pvg-nav-shell-height: 66px;
+    --pvg-nav-shell-radius: 22px;
+    --pvg-nav-logo-width: min(224px, calc(100vw - 132px));
+    --pvg-nav-cta-width: 0px;
+  }
+
+  html body .site-header,
+  html body .site-header.is-scrolled {
+    height: var(--pvg-nav-shell-height) !important;
+    min-height: var(--pvg-nav-shell-height) !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    width: min(calc(100% - 28px), 720px) !important;
+    height: var(--pvg-nav-shell-height) !important;
+    min-height: var(--pvg-nav-shell-height) !important;
+    padding: 8px 10px 8px 14px !important;
+    border-radius: var(--pvg-nav-shell-radius) !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand {
+    width: var(--pvg-nav-logo-width) !important;
+    min-width: 0 !important;
+    height: 50px !important;
+    min-height: 50px !important;
+  }
+
+  html body .site-header .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+    width: var(--pvg-nav-logo-width) !important;
+    max-width: var(--pvg-nav-logo-width) !important;
+    height: 48px !important;
+    max-height: 48px !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    position: relative !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid rgba(8, 166, 106, .18) !important;
+    border-radius: 16px !important;
+    color: #0E1B2A !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .90), rgba(248, 255, 252, .70)),
+      radial-gradient(circle at 20% 0%, rgba(8, 166, 106, .10), transparent 46%) !important;
+    box-shadow: 0 12px 28px rgba(4, 41, 29, .10), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+  }
+
+  html body .site-header .nav-toggle span {
+    display: block !important;
+    width: 23px !important;
+    height: 2.5px !important;
+    border-radius: 999px !important;
+    background: currentColor !important;
+    transform-origin: center !important;
+    transition: transform 170ms ease, opacity 170ms ease !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg) !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(2) {
+    opacity: 0 !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    top: calc(var(--pvg-nav-top) + var(--pvg-nav-shell-height) + 10px) !important;
+    right: 14px !important;
+    left: 14px !important;
+    z-index: 10001 !important;
+    display: none !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+    width: auto !important;
+    max-width: 720px !important;
+    max-height: calc(100svh - var(--pvg-nav-top) - var(--pvg-nav-shell-height) - 34px) !important;
+    margin: 0 auto !important;
+    padding: 16px !important;
+    overflow: auto !important;
+    border: 1px solid rgba(255, 255, 255, .78) !important;
+    border-radius: 24px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .86), rgba(246, 255, 250, .68)),
+      radial-gradient(circle at 18% 0%, rgba(8, 166, 106, .12), transparent 42%) !important;
+    box-shadow: 0 30px 74px rgba(4, 41, 29, .18), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(1.20) !important;
+    backdrop-filter: blur(26px) saturate(1.20) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client.is-open,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client.is-open {
+    display: flex !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 46px !important;
+    height: auto !important;
+    padding: 12px 14px !important;
+    border-radius: 16px !important;
+    font-size: .98rem !important;
+    line-height: 1.2 !important;
+    font-weight: 780 !important;
+    text-align: left !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link::after,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle::after {
+    display: none !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-dropdown {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    display: flex !important;
+  }
+
+  html body .site-header .dropdown-menu {
+    position: static !important;
+    display: none !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    padding: 4px 0 4px 12px !important;
+    margin: 2px 0 0 !important;
+    border: 0 !important;
+    border-left: 1px solid rgba(8, 166, 106, .20) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-dropdown.is-open .dropdown-menu,
+  html body .site-header .nav-dropdown:focus-within .dropdown-menu {
+    display: grid !important;
+    transform: none !important;
+  }
+
+  html body .site-header .dropdown-link {
+    min-height: 42px !important;
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+    font-size: .92rem !important;
+    white-space: normal !important;
+  }
+
+  html body .site-header .mobile-contact-link.mobile-request-link {
+    display: flex !important;
+    justify-content: center !important;
+    min-height: 50px !important;
+    margin-top: 8px !important;
+    color: #FFFFFF !important;
+    background: linear-gradient(135deg, #08A66A 0%, #047857 100%) !important;
+    border-color: rgba(8, 166, 106, .22) !important;
+    box-shadow: 0 16px 34px rgba(8, 166, 106, .20), inset 0 1px 0 rgba(255, 255, 255, .34) !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --pvg-nav-logo-width: min(196px, calc(100vw - 120px));
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: calc(100% - 18px) !important;
+    padding-inline: 10px !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    width: 46px !important;
+    min-width: 46px !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client {
+    right: 9px !important;
+    left: 9px !important;
+    padding: 14px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .site-header *,
+  html body .site-header *::before,
+  html body .site-header *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* 2026-08-01 breakpoint repair.
+   Older page-specific nav rules used wider tablet breakpoints. This final lock
+   keeps the header behavior identical on every page: full nav on desktop,
+   hamburger drawer on tablet/mobile, with no scroll-state morphing. */
+@media (min-width: 1101px) {
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    display: grid !important;
+    grid-template-columns: var(--pvg-nav-logo-width) minmax(0, 1fr) var(--pvg-nav-cta-width) !important;
+    gap: 16px !important;
+    height: var(--pvg-nav-shell-height) !important;
+    min-height: var(--pvg-nav-shell-height) !important;
+  }
+
+  html body[class] .site-header .nav-menu.nav-menu-client,
+  html body[class] .site-header.is-scrolled .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  html body[class] .site-header .nav-actions,
+  html body[class] .site-header.is-scrolled .nav-actions,
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: flex !important;
+    width: var(--pvg-nav-cta-width) !important;
+    min-width: var(--pvg-nav-cta-width) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  html body[class] .site-header .nav-cta-request,
+  html body[class] .site-header.is-scrolled .nav-cta-request,
+  html body .site-header .nav-cta-request,
+  html body .site-header.is-scrolled .nav-cta-request {
+    display: inline-flex !important;
+    width: var(--pvg-nav-cta-width) !important;
+    min-width: var(--pvg-nav-cta-width) !important;
+    max-width: var(--pvg-nav-cta-width) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: linear-gradient(135deg, #08A66A 0%, #047857 100%) !important;
+  }
+
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle,
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --pvg-nav-top: calc(env(safe-area-inset-top, 0px) + 10px);
+    --pvg-nav-shell-height: 66px;
+    --pvg-nav-shell-radius: 22px;
+    --pvg-nav-logo-width: min(224px, calc(100vw - 132px));
+    --pvg-nav-cta-width: 0px;
+  }
+
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    width: min(calc(100% - 28px), 720px) !important;
+    height: var(--pvg-nav-shell-height) !important;
+    min-height: var(--pvg-nav-shell-height) !important;
+    padding: 8px 10px 8px 14px !important;
+  }
+
+  html body[class] .site-header .nav-actions,
+  html body[class] .site-header.is-scrolled .nav-actions,
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle,
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+  }
+
+  html body[class] .site-header .nav-menu.nav-menu-client,
+  html body[class] .site-header.is-scrolled .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    top: calc(var(--pvg-nav-top) + var(--pvg-nav-shell-height) + 10px) !important;
+    right: 14px !important;
+    left: 14px !important;
+    display: none !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    max-width: 720px !important;
+    height: auto !important;
+    max-height: calc(100svh - var(--pvg-nav-top) - var(--pvg-nav-shell-height) - 34px) !important;
+    padding: 16px !important;
+    margin: 0 auto !important;
+    overflow: auto !important;
+    border: 1px solid rgba(255, 255, 255, .78) !important;
+    border-radius: 24px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(246, 255, 250, .70)),
+      radial-gradient(circle at 18% 0%, rgba(8, 166, 106, .12), transparent 42%) !important;
+    box-shadow: 0 30px 74px rgba(4, 41, 29, .18), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(1.20) !important;
+    backdrop-filter: blur(26px) saturate(1.20) !important;
+  }
+
+  html body.menu-open[class] .site-header .nav-menu.nav-menu-client,
+  html body.menu-open[class] .site-header.is-scrolled .nav-menu.nav-menu-client,
+  html body.menu-open .site-header .nav-menu.nav-menu-client,
+  html body.menu-open .site-header.is-scrolled .nav-menu.nav-menu-client,
+  html body[class] .site-header .nav-menu.nav-menu-client.is-open,
+  html body[class] .site-header.is-scrolled .nav-menu.nav-menu-client.is-open,
+  html body .site-header .nav-menu.nav-menu-client.is-open,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client.is-open {
+    display: flex !important;
+  }
+}

@@ -5,26 +5,34 @@
 
   const navItems = [
     { name: "Home", path: "index.html", key: "home" },
-    { name: "Mobile Charging Station", path: "mobile-charging-station.html", key: "station" },
     {
       name: "Solutions",
-      path: "solutions.html",
       key: "solutions",
       children: [
-        ["Mobile EV Charging", "solutions.html#mobile-ev-charging"],
-        ["Fleet & Depot Charging", "solutions.html#fleet-depot-charging"],
-        ["Commercial EV Charging", "solutions.html#commercial-charging"],
-        ["Apartment Charging", "solutions.html#apartment-charging"],
-        ["Maintenance & Support", "solutions.html#maintenance-support"]
+        { name: "Mobile Charging Station", path: "mobile-charging-station.html", key: "station" },
+        { name: "Fleet Solutions", path: "fleet-solutions.html", key: "fleet" }
       ]
     },
-    { name: "Fleet Solutions", path: "fleet-solutions.html", key: "fleet" },
-    { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
-    { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" },
     { name: "Pilot Programme", path: "pilot-programme.html", key: "pilot" },
+    {
+      name: "About",
+      key: "about",
+      children: [
+        { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
+        { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" }
+      ]
+    },
     { name: "Insights", path: "insights.html", key: "insights" },
     { name: "Contact", path: "contact.html", key: "contact" }
   ];
+
+  const activeParentMap = {
+    station: "solutions",
+    fleet: "solutions",
+    solutions: "solutions",
+    about: "about",
+    collaboration: "about"
+  };
 
   const footerLinks = [
     ["Request Charging", "request-charging.html"],
@@ -55,20 +63,25 @@
     if (!headerMount) return;
     const root = headerMount.dataset.root || "";
     const active = headerMount.dataset.active || "home";
+    const activeParent = activeParentMap[active] || active;
     const navLink = (item) => {
       if (!item.children) {
-        return `<a class="nav-link ${active === item.key ? "is-active" : ""}" href="${url(root, item.path)}" ${active === item.key ? 'aria-current="page"' : ""}>${item.name}</a>`;
+        const isActive = activeParent === item.key;
+        return `<a class="nav-link ${isActive ? "is-active" : ""}" href="${url(root, item.path)}" ${isActive ? 'aria-current="page"' : ""}>${item.name}</a>`;
       }
 
       const menuId = `nav-submenu-${item.key}`;
+      const parentIsActive = activeParent === item.key;
       return `
-        <div class="nav-dropdown ${active === item.key ? "is-active" : ""}" data-dropdown>
-          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="${menuId}" data-dropdown-toggle ${active === item.key ? 'aria-current="page"' : ""}>
+        <div class="nav-dropdown ${parentIsActive ? "is-active" : ""}" data-dropdown>
+          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="${menuId}" data-dropdown-toggle>
             ${item.name}<span class="dropdown-caret" aria-hidden="true"></span>
           </button>
-          <div class="dropdown-menu" id="${menuId}" data-dropdown-menu>
-            <a class="dropdown-link dropdown-link-main" href="${url(root, item.path)}">Solutions Overview</a>
-            ${item.children.map(([name, path]) => `<a class="dropdown-link" href="${url(root, path)}">${name}</a>`).join("")}
+          <div class="dropdown-menu" id="${menuId}" data-dropdown-menu aria-label="${item.name} submenu">
+            ${item.children.map((child) => {
+              const childIsActive = active === child.key;
+              return `<a class="dropdown-link ${childIsActive ? "is-active" : ""}" href="${url(root, child.path)}" ${childIsActive ? 'aria-current="page"' : ""}>${child.name}</a>`;
+            }).join("")}
           </div>
         </div>
       `;
@@ -78,7 +91,7 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg?v=20260801greentheme")}" alt="PVG-EV — Endless Power, Endless Journey" width="620" height="180" decoding="async">
+            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg?v=20260801navstable2")}" alt="PVG-EV — Prime Ventures Global" width="620" height="180" decoding="async">
             <span class="sr-only">PVG-EV — Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
@@ -90,7 +103,6 @@
           </div>
           <div class="nav-actions" aria-label="Primary actions">
             <a class="nav-cta nav-cta-request ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="nav_request_charging">Request Mobile Charging</a>
-            <a class="nav-cta ${active === "contact" ? "is-active" : ""}" href="${url(root, "contact.html")}" data-event="nav_contact">Contact</a>
           </div>
         </nav>
       </header>
@@ -275,14 +287,56 @@
     });
   };
 
+  const setDropdown = (dropdown, open) => {
+    if (!dropdown) return;
+    dropdown.classList.toggle("is-open", open);
+    dropdown.querySelector("[data-dropdown-toggle]")?.setAttribute("aria-expanded", String(open));
+  };
+
   document.querySelectorAll("[data-dropdown-toggle]").forEach((button) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       const dropdown = button.closest("[data-dropdown]");
       const nextOpen = !dropdown?.classList.contains("is-open");
       closeDropdowns();
-      dropdown?.classList.toggle("is-open", nextOpen);
-      button.setAttribute("aria-expanded", String(nextOpen));
+      setDropdown(dropdown, nextOpen);
+    });
+
+    button.addEventListener("keydown", (event) => {
+      const dropdown = button.closest("[data-dropdown]");
+      if (!dropdown) return;
+      const menuLinks = Array.from(dropdown.querySelectorAll("[data-dropdown-menu] a"));
+
+      if (event.key === "ArrowDown" && menuLinks.length) {
+        event.preventDefault();
+        closeDropdowns();
+        setDropdown(dropdown, true);
+        menuLinks[0].focus({ preventScroll: true });
+      }
+
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setDropdown(dropdown, false);
+        button.focus({ preventScroll: true });
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-dropdown]").forEach((dropdown) => {
+    dropdown.addEventListener("focusout", (event) => {
+      window.setTimeout(() => {
+        if (!dropdown.contains(document.activeElement)) setDropdown(dropdown, false);
+      }, 0);
+    });
+  });
+
+  document.querySelectorAll("[data-dropdown-menu]").forEach((menu) => {
+    menu.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      const dropdown = menu.closest("[data-dropdown]");
+      setDropdown(dropdown, false);
+      dropdown?.querySelector("[data-dropdown-toggle]")?.focus({ preventScroll: true });
     });
   });
 
