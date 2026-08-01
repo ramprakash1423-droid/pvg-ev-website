@@ -34339,3 +34339,1833 @@ html body .site-header .nav-menu-client > .mobile-request-link {
     max-height: calc(100svh - var(--floating-nav-top) - 86px) !important;
   }
 }
+
+/* PVG-EV production polish lock: stable ClickaCook-style matte glass navigation and compact UI */
+:root {
+  --pvg-navy: #071A2E;
+  --pvg-navy-soft: #0B2743;
+  --pvg-emerald: #00B894;
+  --pvg-green-dark: #008F73;
+  --pvg-electric-blue: #00BDEB;
+  --pvg-cyan-soft: #DFF8FA;
+  --pvg-text: #172033;
+  --pvg-text-muted: #667085;
+  --pvg-page-bg: #F6FAFB;
+  --pvg-white: #FFFFFF;
+  --pvg-border: rgba(7, 26, 46, .10);
+  --pvg-glass-light: rgba(255, 255, 255, .68);
+  --pvg-glass-medium: rgba(255, 255, 255, .78);
+  --pvg-glass-dark: rgba(7, 26, 46, .70);
+  --site-max: 1400px;
+  --site-gutter: 32px;
+  --floating-nav-top: max(14px, env(safe-area-inset-top));
+  --floating-nav-clearance: 92px;
+  --font-hero: clamp(2rem, 3vw, 3rem);
+  --font-page-title: clamp(1.8rem, 2.6vw, 2.55rem);
+  --font-section-title: clamp(1.45rem, 2vw, 2.05rem);
+  --font-subheading: clamp(1.14rem, 1.35vw, 1.38rem);
+  --font-card-title: clamp(1rem, 1.05vw, 1.16rem);
+  --font-body: clamp(.9rem, .9vw, 1rem);
+  --font-small: clamp(.78rem, .78vw, .9rem);
+  --font-label: clamp(.68rem, .72vw, .78rem);
+}
+
+html {
+  overflow-x: hidden !important;
+  scroll-padding-top: calc(var(--floating-nav-clearance) + 18px) !important;
+}
+
+body {
+  overflow-x: hidden !important;
+  color: var(--pvg-text) !important;
+  background: var(--pvg-page-bg) !important;
+}
+
+body.menu-open {
+  overflow: hidden !important;
+}
+
+:where(
+  .site-container,
+  .home-ref-container,
+  .fleet-container,
+  .setrans-container,
+  .contact-ref-container,
+  .insights-premium-container,
+  .station-wide-shell,
+  .solutions-wide-shell,
+  .request-shell,
+  .about-container,
+  .pilot-container,
+  .legal-container
+) {
+  width: min(calc(100% - var(--site-gutter)), var(--site-max)) !important;
+  max-width: var(--site-max) !important;
+  margin-inline: auto !important;
+}
+
+:where(main h1, .hero-title, .home-ref-hero h1, .fleet-hero h1, .station-hero-v3 h1, .station-product-hero h1, .about-hero h1, .setrans-hero h1, .insights-premium-hero h1, .contact-ref-hero h1, .request-hero h1) {
+  font-size: var(--font-hero) !important;
+  line-height: 1.06 !important;
+  letter-spacing: 0 !important;
+  max-width: 14ch;
+}
+
+:where(main h2, .section-title, .home-ref-section h2, .fleet-section h2, .station-section h2, .solutions-section h2, .about-section h2, .contact-ref-section h2, .insights-premium-page h2) {
+  font-size: var(--font-section-title) !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(main h3, .card-title, .fleet-challenge-card h3, .home-ref-service-card h3, .solution-card h3, .station-card h3, .contact-ref-card h3) {
+  font-size: var(--font-card-title) !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+}
+
+:where(main p, main li, main label, main input, main textarea, main select, main button, .button, .nav-link, .dropdown-link) {
+  letter-spacing: 0 !important;
+}
+
+:where(main p, main li, main input, main textarea, main select) {
+  font-size: var(--font-body) !important;
+  line-height: 1.55 !important;
+}
+
+:where(.section-eyebrow, .home-ref-eyebrow, .fleet-eyebrow, .station-eyebrow, .contact-ref-eyebrow, .insights-eyebrow, .request-eyebrow, .badge, .pill, small) {
+  font-size: var(--font-label) !important;
+  letter-spacing: .02em !important;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled,
+html body.home-reference-body .site-header,
+html body.fleet-reference-body .site-header,
+html body.setrans-reference-body .site-header,
+html body.contact-reference-body .site-header,
+html body.station-product-body .site-header,
+html body.insights-premium-body .site-header,
+html body.about-premium-body .site-header,
+html body.request-reference-body .site-header {
+  position: fixed !important;
+  inset: 0 0 auto !important;
+  z-index: 10000 !important;
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  padding: var(--floating-nav-top) 16px 0 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body.home-reference-body .site-header .nav-shell.nav-shell-client,
+html body.fleet-reference-body .site-header .nav-shell.nav-shell-client,
+html body.setrans-reference-body .site-header .nav-shell.nav-shell-client,
+html body.contact-reference-body .site-header .nav-shell.nav-shell-client,
+html body.station-product-body .site-header .nav-shell.nav-shell-client,
+html body.insights-premium-body .site-header .nav-shell.nav-shell-client,
+html body.about-premium-body .site-header .nav-shell.nav-shell-client,
+html body.request-reference-body .site-header .nav-shell.nav-shell-client {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  width: min(calc(100% - 32px), 1440px) !important;
+  max-width: 1440px !important;
+  height: 66px !important;
+  min-height: 66px !important;
+  margin: 0 auto !important;
+  padding: 9px 12px 9px 14px !important;
+  border: 1px solid rgba(255, 255, 255, .62) !important;
+  border-radius: 16px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .76), rgba(241, 253, 255, .58)),
+    linear-gradient(180deg, rgba(255, 255, 255, .36), rgba(255, 255, 255, .12)) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(1.12) !important;
+  backdrop-filter: blur(26px) saturate(1.12) !important;
+  box-shadow:
+    0 24px 70px rgba(7, 26, 46, .12),
+    0 8px 20px rgba(0, 189, 235, .06),
+    inset 0 1px 0 rgba(255, 255, 255, .90),
+    inset 0 -1px 0 rgba(7, 26, 46, .04) !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::before,
+html body .site-header .nav-shell.nav-shell-client::after {
+  display: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client .brand,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand,
+html body .site-header .nav-shell.nav-shell-client .brand:hover,
+html body .site-header .nav-shell.nav-shell-client .brand:focus-visible {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  width: 214px !important;
+  min-width: 214px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 5px 8px !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, .38) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72), 0 10px 24px rgba(7, 26, 46, .05) !important;
+  opacity: 1 !important;
+  overflow: hidden !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real:hover,
+html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real:focus,
+html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real:active {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-logo-mark,
+html body .site-header .nav-logo-text,
+html body .site-header .brand-mark,
+html body .site-header .brand-text {
+  display: none !important;
+}
+
+html body .site-header .nav-menu.nav-menu-client {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: var(--pvg-navy) !important;
+  font-size: .76rem !important;
+  font-weight: 820 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link.is-active,
+html body .site-header .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+  border-color: rgba(0, 184, 148, .18) !important;
+  background: rgba(223, 248, 250, .70) !important;
+  color: var(--pvg-green-dark) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78) !important;
+}
+
+html body .site-header .nav-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+}
+
+html body .site-header .nav-actions .nav-cta:not(.nav-cta-request) {
+  display: none !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 190px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 18px !important;
+  border: 1px solid rgba(255, 255, 255, .52) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, var(--pvg-emerald), var(--pvg-electric-blue)) !important;
+  color: #fff !important;
+  font-size: .78rem !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 14px 30px rgba(0, 189, 235, .16), inset 0 1px 0 rgba(255, 255, 255, .35) !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-toggle {
+  display: none !important;
+}
+
+html body .site-header .dropdown-menu {
+  top: calc(100% + 8px) !important;
+  border: 1px solid rgba(255, 255, 255, .62) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .88) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.12) !important;
+  backdrop-filter: blur(24px) saturate(1.12) !important;
+  box-shadow: 0 22px 64px rgba(7, 26, 46, .15), inset 0 1px 0 rgba(255, 255, 255, .88) !important;
+}
+
+html body .site-header .dropdown-link {
+  font-size: .78rem !important;
+  font-weight: 760 !important;
+}
+
+:where(
+  .home-ref-copy,
+  .home-ref-visual-card,
+  .home-ref-service-card,
+  .home-ref-workflow-card,
+  .home-ref-usecase-card,
+  .home-ref-partnership,
+  .fleet-challenge-card,
+  .fleet-solution-card,
+  .fleet-benefit-card,
+  .station-card,
+  .station-spec-card,
+  .solution-card,
+  .contact-ref-card,
+  .contact-ref-large-card,
+  .request-form-card,
+  .request-progress-card,
+  .request-help-card,
+  .about-card,
+  .about-value-card,
+  .insights-premium-card,
+  .featured-insight-card
+) {
+  border: 1px solid rgba(255, 255, 255, .64) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .80), rgba(255, 255, 255, .54)),
+    linear-gradient(180deg, rgba(223, 248, 250, .36), rgba(255, 255, 255, .10)) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.08) !important;
+  backdrop-filter: blur(18px) saturate(1.08) !important;
+  box-shadow: 0 22px 58px rgba(7, 26, 46, .08), inset 0 1px 0 rgba(255, 255, 255, .78) !important;
+}
+
+:where(
+  .home-ref-usecase-card img,
+  .home-ref-hero-visual img,
+  .fleet-solution-card img,
+  .fleet-hero img,
+  .station-story-visual img,
+  .station-hero-visual img,
+  .solutions-ecosystem-photo,
+  .solution-card img,
+  .about-hero img,
+  .about-photo-card img,
+  .setrans-hero-image,
+  .contact-ref-hero-bg img,
+  .contact-ref-large-card img,
+  .insights-card-media img,
+  .insights-premium-visual img
+) {
+  image-rendering: auto !important;
+  filter: saturate(1.04) contrast(1.02) !important;
+}
+
+:where(
+  .home-ref-section,
+  .fleet-section,
+  .station-section,
+  .solutions-section,
+  .contact-ref-section,
+  .about-section,
+  .insights-premium-section,
+  .pilot-section
+) {
+  padding-block: clamp(44px, 5.8vw, 78px) !important;
+}
+
+:where(.home-ref-service-grid, .fleet-challenge-grid, .fleet-solution-grid, .station-card-grid, .solutions-card-grid, .contact-ref-category-grid, .about-values-grid) {
+  gap: 18px !important;
+}
+
+@media (max-width: 1320px) {
+  :root {
+    --site-gutter: 28px;
+    --floating-nav-clearance: 82px;
+  }
+
+  html body .site-header,
+  html body .site-header.is-scrolled {
+    padding: var(--floating-nav-top) 10px 0 !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: min(calc(100% - 20px), 760px) !important;
+    height: 62px !important;
+    min-height: 62px !important;
+    padding: 8px 10px !important;
+    border-radius: 18px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand {
+    width: 226px !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 58px) !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    padding: 4px 8px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real {
+    height: 38px !important;
+    min-height: 38px !important;
+  }
+
+  html body .site-header .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    border: 1px solid rgba(0, 184, 148, .20) !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, .76) !important;
+    color: var(--pvg-navy) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.14) !important;
+    backdrop-filter: blur(20px) saturate(1.14) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .86), 0 12px 26px rgba(7, 26, 46, .08) !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-toggle span {
+    display: block !important;
+    width: 22px !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+    background: currentColor !important;
+    transform-origin: center !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg) !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(2) {
+    opacity: 0 !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    inset: calc(var(--floating-nav-top) + 74px) 14px auto 14px !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: stretch !important;
+    gap: 6px !important;
+    width: auto !important;
+    max-width: 460px !important;
+    max-height: calc(100dvh - var(--floating-nav-top) - 94px) !important;
+    margin: 0 auto !important;
+    padding: 14px !important;
+    overflow: auto !important;
+    overscroll-behavior: contain !important;
+    border: 1px solid rgba(255, 255, 255, .68) !important;
+    border-radius: 18px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .90), rgba(241, 255, 252, .76)),
+      radial-gradient(circle at 12% 0%, rgba(0, 189, 235, .12), transparent 34%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.18) !important;
+    backdrop-filter: blur(28px) saturate(1.18) !important;
+    box-shadow: 0 28px 78px rgba(7, 26, 46, .18), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-8px) scale(.985) !important;
+    pointer-events: none !important;
+    transition: opacity .18s ease, transform .18s ease, visibility .18s ease !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 16px !important;
+    border-radius: 14px !important;
+    font-size: .9rem !important;
+    font-weight: 820 !important;
+    text-align: left !important;
+  }
+
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    display: flex !important;
+    justify-content: center !important;
+    height: 48px !important;
+    margin-top: 6px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, var(--pvg-emerald), var(--pvg-electric-blue)) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 30px rgba(0, 189, 235, .18), inset 0 1px 0 rgba(255, 255, 255, .36) !important;
+  }
+
+  html body .site-header .nav-menu-client .nav-dropdown {
+    width: 100% !important;
+  }
+
+  html body .site-header .nav-menu-client .dropdown-menu {
+    position: static !important;
+    display: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 4px 0 2px !important;
+    padding: 8px !important;
+    border-radius: 14px !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-menu-client .nav-dropdown.is-open .dropdown-menu {
+    display: grid !important;
+  }
+}
+
+@media (max-width: 900px) {
+  :where(.home-ref-hero-grid, .station-hero-grid-v3, .fleet-hero-content, .solutions-hero-grid, .request-hero-grid, .contact-ref-entry-grid, .fleet-lower-grid, .about-hero-inner, .setrans-hero-content) {
+    grid-template-columns: 1fr !important;
+  }
+
+  :where(.home-ref-hero, .fleet-hero, .station-hero-v3, .station-product-hero, .solutions-hero, .about-hero, .setrans-hero, .insights-premium-hero, .contact-ref-hero, .request-hero) {
+    padding-top: calc(var(--floating-nav-clearance) + 22px) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --site-gutter: 28px;
+    --floating-nav-top: max(10px, env(safe-area-inset-top));
+    --floating-nav-clearance: 76px;
+    --font-hero: clamp(1.78rem, 8vw, 2.13rem);
+    --font-page-title: clamp(1.62rem, 7vw, 1.95rem);
+    --font-section-title: clamp(1.32rem, 5.8vw, 1.66rem);
+    --font-subheading: clamp(1.05rem, 4.6vw, 1.25rem);
+    --font-card-title: clamp(.98rem, 4.1vw, 1.12rem);
+    --font-body: clamp(.88rem, 3.8vw, .98rem);
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: calc(100% - 20px) !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    padding: 7px 9px !important;
+    border-radius: 18px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand {
+    width: min(224px, calc(100% - 56px)) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    inset: calc(var(--floating-nav-top) + 70px) 12px auto 12px !important;
+    max-height: calc(100dvh - var(--floating-nav-top) - 86px) !important;
+    padding: 12px !important;
+  }
+
+  :where(main h1, .hero-title, .home-ref-hero h1, .fleet-hero h1, .station-hero-v3 h1, .station-product-hero h1, .about-hero h1, .setrans-hero h1, .insights-premium-hero h1, .contact-ref-hero h1, .request-hero h1) {
+    max-width: 12.5ch !important;
+  }
+
+  :where(
+    .home-ref-section,
+    .fleet-section,
+    .station-section,
+    .solutions-section,
+    .contact-ref-section,
+    .about-section,
+    .insights-premium-section,
+    .pilot-section
+  ) {
+    padding-block: 34px !important;
+  }
+
+  :where(.button, .nav-cta, .contact-ref-button, .request-button, main button) {
+    min-height: 44px !important;
+    font-size: .9rem !important;
+  }
+
+  :where(input, select, textarea) {
+    min-height: 46px !important;
+    font-size: .95rem !important;
+  }
+}
+
+/* Image clarity and context-specific scene overrides */
+.insights-premium-visual {
+  background:
+    linear-gradient(90deg, rgba(7, 31, 43, .24), rgba(7, 31, 43, .03) 45%, rgba(7, 31, 43, .12)),
+    url("public/assets/pvg-ev/chargers/pvg-ev-charger-display.webp") center / cover no-repeat !important;
+}
+
+.about-cta-card {
+  background:
+    linear-gradient(120deg, rgba(0, 107, 104, .96), rgba(11, 183, 131, .88), rgba(14, 165, 255, .68)),
+    url("public/assets/pvg-ev/chargers/pvg-ev-plug-closeup.webp") center / cover no-repeat !important;
+}
+
+.station-product-body .station-scene-commercial {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(7, 26, 36, .08)),
+    url("public/assets/pvg-ev/commercial/office-charging.webp") center / cover no-repeat !important;
+}
+
+.station-product-body .station-scene-apartment {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(7, 26, 36, .08)),
+    url("public/assets/pvg-ev/apartment/residential-charging.webp") 58% center / cover no-repeat !important;
+}
+
+.pilot-map-visual {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .12), rgba(7, 26, 46, .08)),
+    url("public/assets/pvg-ev/hero/hero-pilot.webp") center / cover no-repeat !important;
+}
+
+.pilot-map-visual > :is(.pilot-map-road, .pilot-map-dot, .pilot-map-vehicle, .pilot-map-charge) {
+  display: none !important;
+}
+
+/* Fast, customer-first charging request form */
+.request-reference-body .request-form-section {
+  padding-block: clamp(36px, 5vw, 64px) !important;
+}
+
+.request-reference-body .request-form-grid,
+.request-reference-body .request-layout {
+  align-items: start !important;
+  gap: clamp(18px, 2.4vw, 28px) !important;
+}
+
+.request-reference-body .request-form-card {
+  padding: clamp(20px, 2.8vw, 32px) !important;
+  border-radius: 22px !important;
+}
+
+.request-reference-body .request-progress-card {
+  position: sticky !important;
+  top: calc(var(--floating-nav-clearance) + 18px) !important;
+  padding: clamp(18px, 2vw, 24px) !important;
+}
+
+.request-reference-body .request-progress-card h2 {
+  font-size: var(--font-subheading) !important;
+}
+
+.request-reference-body [data-request-progress] {
+  display: grid !important;
+  gap: 8px !important;
+  margin: 16px 0 !important;
+}
+
+.request-reference-body [data-request-progress] li {
+  min-height: 42px !important;
+  padding: 8px 12px !important;
+  border-radius: 14px !important;
+}
+
+.request-reference-body .request-step {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+.request-reference-body .request-step[hidden] {
+  display: none !important;
+}
+
+.request-reference-body .request-step legend {
+  margin-bottom: 6px !important;
+  font-size: var(--font-section-title) !important;
+  line-height: 1.08 !important;
+}
+
+.request-reference-body .request-step > p {
+  max-width: 62ch !important;
+  margin: 0 0 4px !important;
+  color: var(--pvg-text-muted) !important;
+}
+
+.request-reference-body .request-fast-panel {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.request-reference-body .request-fast-card {
+  min-height: 112px !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+  text-align: left !important;
+  background: linear-gradient(145deg, rgba(255,255,255,.82), rgba(242,255,252,.62)) !important;
+  border: 1px solid rgba(0, 184, 148, .16) !important;
+  box-shadow: 0 14px 34px rgba(7, 26, 46, .06), inset 0 1px 0 rgba(255,255,255,.82) !important;
+}
+
+.request-reference-body .request-fast-card.is-selected {
+  border-color: rgba(0, 189, 235, .42) !important;
+  background: linear-gradient(145deg, rgba(223,248,250,.92), rgba(232,255,247,.76)) !important;
+  box-shadow: 0 16px 40px rgba(0, 189, 235, .14), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+.request-reference-body .request-fast-icon {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: .82rem !important;
+}
+
+.request-reference-body .request-fast-copy strong {
+  font-size: .98rem !important;
+  line-height: 1.12 !important;
+}
+
+.request-reference-body .request-fast-copy span {
+  font-size: .82rem !important;
+  line-height: 1.35 !important;
+}
+
+.request-reference-body .form-grid-two {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.request-reference-body .form-row.form-full,
+.request-reference-body .geo-capture-panel,
+.request-reference-body .request-step-actions,
+.request-reference-body .request-review-output {
+  grid-column: 1 / -1 !important;
+}
+
+.request-reference-body .form-row {
+  gap: 6px !important;
+}
+
+.request-reference-body .form-row label {
+  font-size: .78rem !important;
+  font-weight: 820 !important;
+}
+
+.request-reference-body .request-form input,
+.request-reference-body .request-form select,
+.request-reference-body .request-form textarea {
+  min-height: 46px !important;
+  border-radius: 14px !important;
+  padding: 12px 14px !important;
+  font-size: .92rem !important;
+  background: rgba(255, 255, 255, .78) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85) !important;
+}
+
+.request-reference-body .request-form textarea {
+  min-height: 92px !important;
+}
+
+.request-reference-body .geo-capture-panel {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 12px !important;
+  align-items: center !important;
+  margin-top: 4px !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, rgba(223, 248, 250, .68), rgba(255, 255, 255, .62)) !important;
+  border: 1px solid rgba(0, 184, 148, .20) !important;
+}
+
+.request-reference-body .geo-capture-panel .geo-status,
+.request-reference-body .geo-capture-panel .geo-output-row {
+  grid-column: 1 / -1 !important;
+}
+
+.request-reference-body .geo-button {
+  height: 44px !important;
+  min-width: 164px !important;
+  padding: 0 16px !important;
+  border-radius: 14px !important;
+  font-size: .86rem !important;
+}
+
+.request-reference-body .request-step-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin-top: 4px !important;
+}
+
+.request-reference-body .request-step-actions .button {
+  min-width: 132px !important;
+}
+
+@media (max-width: 760px) {
+  .request-reference-body .request-progress-card {
+    position: static !important;
+  }
+
+  .request-reference-body .request-fast-panel,
+  .request-reference-body .form-grid-two,
+  .request-reference-body .geo-capture-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  .request-reference-body .geo-button,
+  .request-reference-body .request-step-actions .button {
+    width: 100% !important;
+  }
+}
+
+/* Absolute shared navigation lock: final rule wins over every older page pass. */
+:root {
+  --pvg-nav-height: 66px;
+  --pvg-nav-radius: 18px;
+  --pvg-nav-top: max(14px, env(safe-area-inset-top));
+  --pvg-nav-clearance: calc(var(--pvg-nav-height) + var(--pvg-nav-top) + 22px);
+  --floating-nav-top: var(--pvg-nav-top);
+  --floating-nav-clearance: var(--pvg-nav-clearance);
+  --header-height: var(--pvg-nav-height);
+}
+
+html {
+  scroll-padding-top: var(--pvg-nav-clearance) !important;
+}
+
+html body [data-site-header],
+html body .site-header,
+html body .site-header.is-scrolled,
+html body .fleet-reference-body .site-header,
+html body .setrans-reference-body .site-header,
+html body .contact-reference-body .site-header,
+html body .insights-premium-body .site-header,
+html body .station-product-body .site-header,
+html body .request-reference-body .site-header,
+html body .home-reference-body .site-header {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+  height: calc(var(--pvg-nav-height) + var(--pvg-nav-top)) !important;
+  padding: var(--pvg-nav-top) 16px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+  pointer-events: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body .fleet-reference-body .site-header .nav-shell.nav-shell-client,
+html body .setrans-reference-body .site-header .nav-shell.nav-shell-client,
+html body .contact-reference-body .site-header .nav-shell.nav-shell-client,
+html body .insights-premium-body .site-header .nav-shell.nav-shell-client,
+html body .station-product-body .site-header .nav-shell.nav-shell-client,
+html body .request-reference-body .site-header .nav-shell.nav-shell-client,
+html body .home-reference-body .site-header .nav-shell.nav-shell-client {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  display: grid !important;
+  grid-template-columns: 214px minmax(0, 1fr) 206px !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: min(calc(100% - 32px), 1400px) !important;
+  max-width: 1400px !important;
+  min-width: 0 !important;
+  height: var(--pvg-nav-height) !important;
+  min-height: var(--pvg-nav-height) !important;
+  margin: 0 auto !important;
+  padding: 9px 14px !important;
+  border: 1px solid rgba(255, 255, 255, .64) !important;
+  border-radius: var(--pvg-nav-radius) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(246, 255, 252, .58) 48%, rgba(237, 249, 255, .66)),
+    rgba(255, 255, 255, .68) !important;
+  box-shadow:
+    0 22px 66px rgba(7, 26, 46, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .90),
+    inset 0 -1px 0 rgba(8, 166, 106, .06) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.22) brightness(1.03) !important;
+  backdrop-filter: blur(28px) saturate(1.22) brightness(1.03) !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::before,
+html body .site-header .nav-shell.nav-shell-client::after {
+  content: none !important;
+  display: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client .brand,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand,
+html body .fleet-reference-body .site-header .nav-shell.nav-shell-client .brand,
+html body .setrans-reference-body .site-header .nav-shell.nav-shell-client .brand,
+html body .contact-reference-body .site-header .nav-shell.nav-shell-client .brand,
+html body .insights-premium-body .site-header .nav-shell.nav-shell-client .brand,
+html body .station-product-body .site-header .nav-shell.nav-shell-client .brand,
+html body .request-reference-body .site-header .nav-shell.nav-shell-client .brand,
+html body .home-reference-body .site-header .nav-shell.nav-shell-client .brand {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 214px !important;
+  min-width: 214px !important;
+  max-width: 214px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 4px 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .fleet-reference-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .setrans-reference-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .contact-reference-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .insights-premium-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .station-product-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .request-reference-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+html body .home-reference-body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real {
+  display: block !important;
+  width: 214px !important;
+  max-width: 214px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-logo-mark,
+html body .site-header .nav-logo-text,
+html body .site-header .brand-mark,
+html body .site-header .brand-text {
+  display: none !important;
+}
+
+@media (min-width: 1181px) {
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: static !important;
+    inset: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: nowrap !important;
+    gap: 4px !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    overflow: visible !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    padding: 0 9px !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--pvg-navy, #071A2E) !important;
+    font-size: clamp(.68rem, .58vw, .78rem) !important;
+    font-weight: 820 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link.is-active,
+  html body .site-header .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+    border-color: rgba(0, 184, 148, .20) !important;
+    background: rgba(223, 248, 250, .70) !important;
+    color: var(--pvg-green-dark, #008F73) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78) !important;
+  }
+
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    display: none !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    width: 206px !important;
+    min-width: 206px !important;
+    max-width: 206px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-actions .nav-cta:not(.nav-cta-request) {
+    display: none !important;
+  }
+
+  html body .site-header .nav-cta-request,
+  html body .site-header.is-scrolled .nav-cta-request,
+  html body .site-header .nav-cta-request:visited,
+  html body .site-header .nav-cta-request:hover,
+  html body .site-header .nav-cta-request:focus-visible,
+  html body .site-header .nav-cta-request:active,
+  html body .site-header .nav-cta-request.is-active {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 206px !important;
+    min-width: 206px !important;
+    max-width: 206px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 18px !important;
+    border: 1px solid rgba(255, 255, 255, .56) !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, var(--pvg-emerald, #00B894), var(--pvg-electric-blue, #00BDEB)) !important;
+    color: #fff !important;
+    font-size: .78rem !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    box-shadow: 0 14px 30px rgba(0, 189, 235, .16), inset 0 1px 0 rgba(255, 255, 255, .35) !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --pvg-nav-height: 62px;
+    --pvg-nav-top: max(10px, env(safe-area-inset-top));
+    --pvg-nav-clearance: calc(var(--pvg-nav-height) + var(--pvg-nav-top) + 18px);
+    --floating-nav-top: var(--pvg-nav-top);
+    --floating-nav-clearance: var(--pvg-nav-clearance);
+    --header-height: var(--pvg-nav-height);
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 46px !important;
+    gap: 10px !important;
+    width: min(calc(100% - 20px), 760px) !important;
+    height: var(--pvg-nav-height) !important;
+    min-height: var(--pvg-nav-height) !important;
+    padding: 8px 10px !important;
+    border-radius: 18px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand {
+    width: min(214px, calc(100vw - 96px)) !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 96px) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client .brand-logo-real.nav-logo-real {
+    width: min(214px, calc(100vw - 96px)) !important;
+    max-width: calc(100vw - 96px) !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    justify-self: end !important;
+    gap: 5px !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid rgba(0, 184, 148, .20) !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, .76) !important;
+    color: var(--pvg-navy, #071A2E) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .86), 0 12px 26px rgba(7, 26, 46, .08) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.14) !important;
+    backdrop-filter: blur(20px) saturate(1.14) !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  html body .site-header .nav-toggle span {
+    display: block !important;
+    width: 22px !important;
+    height: 2px !important;
+    border-radius: 999px !important;
+    background: currentColor !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    inset: calc(var(--pvg-nav-clearance) + 6px) 14px auto 14px !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: stretch !important;
+    align-content: start !important;
+    gap: 6px !important;
+    width: auto !important;
+    max-width: 480px !important;
+    max-height: calc(100dvh - var(--pvg-nav-clearance) - 24px) !important;
+    margin: 0 auto !important;
+    padding: 14px !important;
+    border: 1px solid rgba(255, 255, 255, .68) !important;
+    border-radius: 20px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .92), rgba(241, 255, 252, .80)),
+      radial-gradient(circle at 12% 0%, rgba(0, 189, 235, .12), transparent 34%) !important;
+    box-shadow: 0 28px 78px rgba(7, 26, 46, .18), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(1.18) !important;
+    backdrop-filter: blur(28px) saturate(1.18) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-8px) scale(.985) !important;
+    pointer-events: none !important;
+    transition: opacity .18s ease, transform .18s ease, visibility .18s ease !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client.is-open,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client.is-open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    padding: 0 14px !important;
+    border: 1px solid transparent !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    color: var(--pvg-navy, #071A2E) !important;
+    font-size: .86rem !important;
+    font-weight: 820 !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0 !important;
+    white-space: normal !important;
+    text-align: left !important;
+    box-shadow: none !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    justify-content: space-between !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link.is-active,
+  html body .site-header .nav-menu-client > .nav-dropdown.is-active > .dropdown-toggle {
+    border-color: rgba(0, 184, 148, .20) !important;
+    background: rgba(223, 248, 250, .70) !important;
+    color: var(--pvg-green-dark, #008F73) !important;
+  }
+
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    justify-content: center !important;
+    min-height: 46px !important;
+    margin-top: 4px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: linear-gradient(135deg, var(--pvg-emerald, #00B894), var(--pvg-electric-blue, #00BDEB)) !important;
+    color: #fff !important;
+    text-align: center !important;
+    box-shadow: 0 14px 30px rgba(0, 189, 235, .18), inset 0 1px 0 rgba(255, 255, 255, .36) !important;
+  }
+
+  html body .site-header .nav-menu-client .nav-dropdown {
+    width: 100% !important;
+  }
+
+  html body .site-header .nav-menu-client .dropdown-menu {
+    position: static !important;
+    display: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 4px 0 2px !important;
+    padding: 8px !important;
+    border-radius: 14px !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-menu-client .nav-dropdown.is-open .dropdown-menu {
+    display: grid !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg) !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(2) {
+    opacity: 0 !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg) !important;
+  }
+}
+
+/* Final fixed navbar contract: page body classes must inherit the same header. */
+html body.home-reference-body .site-header,
+html body.fleet-reference-body .site-header,
+html body.setrans-reference-body .site-header,
+html body.contact-reference-body .site-header,
+html body.insights-premium-body .site-header,
+html body.station-product-body .site-header,
+html body.request-reference-body .site-header,
+html body.about-premium-body .site-header,
+html body .site-header,
+html body .site-header.is-scrolled {
+  position: fixed !important;
+  inset: 0 0 auto 0 !important;
+  z-index: 1000 !important;
+  height: calc(var(--pvg-nav-height) + var(--pvg-nav-top)) !important;
+  padding: var(--pvg-nav-top) 16px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+html body.home-reference-body .site-header .nav-shell.nav-shell-client,
+html body.fleet-reference-body .site-header .nav-shell.nav-shell-client,
+html body.setrans-reference-body .site-header .nav-shell.nav-shell-client,
+html body.contact-reference-body .site-header .nav-shell.nav-shell-client,
+html body.insights-premium-body .site-header .nav-shell.nav-shell-client,
+html body.station-product-body .site-header .nav-shell.nav-shell-client,
+html body.request-reference-body .site-header .nav-shell.nav-shell-client,
+html body.about-premium-body .site-header .nav-shell.nav-shell-client,
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+  display: grid !important;
+  grid-template-columns: 214px minmax(0, 1fr) 206px !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: min(calc(100% - 32px), 1400px) !important;
+  max-width: 1400px !important;
+  min-width: 0 !important;
+  height: var(--pvg-nav-height) !important;
+  min-height: var(--pvg-nav-height) !important;
+  margin: 0 auto !important;
+  padding: 9px 14px !important;
+  border: 1px solid rgba(255, 255, 255, .64) !important;
+  border-radius: var(--pvg-nav-radius) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(246, 255, 252, .58) 48%, rgba(237, 249, 255, .66)),
+    rgba(255, 255, 255, .68) !important;
+  box-shadow:
+    0 22px 66px rgba(7, 26, 46, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .90),
+    inset 0 -1px 0 rgba(8, 166, 106, .06) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.22) brightness(1.03) !important;
+  backdrop-filter: blur(28px) saturate(1.22) brightness(1.03) !important;
+  overflow: visible !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+html body.home-reference-body .site-header .brand,
+html body.fleet-reference-body .site-header .brand,
+html body.setrans-reference-body .site-header .brand,
+html body.contact-reference-body .site-header .brand,
+html body.insights-premium-body .site-header .brand,
+html body.station-product-body .site-header .brand,
+html body.request-reference-body .site-header .brand,
+html body.about-premium-body .site-header .brand,
+html body .site-header .brand {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 214px !important;
+  min-width: 214px !important;
+  max-width: 214px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+html body.home-reference-body .site-header .brand-logo-real.nav-logo-real,
+html body.fleet-reference-body .site-header .brand-logo-real.nav-logo-real,
+html body.setrans-reference-body .site-header .brand-logo-real.nav-logo-real,
+html body.contact-reference-body .site-header .brand-logo-real.nav-logo-real,
+html body.insights-premium-body .site-header .brand-logo-real.nav-logo-real,
+html body.station-product-body .site-header .brand-logo-real.nav-logo-real,
+html body.request-reference-body .site-header .brand-logo-real.nav-logo-real,
+html body.about-premium-body .site-header .brand-logo-real.nav-logo-real,
+html body .site-header .brand-logo-real.nav-logo-real {
+  display: block !important;
+  width: 214px !important;
+  max-width: 214px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+@media (min-width: 1181px) {
+  html body.home-reference-body .site-header .nav-actions,
+  html body.fleet-reference-body .site-header .nav-actions,
+  html body.setrans-reference-body .site-header .nav-actions,
+  html body.contact-reference-body .site-header .nav-actions,
+  html body.insights-premium-body .site-header .nav-actions,
+  html body.station-product-body .site-header .nav-actions,
+  html body.request-reference-body .site-header .nav-actions,
+  html body.about-premium-body .site-header .nav-actions,
+  html body .site-header .nav-actions {
+    display: flex !important;
+    justify-self: end !important;
+    width: 206px !important;
+    min-width: 206px !important;
+  }
+
+  html body.home-reference-body .site-header .nav-cta-request,
+  html body.fleet-reference-body .site-header .nav-cta-request,
+  html body.setrans-reference-body .site-header .nav-cta-request,
+  html body.contact-reference-body .site-header .nav-cta-request,
+  html body.insights-premium-body .site-header .nav-cta-request,
+  html body.station-product-body .site-header .nav-cta-request,
+  html body.request-reference-body .site-header .nav-cta-request,
+  html body.about-premium-body .site-header .nav-cta-request,
+  html body .site-header .nav-cta-request {
+    display: flex !important;
+    width: 206px !important;
+    min-width: 206px !important;
+    max-width: 206px !important;
+    height: 42px !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html body.home-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.fleet-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.setrans-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.contact-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.insights-premium-body .site-header .nav-menu.nav-menu-client,
+  html body.station-product-body .site-header .nav-menu.nav-menu-client,
+  html body.request-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.about-premium-body .site-header .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client {
+    display: flex !important;
+    justify-self: center !important;
+  }
+
+  html body.home-reference-body .site-header .nav-toggle,
+  html body.fleet-reference-body .site-header .nav-toggle,
+  html body.setrans-reference-body .site-header .nav-toggle,
+  html body.contact-reference-body .site-header .nav-toggle,
+  html body.insights-premium-body .site-header .nav-toggle,
+  html body.station-product-body .site-header .nav-toggle,
+  html body.request-reference-body .site-header .nav-toggle,
+  html body.about-premium-body .site-header .nav-toggle,
+  html body .site-header .nav-toggle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  html body.home-reference-body .site-header .nav-shell.nav-shell-client,
+  html body.fleet-reference-body .site-header .nav-shell.nav-shell-client,
+  html body.setrans-reference-body .site-header .nav-shell.nav-shell-client,
+  html body.contact-reference-body .site-header .nav-shell.nav-shell-client,
+  html body.insights-premium-body .site-header .nav-shell.nav-shell-client,
+  html body.station-product-body .site-header .nav-shell.nav-shell-client,
+  html body.request-reference-body .site-header .nav-shell.nav-shell-client,
+  html body.about-premium-body .site-header .nav-shell.nav-shell-client,
+  html body .site-header .nav-shell.nav-shell-client {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 46px !important;
+    width: min(calc(100% - 20px), 760px) !important;
+    height: 62px !important;
+    min-height: 62px !important;
+    padding: 8px 10px !important;
+    gap: 10px !important;
+    border-radius: 18px !important;
+  }
+
+  html body.home-reference-body .site-header .brand,
+  html body.fleet-reference-body .site-header .brand,
+  html body.setrans-reference-body .site-header .brand,
+  html body.contact-reference-body .site-header .brand,
+  html body.insights-premium-body .site-header .brand,
+  html body.station-product-body .site-header .brand,
+  html body.request-reference-body .site-header .brand,
+  html body.about-premium-body .site-header .brand,
+  html body .site-header .brand {
+    width: min(214px, calc(100vw - 96px)) !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 96px) !important;
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+
+  html body.home-reference-body .site-header .brand-logo-real.nav-logo-real,
+  html body.fleet-reference-body .site-header .brand-logo-real.nav-logo-real,
+  html body.setrans-reference-body .site-header .brand-logo-real.nav-logo-real,
+  html body.contact-reference-body .site-header .brand-logo-real.nav-logo-real,
+  html body.insights-premium-body .site-header .brand-logo-real.nav-logo-real,
+  html body.station-product-body .site-header .brand-logo-real.nav-logo-real,
+  html body.request-reference-body .site-header .brand-logo-real.nav-logo-real,
+  html body.about-premium-body .site-header .brand-logo-real.nav-logo-real,
+  html body .site-header .brand-logo-real.nav-logo-real {
+    width: min(214px, calc(100vw - 96px)) !important;
+    max-width: calc(100vw - 96px) !important;
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+
+  html body.home-reference-body .site-header .nav-actions,
+  html body.fleet-reference-body .site-header .nav-actions,
+  html body.setrans-reference-body .site-header .nav-actions,
+  html body.contact-reference-body .site-header .nav-actions,
+  html body.insights-premium-body .site-header .nav-actions,
+  html body.station-product-body .site-header .nav-actions,
+  html body.request-reference-body .site-header .nav-actions,
+  html body.about-premium-body .site-header .nav-actions,
+  html body .site-header .nav-actions {
+    display: none !important;
+  }
+
+  html body.home-reference-body .site-header .nav-toggle,
+  html body.fleet-reference-body .site-header .nav-toggle,
+  html body.setrans-reference-body .site-header .nav-toggle,
+  html body.contact-reference-body .site-header .nav-toggle,
+  html body.insights-premium-body .site-header .nav-toggle,
+  html body.station-product-body .site-header .nav-toggle,
+  html body.request-reference-body .site-header .nav-toggle,
+  html body.about-premium-body .site-header .nav-toggle,
+  html body .site-header .nav-toggle {
+    display: inline-flex !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  html body.home-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.fleet-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.setrans-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.contact-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.insights-premium-body .site-header .nav-menu.nav-menu-client,
+  html body.station-product-body .site-header .nav-menu.nav-menu-client,
+  html body.request-reference-body .site-header .nav-menu.nav-menu-client,
+  html body.about-premium-body .site-header .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client {
+    width: min(calc(100% - 28px), 480px) !important;
+    max-width: 480px !important;
+    inset: calc(var(--pvg-nav-clearance) + 6px) 14px auto 14px !important;
+    margin-inline: auto !important;
+    padding: 12px !important;
+    gap: 4px !important;
+    max-height: calc(100dvh - var(--pvg-nav-clearance) - 24px) !important;
+  }
+
+  html body.home-reference-body .site-header .nav-menu-client > .nav-link,
+  html body.home-reference-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.fleet-reference-body .site-header .nav-menu-client > .nav-link,
+  html body.fleet-reference-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.setrans-reference-body .site-header .nav-menu-client > .nav-link,
+  html body.setrans-reference-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.contact-reference-body .site-header .nav-menu-client > .nav-link,
+  html body.contact-reference-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.insights-premium-body .site-header .nav-menu-client > .nav-link,
+  html body.insights-premium-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.station-product-body .site-header .nav-menu-client > .nav-link,
+  html body.station-product-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.request-reference-body .site-header .nav-menu-client > .nav-link,
+  html body.request-reference-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body.about-premium-body .site-header .nav-menu-client > .nav-link,
+  html body.about-premium-body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    height: 40px !important;
+    min-height: 40px !important;
+    padding-inline: 12px !important;
+    font-size: .82rem !important;
+  }
+}
+
+/* Final compact typography contract: 15% smaller, no page-specific oversized headings. */
+:root {
+  --font-hero: clamp(1.9rem, 2.5vw, 3rem);
+  --font-page-title: clamp(1.7rem, 2.35vw, 2.625rem);
+  --font-section-title: clamp(1.35rem, 1.75vw, 2.1rem);
+  --font-subheading: clamp(1.06rem, 1.18vw, 1.45rem);
+  --font-card-title: clamp(.96rem, 1vw, 1.18rem);
+  --font-body: clamp(.88rem, .82vw, 1rem);
+  --font-small: clamp(.76rem, .72vw, .88rem);
+  --font-label: clamp(.64rem, .66vw, .76rem);
+}
+
+html body.home-reference-body h1,
+html body.fleet-reference-body h1,
+html body.setrans-reference-body h1,
+html body.contact-reference-body h1,
+html body.insights-premium-body h1,
+html body.station-product-body h1,
+html body.request-reference-body h1,
+html body.about-premium-body h1,
+html body .page-hero h1,
+html body main h1 {
+  font-size: clamp(1.9rem, 2.5vw, 3rem) !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+html body.home-reference-body .home-ref-hero h1,
+html body.fleet-reference-body .fleet-hero h1,
+html body.setrans-reference-body .setrans-hero h1,
+html body.contact-reference-body .contact-ref-hero h1,
+html body.insights-premium-body .insights-premium-hero h1,
+html body.station-product-body .station-hero-v3 h1,
+html body.request-reference-body .request-hero h1,
+html body.about-premium-body .about-hero-v4 h1,
+html body.solutions-body .solutions-hero h1 {
+  max-width: 14ch !important;
+}
+
+html body.home-reference-body h2,
+html body.fleet-reference-body h2,
+html body.setrans-reference-body h2,
+html body.contact-reference-body h2,
+html body.insights-premium-body h2,
+html body.station-product-body h2,
+html body.request-reference-body h2,
+html body.about-premium-body h2,
+html body .section-heading h2,
+html body main h2 {
+  font-size: clamp(1.35rem, 1.75vw, 2.1rem) !important;
+  line-height: 1.14 !important;
+  letter-spacing: 0 !important;
+}
+
+html body.home-reference-body h3,
+html body.fleet-reference-body h3,
+html body.setrans-reference-body h3,
+html body.contact-reference-body h3,
+html body.insights-premium-body h3,
+html body.station-product-body h3,
+html body.request-reference-body h3,
+html body.about-premium-body h3,
+html body main h3 {
+  font-size: clamp(.96rem, 1vw, 1.18rem) !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
+
+html body main p,
+html body main li,
+html body main label,
+html body main input,
+html body main select,
+html body main textarea {
+  font-size: clamp(.88rem, .82vw, 1rem) !important;
+}
+
+html body .section-eyebrow,
+html body .home-ref-eyebrow,
+html body .fleet-eyebrow,
+html body .station-eyebrow,
+html body .contact-ref-eyebrow,
+html body .insights-eyebrow,
+html body .request-eyebrow,
+html body .about-section-label,
+html body .badge,
+html body .pill {
+  font-size: clamp(.64rem, .66vw, .76rem) !important;
+  letter-spacing: .03em !important;
+}
+
+@media (max-width: 900px) {
+  html body.home-reference-body h1,
+  html body.fleet-reference-body h1,
+  html body.setrans-reference-body h1,
+  html body.contact-reference-body h1,
+  html body.insights-premium-body h1,
+  html body.station-product-body h1,
+  html body.request-reference-body h1,
+  html body.about-premium-body h1,
+  html body .page-hero h1,
+  html body main h1 {
+    font-size: clamp(1.8rem, 4.65vw, 2.5rem) !important;
+  }
+
+  html body.home-reference-body h2,
+  html body.fleet-reference-body h2,
+  html body.setrans-reference-body h2,
+  html body.contact-reference-body h2,
+  html body.insights-premium-body h2,
+  html body.station-product-body h2,
+  html body.request-reference-body h2,
+  html body.about-premium-body h2,
+  html body .section-heading h2,
+  html body main h2 {
+    font-size: clamp(1.3rem, 3.2vw, 1.9rem) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  html body.home-reference-body h1,
+  html body.fleet-reference-body h1,
+  html body.setrans-reference-body h1,
+  html body.contact-reference-body h1,
+  html body.insights-premium-body h1,
+  html body.station-product-body h1,
+  html body.request-reference-body h1,
+  html body.about-premium-body h1,
+  html body .page-hero h1,
+  html body main h1 {
+    font-size: clamp(1.65rem, 7.6vw, 2.125rem) !important;
+    line-height: 1.1 !important;
+  }
+
+  html body.home-reference-body h2,
+  html body.fleet-reference-body h2,
+  html body.setrans-reference-body h2,
+  html body.contact-reference-body h2,
+  html body.insights-premium-body h2,
+  html body.station-product-body h2,
+  html body.request-reference-body h2,
+  html body.about-premium-body h2,
+  html body .section-heading h2,
+  html body main h2 {
+    font-size: clamp(1.18rem, 5.4vw, 1.62rem) !important;
+  }
+}
+
+/* Page-specific typography hard stop for legacy rules with higher specificity. */
+html body.fleet-reference-body .fleet-hero h1,
+html body.station-product-body .station-hero-copy-v3 h1,
+html body.station-product-body .station-hero-v3 h1 {
+  font-size: clamp(1.9rem, 2.5vw, 3rem) !important;
+  line-height: 1.08 !important;
+}
+
+html body.fleet-reference-body .fleet-section-heading h2,
+html body.fleet-reference-body .fleet-coverage-copy h2,
+html body.fleet-reference-body .fleet-final-cta h2,
+html body.station-product-body .section-heading h2,
+html body.station-product-body .station-copy-panel h2,
+html body.station-product-body .station-cta-panel-v2 h2,
+html body.station-product-body .station-faq-copy h2 {
+  font-size: clamp(1.35rem, 1.7vw, 2.1rem) !important;
+  line-height: 1.14 !important;
+}
+
+@media (max-width: 900px) {
+  html body.fleet-reference-body .fleet-hero h1,
+  html body.station-product-body .station-hero-copy-v3 h1,
+  html body.station-product-body .station-hero-v3 h1 {
+    font-size: clamp(1.8rem, 4.65vw, 2.5rem) !important;
+  }
+
+  html body.fleet-reference-body .fleet-section-heading h2,
+  html body.fleet-reference-body .fleet-coverage-copy h2,
+  html body.fleet-reference-body .fleet-final-cta h2,
+  html body.station-product-body .section-heading h2,
+  html body.station-product-body .station-copy-panel h2,
+  html body.station-product-body .station-cta-panel-v2 h2,
+  html body.station-product-body .station-faq-copy h2 {
+    font-size: clamp(1.3rem, 3.2vw, 1.9rem) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  html body.fleet-reference-body .fleet-hero h1,
+  html body.station-product-body .station-hero-copy-v3 h1,
+  html body.station-product-body .station-hero-v3 h1 {
+    font-size: clamp(1.65rem, 7.6vw, 2.125rem) !important;
+  }
+
+  html body.fleet-reference-body .fleet-section-heading h2,
+  html body.fleet-reference-body .fleet-coverage-copy h2,
+  html body.fleet-reference-body .fleet-final-cta h2,
+  html body.station-product-body .section-heading h2,
+  html body.station-product-body .station-copy-panel h2,
+  html body.station-product-body .station-cta-panel-v2 h2,
+  html body.station-product-body .station-faq-copy h2 {
+    font-size: clamp(1.18rem, 5.4vw, 1.62rem) !important;
+  }
+}

@@ -57,13 +57,13 @@
     const active = headerMount.dataset.active || "home";
     const navLink = (item) => {
       if (!item.children) {
-        return `<a class="nav-link ${active === item.key ? "is-active" : ""}" href="${url(root, item.path)}">${item.name}</a>`;
+        return `<a class="nav-link ${active === item.key ? "is-active" : ""}" href="${url(root, item.path)}" ${active === item.key ? 'aria-current="page"' : ""}>${item.name}</a>`;
       }
 
       const menuId = `nav-submenu-${item.key}`;
       return `
         <div class="nav-dropdown ${active === item.key ? "is-active" : ""}" data-dropdown>
-          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="${menuId}" data-dropdown-toggle>
+          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="${menuId}" data-dropdown-toggle ${active === item.key ? 'aria-current="page"' : ""}>
             ${item.name}<span class="dropdown-caret" aria-hidden="true"></span>
           </button>
           <div class="dropdown-menu" id="${menuId}" data-dropdown-menu>
@@ -78,9 +78,8 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <span class="nav-logo-mark" aria-hidden="true"><span class="nav-logo-bolt"></span></span>
-            <span class="nav-logo-text"><strong>PVG-EV</strong><small>Prime Ventures Global</small></span>
-            <span class="sr-only">PVG-EV Prime Ventures Global</span>
+            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg")}" alt="PVG-EV — Endless Power, Endless Journey" width="620" height="180" decoding="async">
+            <span class="sr-only">PVG-EV — Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
             <span></span><span></span><span></span>
