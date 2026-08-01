@@ -970,6 +970,116 @@
     });
   });
 
+  document.querySelectorAll("[data-pilot-wizard]").forEach((form) => {
+    const steps = Array.from(form.querySelectorAll("[data-pilot-step]"));
+    const progressItems = Array.from(form.querySelectorAll("[data-pilot-wizard-progress] li"));
+    const status = form.querySelector("[data-form-status]");
+    const interestCards = Array.from(form.querySelectorAll(".pilot-interest-card"));
+    let currentIndex = 0;
+
+    const stepFields = (step) => Array.from(step.querySelectorAll("input, select, textarea"))
+      .filter((field) => !field.disabled && field.type !== "hidden");
+
+    const updateInterestCard = (card) => {
+      const input = card.querySelector("input");
+      card.classList.toggle("is-selected", Boolean(input?.checked));
+    };
+
+    const setStep = (index, shouldFocus = true) => {
+      currentIndex = Math.max(0, Math.min(index, steps.length - 1));
+      steps.forEach((step, stepIndex) => {
+        const isActive = stepIndex === currentIndex;
+        step.hidden = !isActive;
+        step.classList.toggle("is-active", isActive);
+      });
+      progressItems.forEach((item, itemIndex) => {
+        item.classList.toggle("is-active", itemIndex === currentIndex);
+        item.classList.toggle("is-complete", itemIndex < currentIndex);
+        if (itemIndex === currentIndex) {
+          item.setAttribute("aria-current", "step");
+        } else {
+          item.removeAttribute("aria-current");
+        }
+      });
+      form.dataset.currentStep = String(currentIndex + 1);
+      if (shouldFocus) {
+        window.requestAnimationFrame(() => {
+          const target = steps[currentIndex]?.querySelector("input, select, textarea, button");
+          target?.focus({ preventScroll: true });
+          form.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    };
+
+    const validateStep = (index) => {
+      const fieldsInStep = stepFields(steps[index]);
+      const isValid = fieldsInStep.map(validateField).every(Boolean);
+      if (!isValid) {
+        if (status) {
+          status.textContent = "Please fix the highlighted fields before continuing.";
+          status.classList.remove("is-success");
+          status.classList.add("is-error");
+        }
+        steps[index].querySelector(".is-invalid")?.focus();
+      } else if (status) {
+        status.textContent = "";
+        status.classList.remove("is-error", "is-success");
+      }
+      return isValid;
+    };
+
+    form.querySelectorAll("[data-pilot-next]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (validateStep(currentIndex)) setStep(currentIndex + 1);
+      });
+    });
+
+    form.querySelectorAll("[data-pilot-prev]").forEach((button) => {
+      button.addEventListener("click", () => setStep(currentIndex - 1));
+    });
+
+    interestCards.forEach((card) => {
+      const input = card.querySelector("input");
+      updateInterestCard(card);
+      input?.addEventListener("change", () => updateInterestCard(card));
+    });
+
+    form.addEventListener("submit", (event) => {
+      if (currentIndex < steps.length - 1) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (validateStep(currentIndex)) setStep(currentIndex + 1);
+        return;
+      }
+
+      const allFields = steps.flatMap(stepFields);
+      const isValid = allFields.map(validateField).every(Boolean);
+      if (isValid) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const invalidField = form.querySelector(".is-invalid");
+      const invalidStepIndex = steps.findIndex((step) => step.contains(invalidField));
+      setStep(invalidStepIndex >= 0 ? invalidStepIndex : 0, false);
+      if (status) {
+        status.textContent = "Please complete the highlighted step before submitting.";
+        status.classList.remove("is-success");
+        status.classList.add("is-error");
+      }
+      window.requestAnimationFrame(() => invalidField?.focus());
+    }, true);
+
+    form.addEventListener("reset", () => {
+      window.setTimeout(() => {
+        interestCards.forEach(updateInterestCard);
+        setStep(0, false);
+      }, 0);
+    });
+
+    form.classList.add("is-wizard-ready");
+    setStep(0, false);
+  });
+
   document.querySelectorAll("[data-accordion]").forEach((accordion) => {
     const triggers = Array.from(accordion.querySelectorAll("[data-accordion-trigger]"));
     const panels = Array.from(accordion.querySelectorAll("[data-accordion-panel]"));
