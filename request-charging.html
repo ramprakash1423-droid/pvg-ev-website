@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260801navstable2">
+    <link rel="stylesheet" href="styles.css?v=20260802requestux9">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html"}]}</script>
   </head>
   <body class="request-reference-body">
@@ -55,10 +55,18 @@
             <h2>Fast Request Review</h2>
             <p>For a stranded or low-battery EV, start with the fast path. Detailed planning can be added after the PVG-EV team contacts you.</p>
             <ol class="request-progress" data-request-progress>
-              <li class="is-active"><span>01</span>Need</li>
-              <li><span>02</span>Contact</li>
-              <li><span>03</span>Vehicle</li>
-              <li><span>04</span>Submit</li>
+              <li class="is-active">
+                <button type="button" data-request-jump="0" aria-current="step"><span>01</span><strong>Need</strong></button>
+              </li>
+              <li>
+                <button type="button" data-request-jump="1"><span>02</span><strong>Contact</strong></button>
+              </li>
+              <li>
+                <button type="button" data-request-jump="2"><span>03</span><strong>Vehicle</strong></button>
+              </li>
+              <li>
+                <button type="button" data-request-jump="3"><span>04</span><strong>Submit</strong></button>
+              </li>
             </ol>
             <div class="request-assurance">
               <strong>2-minute emergency path</strong>
@@ -66,7 +74,7 @@
             </div>
           </aside>
 
-          <div class="request-form-card reveal" data-request-form-card>
+          <div class="request-form-card reveal" id="request-form" data-request-form-card>
             <form class="contact-form request-form" novalidate data-request-form>
               <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="latitude">
@@ -354,6 +362,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260801navstable2"></script>
+    <script src="script.js?v=20260802requestux9"></script>
   </body>
 </html>

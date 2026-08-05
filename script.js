@@ -5,33 +5,32 @@
 
   const navItems = [
     { name: "Home", path: "index.html", key: "home" },
+    { name: "Mobile Charging Station", path: "mobile-charging-station.html", key: "station" },
     {
       name: "Solutions",
       key: "solutions",
       children: [
-        { name: "Mobile Charging Station", path: "mobile-charging-station.html", key: "station" },
-        { name: "Fleet Solutions", path: "fleet-solutions.html", key: "fleet" }
+        { name: "Mobile EV Charging", path: "solutions.html#mobile-ev-charging", key: "solutions-mobile" },
+        { name: "Fleet & Depot Charging", path: "solutions.html#fleet-depot-charging", key: "solutions-fleet-depot" },
+        { name: "Commercial EV Charging", path: "solutions.html#commercial-charging", key: "solutions-commercial" },
+        { name: "Apartment Charging", path: "solutions.html#apartment-charging", key: "solutions-apartment" },
+        { name: "Maintenance & Support", path: "solutions.html#maintenance-support", key: "solutions-maintenance" }
       ]
     },
+    { name: "Fleet Solutions", path: "fleet-solutions.html", key: "fleet" },
+    { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
+    { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" },
     { name: "Pilot Programme", path: "pilot-programme.html", key: "pilot" },
-    {
-      name: "About",
-      key: "about",
-      children: [
-        { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
-        { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" }
-      ]
-    },
     { name: "Insights", path: "insights.html", key: "insights" },
     { name: "Contact", path: "contact.html", key: "contact" }
   ];
 
   const activeParentMap = {
-    station: "solutions",
-    fleet: "solutions",
+    station: "station",
+    fleet: "fleet",
     solutions: "solutions",
     about: "about",
-    collaboration: "about"
+    collaboration: "collaboration"
   };
 
   const footerLinks = [
@@ -91,7 +90,7 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-primary.svg?v=20260801navstable2")}" alt="PVG-EV — Prime Ventures Global" width="620" height="180" decoding="async">
+            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-nav.svg?v=20260802requestux9")}" alt="PVG-EV — Prime Ventures Global" width="620" height="180" decoding="async">
             <span class="sr-only">PVG-EV — Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
@@ -182,21 +181,7 @@
   };
 
   const renderQuickEnquiry = () => {
-    const root = headerMount?.dataset.root || footerMount?.dataset.root || "";
-    if (document.querySelector("[data-quick-enquiry]")) return;
-    if (document.querySelector(".station-product-page")) return;
-    const widget = document.createElement("div");
-    widget.className = "quick-enquiry sticky-request-cta";
-    widget.setAttribute("data-quick-enquiry", "");
-    widget.innerHTML = `
-      <a class="quick-enquiry-button quick-enquiry-link" href="${url(root, "request-charging.html")}" data-event="sticky_request_mobile_charging">
-        <span>Request Mobile Charging</span>
-      </a>
-      <nav class="mobile-action-bar" aria-label="Mobile quick actions">
-        <a href="${url(root, "request-charging.html")}" data-event="mobile_request_charging">Request Charging</a>
-      </nav>
-    `;
-    document.body.appendChild(widget);
+    document.querySelectorAll("[data-quick-enquiry]").forEach((widget) => widget.remove());
   };
 
   const initFooterAccordions = () => {
@@ -422,7 +407,7 @@
       const rect = button.getBoundingClientRect();
       return rect.top < window.innerHeight - 80 && rect.bottom > 70;
     });
-    stickyCta?.classList.toggle("is-visible", window.scrollY > trigger && !isBlockedBySection && !hasFormFocus && !visibleSubmit && !cookieVisible && !document.body.classList.contains("menu-open"));
+    stickyCta?.remove();
   };
 
   syncHeader();
@@ -846,6 +831,10 @@
   });
 
   const forms = Array.from(document.querySelectorAll("[data-contact-form], [data-pilot-form]"));
+  const pvgWhatsappNumber = "919751083000";
+  const pvgWhatsappDisplay = "+91 97510 83000";
+  const pvgSupabaseUrl = window.PVG_EV_SUPABASE_URL || "https://wpaickmgqlahzmdqmkid.supabase.co";
+  const pvgSupabaseAnonKey = window.PVG_EV_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwYWlja21ncWxhaHptZHFta2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDI2NDIsImV4cCI6MjA5NTMxODY0Mn0.GPHi7wHHIYKPlHkogpxaEZG8Sq8TnpWZcsad0s0-wfo";
   const defaultMessages = {
     name: "Please enter your name.",
     email: "Please enter a valid email address.",
@@ -889,6 +878,183 @@
     return !error;
   };
 
+  const buildPvgWhatsappUrl = (message) => `https://wa.me/${pvgWhatsappNumber}?text=${encodeURIComponent(message)}`;
+
+  const openPvgWhatsapp = (url) => {
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = url;
+      return true;
+    }
+    const popup = window.open(url, "_blank");
+    if (popup) popup.opener = null;
+    if (!popup) window.location.href = url;
+    return Boolean(popup);
+  };
+
+  const getFormType = (form) => {
+    if (form.dataset.pilotForm === "true") return "pilot";
+    if (form.classList.contains("fleet-assessment-form")) return "fleet";
+    return "contact";
+  };
+
+  const getFormTypeLabel = (form) => {
+    const formType = getFormType(form);
+    if (formType === "pilot") return "PVG-EV Chennai pilot interest";
+    if (formType === "fleet") return "PVG-EV fleet charging assessment";
+    return "PVG-EV WhatsApp booking enquiry";
+  };
+
+  const getSelectedOptionLabel = (field) => {
+    if (field.tagName !== "SELECT") return field.value;
+    if (!field.value) return "";
+    return field.selectedOptions?.[0]?.textContent?.trim() || field.value;
+  };
+
+  const getFieldWhatsappValue = (field) => {
+    if (field.type === "checkbox") return field.checked ? "Yes" : "";
+    if (field.type === "radio") return field.checked ? field.value : "";
+    return String(getSelectedOptionLabel(field) || "").trim();
+  };
+
+  const cleanDbValue = (value) => {
+    const clean = String(value || "").trim();
+    return clean || null;
+  };
+
+  const cleanDbDate = (value) => {
+    const clean = String(value || "").trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(clean) ? clean : null;
+  };
+
+  const cleanDbNumber = (value) => {
+    const clean = String(value || "").trim();
+    if (!clean) return null;
+    const numeric = Number(clean);
+    return Number.isFinite(numeric) ? numeric : null;
+  };
+
+  const collectPvgFormPayload = (form) => {
+    const payload = {};
+    Array.from(form.querySelectorAll("input, select, textarea")).forEach((field) => {
+      if (!field.name || field.name === "website" || field.disabled) return;
+      if (field.type === "radio" && !field.checked) return;
+      if (field.type === "checkbox") {
+        payload[field.name] = field.checked ? "Yes" : "No";
+        return;
+      }
+      payload[field.name] = getFieldWhatsappValue(field);
+    });
+    return payload;
+  };
+
+  const payloadValue = (payload, names) => {
+    for (const name of names) {
+      const value = payload[name];
+      if (value !== undefined && value !== null && String(value).trim()) return String(value).trim();
+    }
+    return "";
+  };
+
+  const buildPvgSupabaseRecord = (payload, formType, reference) => ({
+    reference,
+    source: "pvg_ev_website",
+    form_type: formType,
+    requirement_type: cleanDbValue(payloadValue(payload, ["requirement_type", "requirement", "charging_requirement", "main_charging_challenge"])),
+    customer_type: cleanDbValue(payloadValue(payload, ["customer_type", "customer"])),
+    requirement_scope: cleanDbValue(payloadValue(payload, ["requirement_scope", "scope"])),
+    priority: cleanDbValue(payloadValue(payload, ["priority"])),
+    use_case: cleanDbValue(payloadValue(payload, ["use_case"])),
+    phone: cleanDbValue(payloadValue(payload, ["phone", "telephone", "mobile"])) || "",
+    name: cleanDbValue(payloadValue(payload, ["name", "full_name"])),
+    email: cleanDbValue(payloadValue(payload, ["email"])),
+    company: cleanDbValue(payloadValue(payload, ["company", "organisation", "organization"])),
+    city: cleanDbValue(payloadValue(payload, ["city", "deployment_location"])),
+    location_type: cleanDbValue(payloadValue(payload, ["location_type"])),
+    address: cleanDbValue(payloadValue(payload, ["address", "location", "landmark"])),
+    gps_location: cleanDbValue(payloadValue(payload, ["gps_location"])),
+    latitude: cleanDbNumber(payloadValue(payload, ["latitude"])),
+    longitude: cleanDbNumber(payloadValue(payload, ["longitude"])),
+    gps_accuracy: cleanDbNumber(payloadValue(payload, ["gps_accuracy"])),
+    vehicle_category: cleanDbValue(payloadValue(payload, ["vehicle_category", "vehicle_type"])),
+    vehicle_model: cleanDbValue(payloadValue(payload, ["vehicle_model"])),
+    vehicle_count: cleanDbValue(payloadValue(payload, ["vehicle_count", "number_of_vehicles"])),
+    connector_type: cleanDbValue(payloadValue(payload, ["connector_type"])),
+    battery_status: cleanDbValue(payloadValue(payload, ["battery_status"])),
+    current_battery_level: cleanDbValue(payloadValue(payload, ["current_battery_level"])),
+    charging_need: cleanDbValue(payloadValue(payload, ["charging_need"])),
+    charging_details: cleanDbValue(payloadValue(payload, ["charging_details", "additional_notes"])),
+    preferred_window: cleanDbValue(payloadValue(payload, ["preferred_window"])),
+    target_date: cleanDbDate(payloadValue(payload, ["target_date", "preferred_date"])),
+    preferred_time: cleanDbValue(payloadValue(payload, ["preferred_time", "contact_time"])),
+    pilot_interest: cleanDbValue(payloadValue(payload, ["pilot_interest"])),
+    message: cleanDbValue(payloadValue(payload, ["message", "additional_notes"])),
+    payload
+  });
+
+  const savePvgChargingRequest = async (record) => {
+    if (!pvgSupabaseAnonKey || /^__.*__$/.test(pvgSupabaseAnonKey)) {
+      return { saved: false, reason: "not_configured" };
+    }
+    try {
+      const response = await fetch(`${pvgSupabaseUrl.replace(/\/$/, "")}/rest/v1/pvg_ev_charging_requests`, {
+        method: "POST",
+        headers: {
+          apikey: pvgSupabaseAnonKey,
+          Authorization: `Bearer ${pvgSupabaseAnonKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify(record)
+      });
+      if (!response.ok) throw new Error(await response.text() || `Request save failed (${response.status})`);
+      return { saved: true };
+    } catch (error) {
+      console.warn("PVG-EV request save failed", error);
+      return { saved: false, reason: "failed" };
+    }
+  };
+
+  const savePvgFormToSupabase = (form, reference, formType = getFormType(form)) => {
+    const payload = collectPvgFormPayload(form);
+    return savePvgChargingRequest(buildPvgSupabaseRecord(payload, formType, reference));
+  };
+
+  const buildLeadWhatsappMessage = (form, reference) => {
+    const formType = getFormType(form);
+    const lines = [
+      getFormTypeLabel(form),
+      `Reference: ${reference}`,
+      `WhatsApp: ${pvgWhatsappDisplay}`,
+      ""
+    ];
+    const fieldsToShare = Array.from(form.querySelectorAll("input, select, textarea"))
+      .filter((field) => field.name && field.name !== "website" && field.type !== "hidden" && !field.disabled);
+
+    fieldsToShare.forEach((field) => {
+      const value = getFieldWhatsappValue(field);
+      if (!value && !field.required) return;
+      lines.push(`- ${fieldLabel(field)}: ${value || "Not provided"}`);
+    });
+
+    lines.push("");
+    if (formType === "pilot") {
+      lines.push("Please review this pilot interest and respond with eligibility, assessment steps and next actions.");
+    } else if (formType === "fleet") {
+      lines.push("Please review this fleet requirement and respond with assessment availability and next steps.");
+    } else {
+      lines.push("Please review this PVG-EV enquiry and respond with availability, timing and next steps.");
+    }
+    return lines.join("\n");
+  };
+
+  const whatsappSuccessMessage = (form) => {
+    const formType = getFormType(form);
+    if (formType === "pilot") return "WhatsApp is ready. Please press send to share your Chennai pilot interest with PVG-EV.";
+    if (formType === "fleet") return "WhatsApp is ready. Please press send to share your fleet assessment request with PVG-EV.";
+    return "WhatsApp is ready. Please press send to book with PVG-EV.";
+  };
+
   forms.forEach((form) => {
     const fields = Array.from(form.querySelectorAll("input, select, textarea"));
     const status = form.querySelector("[data-form-status]");
@@ -907,7 +1073,7 @@
       });
     });
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (submitted) return;
       const isValid = fields.map(validateField).every(Boolean);
@@ -936,37 +1102,40 @@
         submitButton.disabled = true;
         submitButton.classList.add("is-loading");
         submitButton.setAttribute("aria-busy", "true");
-        submitButton.innerHTML = "<span class=\"pvg-line-icon icon-loading\" aria-hidden=\"true\"></span> Submitting...";
+        submitButton.innerHTML = "<span class=\"pvg-line-icon icon-loading\" aria-hidden=\"true\"></span> Opening WhatsApp...";
       }
       if (successPanel) successPanel.hidden = true;
       if (status) {
-        status.textContent = "Submitting your details...";
+        status.textContent = "Opening WhatsApp with your enquiry details...";
         status.classList.remove("is-error", "is-success");
       }
 
-      window.setTimeout(() => {
-        if (status) {
-          status.textContent = form.dataset.staticContactForm === "true"
-            ? "Thank you. Your enquiry has been received."
-            : form.dataset.pilotForm === "true"
-            ? "Thank you. Your Chennai pilot interest has been recorded for review."
-            : "Thank you. Your PVG-EV enquiry has been received.";
-          status.classList.remove("is-error");
-          status.classList.add("is-success");
-        }
-        if (successPanel) successPanel.hidden = false;
-        fields.forEach((field) => setError(field, ""));
-        // TODO: Replace this simulated frontend submission with the verified production enquiry endpoint.
-        form.reset();
-        trackPvgEvent(form.dataset.pilotForm === "true" ? "pilot_registration_submit" : "contact_form_submit", { path: window.location.pathname });
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.classList.remove("is-loading");
-          submitButton.removeAttribute("aria-busy");
-          submitButton.innerHTML = originalSubmitText;
-        }
-        submitted = false;
-      }, 520);
+      const reference = `PVG-EV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+      const whatsappUrl = buildPvgWhatsappUrl(buildLeadWhatsappMessage(form, reference));
+      const databaseResult = await savePvgFormToSupabase(form, reference);
+      const retryLink = form.querySelector("[data-whatsapp-retry]");
+      if (retryLink) retryLink.href = whatsappUrl;
+      if (status) {
+        status.textContent = databaseResult.saved
+          ? `${whatsappSuccessMessage(form)} Your enquiry is also saved for PVG-EV review.`
+          : whatsappSuccessMessage(form);
+        status.classList.remove("is-error");
+        status.classList.add("is-success");
+      }
+      if (successPanel) {
+        successPanel.hidden = false;
+        successPanel.querySelector("[data-success-reference]")?.replaceChildren(document.createTextNode(reference));
+      }
+      fields.forEach((field) => setError(field, ""));
+      trackPvgEvent(`${getFormType(form)}_form_whatsapp_open`, { reference, saved: databaseResult.saved, path: window.location.pathname });
+      openPvgWhatsapp(whatsappUrl);
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.classList.remove("is-loading");
+        submitButton.removeAttribute("aria-busy");
+        submitButton.innerHTML = originalSubmitText;
+      }
+      submitted = false;
     });
   });
 
@@ -1124,9 +1293,9 @@
     const requestStatus = requestForm.querySelector("[data-request-status]");
     const fastCards = Array.from(requestForm.querySelectorAll("[data-fast-request]"));
     const choiceError = requestForm.querySelector('[data-error-for="requirement_choice"]');
-    const whatsappNumber = "919751083000";
     const storageKey = "pvgChargingRequirementDraft";
     let currentStep = 0;
+    let furthestStep = 0;
     let submitted = false;
 
     const requestFields = Array.from(requestForm.querySelectorAll("input, select, textarea"))
@@ -1302,32 +1471,31 @@
       return lines.join("\n");
     };
 
-    const openWhatsapp = (url) => {
-      const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-      if (isMobile) {
-        window.location.href = url;
-        return true;
-      }
-      const popup = window.open(url, "_blank");
-      if (popup) popup.opener = null;
-      if (!popup) window.location.href = url;
-      return Boolean(popup);
-    };
-
-    const showStep = (index) => {
+    const showStep = (index, focus = true) => {
       currentStep = Math.max(0, Math.min(index, steps.length - 1));
+      furthestStep = Math.max(furthestStep, currentStep);
       steps.forEach((step, stepIndex) => {
         const active = stepIndex === currentStep;
         step.hidden = !active;
         step.setAttribute("aria-hidden", String(!active));
       });
       progressItems.forEach((item, itemIndex) => {
-        item.classList.toggle("is-active", itemIndex === currentStep);
+        const isActive = itemIndex === currentStep;
+        const isAvailable = itemIndex <= furthestStep;
+        item.classList.toggle("is-active", isActive);
         item.classList.toggle("is-complete", itemIndex < currentStep);
+        item.classList.toggle("is-available", isAvailable);
+        const jumpButton = item.querySelector("[data-request-jump]");
+        if (jumpButton) {
+          jumpButton.setAttribute("aria-current", isActive ? "step" : "false");
+          jumpButton.setAttribute("aria-disabled", String(!isAvailable && itemIndex > currentStep + 1));
+        }
       });
       if (currentStep === steps.length - 1) updateReview();
       setRequestStatus("");
-      steps[currentStep]?.querySelector("input:not([tabindex='-1']), select:not([tabindex='-1']), textarea, button")?.focus({ preventScroll: true });
+      if (!focus) return;
+      steps[currentStep]?.querySelector("input:not([tabindex='-1']), select:not([tabindex='-1']), textarea, button:not([data-request-jump])")?.focus({ preventScroll: true });
+      formCard?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
     };
 
     const validateStep = () => {
@@ -1356,7 +1524,7 @@
     hydrateDraft();
     updateGeoUi();
     syncFastSelection();
-    showStep(0);
+    showStep(0, false);
 
     requestFields.forEach((field) => {
       field.addEventListener("blur", () => validateField(field));
@@ -1384,6 +1552,24 @@
 
     requestForm.querySelectorAll("[data-request-back]").forEach((button) => {
       button.addEventListener("click", () => showStep(currentStep - 1));
+    });
+
+    progressItems.forEach((item, itemIndex) => {
+      const jumpButton = item.querySelector("[data-request-jump]");
+      if (!jumpButton) return;
+      jumpButton.addEventListener("click", () => {
+        if (itemIndex === currentStep) return;
+        if (itemIndex <= furthestStep) {
+          showStep(itemIndex);
+          return;
+        }
+        if (itemIndex === currentStep + 1 && validateStep()) {
+          writeDraft();
+          showStep(itemIndex);
+          return;
+        }
+        setRequestStatus("Complete the current step first, then continue.", "error");
+      });
     });
 
     geoButton?.addEventListener("click", () => {
@@ -1414,7 +1600,7 @@
       }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
     });
 
-    requestForm.addEventListener("submit", (event) => {
+    requestForm.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (submitted) return;
       const website = requestForm.elements.website?.value;
@@ -1437,15 +1623,16 @@
         submitButton.textContent = "Opening WhatsApp...";
       }
       const reference = `PVG-EV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(buildWhatsappMessage(reference))}`;
+      const whatsappUrl = buildPvgWhatsappUrl(buildWhatsappMessage(reference));
+      const databaseResult = await savePvgFormToSupabase(requestForm, reference, "request");
       if (successRef) successRef.textContent = reference;
       if (whatsappRetry) whatsappRetry.href = whatsappUrl;
       formCard?.setAttribute("hidden", "");
       successCard?.removeAttribute("hidden");
       sessionStorage.removeItem(storageKey);
-      trackPvgEvent("request_charging_whatsapp_open", { reference, path: window.location.pathname });
+      trackPvgEvent("request_charging_whatsapp_open", { reference, saved: databaseResult.saved, path: window.location.pathname });
       successCard?.focus({ preventScroll: false });
-      openWhatsapp(whatsappUrl);
+      openPvgWhatsapp(whatsappUrl);
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.removeAttribute("aria-busy");

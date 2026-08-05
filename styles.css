@@ -26,6 +26,1941 @@
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* 2026-08-04: shared ClickaCook typography system for every PVG-EV page. */
+:root {
+  --font-sans: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-hero: clamp(2.25rem, 3.2vw, 3rem);
+  --font-page-title: clamp(2rem, 2.8vw, 2.625rem);
+  --font-section-title: clamp(1.75rem, 2.2vw, 2.125rem);
+  --font-subheading: clamp(1.3rem, 1.7vw, 1.625rem);
+  --font-card-title: clamp(1.05rem, 1.25vw, 1.25rem);
+  --font-body: clamp(1rem, 1vw, 1.0625rem);
+  --font-small: clamp(.875rem, .9vw, .9375rem);
+  --font-label: clamp(.75rem, .75vw, .8125rem);
+  --font-button: clamp(.875rem, .9vw, 1rem);
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-sans) !important;
+}
+
+body {
+  font-size: var(--font-body) !important;
+  line-height: 1.65 !important;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html body h1,
+html body .hero-copy h1,
+html body .page-hero h1,
+html body .home-ref-hero h1,
+html body .request-hero-copy h1 {
+  font-family: var(--font-serif) !important;
+  font-size: var(--font-hero) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+html body h2,
+html body .section-heading,
+html body .home-ref-section h2 {
+  font-family: var(--font-serif) !important;
+  font-size: var(--font-section-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+}
+
+html body h3 {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-card-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+}
+
+html body p,
+html body li,
+html body label,
+html body input,
+html body select,
+html body textarea {
+  font-size: var(--font-body) !important;
+}
+
+html body .eyebrow,
+html body .section-kicker,
+html body .home-ref-eyebrow,
+html body .badge,
+html body .status-badge,
+html body small {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-label) !important;
+  letter-spacing: .08em !important;
+}
+
+html body .button,
+html body button,
+html body [type="submit"],
+html body .nav-link,
+html body .dropdown-toggle {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-button) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-hero: clamp(2rem, 8.4vw, 2.125rem);
+    --font-page-title: clamp(1.75rem, 7.5vw, 1.875rem);
+    --font-section-title: clamp(1.5rem, 6.5vw, 1.625rem);
+    --font-subheading: clamp(1.2rem, 5.4vw, 1.3125rem);
+    --font-card-title: 1.125rem;
+    --font-body: clamp(.9375rem, 4vw, 1rem);
+    --font-small: .875rem;
+    --font-label: .75rem;
+    --font-button: .9375rem;
+  }
+}
+
+/* Absolute compact-spacing lock. Keep this final in the cascade. */
+html body main > section:not([class*="hero"]),
+html body main :is(.section, .compact-section, .home-ref-section, .about-section-v4, .fleet-section, .fleet-lower-section, .setrans-section, .insights-premium-section, .contact-ref-section, .station-overview-section, .station-applications-section, .station-benefits-section, .station-workflow-section, .station-deployment-section, .station-cta-section, .station-faq-section, .pilot-visual-strip-section, .pilot-form-section, .solutions-overview-section, .solutions-journey-section, .solutions-comparison-section, .solution-showcase-section, .solution-finder-section) {
+  min-height: 0 !important;
+  padding-top: clamp(28px, 3.2vw, 44px) !important;
+  padding-bottom: clamp(28px, 3.2vw, 44px) !important;
+}
+
+html body main > section + section {
+  margin-top: 0 !important;
+}
+
+html body :is(.section-heading, .home-ref-section-heading, .fleet-section-heading, .insights-section-heading, .station-section-heading, .setrans-section-heading) {
+  margin-top: 0 !important;
+  margin-bottom: clamp(16px, 1.7vw, 24px) !important;
+}
+
+html body section h2 {
+  margin-top: 0 !important;
+  margin-bottom: clamp(10px, 1vw, 16px) !important;
+}
+
+html body section h3 {
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+html body section p {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+html body main [class*="-grid"] {
+  gap: clamp(14px, 1.5vw, 22px) !important;
+}
+
+html body :is(.home-ref-service-grid, .home-ref-usecase-grid, .fleet-challenge-grid, .fleet-solution-grid, .fleet-benefit-grid, .pilot-participant-grid, .about-values-grid, .about-solution-grid, .setrans-objective-grid, .insights-resource-grid, .insights-guide-grid, .contact-ref-option-grid, .station-application-grid-v2) > * {
+  min-height: 0 !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  margin: 20px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag > li {
+  min-height: 0 !important;
+  padding: 18px !important;
+  gap: 14px !important;
+  align-content: start !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag > li > span {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+}
+
+html body .site-footer {
+  margin-top: 0 !important;
+  padding-top: clamp(32px, 3.6vw, 48px) !important;
+  padding-bottom: clamp(22px, 2.5vw, 34px) !important;
+}
+
+@media (max-width: 900px) {
+  html body .pilot-process-panel.pilot-workflow-zigzag {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body main > section:not([class*="hero"]),
+  html body main :is(.section, .compact-section, .home-ref-section, .about-section-v4, .fleet-section, .setrans-section, .insights-premium-section, .contact-ref-section) {
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag > li {
+    display: grid !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    align-items: center !important;
+    padding: 13px 14px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag > li > span {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag h3 {
+    margin: 0 !important;
+  }
+}
+
+/* 2026-08-04: compact vertical rhythm across the complete PVG-EV website. */
+html body main > section:not([class*="hero"]),
+html body main :is(
+  .section,
+  .compact-section,
+  .home-ref-section,
+  .about-section-v4,
+  .fleet-section,
+  .fleet-lower-section,
+  .setrans-section,
+  .insights-premium-section,
+  .contact-ref-section,
+  .station-overview-section,
+  .station-applications-section,
+  .station-benefits-section,
+  .station-workflow-section,
+  .station-deployment-section,
+  .station-cta-section,
+  .station-faq-section,
+  .pilot-visual-strip-section,
+  .pilot-form-section,
+  .solutions-overview-section,
+  .solutions-journey-section,
+  .solutions-comparison-section,
+  .solution-showcase-section,
+  .solution-finder-section
+) {
+  min-height: 0 !important;
+  padding-top: clamp(28px, 3.2vw, 44px) !important;
+  padding-bottom: clamp(28px, 3.2vw, 44px) !important;
+}
+
+html body main > section + section {
+  margin-top: 0 !important;
+}
+
+html body :is(
+  .section-heading,
+  .home-ref-section-heading,
+  .fleet-section-heading,
+  .insights-section-heading,
+  .station-section-heading,
+  .setrans-section-heading
+) {
+  margin-top: 0 !important;
+  margin-bottom: clamp(16px, 1.7vw, 24px) !important;
+}
+
+html body section :is(h1, h2, h3, p):first-child {
+  margin-top: 0 !important;
+}
+
+html body section h2 {
+  margin-bottom: clamp(10px, 1vw, 16px) !important;
+}
+
+html body section h3 {
+  margin-bottom: 8px !important;
+}
+
+html body section p {
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+html body main [class*="-grid"] {
+  gap: clamp(14px, 1.5vw, 22px) !important;
+}
+
+html body :is(
+  .home-ref-service-grid,
+  .home-ref-usecase-grid,
+  .fleet-challenge-grid,
+  .fleet-solution-grid,
+  .fleet-benefit-grid,
+  .pilot-participant-grid,
+  .about-values-grid,
+  .about-solution-grid,
+  .setrans-objective-grid,
+  .insights-resource-grid,
+  .insights-guide-grid,
+  .contact-ref-option-grid,
+  .station-application-grid-v2
+) > * {
+  min-height: 0 !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  margin: 20px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag > li {
+  min-height: 0 !important;
+  padding: 18px !important;
+  gap: 14px !important;
+  align-content: start !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag > li > span {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+}
+
+html body .site-footer {
+  margin-top: 0 !important;
+  padding-top: clamp(32px, 3.6vw, 48px) !important;
+  padding-bottom: clamp(22px, 2.5vw, 34px) !important;
+}
+
+@media (max-width: 900px) {
+  html body .pilot-process-panel.pilot-workflow-zigzag {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body main > section:not([class*="hero"]),
+  html body main :is(
+    .section,
+    .compact-section,
+    .home-ref-section,
+    .about-section-v4,
+    .fleet-section,
+    .setrans-section,
+    .insights-premium-section,
+    .contact-ref-section
+  ) {
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag > li {
+    display: grid !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    align-items: center !important;
+    padding: 13px 14px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag > li > span {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag h3 {
+    margin: 0 !important;
+  }
+}
+
+/* 2026-08-02: final release lock — static matte-glass nav and compact request wizard. */
+:root {
+  --pvg-nav-top: max(14px, env(safe-area-inset-top, 0px));
+  --pvg-nav-shell-height: 66px;
+  --pvg-nav-shell-radius: 20px;
+  --pvg-nav-clearance: calc(var(--pvg-nav-top) + var(--pvg-nav-shell-height) + 24px);
+  --floating-nav-top: var(--pvg-nav-top);
+  --floating-nav-clearance: var(--pvg-nav-clearance);
+  --header-height: var(--pvg-nav-shell-height);
+  --pvg-nav-logo-width: 194px;
+  --pvg-nav-cta-width: 188px;
+}
+
+html body,
+html body[class] {
+  padding-top: 0 !important;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled,
+html body[class] .site-header,
+html body[class] .site-header.is-scrolled {
+  position: fixed !important;
+  inset: var(--pvg-nav-top) 0 auto 0 !important;
+  z-index: 3000 !important;
+  width: 100% !important;
+  height: var(--pvg-nav-shell-height) !important;
+  min-height: var(--pvg-nav-shell-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body[class] .site-header .nav-shell.nav-shell-client,
+html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+  display: grid !important;
+  grid-template-columns: var(--pvg-nav-logo-width) minmax(0, 1fr) var(--pvg-nav-cta-width) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: min(calc(100% - 56px), 1380px) !important;
+  height: var(--pvg-nav-shell-height) !important;
+  min-height: var(--pvg-nav-shell-height) !important;
+  margin: 0 auto !important;
+  padding: 9px 13px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(255, 255, 255, .78) !important;
+  border-radius: var(--pvg-nav-shell-radius) !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .80), rgba(247, 255, 251, .70)),
+    radial-gradient(circle at 12% 0%, rgba(8, 166, 106, .10), transparent 42%),
+    radial-gradient(circle at 95% 8%, rgba(8, 145, 178, .10), transparent 34%) !important;
+  box-shadow:
+    0 18px 48px rgba(3, 23, 18, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .92),
+    inset 0 -1px 0 rgba(8, 166, 106, .06) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.18) !important;
+  backdrop-filter: blur(24px) saturate(1.18) !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::before,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 1px !important;
+  z-index: -1 !important;
+  border-radius: calc(var(--pvg-nav-shell-radius) - 2px) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .42), rgba(255, 255, 255, .08)),
+    linear-gradient(90deg, rgba(8, 166, 106, .04), rgba(255, 255, 255, 0) 52%, rgba(8, 145, 178, .06)) !important;
+  pointer-events: none !important;
+}
+
+html body .site-header .brand,
+html body .site-header.is-scrolled .brand,
+html body[class] .site-header .brand,
+html body[class] .site-header.is-scrolled .brand {
+  display: inline-flex !important;
+  width: var(--pvg-nav-logo-width) !important;
+  min-width: var(--pvg-nav-logo-width) !important;
+  max-width: var(--pvg-nav-logo-width) !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, .36) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+html body .site-header .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .brand-logo-real.nav-logo-real,
+html body[class] .site-header .brand-logo-real.nav-logo-real,
+html body[class] .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  filter: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+@media (min-width: 1101px) {
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client,
+  html body[class] .site-header .nav-menu.nav-menu-client,
+  html body[class] .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    gap: 2px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    display: none !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions,
+  html body[class] .site-header .nav-actions,
+  html body[class] .site-header.is-scrolled .nav-actions {
+    display: flex !important;
+    width: var(--pvg-nav-cta-width) !important;
+    min-width: var(--pvg-nav-cta-width) !important;
+    height: 48px !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+html body .site-header.is-scrolled .nav-menu-client > .nav-link,
+html body .site-header.is-scrolled .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  min-height: 40px !important;
+  padding: 0 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: #0B1220 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  transform: none !important;
+  transition: background .16s ease, border-color .16s ease, color .16s ease !important;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-color: rgba(8, 166, 106, .22) !important;
+  border-radius: 10px !important;
+  background: rgba(232, 255, 245, .82) !important;
+  color: #047857 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .76) !important;
+}
+
+html body .site-header .nav-link::after,
+html body .site-header .dropdown-toggle::after {
+  display: none !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active,
+html body .site-header .nav-cta-request.is-active {
+  display: inline-flex !important;
+  width: var(--pvg-nav-cta-width) !important;
+  min-width: var(--pvg-nav-cta-width) !important;
+  max-width: var(--pvg-nav-cta-width) !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(255, 255, 255, .46) !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #08A66A 0%, #078D5C 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  box-shadow: 0 16px 34px rgba(8, 166, 106, .22), inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+.quick-enquiry.sticky-request-cta,
+[data-quick-enquiry],
+.mobile-action-bar {
+  display: none !important;
+}
+
+html body.request-reference-body .request-hero {
+  padding-block: calc(var(--pvg-nav-clearance, 96px) + 8px) 22px !important;
+}
+
+html body.request-reference-body .request-shell {
+  width: min(100% - 40px, 1200px) !important;
+}
+
+html body.request-reference-body .request-hero-grid {
+  grid-template-columns: minmax(0, 1.04fr) minmax(320px, .96fr) !important;
+  gap: clamp(16px, 2.2vw, 26px) !important;
+  align-items: center !important;
+}
+
+html body.request-reference-body .request-hero-visual {
+  order: 1 !important;
+  min-height: clamp(245px, 26vw, 360px) !important;
+  border-radius: 22px !important;
+}
+
+html body.request-reference-body .request-hero-copy {
+  order: 2 !important;
+  padding: clamp(20px, 2.5vw, 30px) !important;
+}
+
+html body.request-reference-body .request-form-section {
+  padding-block: 20px 38px !important;
+}
+
+html body.request-reference-body .request-layout {
+  grid-template-columns: minmax(232px, 275px) minmax(0, 1fr) !important;
+  gap: clamp(14px, 1.8vw, 20px) !important;
+  align-items: start !important;
+}
+
+html body.request-reference-body .request-progress-panel,
+html body.request-reference-body .request-form-card {
+  align-self: start !important;
+  min-height: 0 !important;
+}
+
+html body.request-reference-body .request-progress-panel {
+  padding: 16px !important;
+  border-radius: 20px !important;
+}
+
+html body.request-reference-body .request-progress-panel h2 {
+  margin: 0 0 6px !important;
+  font-size: clamp(1.18rem, 1.35vw, 1.48rem) !important;
+}
+
+html body.request-reference-body .request-progress-panel > p {
+  margin: 0 0 10px !important;
+  font-size: .88rem !important;
+}
+
+html body.request-reference-body [data-request-progress] button {
+  min-height: 42px !important;
+  border-radius: 12px !important;
+}
+
+html body.request-reference-body [data-request-progress] li.is-active button,
+html body.request-reference-body [data-request-progress] li.is-complete button {
+  cursor: pointer !important;
+}
+
+html body.request-reference-body .request-assurance {
+  padding: 12px !important;
+}
+
+html body.request-reference-body .request-form-card {
+  padding: clamp(18px, 2.1vw, 24px) !important;
+  border-radius: 22px !important;
+}
+
+html body.request-reference-body .request-step {
+  gap: 12px !important;
+  align-content: start !important;
+}
+
+html body.request-reference-body .request-step legend {
+  font-size: clamp(1.32rem, 1.65vw, 1.75rem) !important;
+}
+
+html body.request-reference-body .request-step > p {
+  max-width: 64ch !important;
+  font-size: .92rem !important;
+}
+
+html body.request-reference-body .request-fast-panel {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body.request-reference-body .request-fast-card,
+html body.request-reference-body .request-fast-card:first-child {
+  min-height: 112px !important;
+  padding: 14px !important;
+  gap: 10px !important;
+  border-radius: 18px !important;
+  align-items: flex-start !important;
+}
+
+html body.request-reference-body .request-fast-icon {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  font-size: .85rem !important;
+}
+
+html body.request-reference-body .request-fast-copy strong {
+  font-size: .98rem !important;
+  line-height: 1.12 !important;
+}
+
+html body.request-reference-body .request-fast-copy span {
+  margin-top: 4px !important;
+  font-size: .82rem !important;
+  line-height: 1.35 !important;
+}
+
+html body.request-reference-body .form-grid-two {
+  gap: 10px 12px !important;
+}
+
+html body.request-reference-body .request-form label {
+  margin-bottom: 5px !important;
+  font-size: .78rem !important;
+}
+
+html body.request-reference-body .request-form input,
+html body.request-reference-body .request-form select {
+  min-height: 46px !important;
+  border-radius: 13px !important;
+  font-size: .94rem !important;
+}
+
+html body.request-reference-body .request-form textarea {
+  min-height: 78px !important;
+  border-radius: 13px !important;
+  font-size: .94rem !important;
+}
+
+html body.request-reference-body .geo-capture-panel {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px 14px !important;
+  align-items: center !important;
+  padding: 13px !important;
+  border-radius: 17px !important;
+}
+
+html body.request-reference-body .geo-output-row {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+}
+
+html body.request-reference-body .geo-status {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+}
+
+html body.request-reference-body .geo-button {
+  min-height: 44px !important;
+  border-radius: 13px !important;
+  white-space: nowrap !important;
+}
+
+html body.request-reference-body .request-step-actions {
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  margin-top: 0 !important;
+}
+
+html body.request-reference-body .request-step-actions .button {
+  min-height: 46px !important;
+  border-radius: 13px !important;
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --pvg-nav-logo-width: 176px;
+    --pvg-nav-cta-width: 178px;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: min(calc(100% - 34px), 1160px) !important;
+    gap: 8px !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header.is-scrolled .nav-menu-client > .nav-link,
+  html body .site-header.is-scrolled .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    padding-inline: 5px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --pvg-nav-top: calc(env(safe-area-inset-top, 0px) + 10px);
+    --pvg-nav-shell-height: 66px;
+    --pvg-nav-shell-radius: 20px;
+    --pvg-nav-logo-width: min(228px, calc(100vw - 122px));
+    --pvg-nav-cta-width: 0px;
+    --pvg-nav-clearance: calc(var(--pvg-nav-top) + var(--pvg-nav-shell-height) + 22px);
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 52px !important;
+    width: min(calc(100% - 24px), 720px) !important;
+    padding: 7px 8px 7px 12px !important;
+    gap: 8px !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand,
+  html body[class] .site-header .brand,
+  html body[class] .site-header.is-scrolled .brand {
+    width: var(--pvg-nav-logo-width) !important;
+    min-width: 0 !important;
+    max-width: var(--pvg-nav-logo-width) !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    background: rgba(255, 255, 255, .22) !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions,
+  html body[class] .site-header .nav-actions,
+  html body[class] .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    grid-column: 2 !important;
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    border: 1px solid rgba(8, 166, 106, .18) !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, .80) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .84), 0 10px 24px rgba(3, 23, 18, .08) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-toggle span,
+  html body .site-header.is-scrolled .nav-toggle span,
+  html body[class] .site-header .nav-toggle span,
+  html body[class] .site-header.is-scrolled .nav-toggle span {
+    display: block !important;
+    width: 22px !important;
+    height: 3px !important;
+    border-radius: 999px !important;
+    background: #0B1220 !important;
+    opacity: 1 !important;
+    transform-origin: center !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg) !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(2) {
+    opacity: 0 !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client,
+  html body[class] .site-header .nav-menu.nav-menu-client,
+  html body[class] .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    top: calc(var(--pvg-nav-top) + var(--pvg-nav-shell-height) + 10px) !important;
+    right: 14px !important;
+    left: 14px !important;
+    display: none !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    max-width: 720px !important;
+    height: auto !important;
+    max-height: calc(100svh - var(--pvg-nav-top) - var(--pvg-nav-shell-height) - 36px) !important;
+    padding: 14px !important;
+    gap: 6px !important;
+    overflow: auto !important;
+    border: 1px solid rgba(255, 255, 255, .82) !important;
+    border-radius: 22px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(245, 255, 250, .80)),
+      radial-gradient(circle at 18% 0%, rgba(8, 166, 106, .12), transparent 42%) !important;
+    box-shadow: 0 28px 68px rgba(4, 41, 29, .18), inset 0 1px 0 rgba(255, 255, 255, .94) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.16) !important;
+    backdrop-filter: blur(24px) saturate(1.16) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  html body.menu-open .site-header .nav-menu.nav-menu-client,
+  html body.menu-open[class] .site-header .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client.is-open,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client.is-open {
+    display: flex !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    width: 100% !important;
+    min-height: 44px !important;
+    justify-content: flex-start !important;
+    padding: 0 14px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+  }
+
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    justify-content: center !important;
+    min-height: 48px !important;
+    margin-top: 4px !important;
+    border: 1px solid rgba(255, 255, 255, .46) !important;
+    background: linear-gradient(135deg, #08A66A, #078D5C) !important;
+    color: #FFFFFF !important;
+  }
+
+  html body.request-reference-body .request-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .request-hero-visual {
+    order: 1 !important;
+  }
+
+  html body.request-reference-body .request-hero-copy {
+    order: 2 !important;
+  }
+
+  html body.request-reference-body .request-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    position: static !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    justify-content: center !important;
+    min-height: 48px !important;
+    padding: 6px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: none !important;
+  }
+
+  html body.request-reference-body .request-fast-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .geo-capture-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-shell {
+    width: min(100% - 28px, 1200px) !important;
+  }
+
+  html body.request-reference-body .request-hero {
+    padding-block: calc(var(--pvg-nav-clearance, 98px) + 4px) 16px !important;
+  }
+
+  html body.request-reference-body .request-hero-visual {
+    min-height: 210px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy,
+  html body.request-reference-body .request-form-card,
+  html body.request-reference-body .request-progress-panel {
+    padding: 15px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-form-section {
+    padding-block: 14px 30px !important;
+  }
+
+  html body.request-reference-body .request-step legend {
+    font-size: 1.32rem !important;
+  }
+
+  html body.request-reference-body .request-step > p {
+    font-size: .9rem !important;
+  }
+
+  html body.request-reference-body .form-grid-two {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .request-step-actions {
+    justify-content: stretch !important;
+  }
+
+  html body.request-reference-body .request-step-actions .button {
+    flex: 1 1 0 !important;
+  }
+}
+
+/* 2026-08-02: final page-end lock for shared floating nav and simplified request flow. */
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-radius: 6px !important;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled,
+html body[class] .site-header,
+html body[class] .site-header.is-scrolled {
+  position: fixed !important;
+  inset-block-start: 0 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body[class] .site-header .nav-shell.nav-shell-client,
+html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+  transform: none !important;
+  min-height: 62px !important;
+  height: 62px !important;
+  border-radius: 14px !important;
+  border-color: rgba(255, 255, 255, .72) !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .82), rgba(244, 255, 250, .70)),
+    radial-gradient(circle at 85% 50%, rgba(8, 166, 106, .13), transparent 30%) !important;
+  box-shadow: 0 18px 52px rgba(4, 41, 29, .12), inset 0 1px 0 rgba(255, 255, 255, .96) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.12) !important;
+  backdrop-filter: blur(22px) saturate(1.12) !important;
+}
+
+html body .site-header .brand,
+html body .site-header.is-scrolled .brand,
+html body[class] .site-header .brand,
+html body[class] .site-header.is-scrolled .brand {
+  width: 142px !important;
+  min-width: 142px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+}
+
+html body .site-header .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .brand-logo-real.nav-logo-real,
+html body[class] .site-header .brand-logo-real.nav-logo-real,
+html body[class] .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+  width: 142px !important;
+  height: 46px !important;
+  object-fit: contain !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active,
+html body .site-header .nav-cta-request.is-active {
+  min-width: 198px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 22px !important;
+  border-radius: 10px !important;
+  transform: none !important;
+}
+
+@media (max-width: 1100px) {
+  html body .site-header,
+  html body .site-header.is-scrolled,
+  html body[class] .site-header,
+  html body[class] .site-header.is-scrolled {
+    left: 0 !important;
+    right: auto !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    min-width: 0 !important;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px)) !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: calc(100dvw - 24px) !important;
+    max-width: calc(100dvw - 24px) !important;
+    min-width: 0 !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    margin-inline: 12px !important;
+    padding: 7px 8px 7px 10px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 48px !important;
+    align-items: center !important;
+    overflow: visible !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand,
+  html body[class] .site-header .brand,
+  html body[class] .site-header.is-scrolled .brand {
+    grid-column: 1 !important;
+    justify-self: start !important;
+    width: min(210px, calc(100dvw - 98px)) !important;
+    min-width: 0 !important;
+    height: 50px !important;
+  }
+
+  html body .site-header .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .brand-logo-real.nav-logo-real,
+  html body[class] .site-header .brand-logo-real.nav-logo-real,
+  html body[class] .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+    width: 100% !important;
+    max-width: 210px !important;
+    height: 50px !important;
+    object-fit: contain !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    position: static !important;
+    grid-column: 2 !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-hero {
+    padding-block: 84px 8px !important;
+  }
+
+  html body.request-reference-body .request-shell,
+  html body.request-reference-body .request-layout {
+    width: calc(100dvw - 24px) !important;
+    max-width: calc(100dvw - 24px) !important;
+  }
+
+  html body.request-reference-body .request-hero-copy {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy h1 {
+    max-width: 12ch !important;
+    font-size: clamp(1.75rem, 7.8vw, 2rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .page-lead {
+    margin-top: 12px !important;
+    font-size: .92rem !important;
+    line-height: 1.48 !important;
+  }
+
+  html body.request-reference-body .request-note {
+    margin-top: 12px !important;
+    padding: 12px 13px !important;
+    border-radius: 16px !important;
+  }
+
+  html body.request-reference-body .request-note strong {
+    font-size: .72rem !important;
+  }
+
+  html body.request-reference-body .request-note span {
+    font-size: .86rem !important;
+    line-height: 1.42 !important;
+  }
+
+  html body.request-reference-body .request-form-section {
+    padding-block: 10px 24px !important;
+  }
+
+  html body.request-reference-body .request-layout {
+    gap: 10px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    padding: 10px !important;
+    border-radius: 18px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel h2,
+  html body.request-reference-body .request-progress-panel > p,
+  html body.request-reference-body .request-assurance {
+    display: none !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    margin: 0 !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    min-height: 52px !important;
+    padding: 5px 3px !important;
+    gap: 3px !important;
+    border-radius: 12px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] span {
+    width: 25px !important;
+    height: 25px !important;
+    font-size: .68rem !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: .62rem !important;
+    line-height: 1 !important;
+  }
+
+  html body.request-reference-body .request-form-card {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  html body.request-reference-body .request-step legend {
+    font-size: clamp(1.24rem, 5.8vw, 1.55rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  html body.request-reference-body .request-step > p {
+    font-size: .88rem !important;
+    line-height: 1.45 !important;
+  }
+
+  html body.request-reference-body .request-fast-card,
+  html body.request-reference-body .request-fast-card:first-child {
+    min-height: 82px !important;
+    padding: 12px !important;
+  }
+
+  html body .cookie-consent {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* 2026-08-02: absolute final cascade lock for request mobile and nav active shape. */
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-radius: 6px !important;
+}
+
+@media (max-width: 1100px) {
+  html body .site-header,
+  html body .site-header.is-scrolled,
+  html body[class] .site-header,
+  html body[class] .site-header.is-scrolled {
+    left: 0 !important;
+    right: auto !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    min-width: 0 !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    width: calc(100dvw - 24px) !important;
+    max-width: calc(100dvw - 24px) !important;
+    min-width: 0 !important;
+    grid-template-columns: minmax(0, 1fr) 48px !important;
+    margin-inline: 12px !important;
+    padding: 7px 8px 7px 10px !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    position: static !important;
+    grid-column: 2 !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-hero {
+    padding-block: 84px 8px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .breadcrumb {
+    margin-bottom: 10px !important;
+    font-size: .76rem !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .eyebrow {
+    margin-bottom: 8px !important;
+    font-size: .7rem !important;
+  }
+
+  html body.request-reference-body .request-hero-copy h1 {
+    max-width: 12ch !important;
+    font-size: clamp(1.75rem, 7.8vw, 2rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .page-lead {
+    margin-top: 12px !important;
+    font-size: .92rem !important;
+    line-height: 1.48 !important;
+  }
+
+  html body.request-reference-body .request-note {
+    margin-top: 12px !important;
+    padding: 12px 13px !important;
+    border-radius: 16px !important;
+  }
+
+  html body.request-reference-body .request-note strong {
+    font-size: .72rem !important;
+  }
+
+  html body.request-reference-body .request-note span {
+    font-size: .86rem !important;
+    line-height: 1.42 !important;
+  }
+
+  html body.request-reference-body .request-form-section {
+    padding-block: 10px 24px !important;
+  }
+
+  html body.request-reference-body .request-layout {
+    width: calc(100dvw - 24px) !important;
+    gap: 10px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    padding: 10px !important;
+    border-radius: 18px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel h2,
+  html body.request-reference-body .request-progress-panel > p,
+  html body.request-reference-body .request-assurance {
+    display: none !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    margin: 0 !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    min-height: 52px !important;
+    padding: 5px 3px !important;
+    gap: 3px !important;
+    border-radius: 12px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] span {
+    width: 25px !important;
+    height: 25px !important;
+    font-size: .68rem !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: .62rem !important;
+    line-height: 1 !important;
+  }
+
+  html body.request-reference-body .request-form-card {
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-step legend {
+    font-size: clamp(1.24rem, 5.8vw, 1.55rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  html body.request-reference-body .request-step > p {
+    font-size: .88rem !important;
+    line-height: 1.45 !important;
+  }
+
+  html body.request-reference-body .request-fast-card,
+  html body.request-reference-body .request-fast-card:first-child {
+    min-height: 82px !important;
+    padding: 12px !important;
+  }
+
+  html body.request-reference-body .request-fast-copy strong {
+    font-size: .9rem !important;
+  }
+
+  html body.request-reference-body .request-fast-copy span {
+    font-size: .78rem !important;
+  }
+
+  html body.request-reference-body .request-form input,
+  html body.request-reference-body .request-form select {
+    min-height: 44px !important;
+    font-size: .9rem !important;
+  }
+
+  html body.request-reference-body .request-form textarea {
+    min-height: 70px !important;
+    font-size: .9rem !important;
+  }
+
+  html body .cookie-consent {
+    right: 12px !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* 2026-08-02: final request UX and mobile nav lock. */
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle {
+  border-radius: 8px !important;
+  background: linear-gradient(145deg, rgba(8, 166, 106, .12), rgba(255, 255, 255, .70)) !important;
+  box-shadow: inset 0 0 0 1px rgba(8, 166, 106, .18), 0 8px 20px rgba(6, 95, 70, .06) !important;
+}
+
+html body.request-reference-body .request-progress button {
+  cursor: pointer !important;
+}
+
+html body.request-reference-body .request-progress li.is-available button:hover,
+html body.request-reference-body .request-progress li.is-available button:focus-visible {
+  border-color: rgba(8, 166, 106, .42) !important;
+  background: rgba(236, 253, 245, .72) !important;
+  transform: translateY(-1px) !important;
+}
+
+html body.request-reference-body .request-form-card {
+  min-height: auto !important;
+}
+
+html body.request-reference-body .request-step[hidden] {
+  display: none !important;
+}
+
+html body.request-reference-body .request-step {
+  min-height: 0 !important;
+}
+
+html body.request-reference-body .request-hero {
+  padding-bottom: 18px !important;
+}
+
+html body.request-reference-body .request-form-section {
+  padding-top: 20px !important;
+}
+
+html body.request-reference-body .request-layout {
+  align-items: start !important;
+}
+
+html body.request-reference-body .request-progress-panel,
+html body.request-reference-body .request-form-card {
+  align-self: start !important;
+}
+
+html body.request-reference-body .request-advanced-details {
+  margin-top: 4px !important;
+}
+
+html body.request-reference-body .request-advanced-details summary {
+  min-height: 42px !important;
+  border-radius: 14px !important;
+}
+
+@media (max-width: 1100px) {
+  html body .site-header,
+  html body .site-header.is-scrolled,
+  html body[class] .site-header,
+  html body[class] .site-header.is-scrolled {
+    top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 100dvw !important;
+    min-width: 0 !important;
+    max-width: 100dvw !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 48px !important;
+    width: calc(100dvw - 24px) !important;
+    max-width: calc(100dvw - 24px) !important;
+    min-width: 0 !important;
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+    padding: 7px 8px 7px 10px !important;
+    overflow: visible !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand,
+  html body[class] .site-header .brand,
+  html body[class] .site-header.is-scrolled .brand {
+    width: min(188px, calc(100dvw - 102px)) !important;
+    max-width: min(188px, calc(100dvw - 102px)) !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+
+  html body .site-header .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .brand-logo-real.nav-logo-real,
+  html body[class] .site-header .brand-logo-real.nav-logo-real,
+  html body[class] .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+    width: min(170px, calc(100dvw - 118px)) !important;
+    max-width: min(170px, calc(100dvw - 118px)) !important;
+    height: 38px !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    grid-column: 2 !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    justify-self: end !important;
+    align-self: center !important;
+    position: static !important;
+  }
+
+  html body.request-reference-body .request-layout {
+    gap: 12px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    padding: 14px !important;
+  }
+
+  html body.request-reference-body .request-assurance {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-hero {
+    padding-block: 84px 10px !important;
+  }
+
+  html body.request-reference-body .request-form-section {
+    padding-block: 10px 24px !important;
+  }
+
+  html body.request-reference-body .request-layout {
+    width: calc(100dvw - 24px) !important;
+    gap: 10px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    display: block !important;
+    padding: 10px !important;
+  }
+
+  html body.request-reference-body .request-progress-panel h2,
+  html body.request-reference-body .request-progress-panel > p {
+    display: none !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    margin: 0 !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    min-height: 52px !important;
+    border-radius: 12px !important;
+    gap: 3px !important;
+    padding: 5px 3px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] span {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: .72rem !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: .68rem !important;
+    line-height: 1.05 !important;
+  }
+
+  html body.request-reference-body .request-form-card {
+    padding: 14px !important;
+  }
+
+  html body.request-reference-body .request-fast-panel {
+    gap: 8px !important;
+  }
+
+  html body.request-reference-body .request-fast-card,
+  html body.request-reference-body .request-fast-card:first-child {
+    min-height: 88px !important;
+  }
+
+  html body.request-reference-body .geo-capture-panel {
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-hero-copy {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .breadcrumb {
+    margin-bottom: 12px !important;
+    font-size: .78rem !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .eyebrow {
+    margin-bottom: 10px !important;
+    font-size: .72rem !important;
+  }
+
+  html body.request-reference-body .request-hero-copy h1 {
+    max-width: 11ch !important;
+    font-size: clamp(2rem, 9vw, 2.35rem) !important;
+    line-height: .98 !important;
+    letter-spacing: 0 !important;
+  }
+
+  html body.request-reference-body .request-hero-copy .page-lead {
+    margin-top: 14px !important;
+    font-size: .98rem !important;
+    line-height: 1.55 !important;
+  }
+
+  html body.request-reference-body .request-note {
+    margin-top: 14px !important;
+    padding: 13px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  html body.request-reference-body .request-note strong {
+    font-size: .76rem !important;
+  }
+
+  html body.request-reference-body .request-note span {
+    font-size: .92rem !important;
+    line-height: 1.45 !important;
+  }
+
+  html body.request-reference-body .request-step legend {
+    font-size: clamp(1.35rem, 6.2vw, 1.75rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  html body.request-reference-body .request-step > p {
+    font-size: .92rem !important;
+    line-height: 1.48 !important;
+  }
+
+  html body.request-reference-body .request-form input,
+  html body.request-reference-body .request-form select {
+    min-height: 44px !important;
+    font-size: .9rem !important;
+  }
+
+  html body.request-reference-body .request-form textarea {
+    min-height: 70px !important;
+    font-size: .9rem !important;
+  }
+
+  html body .cookie-consent {
+    right: 12px !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  html body .cookie-consent p {
+    font-size: .82rem !important;
+    line-height: 1.32 !important;
+  }
+
+  html body .cookie-consent .button,
+  html body .cookie-consent button {
+    min-height: 42px !important;
+    border-radius: 12px !important;
+    font-size: .88rem !important;
+  }
+}
+
+/* 2026-08-02: mobile/header hard lock after QA.
+   Keeps the floating glass nav identical while scrolling and prevents the
+   hamburger from drifting outside the viewport on real mobile browsers. */
+html,
+body {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-radius: 8px !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active,
+html body .site-header .nav-cta-request.is-active {
+  border-radius: 12px !important;
+}
+
+@media (max-width: 1100px) {
+  html body .site-header,
+  html body .site-header.is-scrolled,
+  html body[class] .site-header,
+  html body[class] .site-header.is-scrolled {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 48px !important;
+    width: calc(100vw - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    padding: 7px 8px 7px 10px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand,
+  html body[class] .site-header .brand,
+  html body[class] .site-header.is-scrolled .brand {
+    position: static !important;
+    grid-column: 1 !important;
+    justify-self: start !important;
+    width: min(188px, calc(100vw - 104px)) !important;
+    max-width: min(188px, calc(100vw - 104px)) !important;
+    min-width: 0 !important;
+    transform: none !important;
+  }
+
+  html body .site-header .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+    width: min(174px, calc(100vw - 122px)) !important;
+    max-width: min(174px, calc(100vw - 122px)) !important;
+    height: 42px !important;
+    object-fit: contain !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    position: static !important;
+    inset: auto !important;
+    grid-column: 2 !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-width: none !important;
+    border-radius: 20px !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    border-radius: 12px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand {
+    width: min(176px, calc(100vw - 100px)) !important;
+    max-width: min(176px, calc(100vw - 100px)) !important;
+  }
+
+  html body .site-header .brand-logo-real.nav-logo-real,
+  html body .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+    width: min(160px, calc(100vw - 116px)) !important;
+  }
+}
+
 .insights-premium-body {
   --insight-green: #12B981;
   --insight-green-deep: #07866A;
@@ -38309,3 +40244,1595 @@ html body .site-header .nav-toggle {
 }
 
 /* Premium PVG-EV Insights knowledge hub */
+
+/* 2026-08-02 final release polish.
+   This block intentionally lives at the end of the stylesheet so all pages share
+   one stable ClickaCook-style matte-glass navigation and compact pilot workflow. */
+:root {
+  --pvg-nav-top: calc(env(safe-area-inset-top, 0px) + 14px);
+  --pvg-nav-shell-height: 74px;
+  --pvg-nav-shell-radius: 20px;
+  --pvg-nav-logo-width: 198px;
+  --pvg-nav-cta-width: 190px;
+}
+
+html body .site-header,
+html body .site-header.is-scrolled,
+html body[class] .site-header,
+html body[class] .site-header.is-scrolled {
+  position: fixed !important;
+  top: var(--pvg-nav-top) !important;
+  right: 0 !important;
+  left: 0 !important;
+  z-index: 1000 !important;
+  height: var(--pvg-nav-shell-height) !important;
+  min-height: var(--pvg-nav-shell-height) !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+  transform: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body[class] .site-header .nav-shell.nav-shell-client,
+html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: var(--pvg-nav-logo-width) minmax(0, 1fr) var(--pvg-nav-cta-width) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: min(calc(100% - 56px), 1380px) !important;
+  height: var(--pvg-nav-shell-height) !important;
+  min-height: var(--pvg-nav-shell-height) !important;
+  margin: 0 auto !important;
+  padding: 10px 14px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(255, 255, 255, .82) !important;
+  border-radius: var(--pvg-nav-shell-radius) !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .88), rgba(243, 255, 250, .80)),
+    radial-gradient(circle at 14% 0%, rgba(8, 166, 106, .12), transparent 42%),
+    radial-gradient(circle at 92% 12%, rgba(16, 185, 129, .10), transparent 36%) !important;
+  box-shadow:
+    0 18px 52px rgba(3, 23, 18, .14),
+    inset 0 1px 0 rgba(255, 255, 255, .94),
+    inset 0 -1px 0 rgba(8, 166, 106, .05) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.15) !important;
+  backdrop-filter: blur(24px) saturate(1.15) !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 1px !important;
+  z-index: -1 !important;
+  border-radius: calc(var(--pvg-nav-shell-radius) - 2px) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .52), rgba(255, 255, 255, .10)),
+    linear-gradient(90deg, rgba(8, 166, 106, .06), rgba(255, 255, 255, 0) 40%, rgba(8, 166, 106, .06)) !important;
+  pointer-events: none !important;
+}
+
+html body .site-header .brand,
+html body .site-header.is-scrolled .brand {
+  width: var(--pvg-nav-logo-width) !important;
+  min-width: var(--pvg-nav-logo-width) !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .72) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78) !important;
+}
+
+html body .site-header .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  object-fit: contain !important;
+  padding: 1px 4px !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+html body .site-header .nav-menu.nav-menu-client,
+html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+  position: static !important;
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  min-height: 42px !important;
+  padding: 0 7px !important;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #0B1220 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  transform: none !important;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-color: rgba(8, 166, 106, .18) !important;
+  background: rgba(232, 255, 245, .84) !important;
+  color: #047857 !important;
+}
+
+html body .site-header .nav-link::after,
+html body .site-header .dropdown-toggle::after {
+  display: none !important;
+}
+
+html body .site-header .nav-actions,
+html body .site-header.is-scrolled .nav-actions {
+  display: flex !important;
+  width: var(--pvg-nav-cta-width) !important;
+  min-width: var(--pvg-nav-cta-width) !important;
+  height: 52px !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request.is-active {
+  display: inline-flex !important;
+  width: var(--pvg-nav-cta-width) !important;
+  min-width: var(--pvg-nav-cta-width) !important;
+  max-width: var(--pvg-nav-cta-width) !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  padding: 0 14px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(255, 255, 255, .42) !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #08A66A 0%, #089F70 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  box-shadow: 0 12px 28px rgba(8, 166, 106, .20), inset 0 1px 0 rgba(255, 255, 255, .20) !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-toggle,
+html body .site-header.is-scrolled .nav-toggle {
+  display: none !important;
+}
+
+.pilot-enterprise-page .pilot-workflow-zigzag {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.pilot-enterprise-page .pilot-workflow-zigzag::before {
+  top: 34px !important;
+  left: 8% !important;
+  right: 8% !important;
+  height: 2px !important;
+  opacity: .35 !important;
+}
+
+.pilot-enterprise-page .pilot-workflow-zigzag li,
+.pilot-enterprise-page .pilot-workflow-zigzag li:nth-child(even),
+.pilot-enterprise-page .pilot-workflow-zigzag li:hover,
+.pilot-enterprise-page .pilot-workflow-zigzag li:nth-child(even):hover {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 88px !important;
+  padding: 16px !important;
+  border-radius: 18px !important;
+  transform: none !important;
+}
+
+.pilot-enterprise-page .pilot-workflow-zigzag li span {
+  width: 42px !important;
+  height: 42px !important;
+  margin: 0 !important;
+  border-radius: 14px !important;
+  font-size: .82rem !important;
+}
+
+.pilot-enterprise-page .pilot-workflow-zigzag h3 {
+  margin: 0 !important;
+  font-size: clamp(.98rem, 1vw, 1.12rem) !important;
+  line-height: 1.25 !important;
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --pvg-nav-logo-width: 170px;
+    --pvg-nav-cta-width: 174px;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    gap: 8px !important;
+    width: min(calc(100% - 34px), 1100px) !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    padding-inline: 5px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --pvg-nav-top: calc(env(safe-area-inset-top, 0px) + 10px);
+    --pvg-nav-shell-height: 66px;
+    --pvg-nav-shell-radius: 22px;
+    --pvg-nav-logo-width: min(226px, calc(100vw - 126px));
+    --pvg-nav-cta-width: 0px;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 54px !important;
+    width: min(calc(100% - 28px), 720px) !important;
+    padding: 7px 9px 7px 13px !important;
+    gap: 8px !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand {
+    width: var(--pvg-nav-logo-width) !important;
+    min-width: 0 !important;
+    height: 52px !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    border-radius: 17px !important;
+    border: 1px solid rgba(8, 166, 106, .16) !important;
+    background: rgba(255, 255, 255, .78) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .82) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    top: calc(var(--pvg-nav-top) + var(--pvg-nav-shell-height) + 10px) !important;
+    right: 14px !important;
+    left: 14px !important;
+    display: none !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    max-width: 720px !important;
+    height: auto !important;
+    max-height: calc(100svh - var(--pvg-nav-top) - var(--pvg-nav-shell-height) - 34px) !important;
+    padding: 16px !important;
+    overflow: auto !important;
+    border: 1px solid rgba(255, 255, 255, .84) !important;
+    border-radius: 24px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .92), rgba(245, 255, 250, .84)),
+      radial-gradient(circle at 18% 0%, rgba(8, 166, 106, .12), transparent 42%) !important;
+    box-shadow: 0 30px 74px rgba(4, 41, 29, .18), inset 0 1px 0 rgba(255, 255, 255, .94) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(1.18) !important;
+    backdrop-filter: blur(26px) saturate(1.18) !important;
+  }
+
+  html body.menu-open .site-header .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client.is-open,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client.is-open {
+    display: flex !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    width: 100% !important;
+    min-height: 50px !important;
+    justify-content: flex-start !important;
+    padding: 0 18px !important;
+    font-size: 15px !important;
+  }
+
+  .pilot-enterprise-page .pilot-workflow-zigzag {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .pilot-enterprise-page .pilot-workflow-zigzag {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .pilot-enterprise-page .pilot-workflow-zigzag::before {
+    display: none !important;
+  }
+
+  .pilot-enterprise-page .pilot-workflow-zigzag li {
+    min-height: 72px !important;
+    padding: 14px !important;
+  }
+}
+
+/* 2026-08-02: remove duplicate sticky request CTA; navbar already carries the primary action. */
+html body .quick-enquiry.sticky-request-cta,
+html body [data-quick-enquiry],
+html body .mobile-action-bar {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* 2026-08-02: rectangular selected menu state, not oval pills. */
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+html body .site-header.is-scrolled .nav-menu-client > .nav-link,
+html body .site-header.is-scrolled .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  border-radius: 10px !important;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-radius: 10px !important;
+}
+
+@media (max-width: 1100px) {
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    border-radius: 14px !important;
+  }
+}
+
+/* 2026-08-02: Request Charging UX pass — compact, clickable, photo-first. */
+html body.request-reference-body .request-hero {
+  padding-block: calc(var(--pvg-nav-clearance, 98px) + 6px) 24px !important;
+}
+
+html body.request-reference-body .request-shell {
+  width: min(100% - 40px, 1220px) !important;
+}
+
+html body.request-reference-body .request-hero-grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(340px, .92fr) !important;
+  gap: clamp(18px, 2.4vw, 28px) !important;
+  align-items: center !important;
+}
+
+html body.request-reference-body .request-hero-visual {
+  order: 1 !important;
+  min-height: clamp(260px, 28vw, 390px) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(90deg, rgba(7, 26, 46, .16), rgba(255, 255, 255, .14)),
+    url("public/assets/pvg-ev/hero/hero-real-vehicle.jpg") center / cover no-repeat !important;
+  box-shadow: 0 24px 70px rgba(6, 38, 54, .15), inset 0 1px 0 rgba(255, 255, 255, .72) !important;
+}
+
+html body.request-reference-body .request-hero-copy {
+  order: 2 !important;
+  padding: clamp(22px, 3vw, 34px) !important;
+}
+
+html body.request-reference-body .request-hero-visual :is(.request-glow, .request-vehicle, .request-route, .request-car, .request-battery) {
+  display: none !important;
+}
+
+html body.request-reference-body .request-visual-card {
+  max-width: 205px !important;
+  padding: 14px 16px !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, .74) !important;
+  color: #0E1B2A !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.2) !important;
+  backdrop-filter: blur(20px) saturate(1.2) !important;
+}
+
+html body.request-reference-body .request-visual-card span {
+  color: rgba(14, 27, 42, .72) !important;
+}
+
+html body.request-reference-body .request-form-section {
+  padding-block: 22px 44px !important;
+}
+
+html body.request-reference-body .request-layout {
+  grid-template-columns: minmax(240px, 290px) minmax(0, 1fr) !important;
+  gap: clamp(16px, 2vw, 22px) !important;
+  align-items: start !important;
+}
+
+html body.request-reference-body .request-progress-panel {
+  position: sticky !important;
+  top: calc(var(--pvg-nav-clearance, 96px) + 14px) !important;
+  padding: 18px !important;
+  border-radius: 22px !important;
+}
+
+html body.request-reference-body .request-progress-panel h2 {
+  margin-bottom: 8px !important;
+  font-size: clamp(1.28rem, 1.6vw, 1.7rem) !important;
+  line-height: 1.12 !important;
+}
+
+html body.request-reference-body .request-progress-panel > p {
+  margin-bottom: 12px !important;
+  font-size: .94rem !important;
+  line-height: 1.48 !important;
+}
+
+html body.request-reference-body [data-request-progress] {
+  gap: 8px !important;
+  margin: 12px 0 14px !important;
+}
+
+html body.request-reference-body [data-request-progress] li {
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body.request-reference-body [data-request-progress] button {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 44px !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(8, 166, 106, .13) !important;
+  border-radius: 13px !important;
+  background: rgba(255, 255, 255, .72) !important;
+  color: #17202A !important;
+  font: inherit !important;
+  font-size: .9rem !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease !important;
+}
+
+html body.request-reference-body [data-request-progress] button:hover,
+html body.request-reference-body [data-request-progress] button:focus-visible {
+  transform: translateY(-1px) !important;
+  border-color: rgba(8, 166, 106, .34) !important;
+  background: rgba(240, 253, 248, .92) !important;
+  box-shadow: 0 12px 28px rgba(8, 166, 106, .10) !important;
+  outline: 0 !important;
+}
+
+html body.request-reference-body [data-request-progress] li.is-active button {
+  border-color: rgba(8, 166, 106, .38) !important;
+  background: linear-gradient(135deg, rgba(236, 253, 245, .96), rgba(255, 255, 255, .8)) !important;
+  box-shadow: inset 3px 0 0 rgba(8, 166, 106, .90), 0 12px 28px rgba(8, 166, 106, .10) !important;
+}
+
+html body.request-reference-body [data-request-progress] li.is-complete button {
+  border-color: rgba(8, 166, 106, .24) !important;
+}
+
+html body.request-reference-body [data-request-progress] span {
+  flex: 0 0 auto !important;
+  width: 27px !important;
+  height: 27px !important;
+  border-radius: 9px !important;
+  font-size: .76rem !important;
+}
+
+html body.request-reference-body [data-request-progress] strong {
+  font-size: .92rem !important;
+  line-height: 1.15 !important;
+}
+
+html body.request-reference-body .request-assurance {
+  padding: 14px !important;
+  border-radius: 16px !important;
+}
+
+html body.request-reference-body .request-assurance strong {
+  font-size: 1rem !important;
+}
+
+html body.request-reference-body .request-assurance span {
+  font-size: .9rem !important;
+  line-height: 1.45 !important;
+}
+
+html body.request-reference-body .request-form-card {
+  padding: clamp(20px, 2.4vw, 28px) !important;
+  border-radius: 24px !important;
+}
+
+html body.request-reference-body .request-step {
+  gap: 14px !important;
+}
+
+html body.request-reference-body .request-step legend {
+  margin-bottom: 2px !important;
+  font-size: clamp(1.45rem, 2vw, 2rem) !important;
+  line-height: 1.08 !important;
+}
+
+html body.request-reference-body .request-step > p {
+  max-width: 58ch !important;
+  margin: 0 !important;
+  font-size: .98rem !important;
+  line-height: 1.5 !important;
+}
+
+html body.request-reference-body .form-grid-two {
+  gap: 12px 14px !important;
+}
+
+html body.request-reference-body .request-form input,
+html body.request-reference-body .request-form select {
+  min-height: 48px !important;
+}
+
+html body.request-reference-body .request-form textarea {
+  min-height: 84px !important;
+}
+
+html body.request-reference-body .geo-capture-panel {
+  margin-top: 0 !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+
+html body.request-reference-body .request-step-actions {
+  justify-content: flex-end !important;
+  margin-top: 2px !important;
+}
+
+html body.request-reference-body .request-step-actions .button {
+  min-height: 48px !important;
+  border-radius: 14px !important;
+}
+
+@media (max-width: 980px) {
+  html body.request-reference-body .request-hero-grid,
+  html body.request-reference-body .request-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .request-hero-visual,
+  html body.request-reference-body .request-hero-copy {
+    order: initial !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    position: static !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    justify-content: center !important;
+    min-height: 54px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-shell {
+    width: min(100% - 28px, 1220px) !important;
+  }
+
+  html body.request-reference-body .request-hero {
+    padding-block: calc(var(--pvg-nav-clearance, 92px) + 4px) 18px !important;
+  }
+
+  html body.request-reference-body .request-hero-visual {
+    min-height: 230px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy {
+    padding: 18px !important;
+  }
+
+  html body.request-reference-body .request-form-section {
+    padding-block: 16px 32px !important;
+  }
+
+  html body.request-reference-body .request-form-card,
+  html body.request-reference-body .request-progress-panel {
+    padding: 16px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-step legend {
+    font-size: 1.45rem !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    gap: 6px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    padding-inline: 6px !important;
+  }
+}
+
+/* 2026-08-02: final mobile nav enforcement — logo left, menu button right. */
+@media (max-width: 1100px) {
+  html body .site-header,
+  html body .site-header.is-scrolled,
+  html body[class] .site-header,
+  html body[class] .site-header.is-scrolled {
+    position: fixed !important;
+    top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
+    height: 66px !important;
+    min-height: 66px !important;
+    pointer-events: none !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 52px !important;
+    width: min(calc(100% - 24px), 720px) !important;
+    height: 66px !important;
+    min-height: 66px !important;
+    padding: 7px 8px 7px 12px !important;
+    gap: 8px !important;
+    pointer-events: auto !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand {
+    display: flex !important;
+    grid-column: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: min(230px, calc(100vw - 116px)) !important;
+    height: 52px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    grid-column: 2 !important;
+    justify-self: end !important;
+    align-self: center !important;
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+}
+
+/* 2026-08-02: end-of-file cascade lock for static matte-glass navigation and request UX. */
+html body .site-header,
+html body .site-header.is-scrolled,
+html body[class] .site-header,
+html body[class] .site-header.is-scrolled {
+  position: fixed !important;
+  inset: max(14px, env(safe-area-inset-top, 0px)) 0 auto 0 !important;
+  z-index: 3000 !important;
+  width: 100% !important;
+  height: 66px !important;
+  min-height: 66px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-shell.nav-shell-client,
+html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+html body[class] .site-header .nav-shell.nav-shell-client,
+html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+  display: grid !important;
+  grid-template-columns: 194px minmax(0, 1fr) 188px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: min(calc(100% - 56px), 1380px) !important;
+  height: 66px !important;
+  min-height: 66px !important;
+  margin: 0 auto !important;
+  padding: 9px 13px !important;
+  overflow: visible !important;
+  border: 1px solid rgba(255, 255, 255, .78) !important;
+  border-radius: 20px !important;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .80), rgba(247, 255, 251, .70)),
+    radial-gradient(circle at 12% 0%, rgba(8, 166, 106, .10), transparent 42%),
+    radial-gradient(circle at 95% 8%, rgba(8, 145, 178, .10), transparent 34%) !important;
+  box-shadow: 0 18px 48px rgba(3, 23, 18, .12), inset 0 1px 0 rgba(255, 255, 255, .92) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.18) !important;
+  backdrop-filter: blur(24px) saturate(1.18) !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+html body .site-header .brand,
+html body .site-header.is-scrolled .brand,
+html body[class] .site-header .brand,
+html body[class] .site-header.is-scrolled .brand {
+  display: inline-flex !important;
+  width: 194px !important;
+  min-width: 194px !important;
+  max-width: 194px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, .36) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+html body .site-header .brand-logo-real.nav-logo-real,
+html body .site-header.is-scrolled .brand-logo-real.nav-logo-real,
+html body[class] .site-header .brand-logo-real.nav-logo-real,
+html body[class] .site-header.is-scrolled .brand-logo-real.nav-logo-real {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  filter: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+html body .site-header .nav-menu.nav-menu-client,
+html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+  position: static !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  gap: 2px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+html body .site-header.is-scrolled .nav-menu-client > .nav-link,
+html body .site-header.is-scrolled .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+  min-height: 40px !important;
+  padding: 0 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: #0B1220 !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-color: rgba(8, 166, 106, .22) !important;
+  border-radius: 10px !important;
+  background: rgba(232, 255, 245, .82) !important;
+  color: #047857 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .76) !important;
+}
+
+html body .site-header .nav-actions,
+html body .site-header.is-scrolled .nav-actions {
+  display: flex !important;
+  width: 188px !important;
+  min-width: 188px !important;
+  height: 48px !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html body .site-header .nav-cta-request,
+html body .site-header.is-scrolled .nav-cta-request,
+html body .site-header .nav-cta-request:hover,
+html body .site-header .nav-cta-request:focus-visible,
+html body .site-header .nav-cta-request:active,
+html body .site-header .nav-cta-request.is-active {
+  display: inline-flex !important;
+  width: 188px !important;
+  min-width: 188px !important;
+  max-width: 188px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(255, 255, 255, .46) !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #08A66A 0%, #078D5C 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  box-shadow: 0 16px 34px rgba(8, 166, 106, .22), inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: none !important;
+}
+
+.quick-enquiry.sticky-request-cta,
+[data-quick-enquiry],
+.mobile-action-bar {
+  display: none !important;
+}
+
+html body.request-reference-body .request-hero {
+  padding-block: calc(var(--pvg-nav-clearance, 96px) + 8px) 22px !important;
+}
+
+html body.request-reference-body .request-shell {
+  width: min(100% - 40px, 1200px) !important;
+}
+
+html body.request-reference-body .request-hero-grid {
+  grid-template-columns: minmax(0, 1.04fr) minmax(320px, .96fr) !important;
+  gap: clamp(16px, 2.2vw, 26px) !important;
+  align-items: center !important;
+}
+
+html body.request-reference-body .request-hero-visual {
+  order: 1 !important;
+  min-height: clamp(245px, 26vw, 360px) !important;
+  border-radius: 22px !important;
+}
+
+html body.request-reference-body .request-hero-copy {
+  order: 2 !important;
+  padding: clamp(20px, 2.5vw, 30px) !important;
+}
+
+html body.request-reference-body .request-form-section {
+  padding-block: 20px 38px !important;
+}
+
+html body.request-reference-body .request-layout {
+  grid-template-columns: minmax(232px, 275px) minmax(0, 1fr) !important;
+  gap: clamp(14px, 1.8vw, 20px) !important;
+  align-items: start !important;
+}
+
+html body.request-reference-body .request-progress-panel,
+html body.request-reference-body .request-form-card {
+  align-self: start !important;
+  min-height: 0 !important;
+}
+
+html body.request-reference-body .request-progress-panel {
+  padding: 16px !important;
+  border-radius: 20px !important;
+}
+
+html body.request-reference-body .request-progress-panel h2 {
+  margin: 0 0 6px !important;
+  font-size: clamp(1.18rem, 1.35vw, 1.48rem) !important;
+}
+
+html body.request-reference-body .request-progress-panel > p {
+  margin: 0 0 10px !important;
+  font-size: .88rem !important;
+}
+
+html body.request-reference-body [data-request-progress] button {
+  min-height: 42px !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+}
+
+html body.request-reference-body .request-assurance {
+  padding: 12px !important;
+}
+
+html body.request-reference-body .request-form-card {
+  padding: clamp(18px, 2.1vw, 24px) !important;
+  border-radius: 22px !important;
+}
+
+html body.request-reference-body .request-step {
+  gap: 12px !important;
+  align-content: start !important;
+}
+
+html body.request-reference-body .request-step legend {
+  font-size: clamp(1.32rem, 1.65vw, 1.75rem) !important;
+}
+
+html body.request-reference-body .request-step > p {
+  max-width: 64ch !important;
+  font-size: .92rem !important;
+}
+
+html body.request-reference-body .request-fast-panel {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body.request-reference-body .request-fast-card,
+html body.request-reference-body .request-fast-card:first-child {
+  min-height: 112px !important;
+  padding: 14px !important;
+  gap: 10px !important;
+  border-radius: 18px !important;
+  align-items: flex-start !important;
+}
+
+html body.request-reference-body .request-fast-icon {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  font-size: .85rem !important;
+}
+
+html body.request-reference-body .request-fast-copy strong {
+  font-size: .98rem !important;
+  line-height: 1.12 !important;
+}
+
+html body.request-reference-body .request-fast-copy span {
+  margin-top: 4px !important;
+  font-size: .82rem !important;
+  line-height: 1.35 !important;
+}
+
+html body.request-reference-body .form-grid-two {
+  gap: 10px 12px !important;
+}
+
+html body.request-reference-body .request-form label {
+  margin-bottom: 5px !important;
+  font-size: .78rem !important;
+}
+
+html body.request-reference-body .request-form input,
+html body.request-reference-body .request-form select {
+  min-height: 46px !important;
+  border-radius: 13px !important;
+  font-size: .94rem !important;
+}
+
+html body.request-reference-body .request-form textarea {
+  min-height: 78px !important;
+  border-radius: 13px !important;
+  font-size: .94rem !important;
+}
+
+html body.request-reference-body .geo-capture-panel {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px 14px !important;
+  align-items: center !important;
+  padding: 13px !important;
+  border-radius: 17px !important;
+}
+
+html body.request-reference-body .geo-output-row,
+html body.request-reference-body .geo-status {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+}
+
+html body.request-reference-body .geo-button {
+  min-height: 44px !important;
+  border-radius: 13px !important;
+  white-space: nowrap !important;
+}
+
+html body.request-reference-body .request-step-actions {
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  margin-top: 0 !important;
+}
+
+html body.request-reference-body .request-step-actions .button {
+  min-height: 46px !important;
+  border-radius: 13px !important;
+}
+
+@media (max-width: 1180px) {
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: 176px minmax(0, 1fr) 178px !important;
+    width: min(calc(100% - 34px), 1160px) !important;
+    gap: 8px !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand {
+    width: 176px !important;
+    min-width: 176px !important;
+    max-width: 176px !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions,
+  html body .site-header .nav-cta-request,
+  html body .site-header.is-scrolled .nav-cta-request {
+    width: 178px !important;
+    min-width: 178px !important;
+    max-width: 178px !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    padding-inline: 5px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  html body .site-header,
+  html body .site-header.is-scrolled,
+  html body[class] .site-header,
+  html body[class] .site-header.is-scrolled {
+    inset: calc(env(safe-area-inset-top, 0px) + 10px) 0 auto 0 !important;
+    height: 66px !important;
+    min-height: 66px !important;
+  }
+
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: minmax(0, 1fr) 52px !important;
+    width: min(calc(100% - 24px), 720px) !important;
+    height: 66px !important;
+    min-height: 66px !important;
+    padding: 7px 8px 7px 12px !important;
+    gap: 8px !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand,
+  html body[class] .site-header .brand,
+  html body[class] .site-header.is-scrolled .brand {
+    width: min(228px, calc(100vw - 122px)) !important;
+    min-width: 0 !important;
+    max-width: min(228px, calc(100vw - 122px)) !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    background: rgba(255, 255, 255, .22) !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions {
+    display: none !important;
+  }
+
+  html body .site-header .nav-toggle,
+  html body .site-header.is-scrolled .nav-toggle,
+  html body[class] .site-header .nav-toggle,
+  html body[class] .site-header.is-scrolled .nav-toggle {
+    display: inline-flex !important;
+    grid-column: 2 !important;
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    border: 1px solid rgba(8, 166, 106, .18) !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, .80) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .84), 0 10px 24px rgba(3, 23, 18, .08) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+
+  html body .site-header .nav-toggle span,
+  html body .site-header.is-scrolled .nav-toggle span {
+    display: block !important;
+    width: 22px !important;
+    height: 3px !important;
+    border-radius: 999px !important;
+    background: #0B1220 !important;
+    opacity: 1 !important;
+    transform-origin: center !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg) !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(2) {
+    opacity: 0 !important;
+  }
+
+  html body.menu-open .site-header .nav-toggle span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    position: fixed !important;
+    top: calc(env(safe-area-inset-top, 0px) + 86px) !important;
+    right: 14px !important;
+    left: 14px !important;
+    display: none !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+    max-width: 720px !important;
+    height: auto !important;
+    max-height: calc(100svh - env(safe-area-inset-top, 0px) - 100px) !important;
+    padding: 14px !important;
+    gap: 6px !important;
+    overflow: auto !important;
+    border: 1px solid rgba(255, 255, 255, .82) !important;
+    border-radius: 22px !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(245, 255, 250, .80)),
+      radial-gradient(circle at 18% 0%, rgba(8, 166, 106, .12), transparent 42%) !important;
+    box-shadow: 0 28px 68px rgba(4, 41, 29, .18), inset 0 1px 0 rgba(255, 255, 255, .94) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.16) !important;
+    backdrop-filter: blur(24px) saturate(1.16) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  html body.menu-open .site-header .nav-menu.nav-menu-client,
+  html body .site-header .nav-menu.nav-menu-client.is-open,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client.is-open {
+    display: flex !important;
+  }
+
+  html body .site-header .nav-menu-client > .nav-link,
+  html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle,
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    width: 100% !important;
+    min-height: 44px !important;
+    justify-content: flex-start !important;
+    padding: 0 14px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+  }
+
+  html body .site-header .nav-menu-client > .mobile-request-link {
+    justify-content: center !important;
+    min-height: 48px !important;
+    margin-top: 4px !important;
+    border: 1px solid rgba(255, 255, 255, .46) !important;
+    background: linear-gradient(135deg, #08A66A, #078D5C) !important;
+    color: #FFFFFF !important;
+  }
+
+  html body.request-reference-body .request-hero-grid,
+  html body.request-reference-body .request-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .request-hero-visual {
+    order: 1 !important;
+  }
+
+  html body.request-reference-body .request-hero-copy {
+    order: 2 !important;
+  }
+
+  html body.request-reference-body .request-progress-panel {
+    position: static !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    justify-content: center !important;
+    min-height: 48px !important;
+    padding: 6px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: none !important;
+  }
+
+  html body.request-reference-body .request-fast-panel,
+  html body.request-reference-body .geo-capture-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-shell {
+    width: min(100% - 28px, 1200px) !important;
+  }
+
+  html body.request-reference-body .request-hero {
+    padding-block: 104px 16px !important;
+  }
+
+  html body.request-reference-body .request-hero-visual {
+    min-height: 210px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy,
+  html body.request-reference-body .request-form-card,
+  html body.request-reference-body .request-progress-panel {
+    padding: 15px !important;
+    border-radius: 20px !important;
+  }
+
+  html body.request-reference-body .request-form-section {
+    padding-block: 14px 30px !important;
+  }
+
+  html body.request-reference-body .request-step legend {
+    font-size: 1.32rem !important;
+  }
+
+  html body.request-reference-body .request-step > p {
+    font-size: .9rem !important;
+  }
+
+  html body.request-reference-body .form-grid-two {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.request-reference-body .request-step-actions {
+    justify-content: stretch !important;
+  }
+
+  html body.request-reference-body .request-step-actions .button {
+    flex: 1 1 0 !important;
+  }
+}
+/* 2026-08-02: absolute EOF lock, intentionally duplicated at file end. */
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-radius: 6px !important;
+}
+
+@media (max-width: 640px) {
+  html body.request-reference-body .request-hero {
+    padding-block: 84px 8px !important;
+  }
+
+  html body.request-reference-body .request-hero-copy h1 {
+    max-width: 12ch !important;
+    font-size: clamp(1.75rem, 7.8vw, 2rem) !important;
+    line-height: 1.02 !important;
+  }
+
+  html body.request-reference-body .request-progress-panel h2,
+  html body.request-reference-body .request-progress-panel > p,
+  html body.request-reference-body .request-assurance {
+    display: none !important;
+  }
+
+  html body.request-reference-body [data-request-progress] {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    margin: 0 !important;
+  }
+
+  html body.request-reference-body [data-request-progress] button {
+    min-height: 52px !important;
+    padding: 5px 3px !important;
+    gap: 3px !important;
+    border-radius: 12px !important;
+  }
+
+  html body.request-reference-body [data-request-progress] span {
+    width: 25px !important;
+    height: 25px !important;
+    font-size: .68rem !important;
+  }
+
+  html body.request-reference-body [data-request-progress] strong {
+    display: block !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: .62rem !important;
+    line-height: 1 !important;
+  }
+}
+
+/* 2026-08-04: absolute ClickaCook typography lock. Keep at end of stylesheet. */
+:root {
+  --font-sans: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-hero: clamp(2.25rem, 3.2vw, 3rem);
+  --font-page-title: clamp(2rem, 2.8vw, 2.625rem);
+  --font-section-title: clamp(1.75rem, 2.2vw, 2.125rem);
+  --font-subheading: clamp(1.3rem, 1.7vw, 1.625rem);
+  --font-card-title: clamp(1.05rem, 1.25vw, 1.25rem);
+  --font-body: clamp(1rem, 1vw, 1.0625rem);
+  --font-small: clamp(.875rem, .9vw, .9375rem);
+  --font-label: clamp(.75rem, .75vw, .8125rem);
+  --font-button: clamp(.875rem, .9vw, 1rem);
+}
+
+html body,
+html body button,
+html body input,
+html body select,
+html body textarea {
+  font-family: var(--font-sans) !important;
+}
+
+html body {
+  font-size: var(--font-body) !important;
+  line-height: 1.65 !important;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html body :is(h1, .hero-copy h1, .page-hero h1, .home-ref-hero h1, .request-hero-copy h1) {
+  font-family: var(--font-serif) !important;
+  font-size: var(--font-hero) !important;
+  font-weight: 600 !important;
+  line-height: 1.08 !important;
+  letter-spacing: 0 !important;
+}
+
+html body :is(h2, .section-heading, .home-ref-section h2) {
+  font-family: var(--font-serif) !important;
+  font-size: var(--font-section-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
+}
+
+html body h3 {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-card-title) !important;
+  font-weight: 600 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+}
+
+html body :is(p, li, label, input, select, textarea) {
+  font-size: var(--font-body) !important;
+}
+
+html body :is(.eyebrow, .section-kicker, .home-ref-eyebrow, .badge, .status-badge, small) {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-label) !important;
+}
+
+html body :is(.button, button, [type="submit"], .nav-link, .dropdown-toggle) {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-button) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-hero: clamp(2rem, 8.4vw, 2.125rem);
+    --font-page-title: clamp(1.75rem, 7.5vw, 1.875rem);
+    --font-section-title: clamp(1.5rem, 6.5vw, 1.625rem);
+    --font-subheading: clamp(1.2rem, 5.4vw, 1.3125rem);
+    --font-card-title: 1.125rem;
+    --font-body: clamp(.9375rem, 4vw, 1rem);
+    --font-small: .875rem;
+    --font-label: .75rem;
+    --font-button: .9375rem;
+  }
+}
+
+/* Final compact-spacing override. */
+html body main > section:not([class*="hero"]),
+html body main :is(.section, .compact-section, .home-ref-section, .about-section-v4, .fleet-section, .fleet-lower-section, .setrans-section, .insights-premium-section, .contact-ref-section, .station-overview-section, .station-applications-section, .station-benefits-section, .station-workflow-section, .station-deployment-section, .station-cta-section, .station-faq-section, .pilot-visual-strip-section, .pilot-form-section, .solutions-overview-section, .solutions-journey-section, .solutions-comparison-section, .solution-showcase-section, .solution-finder-section) {
+  min-height: 0 !important;
+  padding-top: clamp(28px, 3.2vw, 44px) !important;
+  padding-bottom: clamp(28px, 3.2vw, 44px) !important;
+}
+
+html body main > section + section {
+  margin-top: 0 !important;
+}
+
+html body :is(.section-heading, .home-ref-section-heading, .fleet-section-heading, .insights-section-heading, .station-section-heading, .setrans-section-heading) {
+  margin-top: 0 !important;
+  margin-bottom: clamp(16px, 1.7vw, 24px) !important;
+}
+
+html body section :is(h2, h3, p) {
+  margin-top: 0 !important;
+}
+
+html body section h2 {
+  margin-bottom: clamp(10px, 1vw, 16px) !important;
+}
+
+html body section h3 {
+  margin-bottom: 8px !important;
+}
+
+html body section p {
+  margin-bottom: 12px !important;
+}
+
+html body main [class*="-grid"] {
+  gap: clamp(14px, 1.5vw, 22px) !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  margin: 20px 0 0 !important;
+  padding: 0 !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag > li {
+  min-height: 0 !important;
+  padding: 18px !important;
+  gap: 14px !important;
+  align-content: start !important;
+}
+
+html body .pilot-process-panel.pilot-workflow-zigzag > li > span {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+}
+
+html body .site-footer {
+  margin-top: 0 !important;
+  padding-top: clamp(32px, 3.6vw, 48px) !important;
+  padding-bottom: clamp(22px, 2.5vw, 34px) !important;
+}
+
+@media (max-width: 900px) {
+  html body .pilot-process-panel.pilot-workflow-zigzag {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body main > section:not([class*="hero"]),
+  html body main :is(.section, .compact-section, .home-ref-section, .about-section-v4, .fleet-section, .setrans-section, .insights-premium-section, .contact-ref-section) {
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag > li {
+    display: grid !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    align-items: center !important;
+    padding: 13px 14px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag > li > span {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+  }
+
+  html body .pilot-process-panel.pilot-workflow-zigzag h3 {
+    margin: 0 !important;
+  }
+}
