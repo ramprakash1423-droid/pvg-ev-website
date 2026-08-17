@@ -94,20 +94,9 @@ with check (
 
 drop policy if exists "Authenticated users can review PVG-EV requests"
   on public.pvg_ev_charging_requests;
-create policy "Authenticated users can review PVG-EV requests"
-on public.pvg_ev_charging_requests
-for select
-to authenticated
-using (true);
-
 drop policy if exists "Authenticated users can update PVG-EV requests"
   on public.pvg_ev_charging_requests;
-create policy "Authenticated users can update PVG-EV requests"
-on public.pvg_ev_charging_requests
-for update
-to authenticated
-using (true)
-with check (source = 'pvg_ev_website');
 
+revoke all on table public.pvg_ev_charging_requests from public, anon, authenticated;
 grant insert on public.pvg_ev_charging_requests to anon;
-grant select, update on public.pvg_ev_charging_requests to authenticated;
+grant select, insert, update, delete on public.pvg_ev_charging_requests to service_role;

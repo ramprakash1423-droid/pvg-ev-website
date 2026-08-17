@@ -230,8 +230,238 @@ html body .site-footer {
     min-width: 40px !important;
   }
 
-  html body .pilot-process-panel.pilot-workflow-zigzag h3 {
+html body .pilot-process-panel.pilot-workflow-zigzag h3 {
     margin: 0 !important;
+  }
+}
+
+/* 2026-08-16 final motion layer: subtle, stable and disabled for reduced motion. */
+@keyframes pvg-hero-drift {
+  from { transform: scale(1.02) translate3d(-.25%, 0, 0); }
+  to { transform: scale(1.045) translate3d(.4%, -.3%, 0); }
+}
+
+@keyframes pvg-card-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -5px, 0); }
+}
+
+@keyframes pvg-card-float-reverse {
+  0%, 100% { transform: translate3d(0, -2px, 0); }
+  50% { transform: translate3d(0, 4px, 0); }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 701px) {
+  html body.home-reference-body .home-ref-hero-bg img {
+    animation: pvg-hero-drift 18s ease-in-out infinite alternate !important;
+    transform-origin: center !important;
+  }
+
+  html body.home-reference-body :is(.home-ref-card-status, .home-ref-card-access) {
+    animation: pvg-card-float 7s ease-in-out infinite !important;
+    will-change: transform;
+  }
+
+  html body.home-reference-body :is(.home-ref-card-tech, .home-ref-card-ops) {
+    animation: pvg-card-float-reverse 8s ease-in-out -2s infinite !important;
+    will-change: transform;
+  }
+}
+
+html body.insights-premium-body .insights-hero-metrics article {
+  border-color: rgba(255, 255, 255, .28) !important;
+  background: linear-gradient(145deg, rgba(7, 24, 33, .8), rgba(8, 78, 76, .68)) !important;
+  box-shadow: 0 14px 30px rgba(7, 24, 33, .2) !important;
+}
+
+html body.insights-premium-body .insights-hero-metrics :is(strong, span) {
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .22);
+}
+
+html body.insights-premium-body .insights-feature-float a {
+  color: #BFFBE5 !important;
+  text-decoration-color: rgba(191, 251, 229, .68) !important;
+}
+
+/* 2026-08-16 continuation polish: shared navigation, conversion UI and contrast. */
+:root {
+  --pvg-current-navy: #061E2C;
+  --pvg-current-teal: #078C86;
+  --pvg-current-blue: #168BFF;
+}
+
+html body .site-header .nav-link.is-active,
+html body .site-header .nav-dropdown.is-active > .dropdown-toggle,
+html body .site-header .nav-link:hover,
+html body .site-header .nav-dropdown:hover > .dropdown-toggle,
+html body .site-header .nav-link:focus-visible,
+html body .site-header .nav-dropdown:focus-within > .dropdown-toggle {
+  border-radius: 12px !important;
+}
+
+html body .site-header .nav-menu-client > .nav-link::after,
+html body .site-header .nav-menu-client > .nav-dropdown > .dropdown-toggle::after {
+  background: linear-gradient(90deg, transparent, #08A66A 28%, var(--pvg-current-teal) 64%, var(--pvg-current-blue), transparent) !important;
+}
+
+html body .photo-glass-caption strong,
+html body.station-product-body .photo-glass-caption strong,
+html body .pilot-image-overlay strong {
+  color: #FFFFFF !important;
+}
+
+html body .contact-ref-button-primary,
+html body .contact-ref-button-primary:visited,
+html body .contact-ref-button-primary:hover,
+html body .contact-ref-button-primary:focus-visible,
+html body .contact-ref-submit,
+html body .contact-ref-submit:hover,
+html body .contact-ref-submit:focus-visible {
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, .42) !important;
+  background: linear-gradient(135deg, #08A66A 0%, #078C86 68%, #0875B8 100%) !important;
+  box-shadow: 0 16px 34px rgba(5, 111, 101, .22), inset 0 1px 0 rgba(255, 255, 255, .28) !important;
+}
+
+html body .insights-premium-copy h1 {
+  max-width: 16ch !important;
+  font-size: clamp(2.2rem, 3vw, 2.7rem) !important;
+  text-wrap: balance;
+}
+
+html body.request-reference-body .request-form-card {
+  scroll-margin-top: 112px !important;
+}
+
+html body.request-reference-body .request-fast-panel {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+@media (min-width: 1101px) {
+  html body .site-header .nav-shell.nav-shell-client,
+  html body .site-header.is-scrolled .nav-shell.nav-shell-client,
+  html body[class] .site-header .nav-shell.nav-shell-client,
+  html body[class] .site-header.is-scrolled .nav-shell.nav-shell-client {
+    grid-template-columns: 174px minmax(0, 1fr) 184px !important;
+    gap: 12px !important;
+    width: min(calc(100% - 32px), 1360px) !important;
+    padding-inline: 14px !important;
+  }
+
+  html body .site-header .brand,
+  html body .site-header.is-scrolled .brand,
+  html body[class] .site-header .brand,
+  html body[class] .site-header.is-scrolled .brand {
+    width: 174px !important;
+    min-width: 174px !important;
+    max-width: 174px !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  html body .site-header .nav-actions,
+  html body .site-header.is-scrolled .nav-actions,
+  html body .site-header .nav-cta-request,
+  html body .site-header.is-scrolled .nav-cta-request {
+    width: 184px !important;
+    min-width: 184px !important;
+    max-width: 184px !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    gap: 6px !important;
+    overflow: visible !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client > .nav-link,
+  html body .site-header .nav-menu.nav-menu-client > .nav-dropdown > .dropdown-toggle {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding-inline: 11px !important;
+    font-size: .78rem !important;
+    font-weight: 720 !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client > .nav-dropdown {
+    position: relative !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client .dropdown-menu {
+    position: absolute !important;
+    top: calc(100% + 12px) !important;
+    left: 50% !important;
+    display: grid !important;
+    width: max-content !important;
+    min-width: 238px !important;
+    max-width: 310px !important;
+    height: auto !important;
+    padding: 10px !important;
+    overflow: visible !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translate(-50%, 8px) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client .nav-dropdown.is-open .dropdown-menu,
+  html body .site-header .nav-menu.nav-menu-client .nav-dropdown:focus-within .dropdown-menu,
+  html body .site-header .nav-menu.nav-menu-client .nav-dropdown:hover .dropdown-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translate(-50%, 0) !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client > .mobile-contact-link.mobile-request-link {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  html body.menu-open > [data-site-header]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(4, 23, 31, .22);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client,
+  html body .site-header.is-scrolled .nav-menu.nav-menu-client {
+    border-color: rgba(255, 255, 255, .92) !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, .97), rgba(244, 255, 250, .94)),
+      radial-gradient(circle at 18% 0%, rgba(8, 166, 106, .14), transparent 42%) !important;
+    box-shadow: 0 32px 80px rgba(4, 31, 38, .24), inset 0 1px 0 #FFFFFF !important;
+  }
+
+  html body .site-header .nav-menu.nav-menu-client .dropdown-menu {
+    width: 100% !important;
+  }
+
+  html body.request-reference-body .request-fast-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  html body.request-reference-body .request-fast-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  html body .insights-premium-copy h1 {
+    max-width: 13ch !important;
+    font-size: clamp(1.95rem, 9vw, 2.25rem) !important;
   }
 }
 
@@ -391,6 +621,255 @@ html body .site-footer {
 
   html body .pilot-process-panel.pilot-workflow-zigzag h3 {
     margin: 0 !important;
+  }
+}
+
+/* PVG-EV final clean-UI pass — density, hierarchy and responsive comfort. */
+[hidden] {
+  display: none !important;
+}
+
+:root {
+  --font-hero: clamp(1.95rem, 2.6vw, 2.75rem);
+  --font-page-title: clamp(1.8rem, 2.3vw, 2.4rem);
+  --font-section-title: clamp(1.4rem, 1.8vw, 1.95rem);
+  --font-card-title: clamp(1rem, 1.05vw, 1.15rem);
+  --font-body: clamp(.9375rem, .9vw, 1rem);
+  --font-small: clamp(.8125rem, .8vw, .9rem);
+  --font-label: clamp(.6875rem, .68vw, .75rem);
+  --font-button: clamp(.875rem, .85vw, .9375rem);
+}
+
+html body {
+  font-size: var(--font-body) !important;
+  line-height: 1.55 !important;
+}
+
+html body h1 {
+  font-size: var(--font-page-title) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -.025em !important;
+}
+
+html body :is(
+  .home-ref-hero,
+  .about-hero-v4,
+  .setrans-hero,
+  .fleet-hero,
+  .solutions-hero,
+  .station-hero-v3,
+  .pilot-enterprise-hero,
+  .contact-ref-hero,
+  .insights-premium-hero
+) h1 {
+  font-size: var(--font-hero) !important;
+}
+
+html body h2 {
+  font-size: var(--font-section-title) !important;
+  line-height: 1.16 !important;
+  letter-spacing: -.018em !important;
+}
+
+html body h3,
+html body :is(.home-ref-service-card, .contact-option-card, .pilot-mini-card) strong {
+  font-size: var(--font-card-title) !important;
+  line-height: 1.3 !important;
+}
+
+html body :is(p, li, td, th, label, input, select, textarea) {
+  font-size: var(--font-body) !important;
+}
+
+html body :is(.eyebrow, [class*="-eyebrow"], .article-meta, small, .breadcrumb, .footer-static) {
+  font-size: var(--font-small) !important;
+}
+
+html body :is(.button, button, .nav-link, .card-link) {
+  font-size: var(--font-button) !important;
+}
+
+html body.fleet-reference-body main .fleet-section,
+html body.station-product-body main.station-product-v2 :is(.section, .compact-section),
+html body.pilot-enterprise-body main.pilot-enterprise-page :is(.section, .compact-section) {
+  padding-block: clamp(28px, 3.2vw, 44px) !important;
+}
+
+html body[class] main :is(
+  .home-ref-service-card,
+  .home-ref-timeline li,
+  .about-glass-card,
+  .about-why-card,
+  .about-value-card,
+  .about-timeline article,
+  .fleet-challenge-card,
+  .fleet-timeline li,
+  .station-application-card-v2,
+  .station-benefit-group,
+  .pilot-mini-card,
+  .contact-option-card,
+  .insights-newsletter-panel,
+  .insights-cta-panel
+) {
+  min-height: 0 !important;
+}
+
+html body .fleet-form-panel#fleet-assessment {
+  scroll-margin-top: calc(var(--pvg-nav-clearance, 88px) + 18px) !important;
+}
+
+html body .contact-ref-form-note {
+  color: var(--muted, #60707c) !important;
+  font-size: var(--font-small) !important;
+  margin: 4px 0 0 !important;
+}
+
+html body .site-footer :is(p, li),
+html body .contact-ref-form label,
+html body .pilot-form-v2 label,
+html body .fleet-assessment-form label {
+  font-size: var(--font-small) !important;
+}
+
+html body .site-footer .footer-shell-client {
+  grid-template-columns: minmax(240px, 1.45fr) repeat(4, minmax(120px, 1fr)) !important;
+  gap: clamp(20px, 2.4vw, 36px) !important;
+}
+
+html body .article-shell {
+  max-width: 820px !important;
+}
+
+html body .article-shell > :is(h2, h3) {
+  margin-top: clamp(22px, 2.2vw, 30px) !important;
+}
+
+@media (min-width: 901px) {
+  html body.home-reference-body .home-ref-hero,
+  html body.about-premium-body .about-hero-v4,
+  html body.fleet-reference-body .fleet-hero,
+  html body.insights-premium-body .insights-premium-hero {
+    min-height: 0 !important;
+  }
+
+  html body.station-product-body .station-hero-visual-v3 {
+    height: clamp(340px, 31vw, 440px) !important;
+    min-height: clamp(340px, 31vw, 440px) !important;
+  }
+
+  html body.pilot-enterprise-body .pilot-enterprise-visual {
+    min-height: clamp(340px, 31vw, 480px) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --font-hero: clamp(1.72rem, 7.4vw, 2.05rem);
+    --font-page-title: clamp(1.65rem, 7vw, 1.95rem);
+    --font-section-title: clamp(1.28rem, 5.25vw, 1.5rem);
+    --font-card-title: 1rem;
+    --font-body: .9375rem;
+  }
+
+  html body.fleet-reference-body main .fleet-section,
+  html body.station-product-body main.station-product-v2 :is(.section, .compact-section),
+  html body.pilot-enterprise-body main.pilot-enterprise-page :is(.section, .compact-section) {
+    padding-block: 24px !important;
+  }
+
+  html body.contact-reference-body :is(.contact-ref-hero, .contact-ref-hero-inner),
+  html body.setrans-reference-body .setrans-hero {
+    min-height: 0 !important;
+  }
+
+  html body.contact-reference-body .contact-ref-hero {
+    padding-block: calc(var(--pvg-nav-clearance, 90px) + 10px) 24px !important;
+  }
+
+  html body.contact-reference-body .contact-ref-hero-copy {
+    padding-block: 0 !important;
+  }
+
+  html body.station-product-body .station-hero-visual-v3 {
+    height: 220px !important;
+    min-height: 220px !important;
+  }
+
+  html body.pilot-enterprise-body .pilot-enterprise-visual {
+    min-height: 240px !important;
+  }
+
+  html body[class] main :is(.request-form, .contact-ref-form, .pilot-form-v2, .fleet-assessment-form)
+    :is(input, select, textarea) {
+    font-size: 1rem !important;
+  }
+
+  html body .site-footer .footer-shell-client {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  html body .site-footer :is(.footer-accordion-panel a, .footer-static) {
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+@media (min-width: 380px) and (max-width: 700px) {
+  html body.home-reference-body .home-ref-usecase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  html body.home-reference-body .home-ref-usecase-card {
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  html body.home-reference-body .home-ref-usecase-card p {
+    display: none !important;
+  }
+}
+
+@media (max-width: 700px) {
+  html body .breadcrumb a {
+    min-height: 40px !important;
+    padding-inline: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  html body :is(
+    .fleet-usecase-card a,
+    .insight-card-link,
+    .insights-guide-card a,
+    .station-application-card-v2 a,
+    .solution-category-card .card-link
+  ) {
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  html body.fleet-reference-body .fleet-lower-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  html body.fleet-reference-body .fleet-form-panel {
+    order: 1 !important;
+  }
+
+  html body.fleet-reference-body .fleet-lower-content {
+    order: 2 !important;
+  }
+}
+
+@media (min-width: 901px) {
+  html body.fleet-reference-body .fleet-lower-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.05fr) minmax(380px, .95fr) !important;
+    align-items: start !important;
   }
 }
 
@@ -22599,6 +23078,7 @@ textarea:focus,
 }
 
 .field-error,
+.geo-status.is-error,
 .form-status.is-error {
   color: var(--pvg-error) !important;
 }
@@ -23086,11 +23566,13 @@ textarea:focus,
   }
 }
 
-/* 2026-07-19 real-photo glass direction: remove demo-style motion and lift the site into premium glass UI. */
-*,
-*::before,
-*::after {
-  animation: none !important;
+/* Keep motion available while respecting the visitor's operating-system preference. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+  }
 }
 
 .reveal,
@@ -41738,6 +42220,24 @@ html body :is(.button, button, [type="submit"], .nav-link, .dropdown-toggle) {
 }
 
 /* Final compact-spacing override. */
+@media (min-width: 1101px) {
+  html body.request-reference-body .request-fast-panel {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1100px) {
+  html body.request-reference-body .request-fast-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 700px) {
+  html body.request-reference-body .request-fast-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 html body main > section:not([class*="hero"]),
 html body main :is(.section, .compact-section, .home-ref-section, .about-section-v4, .fleet-section, .fleet-lower-section, .setrans-section, .insights-premium-section, .contact-ref-section, .station-overview-section, .station-applications-section, .station-benefits-section, .station-workflow-section, .station-deployment-section, .station-cta-section, .station-faq-section, .pilot-visual-strip-section, .pilot-form-section, .solutions-overview-section, .solutions-journey-section, .solutions-comparison-section, .solution-showcase-section, .solution-finder-section) {
   min-height: 0 !important;

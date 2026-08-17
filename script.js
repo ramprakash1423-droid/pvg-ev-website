@@ -2,46 +2,66 @@
   const headerMount = document.querySelector("[data-site-header]");
   const footerMount = document.querySelector("[data-site-footer]");
   const currentYear = new Date().getFullYear();
+  const pvgWhatsappNumber = "919751083000";
+  const pvgWhatsappDisplay = "+91 97510 83000";
+  const pvgCarBookingMessage = [
+    "Hi PVG-EV Team, I’d like to book mobile EV charging for my car.",
+    "",
+    "Car model:",
+    "Current location:",
+    "Preferred date and time:",
+    "",
+    "Please confirm availability and the next steps."
+  ].join("\n");
+  const pvgCarBookingUrl = `https://wa.me/${pvgWhatsappNumber}?text=${encodeURIComponent(pvgCarBookingMessage)}`;
+  const pvgFleetBookingMessage = [
+    "Hi PVG-EV Team, I’d like to discuss mobile EV charging for our fleet.",
+    "",
+    "Organisation:",
+    "Fleet size:",
+    "Operating location:",
+    "Preferred date and time:",
+    "",
+    "Please share availability and the assessment next steps."
+  ].join("\n");
+  const pvgFleetBookingUrl = `https://wa.me/${pvgWhatsappNumber}?text=${encodeURIComponent(pvgFleetBookingMessage)}`;
 
   const navItems = [
     { name: "Home", path: "index.html", key: "home" },
-    { name: "Mobile Charging Station", path: "mobile-charging-station.html", key: "station" },
     {
       name: "Solutions",
       key: "solutions",
       children: [
-        { name: "Mobile EV Charging", path: "solutions.html#mobile-ev-charging", key: "solutions-mobile" },
-        { name: "Fleet & Depot Charging", path: "solutions.html#fleet-depot-charging", key: "solutions-fleet-depot" },
-        { name: "Commercial EV Charging", path: "solutions.html#commercial-charging", key: "solutions-commercial" },
-        { name: "Apartment Charging", path: "solutions.html#apartment-charging", key: "solutions-apartment" },
-        { name: "Maintenance & Support", path: "solutions.html#maintenance-support", key: "solutions-maintenance" }
+        { name: "All Solutions", path: "solutions.html", key: "solutions" },
+        { name: "Mobile Charging Station", path: "mobile-charging-station.html", key: "station" },
+        { name: "Fleet Solutions", path: "fleet-solutions.html", key: "fleet" }
       ]
     },
-    { name: "Fleet Solutions", path: "fleet-solutions.html", key: "fleet" },
-    { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
-    { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" },
     { name: "Pilot Programme", path: "pilot-programme.html", key: "pilot" },
+    {
+      name: "About",
+      key: "about",
+      children: [
+        { name: "About PVG-EV", path: "about-pvg-ev.html", key: "about" },
+        { name: "PVG-EV × Setrans", path: "collaboration.html", key: "collaboration" }
+      ]
+    },
     { name: "Insights", path: "insights.html", key: "insights" },
     { name: "Contact", path: "contact.html", key: "contact" }
   ];
 
   const activeParentMap = {
-    station: "station",
-    fleet: "fleet",
+    station: "solutions",
+    fleet: "solutions",
     solutions: "solutions",
     about: "about",
-    collaboration: "collaboration"
+    collaboration: "about"
   };
 
   const footerLinks = [
-    ["Request Charging", "request-charging.html"],
-    ["Mobile Charging Station", "mobile-charging-station.html"],
-    ["Solutions", "solutions.html"],
-    ["Fleet Solutions", "fleet-solutions.html"],
+    ["About PVG-EV", "about-pvg-ev.html"],
     ["PVG-EV × Setrans", "collaboration.html"],
-    ["Pilot Programme", "pilot-programme.html"],
-    ["Insights", "insights.html"],
-    ["Contact", "contact.html"]
+    ["Insights", "insights.html"]
   ];
 
   const policyLinks = [
@@ -63,6 +83,7 @@
     const root = headerMount.dataset.root || "";
     const active = headerMount.dataset.active || "home";
     const activeParent = activeParentMap[active] || active;
+    const headerBookingUrl = active === "fleet" ? pvgFleetBookingUrl : pvgCarBookingUrl;
     const navLink = (item) => {
       if (!item.children) {
         const isActive = activeParent === item.key;
@@ -90,7 +111,7 @@
       <header class="site-header" data-header>
         <nav class="nav-shell nav-shell-client" aria-label="Primary navigation">
           <a class="brand" href="${url(root, "index.html")}" aria-label="PVG-EV home">
-            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-nav.svg?v=20260802requestux9")}" alt="PVG-EV — Prime Ventures Global" width="620" height="180" decoding="async">
+            <img class="brand-logo-real nav-logo-real" src="${url(root, "public/assets/pvg-ev/branding/logo-nav.svg?v=20260816cleanui3")}" alt="PVG-EV — Prime Ventures Global" width="620" height="180" decoding="async">
             <span class="sr-only">PVG-EV — Prime Ventures Global</span>
           </a>
           <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
@@ -98,10 +119,10 @@
           </button>
           <div class="nav-menu nav-menu-client" id="site-menu" data-nav-menu>
             ${navItems.map(navLink).join("")}
-            <a class="nav-link mobile-contact-link mobile-request-link ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="mobile_nav_request_charging">Request Mobile Charging</a>
+            <a class="nav-link mobile-contact-link mobile-request-link" href="${headerBookingUrl}" target="_blank" rel="noopener" data-event="mobile_nav_book_whatsapp">Book on WhatsApp</a>
           </div>
           <div class="nav-actions" aria-label="Primary actions">
-            <a class="nav-cta nav-cta-request ${active === "request" ? "is-active" : ""}" href="${url(root, "request-charging.html")}" data-event="nav_request_charging">Request Mobile Charging</a>
+            <a class="nav-cta nav-cta-request" href="${headerBookingUrl}" target="_blank" rel="noopener" data-event="nav_book_whatsapp">Book on WhatsApp</a>
           </div>
         </nav>
       </header>
@@ -130,18 +151,12 @@
               <span class="sr-only">PVG-EV Prime Ventures Global</span>
             </a>
             <p>PVG-EV is an electric-mobility initiative of Prime Ventures Global. Mobile Charging Station technology is developed by Setrans and introduced in Tamil Nadu through the PVG-EV collaboration.</p>
-            <div class="footer-social" aria-label="PVG-EV social channels pending verification">
-              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-linkedin" aria-hidden="true"></span><span>LinkedIn</span></span>
-              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-youtube" aria-hidden="true"></span><span>YouTube</span></span>
-              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-facebook" aria-hidden="true"></span><span>Facebook</span></span>
-              <span class="footer-social-item is-disabled"><span class="social-icon social-icon-instagram" aria-hidden="true"></span><span>Instagram</span></span>
-            </div>
             <details class="footer-note-details">
               <summary>Service disclaimer</summary>
               <p class="footer-note">Product specifications, charging availability, service coverage and launch dates are subject to testing, certification, operational readiness and local deployment conditions. Images may include development-stage or representative product configurations.</p>
             </details>
           </div>
-          ${footerSection("Website", "footer-website-links", footerLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join(""))}
+          ${footerSection("Company", "footer-company-links", footerLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join(""))}
           ${footerSection("Solutions", "footer-solution-links", `
             <a href="${url(root, "solutions.html#mobile-ev-charging")}">Mobile EV Charging</a>
             <a href="${url(root, "solutions.html#commercial-charging")}">Commercial EV Charging</a>
@@ -149,24 +164,13 @@
             <a href="${url(root, "solutions.html#maintenance-support")}">Maintenance and Support</a>
           `)}
           ${footerSection("Contact", "footer-contact-links", `
-            <a href="${url(root, "request-charging.html")}">Request Charging</a>
+            <a href="${pvgCarBookingUrl}" target="_blank" rel="noopener" data-event="footer_book_whatsapp">Book on WhatsApp: ${pvgWhatsappDisplay}</a>
+            <a href="${url(root, "request-charging.html")}">Share Detailed Requirement</a>
             <a href="${url(root, "contact.html")}">Contact PVG-EV</a>
             <a href="${url(root, "pilot-programme.html#pilot-form")}">Join the Chennai Pilot</a>
-            <a href="${url(root, "contact.html#contact-form")}">Request a Consultation</a>
-            <a href="https://wa.me/919751083000" target="_blank" rel="noopener">WhatsApp: +91 97510 83000</a>
             <span class="footer-static">Chennai pilot market: Tamil Nadu, India</span>
           `)}
           ${footerSection("Legal", "footer-legal-links", policyLinks.map(([name, path]) => `<a href="${url(root, path)}">${name}</a>`).join(""))}
-          <div class="footer-column footer-newsletter">
-            <h2>EV Updates</h2>
-            <p>Get pilot notes, charging explainers and fleet-readiness resources.</p>
-            <form data-footer-newsletter novalidate>
-              <label class="sr-only" for="footer-newsletter-email">Email address</label>
-              <input id="footer-newsletter-email" type="email" name="email" placeholder="Email address" autocomplete="email" required>
-              <button type="submit" aria-label="Subscribe to PVG-EV updates">Subscribe</button>
-              <span class="footer-newsletter-status" data-footer-newsletter-status aria-live="polite"></span>
-            </form>
-          </div>
         </div>
         <div class="footer-bottom">
           <span>PVG-EV by Prime Ventures Global</span>
@@ -225,6 +229,23 @@
   renderFooter();
   renderQuickEnquiry();
   initFooterAccordions();
+
+  const alignInitialHashTarget = () => {
+    if (!window.location.hash) return;
+    let targetId = "";
+    try {
+      targetId = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      targetId = window.location.hash.slice(1);
+    }
+    document.getElementById(targetId)?.scrollIntoView({ behavior: "auto", block: "start" });
+  };
+
+  if (window.location.hash) {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(alignInitialHashTarget));
+    window.addEventListener("load", alignInitialHashTarget, { once: true });
+    document.fonts?.ready?.then(alignInitialHashTarget).catch(() => {});
+  }
 
   const header = document.querySelector("[data-header]");
   const navToggle = document.querySelector("[data-nav-toggle]");
@@ -341,7 +362,7 @@
 
   window.addEventListener("keydown", (event) => {
     if (event.key === "Tab" && navMenu?.classList.contains("is-open")) {
-      const focusable = Array.from(navMenu.querySelectorAll("a[href], button:not([disabled])"))
+      const focusable = [navToggle, ...Array.from(navMenu.querySelectorAll("a[href], button:not([disabled])"))]
         .filter((element) => element instanceof HTMLElement && element.offsetParent !== null);
       if (focusable.length) {
         const first = focusable[0];
@@ -695,26 +716,6 @@
     });
   });
 
-  document.querySelectorAll("[data-footer-newsletter]").forEach((form) => {
-    const input = form.querySelector("input[type='email']");
-    const status = form.querySelector("[data-footer-newsletter-status]");
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const value = input?.value.trim() || "";
-      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-      if (!valid) {
-        if (status) status.textContent = "Enter a valid email address.";
-        input?.setAttribute("aria-invalid", "true");
-        input?.focus();
-        return;
-      }
-      input?.setAttribute("aria-invalid", "false");
-      if (status) status.textContent = "Thank you. Updates will be shared after launch.";
-      form.reset();
-      trackPvgEvent("footer_newsletter_submit", { path: window.location.pathname });
-    });
-  });
-
   document.querySelectorAll("[data-contact-form]").forEach((form) => {
     const requirementSelect = form.querySelector("[data-requirement-select]");
     const categoryButtons = Array.from(document.querySelectorAll("[data-contact-category]"));
@@ -765,7 +766,7 @@
       syncConditionalFields(selected);
 
       if (options.focusForm) {
-        form.scrollIntoView({ behavior: "smooth", block: "start" });
+        form.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
         setFormHighlight();
         requirementSelect?.focus({ preventScroll: true });
       }
@@ -789,6 +790,9 @@
         if (successPanel) successPanel.hidden = true;
       });
     });
+
+    const requestedType = new URLSearchParams(window.location.search).get("type");
+    if (requestedType) setRequirement(requestedType);
 
     requirementSelect?.addEventListener("change", () => {
       setRequirement(requirementSelect.value);
@@ -831,8 +835,6 @@
   });
 
   const forms = Array.from(document.querySelectorAll("[data-contact-form], [data-pilot-form]"));
-  const pvgWhatsappNumber = "919751083000";
-  const pvgWhatsappDisplay = "+91 97510 83000";
   const pvgSupabaseUrl = window.PVG_EV_SUPABASE_URL || "https://wpaickmgqlahzmdqmkid.supabase.co";
   const pvgSupabaseAnonKey = window.PVG_EV_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwYWlja21ncWxhaHptZHFta2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDI2NDIsImV4cCI6MjA5NTMxODY0Mn0.GPHi7wHHIYKPlHkogpxaEZG8Sq8TnpWZcsad0s0-wfo";
   const defaultMessages = {
@@ -848,7 +850,17 @@
     const error = form?.querySelector(`[data-error-for="${field.name}"]`);
     field.classList.toggle("is-invalid", Boolean(message));
     field.setAttribute("aria-invalid", message ? "true" : "false");
-    if (error) error.textContent = message || "";
+    if (error) {
+      if (!error.id) {
+        const safeName = (field.id || field.name || "field").replace(/[^a-z0-9_-]/gi, "-");
+        const errorIndex = Array.from(document.querySelectorAll("[data-error-for]")).indexOf(error) + 1;
+        error.id = `pvg-${safeName}-error-${errorIndex}`;
+      }
+      const describedBy = new Set((field.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean));
+      describedBy.add(error.id);
+      field.setAttribute("aria-describedby", Array.from(describedBy).join(" "));
+      error.textContent = message || "";
+    }
   };
 
   const fieldLabel = (field) => {
@@ -860,16 +872,28 @@
   const validateField = (field) => {
     if (field.disabled || field.type === "hidden") return true;
     const value = field.type === "checkbox" ? field.checked : field.value.trim();
+    if (field.closest("[data-request-form]") && ["name", "city", "address"].includes(field.name)) {
+      field.value = value;
+    }
     let error = "";
 
     if (field.required && (field.type === "checkbox" ? !field.checked : !value)) {
-      error = field.type === "checkbox" ? "Please confirm this option." : `${fieldLabel(field)} is required.`;
+      error = field.type === "checkbox"
+        ? "Please confirm this option."
+        : field.dataset.requiredMessage || `${fieldLabel(field)} is required.`;
     } else if (field.type === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       error = defaultMessages.email;
     } else if (field.type === "tel" && value) {
       const digits = value.replace(/\D/g, "");
       const isIndianMobile = /^([6-9]\d{9}|91[6-9]\d{9})$/.test(digits);
       error = isIndianMobile ? "" : "Please enter a valid Indian mobile number.";
+    } else if (field.type === "number" && value) {
+      const numericValue = Number(value);
+      const minimum = field.min === "" ? null : Number(field.min);
+      const maximum = field.max === "" ? null : Number(field.max);
+      if (!Number.isFinite(numericValue)) error = `${fieldLabel(field)} must be a number.`;
+      else if (minimum !== null && numericValue < minimum) error = `${fieldLabel(field)} must be at least ${minimum}.`;
+      else if (maximum !== null && numericValue > maximum) error = `${fieldLabel(field)} must be ${maximum} or less.`;
     } else if (field.name === "message" && value && value.length < 12) {
       error = "Please add a little more detail.";
     }
@@ -960,42 +984,44 @@
     reference,
     source: "pvg_ev_website",
     form_type: formType,
-    requirement_type: cleanDbValue(payloadValue(payload, ["requirement_type", "requirement", "charging_requirement", "main_charging_challenge"])),
-    customer_type: cleanDbValue(payloadValue(payload, ["customer_type", "customer"])),
+    requirement_type: cleanDbValue(payloadValue(payload, ["requirement_type", "requirement", "charging_requirement", "main_charging_challenge", "main-charging-challenge"])),
+    customer_type: cleanDbValue(payloadValue(payload, ["customer_type", "customer-type", "customer"])),
     requirement_scope: cleanDbValue(payloadValue(payload, ["requirement_scope", "scope"])),
     priority: cleanDbValue(payloadValue(payload, ["priority"])),
-    use_case: cleanDbValue(payloadValue(payload, ["use_case"])),
+    use_case: cleanDbValue(payloadValue(payload, ["use_case", "expected-use-case"])),
     phone: cleanDbValue(payloadValue(payload, ["phone", "telephone", "mobile"])) || "",
     name: cleanDbValue(payloadValue(payload, ["name", "full_name"])),
     email: cleanDbValue(payloadValue(payload, ["email"])),
     company: cleanDbValue(payloadValue(payload, ["company", "organisation", "organization"])),
     city: cleanDbValue(payloadValue(payload, ["city", "deployment_location"])),
     location_type: cleanDbValue(payloadValue(payload, ["location_type"])),
-    address: cleanDbValue(payloadValue(payload, ["address", "location", "landmark"])),
+    address: cleanDbValue(payloadValue(payload, ["address", "location", "landmark", "operating-base", "preferred-pilot-location", "preferred-charging-location"])),
     gps_location: cleanDbValue(payloadValue(payload, ["gps_location"])),
     latitude: cleanDbNumber(payloadValue(payload, ["latitude"])),
     longitude: cleanDbNumber(payloadValue(payload, ["longitude"])),
     gps_accuracy: cleanDbNumber(payloadValue(payload, ["gps_accuracy"])),
-    vehicle_category: cleanDbValue(payloadValue(payload, ["vehicle_category", "vehicle_type"])),
+    vehicle_category: cleanDbValue(payloadValue(payload, ["vehicle_category", "vehicle_type", "vehicle-types", "fleet-type"])),
     vehicle_model: cleanDbValue(payloadValue(payload, ["vehicle_model"])),
-    vehicle_count: cleanDbValue(payloadValue(payload, ["vehicle_count", "number_of_vehicles"])),
+    vehicle_count: cleanDbValue(payloadValue(payload, ["vehicle_count", "number_of_vehicles", "number-of-evs"])),
     connector_type: cleanDbValue(payloadValue(payload, ["connector_type"])),
     battery_status: cleanDbValue(payloadValue(payload, ["battery_status"])),
     current_battery_level: cleanDbValue(payloadValue(payload, ["current_battery_level"])),
-    charging_need: cleanDbValue(payloadValue(payload, ["charging_need"])),
-    charging_details: cleanDbValue(payloadValue(payload, ["charging_details", "additional_notes"])),
-    preferred_window: cleanDbValue(payloadValue(payload, ["preferred_window"])),
+    charging_need: cleanDbValue(payloadValue(payload, ["charging_need", "current-charging-method"])),
+    charging_details: cleanDbValue(payloadValue(payload, ["charging_details", "additional_notes", "additional-notes"])),
+    preferred_window: cleanDbValue(payloadValue(payload, ["preferred_window", "charging-window", "expected-charging-frequency", "fleet-operating-hours"])),
     target_date: cleanDbDate(payloadValue(payload, ["target_date", "preferred_date"])),
     preferred_time: cleanDbValue(payloadValue(payload, ["preferred_time", "contact_time"])),
     pilot_interest: cleanDbValue(payloadValue(payload, ["pilot_interest"])),
-    message: cleanDbValue(payloadValue(payload, ["message", "additional_notes"])),
+    message: cleanDbValue(payloadValue(payload, ["message", "additional_notes", "additional-notes", "description"])),
     payload
   });
 
-  const savePvgChargingRequest = async (record) => {
+  const savePvgChargingRequest = async (record, timeoutMs = 1800) => {
     if (!pvgSupabaseAnonKey || /^__.*__$/.test(pvgSupabaseAnonKey)) {
       return { saved: false, reason: "not_configured" };
     }
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await fetch(`${pvgSupabaseUrl.replace(/\/$/, "")}/rest/v1/pvg_ev_charging_requests`, {
         method: "POST",
@@ -1005,13 +1031,18 @@
           "Content-Type": "application/json",
           Prefer: "return=minimal"
         },
-        body: JSON.stringify(record)
+        body: JSON.stringify(record),
+        keepalive: true,
+        signal: controller.signal
       });
       if (!response.ok) throw new Error(await response.text() || `Request save failed (${response.status})`);
       return { saved: true };
     } catch (error) {
+      if (error?.name === "AbortError") return { saved: false, reason: "timeout" };
       console.warn("PVG-EV request save failed", error);
       return { saved: false, reason: "failed" };
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   };
 
@@ -1112,9 +1143,12 @@
 
       const reference = `PVG-EV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
       const whatsappUrl = buildPvgWhatsappUrl(buildLeadWhatsappMessage(form, reference));
-      const databaseResult = await savePvgFormToSupabase(form, reference);
+      const databasePromise = savePvgFormToSupabase(form, reference);
       const retryLink = form.querySelector("[data-whatsapp-retry]");
       if (retryLink) retryLink.href = whatsappUrl;
+      trackPvgEvent(`${getFormType(form)}_form_whatsapp_open`, { reference, saved: "pending", path: window.location.pathname });
+      openPvgWhatsapp(whatsappUrl);
+      const databaseResult = await databasePromise;
       if (status) {
         status.textContent = databaseResult.saved
           ? `${whatsappSuccessMessage(form)} Your enquiry is also saved for PVG-EV review.`
@@ -1127,8 +1161,7 @@
         successPanel.querySelector("[data-success-reference]")?.replaceChildren(document.createTextNode(reference));
       }
       fields.forEach((field) => setError(field, ""));
-      trackPvgEvent(`${getFormType(form)}_form_whatsapp_open`, { reference, saved: databaseResult.saved, path: window.location.pathname });
-      openPvgWhatsapp(whatsappUrl);
+      trackPvgEvent(`${getFormType(form)}_form_storage_result`, { reference, saved: databaseResult.saved, reason: databaseResult.reason || "saved", path: window.location.pathname });
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.classList.remove("is-loading");
@@ -1291,22 +1324,51 @@
     const geoButton = requestForm.querySelector("[data-geo-button]");
     const geoStatus = requestForm.querySelector("[data-geo-status]");
     const requestStatus = requestForm.querySelector("[data-request-status]");
+    const fastPanel = requestForm.querySelector("[role='radiogroup']");
     const fastCards = Array.from(requestForm.querySelectorAll("[data-fast-request]"));
     const choiceError = requestForm.querySelector('[data-error-for="requirement_choice"]');
     const storageKey = "pvgChargingRequirementDraft";
+    const requestTypeAliases = {
+      "emergency charging": "Low battery / stranded vehicle",
+      "stranded ev": "Low battery / stranded vehicle",
+      "mobile ev charging": "Mobile EV charging",
+      "construction site": "Temporary project location"
+    };
+    const fastCardAliases = {
+      "Depot support": "Fleet charging",
+      "Event charging": "Residential or community requirement",
+      "Temporary project location": "Residential or community requirement",
+      "Pilot programme": "Residential or community requirement"
+    };
     let currentStep = 0;
     let furthestStep = 0;
     let submitted = false;
 
     const requestFields = Array.from(requestForm.querySelectorAll("input, select, textarea"))
       .filter((field) => field.name !== "website");
+    const draftFields = requestFields.filter((field) => field.name !== "consent");
 
     const getVisibleFields = () => Array.from(steps[currentStep]?.querySelectorAll("input, select, textarea") || [])
       .filter((field) => field.name !== "website");
 
+    const getCapturedCoordinates = () => {
+      const latitudeValue = String(requestForm.elements.latitude?.value || "").trim();
+      const longitudeValue = String(requestForm.elements.longitude?.value || "").trim();
+      const latitude = Number(latitudeValue);
+      const longitude = Number(longitudeValue);
+      const valid = Boolean(latitudeValue && longitudeValue)
+        && Number.isFinite(latitude)
+        && latitude >= -90
+        && latitude <= 90
+        && Number.isFinite(longitude)
+        && longitude >= -180
+        && longitude <= 180;
+      return { valid, latitudeValue, longitudeValue };
+    };
+
     const writeDraft = () => {
       const data = {};
-      requestFields.forEach((field) => {
+      draftFields.forEach((field) => {
         data[field.name] = field.type === "checkbox" ? field.checked : field.value;
       });
       sessionStorage.setItem(storageKey, JSON.stringify(data));
@@ -1317,7 +1379,7 @@
       const preferredType = search.get("type");
       try {
         const saved = JSON.parse(sessionStorage.getItem(storageKey) || "{}");
-        requestFields.forEach((field) => {
+        draftFields.forEach((field) => {
           const value = saved[field.name];
           if (value === undefined) return;
           if (field.type === "checkbox") field.checked = Boolean(value);
@@ -1328,18 +1390,37 @@
       }
       if (preferredType) {
         const typeField = requestForm.elements["requirement_type"];
-        if (typeField) typeField.value = preferredType;
+        const canonicalType = requestTypeAliases[preferredType.trim().toLowerCase()] || preferredType;
+        if (typeField && Array.from(typeField.options).some((option) => option.value === canonicalType)) {
+          typeField.value = canonicalType;
+        }
+        if (canonicalType === "Event charging" || canonicalType === "Temporary project location") {
+          const locationType = requestForm.elements["location_type"];
+          const customerType = requestForm.elements["customer_type"];
+          const chargingNeed = requestForm.elements["charging_need"];
+          const requirementScope = requestForm.elements["requirement_scope"];
+          if (locationType) locationType.value = "Event or temporary site";
+          if (customerType && !customerType.value) customerType.value = "Commercial property";
+          if (chargingNeed) chargingNeed.value = "Temporary event charging";
+          if (requirementScope) requirementScope.value = "Site or community requirement";
+        }
       }
     };
 
     const updateGeoUi = () => {
-      const gpsLocation = requestForm.elements.gps_location?.value || "";
+      const gpsField = requestForm.elements.gps_location;
+      const coordinates = getCapturedCoordinates();
       const accuracy = requestForm.elements.gps_accuracy?.value || "";
-      if (!gpsLocation || !geoStatus) return;
+      if (!coordinates.valid || !geoStatus) return;
+      if (gpsField && !gpsField.value.trim()) {
+        gpsField.value = `Lat ${coordinates.latitudeValue}, Long ${coordinates.longitudeValue}`;
+      }
+      geoStatus.classList.remove("is-error");
       geoStatus.classList.add("is-success");
       geoStatus.textContent = accuracy
         ? `GPS location captured. Accuracy is about ${accuracy} metres.`
         : "GPS location captured.";
+      if (gpsField) setError(gpsField, "");
     };
 
     const updateReview = () => {
@@ -1373,6 +1454,7 @@
 
     const setChoiceError = (message) => {
       if (choiceError) choiceError.textContent = message || "";
+      fastPanel?.setAttribute("aria-invalid", message ? "true" : "false");
       fastCards.forEach((card) => card.classList.toggle("is-invalid", Boolean(message)));
     };
 
@@ -1386,10 +1468,14 @@
 
     const syncFastSelection = () => {
       const selectedRequirement = getRequestValue("requirement_type");
-      fastCards.forEach((card) => {
-        const selected = card.dataset.requirement === selectedRequirement;
+      const selectedCardRequirement = fastCardAliases[selectedRequirement] || selectedRequirement;
+      let selectedIndex = fastCards.findIndex((card) => card.dataset.requirement === selectedCardRequirement);
+      if (selectedIndex < 0) selectedIndex = 0;
+      fastCards.forEach((card, index) => {
+        const selected = card.dataset.requirement === selectedCardRequirement;
         card.classList.toggle("is-selected", selected);
         card.setAttribute("aria-checked", String(selected));
+        card.tabIndex = index === selectedIndex ? 0 : -1;
       });
     };
 
@@ -1488,7 +1574,9 @@
         const jumpButton = item.querySelector("[data-request-jump]");
         if (jumpButton) {
           jumpButton.setAttribute("aria-current", isActive ? "step" : "false");
-          jumpButton.setAttribute("aria-disabled", String(!isAvailable && itemIndex > currentStep + 1));
+          const isUnavailableFutureStep = !isAvailable && itemIndex > currentStep + 1;
+          jumpButton.disabled = isUnavailableFutureStep;
+          jumpButton.setAttribute("aria-disabled", String(isUnavailableFutureStep));
         }
       });
       if (currentStep === steps.length - 1) updateReview();
@@ -1498,27 +1586,43 @@
       formCard?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
     };
 
+    const focusFirstInvalidField = (step = steps[currentStep]) => {
+      const firstInvalid = step?.querySelector(".is-invalid");
+      if (!firstInvalid) return;
+      const focusTarget = firstInvalid.name === "gps_location" ? geoButton : firstInvalid;
+      focusTarget?.focus({ preventScroll: true });
+      focusTarget?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    };
+
     const validateStep = () => {
+      const locationValid = currentStep === 1 ? validateRequestLocation() : true;
       const fieldsValid = getVisibleFields().map(validateField).every(Boolean);
       const needValid = currentStep === 0 ? validateRequestNeed() : true;
-      const locationValid = currentStep === 1 ? validateRequestLocation() : true;
       const valid = fieldsValid && needValid && locationValid;
-      if (!valid) steps[currentStep]?.querySelector(".is-invalid")?.focus();
+      if (!valid) focusFirstInvalidField();
       return valid;
     };
 
     const validateRequestLocation = () => {
       const addressField = requestForm.elements.address;
       const gpsField = requestForm.elements.gps_location;
-      const hasAddress = Boolean(addressField?.value.trim());
-      const hasGps = Boolean(gpsField?.value.trim());
-      if (hasAddress || hasGps) {
-        if (addressField) setError(addressField, "");
-        if (gpsField) setError(gpsField, "");
-        return true;
+      const address = String(addressField?.value || "").trim();
+      const coordinates = getCapturedCoordinates();
+
+      if (addressField) {
+        addressField.value = address;
+        setError(addressField, address ? "" : "Please enter a landmark or exact location.");
       }
-      if (addressField) setError(addressField, "Add GPS location or a nearby landmark.");
-      return false;
+      if (coordinates.valid) {
+        if (gpsField && !gpsField.value.trim()) {
+          gpsField.value = `Lat ${coordinates.latitudeValue}, Long ${coordinates.longitudeValue}`;
+        }
+        if (gpsField) setError(gpsField, "");
+      } else if (gpsField) {
+        setError(gpsField, "Please capture your GPS location to continue.");
+      }
+
+      return Boolean(address) && coordinates.valid;
     };
 
     hydrateDraft();
@@ -1538,8 +1642,20 @@
       });
     });
 
-    requestForm.querySelectorAll("[data-fast-request]").forEach((button) => {
+    requestForm.querySelectorAll("[data-fast-request]").forEach((button, index) => {
       button.addEventListener("click", () => selectFastRequest(button));
+      button.addEventListener("keydown", (event) => {
+        if (!["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        let nextIndex = index;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (index + 1) % fastCards.length;
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (index - 1 + fastCards.length) % fastCards.length;
+        if (event.key === "Home") nextIndex = 0;
+        if (event.key === "End") nextIndex = fastCards.length - 1;
+        const nextCard = fastCards[nextIndex];
+        selectFastRequest(nextCard);
+        nextCard.focus({ preventScroll: true });
+      });
     });
 
     requestForm.querySelectorAll("[data-request-next]").forEach((button) => {
@@ -1560,6 +1676,11 @@
       jumpButton.addEventListener("click", () => {
         if (itemIndex === currentStep) return;
         if (itemIndex <= furthestStep) {
+          if (itemIndex > currentStep && !validateStep()) {
+            setRequestStatus("Complete the current step first, then continue.", "error");
+            return;
+          }
+          if (itemIndex > currentStep) writeDraft();
           showStep(itemIndex);
           return;
         }
@@ -1573,16 +1694,41 @@
     });
 
     geoButton?.addEventListener("click", () => {
+      const gpsField = requestForm.elements.gps_location;
+      const finishGeoRequest = () => {
+        geoButton.disabled = false;
+        geoButton.removeAttribute("aria-busy");
+      };
+      const showGeoError = (message) => {
+        if (geoStatus) {
+          geoStatus.classList.remove("is-success");
+          geoStatus.classList.add("is-error");
+          geoStatus.textContent = message;
+        }
+        if (gpsField && !getCapturedCoordinates().valid) setError(gpsField, message);
+        finishGeoRequest();
+      };
       if (!navigator.geolocation) {
-        if (geoStatus) geoStatus.textContent = "Location capture is not supported by this browser.";
+        showGeoError("GPS location capture is not supported by this browser. Please use a browser with location access and try again.");
         return;
       }
       geoButton.disabled = true;
       geoButton.setAttribute("aria-busy", "true");
-      if (geoStatus) geoStatus.textContent = "Requesting GPS permission. Please allow location access in the browser prompt.";
+      if (geoStatus) {
+        geoStatus.classList.remove("is-success", "is-error");
+        geoStatus.textContent = "Requesting GPS permission. Please allow location access in the browser prompt.";
+      }
+      if (gpsField && !getCapturedCoordinates().valid) setError(gpsField, "");
       navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude.toFixed(6);
-        const longitude = position.coords.longitude.toFixed(6);
+        const rawLatitude = Number(position.coords.latitude);
+        const rawLongitude = Number(position.coords.longitude);
+        if (!Number.isFinite(rawLatitude) || rawLatitude < -90 || rawLatitude > 90
+          || !Number.isFinite(rawLongitude) || rawLongitude < -180 || rawLongitude > 180) {
+          showGeoError("GPS coordinates could not be verified. Please try capturing your location again.");
+          return;
+        }
+        const latitude = rawLatitude.toFixed(6);
+        const longitude = rawLongitude.toFixed(6);
         const accuracy = position.coords.accuracy ? Math.round(position.coords.accuracy) : "";
         const gpsLocation = `Lat ${latitude}, Long ${longitude}`;
         requestForm.elements.latitude.value = latitude;
@@ -1590,13 +1736,22 @@
         requestForm.elements.gps_accuracy.value = accuracy;
         requestForm.elements.gps_location.value = gpsLocation;
         updateGeoUi();
-        geoButton.disabled = false;
-        geoButton.removeAttribute("aria-busy");
+        finishGeoRequest();
         writeDraft();
-      }, () => {
-        if (geoStatus) geoStatus.textContent = "GPS location was not added. Please allow location permission or continue with the landmark field.";
-        geoButton.disabled = false;
-        geoButton.removeAttribute("aria-busy");
+      }, (error) => {
+        if (error?.code === 1) {
+          showGeoError("Location permission is required for an emergency service request. Please enable location access and try again.");
+          return;
+        }
+        if (error?.code === 2) {
+          showGeoError("Your GPS location could not be determined. Please check location services and try again.");
+          return;
+        }
+        if (error?.code === 3) {
+          showGeoError("GPS capture timed out. Please move to an open area and try again.");
+          return;
+        }
+        showGeoError("GPS location could not be captured. Please check location access and try again.");
       }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 30000 });
     });
 
@@ -1606,12 +1761,13 @@
       const website = requestForm.elements.website?.value;
       if (website) return;
       const needValid = Boolean(getRequestValue("requirement_type"));
-      const fieldsValid = requestFields.map(validateField).every(Boolean);
       const locationValid = validateRequestLocation();
+      const fieldsValid = requestFields.map(validateField).every(Boolean);
       if (!needValid || !fieldsValid || !locationValid) {
         const invalidStep = !needValid ? 0 : locationValid ? steps.findIndex((step) => step.querySelector(".is-invalid")) : 1;
         showStep(invalidStep >= 0 ? invalidStep : currentStep);
         if (!needValid) validateRequestNeed();
+        else focusFirstInvalidField(steps[invalidStep >= 0 ? invalidStep : currentStep]);
         return;
       }
       submitted = true;
@@ -1624,15 +1780,17 @@
       }
       const reference = `PVG-EV-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
       const whatsappUrl = buildPvgWhatsappUrl(buildWhatsappMessage(reference));
-      const databaseResult = await savePvgFormToSupabase(requestForm, reference, "request");
+      const databasePromise = savePvgFormToSupabase(requestForm, reference, "request");
       if (successRef) successRef.textContent = reference;
       if (whatsappRetry) whatsappRetry.href = whatsappUrl;
       formCard?.setAttribute("hidden", "");
       successCard?.removeAttribute("hidden");
       sessionStorage.removeItem(storageKey);
-      trackPvgEvent("request_charging_whatsapp_open", { reference, saved: databaseResult.saved, path: window.location.pathname });
+      trackPvgEvent("request_charging_whatsapp_open", { reference, saved: "pending", path: window.location.pathname });
       successCard?.focus({ preventScroll: false });
       openPvgWhatsapp(whatsappUrl);
+      const databaseResult = await databasePromise;
+      trackPvgEvent("request_charging_storage_result", { reference, saved: databaseResult.saved, reason: databaseResult.reason || "saved", path: window.location.pathname });
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.removeAttribute("aria-busy");

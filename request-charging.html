@@ -6,12 +6,12 @@
     <title>Tell Us Your Charging Requirement | PVG-EV</title>
     <meta name="description" content="Submit a mobile EV charging, fleet, commercial, apartment or pilot requirement to PVG-EV for Chennai and Tamil Nadu review.">
     <meta name="theme-color" content="#08A66A">
-    <link rel="canonical" href="https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html">
+    <link rel="canonical" href="https://www.pvgev.com/request-charging.html">
     <meta property="og:title" content="Tell Us Your Charging Requirement | PVG-EV">
     <meta property="og:description" content="Submit a mobile EV charging, fleet, commercial, apartment or pilot requirement to PVG-EV for Chennai and Tamil Nadu review.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html">
-    <meta property="og:image" content="https://ramprakash1423-droid.github.io/pvg-ev-website/public/assets/pvg-ev/hero/hero-real-vehicle.jpg">
+    <meta property="og:url" content="https://www.pvgev.com/request-charging.html">
+    <meta property="og:image" content="https://www.pvgev.com/public/assets/pvg-ev/hero/hero-real-vehicle.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tell Us Your Charging Requirement | PVG-EV">
     <meta name="twitter:description" content="Submit a mobile EV charging, fleet, commercial, apartment or pilot requirement to PVG-EV for Chennai and Tamil Nadu review.">
@@ -19,8 +19,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20260802requestux9">
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://ramprakash1423-droid.github.io/pvg-ev-website/request-charging.html"}]}</script>
+    <link rel="stylesheet" href="styles.css?v=20260816cleanui3">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.pvgev.com/"},{"@type":"ListItem","position":2,"name":"Tell Us Your Charging Requirement","item":"https://www.pvgev.com/request-charging.html"}]}</script>
   </head>
   <body class="request-reference-body">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -70,12 +70,12 @@
             </ol>
             <div class="request-assurance">
               <strong>2-minute emergency path</strong>
-              <span>Phone, current area, GPS location and vehicle type are enough to begin review. Optional business details can wait.</span>
+              <span>Mobile number, name, current area, location type, landmark and GPS coordinates are required before vehicle details.</span>
             </div>
           </aside>
 
           <div class="request-form-card reveal" id="request-form" data-request-form-card>
-            <form class="contact-form request-form" novalidate data-request-form>
+            <form class="contact-form request-form" method="post" novalidate data-request-form>
               <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
               <input type="hidden" name="latitude">
               <input type="hidden" name="longitude">
@@ -86,10 +86,15 @@
               <fieldset class="request-step" data-request-step>
                 <legend>What do you need right now?</legend>
                 <p>Choose the closest situation. Stranded or low-battery owners should use the emergency path first.</p>
-                <div class="request-fast-panel" role="radiogroup" aria-label="Fast request options">
+                <div class="request-fast-panel" role="radiogroup" aria-label="Fast request options" aria-describedby="requirement-choice-error">
                   <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Low battery / stranded vehicle" data-customer="Individual EV owner" data-location-type="Roadside or stranded location" data-battery-status="Low battery now" data-charging-need="Immediate assistance" data-requirement-scope="Individual vehicle requirement">
                     <span class="request-fast-icon" aria-hidden="true">!</span>
                     <span class="request-fast-copy"><strong>Stranded or low battery</strong><span>Fast path for one EV needing help now.</span></span>
+                    <span class="request-fast-check" aria-hidden="true"></span>
+                  </button>
+                  <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Mobile EV charging" data-customer="Individual EV owner" data-charging-need="Scheduled mobile charging" data-requirement-scope="Individual vehicle requirement">
+                    <span class="request-fast-icon" aria-hidden="true">M</span>
+                    <span class="request-fast-copy"><strong>Planned mobile charging</strong><span>For an EV that needs a scheduled charging review.</span></span>
                     <span class="request-fast-check" aria-hidden="true"></span>
                   </button>
                   <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Fleet charging" data-customer="Fleet operator" data-requirement-scope="Fleet requirement" data-charging-need="Regular fleet charging support">
@@ -99,17 +104,18 @@
                   </button>
                   <button class="request-fast-card" type="button" role="radio" aria-checked="false" data-fast-request data-requirement="Residential or community requirement" data-customer="Apartment community" data-requirement-scope="Site or community requirement">
                     <span class="request-fast-icon" aria-hidden="true">A</span>
-                    <span class="request-fast-copy"><strong>Apartment or site enquiry</strong><span>For community, office or commercial review.</span></span>
+                    <span class="request-fast-copy"><strong>Site, event or apartment</strong><span>For community, workplace, event or project-location review.</span></span>
                     <span class="request-fast-check" aria-hidden="true"></span>
                   </button>
                 </div>
-                <small class="field-error request-choice-error" data-error-for="requirement_choice"></small>
+                <small class="field-error request-choice-error" id="requirement-choice-error" role="alert" data-error-for="requirement_choice"></small>
                 <div class="form-grid-two request-need-fields request-backend-fields" aria-hidden="true">
                 <div class="form-row">
                   <label for="requirement_type">Requirement Type</label>
                   <select id="requirement_type" name="requirement_type" tabindex="-1">
                     <option value="">Select a requirement</option>
                     <option>Low battery / stranded vehicle</option>
+                    <option>Mobile EV charging</option>
                     <option>Fleet charging</option>
                     <option>Depot support</option>
                     <option>Event charging</option>
@@ -122,7 +128,7 @@
                 </div>
                 <div class="form-row">
                   <label for="customer_type">Customer Type <span class="optional-label">(optional)</span></label>
-                  <select id="customer_type" name="customer_type">
+                  <select id="customer_type" name="customer_type" tabindex="-1">
                     <option value="">Select customer type</option>
                     <option>Individual EV owner</option>
                     <option>Fleet operator</option>
@@ -141,26 +147,26 @@
 
               <fieldset class="request-step" data-request-step hidden>
                 <legend>Contact and location</legend>
-                <p>For urgent help, your mobile number and current area are the most important details. Add GPS for faster review.</p>
+                <p>Accurate contact and location information is required before an emergency or fast request can continue.</p>
                 <div class="form-grid-two">
                   <div class="form-row">
-                    <label for="request_phone">Mobile Number</label>
+                    <label for="request_phone">Mobile Number <span aria-hidden="true">*</span></label>
                     <input id="request_phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91" required>
                     <small class="field-error" data-error-for="phone"></small>
                   </div>
                   <div class="form-row">
-                    <label for="request_name">Name <span class="optional-label">(optional)</span></label>
-                    <input id="request_name" name="name" type="text" autocomplete="name" placeholder="Your name">
+                    <label for="request_name">Name <span aria-hidden="true">*</span></label>
+                    <input id="request_name" name="name" type="text" autocomplete="name" placeholder="Your name" required data-required-message="Please enter your name.">
                     <small class="field-error" data-error-for="name"></small>
                   </div>
                   <div class="form-row">
-                    <label for="request_city">Current Area</label>
-                    <input id="request_city" name="city" type="text" autocomplete="address-level2" placeholder="Example: Chennai, OMR, Guindy" required>
+                    <label for="request_city">Current Area <span aria-hidden="true">*</span></label>
+                    <input id="request_city" name="city" type="text" autocomplete="address-level2" placeholder="Example: Chennai, OMR, Guindy" required data-required-message="Please enter your current area.">
                     <small class="field-error" data-error-for="city"></small>
                   </div>
                   <div class="form-row">
-                    <label for="request_location_type">Location Type <span class="optional-label">(optional)</span></label>
-                    <select id="request_location_type" name="location_type">
+                    <label for="request_location_type">Location Type <span aria-hidden="true">*</span></label>
+                    <select id="request_location_type" name="location_type" required data-required-message="Please select your location type.">
                       <option value="">Select location type</option>
                       <option>Roadside or stranded location</option>
                       <option>Home or apartment parking</option>
@@ -173,21 +179,21 @@
                     <small class="field-error" data-error-for="location_type"></small>
                   </div>
                   <div class="form-row form-full">
-                    <label for="request_address">Landmark or Exact Spot <span class="optional-label">(optional if GPS is captured)</span></label>
-                    <textarea id="request_address" name="address" rows="3" placeholder="Nearest landmark, parking spot, building gate or roadside location."></textarea>
+                    <label for="request_address">Landmark or Exact Spot <span aria-hidden="true">*</span></label>
+                    <textarea id="request_address" name="address" rows="3" placeholder="Nearest landmark, parking spot, building gate or roadside location" required data-required-message="Please enter a landmark or exact location."></textarea>
                     <small class="field-error" data-error-for="address"></small>
                   </div>
                 </div>
                 <div class="geo-capture-panel">
                   <div>
-                    <strong>Add GPS for faster review</strong>
-                    <span>Tap once and allow location permission. Your current latitude and longitude will appear below.</span>
+                    <strong>GPS location required</strong>
+                    <span>Tap the button and allow location access. Continue is enabled only after actual latitude and longitude are captured.</span>
                   </div>
                   <button class="geo-button" type="button" data-geo-button>Use My GPS Location</button>
                   <p class="geo-status" data-geo-status aria-live="polite"></p>
                   <div class="form-row geo-output-row">
-                    <label for="gps_location">Captured GPS Location</label>
-                    <input id="gps_location" name="gps_location" type="text" readonly placeholder="GPS coordinates will appear here after capture" data-review-label="Captured GPS Location">
+                    <label for="gps_location">GPS Location <span aria-hidden="true">*</span></label>
+                    <input id="gps_location" name="gps_location" type="text" readonly required data-required-message="Please capture your GPS location to continue." placeholder="GPS coordinates will appear here after capture" data-review-label="Captured GPS Location">
                     <small class="field-error" data-error-for="gps_location"></small>
                   </div>
                 </div>
@@ -362,6 +368,6 @@
       </section>
     </main>
     <div data-site-footer data-root=""></div>
-    <script src="script.js?v=20260802requestux9"></script>
+    <script src="script.js?v=20260816fastrequest1"></script>
   </body>
 </html>
