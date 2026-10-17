@@ -16,11 +16,23 @@ npm start
 
 Open http://127.0.0.1:8100/. If another local PVG preview is already using port 8100, stop that server first. After edits, run `npm run build` and reload. `npm run serve` serves the existing build.
 
-## Preview behaviour
+## Enquiry storage
 
-`site-config.js` sets `window.PVG_CONFIG = { demo: true }`, matching the current client preview. Hosted forms validate inputs and display a demo confirmation without sending enquiries to Supabase or WhatsApp. The local preview server can save test receipts in the ignored `.preview/` folder. No production database migration is included or applied.
+Hosted forms submit to the existing Supabase table `public.pvg_ev_charging_requests` in project `wpaickmgqlahzmdqmkid`. `site-config.js` contains the public anonymous browser key; no secret or service-role key is included. Row-level security permits anonymous inserts only. Enquiry review requires administrative access.
 
-Robots exclusions and Vercel no-index headers are retained for client review. This source snapshot is not a production launch.
+All four enquiry types (`request`, `contact`, `fleet`, `pilot`) share the existing schema. Every submitted field is retained in `payload`; operational fields are also mapped to dedicated columns. Charging requests require captured GPS coordinates. No database schema change is needed.
+
+Localhost keeps using the local preview server and ignored `.preview/` receipt log. Hosted preview forms send real enquiries. WhatsApp remains an optional visitor-initiated handoff.
+
+Robots exclusions and Vercel no-index headers are retained for client review. The preview URL uses live enquiry storage; the production domain has not been switched.
+
+## Verified on 17 October 2026
+
+- All four form types were submitted through the anonymous Supabase API and read back with administrative access. All mapped fields and complete payloads matched. The charging request used synthetic GPS coordinates.
+- Contact, fleet and pilot forms were also submitted through the deployed browser UI; their saved records matched every entered field, including optional fields and all pilot interests.
+- Duplicate references were rejected and anonymous enquiry reads remained blocked.
+- All seven synthetic test enquiries were labelled as QA and closed after verification.
+- All 19 automated form tests and checks across 30 pages passed.
 
 ## Files
 
@@ -39,4 +51,4 @@ Use this folder as the Vercel project root, with `npm run build` as the build co
 
 ## Current client preview
 
-https://pvg-ev-website-xcgr9j2ap-prakashs-projects-cb68dcaa.vercel.app/
+https://pvg-ev-website-5u6mrxq1o-prakashs-projects-cb68dcaa.vercel.app/
