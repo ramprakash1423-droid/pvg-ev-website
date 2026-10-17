@@ -1,0 +1,2 @@
+# PDFs contain binary-format records whose whitespace must be preserved.
+*.pdf binary

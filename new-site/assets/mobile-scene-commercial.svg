@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">PVG-EV mobile charging unit at a commercial site</title>
+  <desc id="desc">A PVG-EV mobile charging vehicle connected to an EV in a marked temporary charging zone outside a commercial building.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f9fffc"/>
+      <stop offset=".5" stop-color="#edf9ff"/>
+      <stop offset="1" stop-color="#f3fff9"/>
+    </linearGradient>
+    <linearGradient id="energy" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0ea5ff"/>
+      <stop offset="1" stop-color="#08a66a"/>
+    </linearGradient>
+    <linearGradient id="truck" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ddf4ff"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="26" stdDeviation="25" flood-color="#0a2d38" flood-opacity=".17"/>
+    </filter>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1400" height="820" rx="42" fill="url(#bg)"/>
+  <circle cx="260" cy="150" r="250" fill="#0ea5ff" opacity=".08"/>
+  <circle cx="1120" cy="610" r="270" fill="#08a66a" opacity=".08"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="88" y="118" width="470" height="270" rx="28" fill="#ffffff" opacity=".86"/>
+    <rect x="124" y="162" width="392" height="62" rx="14" fill="#e7f5fb"/>
+    <text x="150" y="202" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="850" fill="#17202a">COMMERCIAL SITE</text>
+    <rect x="124" y="252" width="88" height="96" rx="10" fill="#d7edf7"/>
+    <rect x="232" y="252" width="88" height="96" rx="10" fill="#d7edf7"/>
+    <rect x="340" y="252" width="88" height="96" rx="10" fill="#d7edf7"/>
+    <rect x="448" y="252" width="68" height="96" rx="10" fill="#d7edf7"/>
+    <path d="M124 302h392" stroke="#ffffff" stroke-width="10" opacity=".72"/>
+  </g>
+
+  <rect x="220" y="458" width="940" height="198" rx="46" fill="#ffffff" opacity=".34"/>
+  <rect x="220" y="458" width="940" height="198" rx="46" fill="none" stroke="#0ea5ff" stroke-width="4" stroke-dasharray="20 15" opacity=".5"/>
+  <text x="254" y="506" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="850" fill="#087f56">TEMPORARY CHARGING CONNECTION</text>
+
+  <g filter="url(#softShadow)">
+    <g transform="translate(420 520)">
+      <rect x="0" y="34" width="210" height="86" rx="30" fill="#ffffff"/>
+      <path d="M44 20h100c36 0 62 21 70 56H6c7-34 21-56 38-56z" fill="#eef8fd"/>
+      <rect x="144" y="48" width="46" height="26" rx="8" fill="#174b5c"/>
+      <rect x="28" y="62" width="68" height="14" rx="7" fill="url(#energy)" opacity=".78"/>
+      <circle cx="48" cy="118" r="23" fill="#17202a"/>
+      <circle cx="48" cy="118" r="11" fill="#f8feff"/>
+      <circle cx="164" cy="118" r="23" fill="#17202a"/>
+      <circle cx="164" cy="118" r="11" fill="#f8feff"/>
+      <text x="30" y="98" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="900" fill="#17202a">SITE EV</text>
+    </g>
+    <g transform="translate(800 354)">
+      <rect x="132" y="144" width="330" height="176" rx="34" fill="url(#truck)" stroke="#c8eaf4" stroke-width="3"/>
+      <path d="M28 190h122v130H26c-16 0-26-10-26-26v-38c0-40 20-66 28-66z" fill="#ffffff" stroke="#c8eaf4" stroke-width="3"/>
+      <path d="M54 154h86c27 0 47 18 52 48H20c7-30 19-48 34-48z" fill="#e9f8ff" stroke="#c8eaf4" stroke-width="3"/>
+      <rect x="98" y="202" width="50" height="30" rx="8" fill="#174b5c"/>
+      <text x="174" y="220" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="900" fill="#08a66a">PVG-EV</text>
+      <text x="176" y="256" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="800" fill="#314555">Mobile Charging Unit</text>
+      <rect x="298" y="174" width="92" height="62" rx="14" fill="#174b5c" opacity=".92"/>
+      <circle cx="76" cy="320" r="28" fill="#17202a"/>
+      <circle cx="76" cy="320" r="14" fill="#f8feff"/>
+      <circle cx="380" cy="320" r="28" fill="#17202a"/>
+      <circle cx="380" cy="320" r="14" fill="#f8feff"/>
+      <circle cx="158" cy="268" r="12" fill="#08a66a"/>
+      <circle cx="194" cy="268" r="12" fill="#0ea5ff"/>
+    </g>
+  </g>
+
+  <path d="M932 575 C810 560 724 566 628 590" fill="none" stroke="#0d2430" stroke-width="12" stroke-linecap="round"/>
+  <path d="M932 575 C810 560 724 566 628 590" fill="none" stroke="url(#energy)" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="628" cy="590" r="14" fill="#08a66a"/>
+
+  <g>
+    <path d="M248 678h34l-17-62z" fill="#ffb020"/>
+    <path d="M360 678h34l-17-62z" fill="#ffb020"/>
+    <path d="M1130 678h34l-17-62z" fill="#ffb020"/>
+    <rect x="239" y="678" width="52" height="13" rx="6" fill="#17202a"/>
+    <rect x="351" y="678" width="52" height="13" rx="6" fill="#17202a"/>
+    <rect x="1121" y="678" width="52" height="13" rx="6" fill="#17202a"/>
+  </g>
+
+  <g opacity=".95">
+    <rect x="676" y="120" width="252" height="58" rx="29" fill="#ffffff" opacity=".76"/>
+    <text x="707" y="157" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="850" fill="#087f56">SITE ACCESS REVIEW</text>
+  </g>
+</svg>

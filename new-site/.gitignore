@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+dist/
+.vercel/
+.env
+.env.*
+qa-screenshots/
+supabase/.temp/
+
+.preview/

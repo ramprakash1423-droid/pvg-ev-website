@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">PVG-EV mobile charging unit supporting fleet vehicles at a depot</title>
+  <desc id="desc">A PVG-EV mobile charging vehicle connected by cable to a fleet EV with other commercial vehicles parked inside a safe charging zone.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fffb"/>
+      <stop offset=".54" stop-color="#e9f8ff"/>
+      <stop offset="1" stop-color="#f2fff8"/>
+    </linearGradient>
+    <linearGradient id="energy" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0ea5ff"/>
+      <stop offset="1" stop-color="#08a66a"/>
+    </linearGradient>
+    <linearGradient id="truck" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#daf3ff"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-30%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="26" stdDeviation="26" flood-color="#0a2d38" flood-opacity=".18"/>
+    </filter>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1400" height="820" rx="42" fill="url(#bg)"/>
+  <circle cx="1090" cy="138" r="220" fill="#0ea5ff" opacity=".09"/>
+  <circle cx="270" cy="610" r="260" fill="#08a66a" opacity=".08"/>
+
+  <g opacity=".9">
+    <path d="M120 520h1155" stroke="#d8ebee" stroke-width="2"/>
+    <path d="M160 565h1080" stroke="#d8ebee" stroke-width="2"/>
+    <path d="M206 610h986" stroke="#d8ebee" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <rect x="94" y="116" width="470" height="226" rx="26" fill="#ffffff" opacity=".82"/>
+    <rect x="126" y="154" width="410" height="64" rx="12" fill="#e7f5fb"/>
+    <text x="150" y="194" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" fill="#17202a">FLEET DEPOT</text>
+    <rect x="142" y="242" width="96" height="74" rx="12" fill="#d7edf7"/>
+    <rect x="258" y="242" width="96" height="74" rx="12" fill="#d7edf7"/>
+    <rect x="374" y="242" width="96" height="74" rx="12" fill="#d7edf7"/>
+    <path d="M142 279h328" stroke="#ffffff" stroke-width="9" opacity=".75"/>
+  </g>
+
+  <rect x="170" y="438" width="985" height="218" rx="52" fill="#ffffff" opacity=".36"/>
+  <rect x="170" y="438" width="985" height="218" rx="52" fill="none" stroke="#08a66a" stroke-width="4" stroke-dasharray="18 16" opacity=".45"/>
+  <text x="204" y="484" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#087f56">SAFE CHARGING ZONE</text>
+
+  <g filter="url(#softShadow)">
+    <g transform="translate(214 515)">
+      <rect x="0" y="32" width="178" height="82" rx="28" fill="#ffffff"/>
+      <path d="M34 20h84c32 0 55 20 63 51H0c6-31 18-51 34-51z" fill="#eef8fd"/>
+      <rect x="118" y="44" width="48" height="25" rx="8" fill="#174b5c"/>
+      <rect x="24" y="56" width="58" height="14" rx="7" fill="url(#energy)" opacity=".78"/>
+      <circle cx="43" cy="112" r="22" fill="#17202a"/>
+      <circle cx="43" cy="112" r="11" fill="#f8feff"/>
+      <circle cx="142" cy="112" r="22" fill="#17202a"/>
+      <circle cx="142" cy="112" r="11" fill="#f8feff"/>
+      <text x="24" y="93" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" fill="#17202a">EV-01</text>
+    </g>
+    <g transform="translate(430 520)" opacity=".86">
+      <rect x="0" y="38" width="152" height="72" rx="24" fill="#f8fdff"/>
+      <rect x="88" y="48" width="38" height="21" rx="7" fill="#174b5c"/>
+      <circle cx="38" cy="108" r="17" fill="#17202a"/>
+      <circle cx="116" cy="108" r="17" fill="#17202a"/>
+    </g>
+    <g transform="translate(610 520)" opacity=".86">
+      <rect x="0" y="30" width="168" height="84" rx="18" fill="#f8fdff"/>
+      <rect x="108" y="42" width="40" height="28" rx="7" fill="#174b5c"/>
+      <circle cx="38" cy="114" r="18" fill="#17202a"/>
+      <circle cx="128" cy="114" r="18" fill="#17202a"/>
+    </g>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <g transform="translate(830 332)">
+      <rect x="142" y="148" width="310" height="176" rx="32" fill="url(#truck)" stroke="#c8eaf4" stroke-width="3"/>
+      <path d="M26 194h132v130H24c-15 0-24-10-24-24v-42c0-39 20-64 26-64z" fill="#ffffff" stroke="#c8eaf4" stroke-width="3"/>
+      <path d="M52 156h94c26 0 46 18 52 48H18c7-30 18-48 34-48z" fill="#e9f8ff" stroke="#c8eaf4" stroke-width="3"/>
+      <rect x="102" y="204" width="54" height="30" rx="8" fill="#174b5c"/>
+      <rect x="306" y="178" width="82" height="64" rx="14" fill="#174b5c" opacity=".92"/>
+      <text x="182" y="224" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="900" fill="#08a66a">PVG-EV</text>
+      <text x="184" y="260" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="800" fill="#314555">Mobile Charging Unit</text>
+      <circle cx="78" cy="324" r="28" fill="#17202a"/>
+      <circle cx="78" cy="324" r="14" fill="#f8feff"/>
+      <circle cx="372" cy="324" r="28" fill="#17202a"/>
+      <circle cx="372" cy="324" r="14" fill="#f8feff"/>
+      <circle cx="168" cy="270" r="12" fill="#08a66a"/>
+      <circle cx="204" cy="270" r="12" fill="#0ea5ff"/>
+    </g>
+  </g>
+
+  <path d="M958 562 C818 542 686 554 402 588" fill="none" stroke="#0d2430" stroke-width="12" stroke-linecap="round"/>
+  <path d="M958 562 C818 542 686 554 402 588" fill="none" stroke="url(#energy)" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+  <circle cx="402" cy="588" r="14" fill="#08a66a"/>
+
+  <g>
+    <path d="M156 660h32l-16-56z" fill="#ffb020"/>
+    <path d="M522 668h32l-16-56z" fill="#ffb020"/>
+    <path d="M1150 664h32l-16-56z" fill="#ffb020"/>
+    <rect x="148" y="660" width="48" height="12" rx="6" fill="#17202a"/>
+    <rect x="514" y="668" width="48" height="12" rx="6" fill="#17202a"/>
+    <rect x="1142" y="664" width="48" height="12" rx="6" fill="#17202a"/>
+  </g>
+</svg>

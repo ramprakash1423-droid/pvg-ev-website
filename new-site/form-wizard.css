@@ -1,0 +1,60 @@
+/* Guided forms, retaining the refreshed PVG palette and page layouts. */
+.pvg-wizard [hidden]{display:none!important}
+.pvg-wizard .wizard-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px;color:#476544;font-size:12px}
+.pvg-wizard .wizard-top .eyebrow{font-size:10px;margin:0}
+.pvg-wizard .wizard-progress{display:flex;list-style:none;padding:0;margin:0 0 22px;gap:10px}
+.pvg-wizard .wizard-progress li{flex:1;min-width:0;margin:0;border-bottom:3px solid #e4e9df;padding-bottom:12px;color:#71806c}
+.pvg-wizard .wizard-progress span{display:block;font-size:11px;margin-bottom:5px}
+.pvg-wizard .wizard-progress small{font-size:12px;line-height:1.4;display:block}
+.pvg-wizard .wizard-progress [aria-current]{border-color:#90ae4d;color:#203b27;font-weight:600}
+.pvg-wizard .wizard-progress .complete{border-color:#304d35;color:#304d35}
+.pvg-wizard .wizard-required{font-size:11px;color:#63735d;margin:0 0 25px;line-height:1.6}
+.pvg-wizard [data-wizard-step]>legend{font-size:27px;font-weight:500;line-height:1.22;letter-spacing:-.035em;margin:0 0 10px;width:100%;scroll-margin-top:130px}
+.pvg-wizard .wizard-intro{font-size:13px;line-height:1.65;color:#63735d;margin:0 0 25px}
+.pvg-wizard .form-grid{gap:22px 18px}
+.pvg-wizard label{font-size:13px;line-height:1.5;font-weight:500}
+.pvg-wizard .field-optional{font-size:10px;font-weight:400;margin-left:5px;color:#677661}
+.pvg-wizard .field-required{color:#43682c}
+.pvg-wizard input:not([type=checkbox]),.pvg-wizard select,.pvg-wizard textarea{font-size:16px;min-height:50px;background:#fcfdf9;border:1px solid #bdcdb5;border-radius:5px;padding:12px;color:#243729;max-width:100%}
+.pvg-wizard input:focus,.pvg-wizard select:focus,.pvg-wizard textarea:focus{outline:2px solid #9ab865;outline-offset:2px;background:white}
+.pvg-wizard input::placeholder,.pvg-wizard textarea::placeholder{font-size:13px;color:#74816e}
+.pvg-wizard .field-help{font-size:11px;line-height:1.6;margin:8px 0 0;color:#61745a}
+.pvg-wizard .wizard-error{font-size:12px;color:#a22e26;margin:7px 0 0;line-height:1.5}
+.pvg-wizard [aria-invalid=true]{border-color:#af4337!important;background:#fff8f6!important}
+.pvg-wizard .wizard-alert{font-size:13px;background:#fff1ed;color:#912d24;padding:12px 15px;border-radius:5px;margin:0 0 22px}
+.pvg-wizard .wizard-actions{display:flex;align-items:stretch;justify-content:space-between;gap:12px;margin-top:27px}
+.pvg-wizard .wizard-actions .button{min-height:50px;border-radius:5px;font-size:13px;line-height:1.4;margin:0;justify-content:center}
+.pvg-wizard .wizard-actions [data-next],.pvg-wizard .wizard-actions [type=submit]{flex:1;background:#c8ef57;border-color:#c8ef57;color:#1c3121;width:auto;display:flex;gap:18px;align-items:center;justify-content:space-between;padding:13px 17px}
+.pvg-wizard .wizard-actions .button:only-child{width:100%}
+.pvg-wizard .wizard-actions [data-back]{background:white;border-color:#c5d3bd;color:#405638;flex:0 0 auto}
+.pvg-wizard .wizard-actions [disabled]{cursor:wait;opacity:.65}
+.pvg-wizard .wizard-optional{border-block:1px solid #dce5d7;margin-top:25px;padding:18px 0}
+.pvg-wizard .wizard-optional summary{font-size:14px;cursor:pointer;color:#37522e;font-weight:500;padding:4px 0}
+.pvg-wizard .wizard-optional summary span{font-size:11px;font-weight:400;margin-left:8px}
+.pvg-wizard .wizard-optional>p{font-size:12px;color:#69785e;margin:18px 0}
+.pvg-wizard .wizard-location{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:14px}
+.pvg-wizard .wizard-location .button{font-size:12px;min-height:46px;background:#eef5e1;border-color:#c5d6af;color:#35502a}
+.pvg-wizard .wizard-location p{font-size:11px;line-height:1.6;margin:0;width:100%;color:#5f7257}
+.pvg-wizard .wizard-location>a{font-size:12px;text-underline-offset:3px}
+.pvg-wizard .wizard-choice label{display:flex;align-items:flex-start;gap:11px;padding:15px;border:1px solid #c8d6bf;border-radius:6px;height:100%;margin:0;cursor:pointer;font-weight:400}
+.pvg-wizard .wizard-choice label:has(:checked){background:#f1f8e6;border-color:#86a657}
+.pvg-wizard .wizard-choice label>span{font-size:13px;color:#385131}
+.pvg-wizard input[type=checkbox]{width:19px;height:19px;min-height:19px;flex-shrink:0;padding:0;margin:1px 0 0;accent-color:#446632}
+.pvg-wizard .wizard-review{display:grid;gap:14px;margin-top:24px}
+.pvg-wizard .wizard-review section{padding:17px;background:#f4f7ef;border:1px solid #dce5d2;border-radius:6px}
+.pvg-wizard .wizard-review header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:10px}
+.pvg-wizard .wizard-review h3{font-size:15px;letter-spacing:0;margin:0;font-weight:600}
+.pvg-wizard .wizard-review .text-button{font-size:12px;min-height:40px;padding:8px 3px}
+.pvg-wizard .wizard-review dl{margin:0;display:grid;gap:9px}
+.pvg-wizard .wizard-review dl>div{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:12px;font-size:12px;line-height:1.6}
+.pvg-wizard .wizard-review dt{color:#63715b}
+.pvg-wizard .wizard-review dd{margin:0;color:#283f24;overflow-wrap:anywhere;white-space:pre-wrap}
+.pvg-wizard .wizard-consent{gap:12px;line-height:1.7;margin:25px 0 0;font-size:12px}
+.pvg-wizard .wizard-consent span{font-size:12px;color:#52684b}
+.pvg-wizard .wizard-reassurance{font-size:11px;line-height:1.6;text-align:center;color:#64775b;margin:17px 0 0}
+.pvg-wizard .wizard-draft{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 14px;padding:10px 13px;background:#f5f7ef;border-radius:5px;margin-bottom:22px;font-size:11px;color:#526748}
+.pvg-wizard .wizard-draft .text-button{font-size:11px;min-height:35px;padding:7px 0}
+.pvg-wizard .wizard-honeypot{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.pvg-wizard .preview-note{font-size:12px;line-height:1.65}
+.pvg-wizard .form-result{margin-top:22px;overflow-wrap:anywhere}
+@media(max-width:760px){.pvg-wizard .form-grid{grid-template-columns:minmax(0,1fr)}.pvg-wizard .wizard-progress{gap:8px}.pvg-wizard .wizard-progress small{font-size:10px}.pvg-wizard [data-wizard-step]>legend{font-size:25px}.pvg-wizard .wizard-review dl>div{grid-template-columns:1fr;gap:1px}.pvg-wizard .wizard-review section{padding:14px}.pvg-wizard .wizard-actions{gap:9px}.pvg-wizard .wizard-actions .button{padding:12px;font-size:12px}.pvg-wizard .wizard-top{font-size:11px}.pvg-wizard .wizard-choice label{min-height:60px}.pvg-wizard .wizard-consent span{font-size:12px}}

@@ -1,0 +1,29 @@
+/* The supplied PVG-eV artwork, with the full lockup retained in the footer. */
+:root{--pvg-header-height:88px}
+.site-header .header-inner,.design-v2 .header-inner{min-height:var(--pvg-header-height)}
+.site-header .brand,.design-v2 .site-header .brand{width:150px;height:75px;overflow:hidden;flex-shrink:0}
+.site-header .brand img,.design-v2 .site-header .brand img{display:block;width:150px;height:100px;max-width:none;object-fit:contain;object-position:center top}
+.site-header .brand:focus-visible{outline:3px solid #366b51;outline-offset:4px;border-radius:4px}
+.site-header nav .button,.design-v2 .site-header nav .button,.site-header .header-enquiry{background:#c8ef57;border-color:#c8ef57;color:#172b20}
+.site-header nav .button:hover,.design-v2 .site-header nav .button:hover,.site-header .header-enquiry:hover{background:#dcfa90;border-color:#dcfa90;color:#172b20}
+.site-header nav .button:focus-visible,.site-header .header-enquiry:focus-visible{outline:3px solid #366b51;outline-offset:4px}
+.site-footer .footer-top img{display:block;width:288px;height:auto;max-width:100%;padding:14px;background:#fff;border:1px solid #e6ece5;border-radius:12px;object-fit:contain;margin-bottom:22px}
+.about-partner-brand img{width:190px;height:auto;max-width:100%;background:#fff;padding:10px;border-radius:9px}
+@media(min-width:961px){.about-partner-brand{min-height:162px}}
+@media(min-width:761px) and (max-width:1150px){
+ .about-partner-brand{min-height:190px}
+ .site-header .brand,.design-v2 .site-header .brand{width:126px;height:63px}
+ .site-header .brand img,.design-v2 .site-header .brand img{width:126px;height:84px}
+}
+@media(max-width:760px){
+ :root{--pvg-header-height:76px}
+ .site-header .header-inner,.design-v2 .header-inner{padding-block:9px}
+ .site-header .brand,.design-v2 .site-header .brand{width:116px;height:58px}
+ .site-header .brand img,.design-v2 .site-header .brand img{width:116px;height:77.333px}
+ .site-footer .footer-top img{width:264px;padding:12px}
+ .about-partner-brand img{width:170px}
+}
+@media(max-width:360px){
+ .site-header .brand,.design-v2 .site-header .brand{width:100px;height:50px}
+ .site-header .brand img,.design-v2 .site-header .brand img{width:100px;height:66.667px}
+}

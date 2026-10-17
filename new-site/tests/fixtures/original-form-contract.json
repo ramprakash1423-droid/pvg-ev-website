@@ -1,0 +1,532 @@
+{
+  "request-charging.html": {
+    "website": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "latitude": {
+      "type": "hidden",
+      "required": false,
+      "options": []
+    },
+    "longitude": {
+      "type": "hidden",
+      "required": false,
+      "options": []
+    },
+    "gps_accuracy": {
+      "type": "hidden",
+      "required": false,
+      "options": []
+    },
+    "requirement_type": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Low battery / stranded vehicle",
+        "Mobile EV charging",
+        "Fleet charging",
+        "Depot support",
+        "Event charging",
+        "Temporary project location",
+        "Residential or community requirement",
+        "Pilot programme",
+        "Other"
+      ]
+    },
+    "customer_type": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Individual EV owner",
+        "Fleet operator",
+        "Apartment community",
+        "Commercial property",
+        "Office or IT park",
+        "Taxi or mobility operator",
+        "Logistics operator",
+        "Government or smart-city body"
+      ]
+    },
+    "phone": {
+      "type": "tel",
+      "required": true,
+      "options": []
+    },
+    "name": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "city": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "location_type": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "Roadside or stranded location",
+        "Home or apartment parking",
+        "Office or IT park",
+        "Fleet depot",
+        "Commercial parking location",
+        "Highway or route location",
+        "Event or temporary site"
+      ]
+    },
+    "address": {
+      "type": "textarea",
+      "required": true,
+      "options": []
+    },
+    "gps_location": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "vehicle_category": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "Electric car",
+        "Electric taxi",
+        "Electric three-wheeler",
+        "Electric two-wheeler",
+        "Electric van",
+        "Electric truck or logistics vehicle",
+        "Mixed EV fleet"
+      ]
+    },
+    "vehicle_model": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "vehicle_count": {
+      "type": "number",
+      "required": false,
+      "options": []
+    },
+    "current_battery_level": {
+      "type": "number",
+      "required": false,
+      "options": []
+    },
+    "charging_details": {
+      "type": "textarea",
+      "required": false,
+      "options": []
+    },
+    "email": {
+      "type": "email",
+      "required": false,
+      "options": []
+    },
+    "company": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "connector_type": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Known connector type",
+        "Not sure",
+        "To be confirmed by PVG-EV"
+      ]
+    },
+    "battery_status": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Low battery now",
+        "Scheduled top-up required",
+        "Fleet planning requirement",
+        "Commercial site planning requirement"
+      ]
+    },
+    "charging_need": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Immediate assistance",
+        "Same-day charging",
+        "Scheduled mobile charging",
+        "Regular fleet charging support",
+        "Temporary event charging",
+        "Site assessment for future charging"
+      ]
+    },
+    "preferred_window": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Morning",
+        "Afternoon",
+        "Evening",
+        "Night / depot downtime",
+        "Flexible"
+      ]
+    },
+    "preferred_time": {
+      "type": "time",
+      "required": false,
+      "options": []
+    },
+    "requirement_scope": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Individual vehicle requirement",
+        "Fleet requirement",
+        "Site or community requirement",
+        "Institutional or pilot requirement"
+      ]
+    },
+    "target_date": {
+      "type": "date",
+      "required": false,
+      "options": []
+    },
+    "pilot_interest": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "I want to join the Chennai pilot",
+        "I want future service updates",
+        "I need a commercial discussion",
+        "I only want general information"
+      ]
+    },
+    "additional_notes": {
+      "type": "textarea",
+      "required": false,
+      "options": []
+    },
+    "consent": {
+      "type": "checkbox",
+      "required": true,
+      "options": []
+    }
+  },
+  "contact.html": {
+    "name": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "email": {
+      "type": "email",
+      "required": false,
+      "options": []
+    },
+    "telephone": {
+      "type": "tel",
+      "required": true,
+      "options": []
+    },
+    "company": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "requirement": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "Request Mobile Charging",
+        "Pilot Assessment",
+        "Join Chennai Pilot",
+        "General Enquiry",
+        "Fleet Charging Solutions",
+        "Commercial Charging",
+        "Apartment / Residential Community",
+        "Partnership / Setrans"
+      ]
+    },
+    "city": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "Chennai",
+        "Coimbatore",
+        "Madurai",
+        "Trichy",
+        "Salem",
+        "Tirunelveli",
+        "Erode",
+        "Thanjavur",
+        "Other Tamil Nadu location"
+      ]
+    },
+    "preferred_date": {
+      "type": "date",
+      "required": false,
+      "options": []
+    },
+    "contact_time": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Morning",
+        "Afternoon",
+        "Evening",
+        "Any suitable time"
+      ]
+    },
+    "message": {
+      "type": "textarea",
+      "required": true,
+      "options": []
+    }
+  },
+  "fleet-solutions.html": {
+    "company": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "number-of-evs": {
+      "type": "number",
+      "required": true,
+      "options": []
+    },
+    "fleet-type": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Taxi / mobility fleet",
+        "Logistics or delivery fleet",
+        "Corporate fleet",
+        "Apartment or shuttle fleet",
+        "Mixed fleet"
+      ]
+    },
+    "daily-utilisation": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Under 50 km/day",
+        "50\u2013100 km/day",
+        "100\u2013200 km/day",
+        "Above 200 km/day"
+      ]
+    },
+    "main-charging-challenge": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "Depot charging capacity",
+        "Vehicle downtime",
+        "Route charging access",
+        "Temporary fleet expansion",
+        "Mixed mobile and fixed charging"
+      ]
+    },
+    "charging-window": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Daytime",
+        "Night / overnight",
+        "Between trips",
+        "Emergency / ad hoc"
+      ]
+    },
+    "preferred-model": {
+      "type": "select",
+      "required": false,
+      "options": [
+        "",
+        "Mobile charging",
+        "Depot charging",
+        "Hybrid charging",
+        "Need PVG-EV recommendation"
+      ]
+    },
+    "city": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "operating-base": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "name": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "telephone": {
+      "type": "tel",
+      "required": true,
+      "options": []
+    },
+    "email": {
+      "type": "email",
+      "required": true,
+      "options": []
+    },
+    "message": {
+      "type": "textarea",
+      "required": true,
+      "options": []
+    }
+  },
+  "pilot-programme.html": {
+    "name": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "company": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "job-title": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "email": {
+      "type": "email",
+      "required": true,
+      "options": []
+    },
+    "telephone": {
+      "type": "tel",
+      "required": true,
+      "options": []
+    },
+    "city": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "customer-type": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "EV fleet operator",
+        "Taxi and mobility operator",
+        "Logistics operator",
+        "Corporate campus",
+        "Commercial property",
+        "Apartment community",
+        "Dealership",
+        "Event operator",
+        "Institution or location partner",
+        "Other"
+      ]
+    },
+    "number-of-evs": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "vehicle-types": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "current-charging-method": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "preferred-charging-location": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "expected-charging-frequency": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "fleet-operating-hours": {
+      "type": "text",
+      "required": false,
+      "options": []
+    },
+    "message": {
+      "type": "textarea",
+      "required": true,
+      "options": []
+    },
+    "preferred-pilot-location": {
+      "type": "text",
+      "required": true,
+      "options": []
+    },
+    "expected-use-case": {
+      "type": "select",
+      "required": true,
+      "options": [
+        "",
+        "Fleet charging support",
+        "Commercial-site charging",
+        "Apartment or community support",
+        "Temporary event charging",
+        "Low-charge vehicle assessment",
+        "Dealership demonstration",
+        "Other"
+      ]
+    },
+    "additional-notes": {
+      "type": "textarea",
+      "required": false,
+      "options": []
+    },
+    "interested-in-pilot-participation": {
+      "type": "checkbox",
+      "required": false,
+      "options": []
+    },
+    "interested-in-strategic-partnership": {
+      "type": "checkbox",
+      "required": false,
+      "options": []
+    },
+    "interested-in-fleet-charging-assessment": {
+      "type": "checkbox",
+      "required": false,
+      "options": []
+    },
+    "interested-in-launch-updates": {
+      "type": "checkbox",
+      "required": false,
+      "options": []
+    },
+    "consent-to-receive-updates": {
+      "type": "checkbox",
+      "required": true,
+      "options": []
+    }
+  }
+}

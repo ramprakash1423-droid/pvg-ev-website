@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Enquire about EV charging | PVG-EV</title>
+<meta name="description" content="Send a charging enquiry with your vehicle and location. Share your requirement, vehicle details and GPS location.">
+<meta name="theme-color" content="#123b2c">
+<link rel="canonical" href="https://www.pvgev.com/request-charging.html">
+<meta property="og:title" content="Enquire about EV charging | PVG-EV">
+<meta property="og:description" content="Send a charging enquiry with your vehicle and location. Share your requirement, vehicle details and GPS location.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.pvgev.com/public/assets/pvg-ev/refreshed/mobile-1536.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="public/assets/pvg-ev/branding/favicon-pvg-ev.png">
+<link rel="stylesheet" href="styles.css?v=20261012">
+<link rel="stylesheet" href="home-design.css?v=20261013">
+
+<script defer src="site-config.js"></script>
+<script defer src="form-schema.js?v=20261015"></script>
+<script defer src="form-core.js?v=20261015"></script>
+<script defer src="form-location.js?v=20261015b"></script>
+<script defer src="form-wizard.js?v=20261015b"></script>
+<script defer src="script.js?v=20261014"></script>
+<link rel="stylesheet" href="form-wizard.css?v=20261015">
+<link rel="stylesheet" href="request-design.css?v=20261015b">
+<link rel="stylesheet" href="visual-design.css?v=20261015c">
+<link rel="stylesheet" href="branding.css?v=20261016a">
+<meta name="robots" content="noindex, nofollow, noarchive">
+</head>
+<body class="design-v2 request-v2"><a class="skip-link" href="#main">Skip to content</a>
+<div class="status-bar">
+<div class="wrap"><span><span class="status-dot" aria-hidden="true"></span>Chennai pilot · Enquiries open</span><a href="pilot-programme.html">Explore the pilot <span aria-hidden="true">↗</span></a>
+</div>
+</div>
+<header class="site-header">
+<div class="wrap header-inner"><a class="brand" href="index.html" aria-label="PVG-EV home"><img src="public/assets/pvg-ev/branding/pvg-ev-logo.webp" alt="PVG-EV" width="768" height="512"></a><a class="header-enquiry" href="#request-form" aria-label="Let’s Talk">Let’s Talk <span aria-hidden="true">↗</span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" hidden>Menu <span aria-hidden="true">☰</span></button>
+<nav id="primary-nav" aria-label="Main navigation"><a href="solutions.html">Solutions</a><a href="mobile-charging-station.html">Mobile charging</a><a href="fleet-solutions.html">For fleets</a><a href="insights.html">Insights</a><a href="about-pvg-ev.html">About</a><a href="contact.html">Contact</a><a class="button small" href="request-charging.html" aria-current="page">Let’s Talk <span aria-hidden="true">↗</span></a>
+</nav>
+</div>
+</header>
+<main id="main" class="request-main">
+<div class="wrap request-layout">
+  <div class="request-intro request-photo-intro">
+    <figure class="request-photo"><img src="public/assets/pvg-ev/story/charge.jpg" width="1536" height="1024" alt="Illustrative PVG-EV mobile charging visit at a commercial campus" fetchpriority="high"><figcaption>Illustrative service scene</figcaption></figure>
+    <div class="request-photo-copy"><p class="visual-kicker">LET’S TALK / CHARGING ENQUIRY</p><h1>Your next charge.<br><span>Let’s plan it.</span></h1><p class="request-lead">Tell us about your EV and where you need charging. We’ll take it from there.</p><a class="request-photo-phone" href="tel:+919751083000">Prefer to talk? <strong>+91 97510 83000 ↗</strong></a></div>
+  </div>
+  <div class="request-form-column">
+    <form id="request-form" class="enquiry-form pvg-wizard" data-form="request" novalidate>
+<div class="wizard-top">
+<span class="eyebrow">LET’S GET STARTED</span>
+<span data-step-status role="status">Step 1 of 4</span>
+</div>
+<ol class="wizard-progress" aria-label="Enquiry steps">
+<li data-wizard-progress="0">
+<span>01</span>
+<small>Your details</small>
+</li>
+<li data-wizard-progress="1">
+<span>02</span>
+<small>Location</small>
+</li>
+<li data-wizard-progress="2">
+<span>03</span>
+<small>Your EV</small>
+</li>
+<li data-wizard-progress="3">
+<span>04</span>
+<small>Review</small>
+</li>
+</ol>
+<p class="wizard-alert" role="alert" hidden>Please check the highlighted details.</p>
+<div data-wizard-fields>
+<fieldset data-wizard-step="0">
+<legend tabindex="-1">How can we help?</legend>
+<p class="wizard-intro">Start with what you need and how we can reach you. <span class="required-key">* Required</span>
+</p>
+<div class="form-grid">
+<div class="field full">
+<label for="request-requirement_type">What do you need? <span class="field-required" aria-hidden="true">*</span>
+</label>
+<select id="request-requirement_type" name="requirement_type" data-label="Requirement Type" aria-describedby="request-requirement_type-error" required>
+<option value="">Choose your charging requirement</option>
+<option value="Low battery / stranded vehicle">Low battery / stranded vehicle</option>
+<option value="Mobile EV charging">Mobile EV charging</option>
+<option value="Fleet charging">Fleet charging</option>
+<option value="Depot support">Depot support</option>
+<option value="Event charging">Event charging</option>
+<option value="Temporary project location">Temporary project location</option>
+<option value="Residential or community requirement">Residential or community requirement</option>
+<option value="Pilot programme">Pilot programme</option>
+<option value="Other">Other</option>
+</select>
+<p class="wizard-error" id="request-requirement_type-error" data-error-for="requirement_type" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-name">Your name <span class="field-required" aria-hidden="true">*</span>
+</label>
+<input id="request-name" name="name" data-label="Name" aria-describedby="request-name-error" type="text" autocomplete="name" placeholder="Your name" required maxlength="200">
+<p class="wizard-error" id="request-name-error" data-error-for="name" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-phone">Mobile number <span class="field-required" aria-hidden="true">*</span>
+</label>
+<input id="request-phone" name="phone" data-label="Mobile Number" aria-describedby="request-phone-error request-phone-help" type="tel" autocomplete="tel" inputmode="tel" placeholder="For example, 98765 43210" required maxlength="20">
+<p class="field-help" id="request-phone-help">10-digit Indian mobile number. +91 is optional.</p>
+<p class="wizard-error" id="request-phone-error" data-error-for="phone" hidden>
+</p>
+</div>
+<div class="field full">
+<label for="request-customer_type">You’re enquiring as <span class="field-optional">Optional</span>
+</label>
+<select id="request-customer_type" name="customer_type" data-label="Customer Type" aria-describedby="request-customer_type-error">
+<option value="">Choose if applicable</option>
+<option value="Individual EV owner">Individual EV owner</option>
+<option value="Fleet operator">Fleet operator</option>
+<option value="Apartment community">Apartment community</option>
+<option value="Commercial property">Commercial property</option>
+<option value="Office or IT park">Office or IT park</option>
+<option value="Taxi or mobility operator">Taxi or mobility operator</option>
+<option value="Logistics operator">Logistics operator</option>
+<option value="Government or smart-city body">Government or smart-city body</option>
+</select>
+<p class="wizard-error" id="request-customer_type-error" data-error-for="customer_type" hidden>
+</p>
+</div>
+</div>
+<div class="wizard-actions">
+<button class="button" type="button" data-next>Continue to location <span aria-hidden="true">→</span>
+</button>
+</div>
+</fieldset>
+<fieldset data-wizard-step="1" hidden disabled>
+<legend tabindex="-1">Where is your EV?</legend>
+<p class="wizard-intro">We’ll detect your GPS automatically. Please be at the charging site and allow location access.</p>
+<div class="form-grid">
+<div class="field full gps-card" data-location-card data-state="idle">
+  <div class="gps-card-heading">
+<span class="gps-icon" aria-hidden="true">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+<circle cx="12" cy="12" r="7"/>
+<circle cx="12" cy="12" r="2.5"/>
+<path d="M12 1v4m0 14v4M1 12h4m14 0h4"/>
+</svg>
+</span>
+<div>
+<span class="gps-eyebrow">AUTOMATIC GPS</span>
+<h3 data-location-title>We’ll find your location</h3>
+</div>
+<span class="gps-indicator" aria-hidden="true">
+</span>
+</div>
+  <p data-location-status role="status" aria-live="polite">Your browser will ask for permission when this step opens.</p>
+  <div class="gps-coordinates" data-location-coordinates hidden>
+<label for="request-gps_location">GPS coordinates <span class="field-required" aria-hidden="true">*</span>
+</label>
+<input id="request-gps_location" name="gps_location" data-label="GPS Location" aria-describedby="request-gps_location-error request-gps_location-help" type="text" placeholder="Detecting your location…" readonly required maxlength="200">
+</div>
+  <div class="gps-controls">
+<button class="text-button" type="button" data-location>Try GPS again</button>
+<button class="text-button" type="button" data-clear-location hidden>Clear location</button>
+</div>
+  <p class="field-help" id="request-gps_location-help">At a different location? Open this form at the charging site. GPS is required; you can also <a href="contact.html#contact-form">contact our team</a>.</p>
+  <p class="wizard-error" id="request-gps_location-error" data-error-for="gps_location" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-city">Area or city <span class="field-required" aria-hidden="true">*</span>
+</label>
+<input id="request-city" name="city" data-label="Current Area" aria-describedby="request-city-error" type="text" autocomplete="address-level2" placeholder="Example: Chennai, OMR, Guindy" required maxlength="200">
+<p class="wizard-error" id="request-city-error" data-error-for="city" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-location_type">Where are you parked? <span class="field-required" aria-hidden="true">*</span>
+</label>
+<select id="request-location_type" name="location_type" data-label="Location Type" aria-describedby="request-location_type-error" required>
+<option value="">Select location type</option>
+<option value="Roadside or stranded location">Roadside or stranded location</option>
+<option value="Home or apartment parking">Home or apartment parking</option>
+<option value="Office or IT park">Office or IT park</option>
+<option value="Fleet depot">Fleet depot</option>
+<option value="Commercial parking location">Commercial parking location</option>
+<option value="Highway or route location">Highway or route location</option>
+<option value="Event or temporary site">Event or temporary site</option>
+</select>
+<p class="wizard-error" id="request-location_type-error" data-error-for="location_type" hidden>
+</p>
+</div>
+<div class="field full">
+<label for="request-address">Address or nearby landmark <span class="field-required" aria-hidden="true">*</span>
+</label>
+<textarea id="request-address" name="address" data-label="Landmark or Exact Spot" aria-describedby="request-address-error request-address-help" placeholder="Nearest landmark, parking spot, building gate or roadside location" required rows="3" maxlength="2000">
+</textarea>
+<p class="field-help" id="request-address-help">Include the building, parking bay, gate or nearest landmark.</p>
+<p class="wizard-error" id="request-address-error" data-error-for="address" hidden>
+</p>
+</div>
+</div>
+<div class="wizard-actions">
+<button class="button secondary" type="button" data-back>← Back</button>
+<button class="button" type="button" data-next>Continue to your EV <span aria-hidden="true">→</span>
+</button>
+</div>
+</fieldset>
+<fieldset data-wizard-step="2" hidden disabled>
+<legend tabindex="-1">Tell us about your EV.</legend>
+<p class="wizard-intro">Choose your vehicle category. Everything else on this step is optional.</p>
+<div class="form-grid">
+<div class="field">
+<label for="request-vehicle_category">Vehicle Category <span class="field-required" aria-hidden="true">*</span>
+</label>
+<select id="request-vehicle_category" name="vehicle_category" data-label="Vehicle Category" aria-describedby="request-vehicle_category-error" required>
+<option value="">Select vehicle category</option>
+<option value="Electric car">Electric car</option>
+<option value="Electric taxi">Electric taxi</option>
+<option value="Electric three-wheeler">Electric three-wheeler</option>
+<option value="Electric two-wheeler">Electric two-wheeler</option>
+<option value="Electric van">Electric van</option>
+<option value="Electric truck or logistics vehicle">Electric truck or logistics vehicle</option>
+<option value="Mixed EV fleet">Mixed EV fleet</option>
+</select>
+<p class="wizard-error" id="request-vehicle_category-error" data-error-for="vehicle_category" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-vehicle_model">Vehicle Make / Model <span class="field-optional">Optional</span>
+</label>
+<input id="request-vehicle_model" name="vehicle_model" data-label="Vehicle Make / Model" aria-describedby="request-vehicle_model-error" type="text" placeholder="Example: Tata Nexon EV, e-auto, e-scooter" maxlength="200">
+<p class="wizard-error" id="request-vehicle_model-error" data-error-for="vehicle_model" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-vehicle_count">Number of Vehicles <span class="field-optional">Optional</span>
+</label>
+<input id="request-vehicle_count" name="vehicle_count" data-label="Number of Vehicles" aria-describedby="request-vehicle_count-error request-vehicle_count-help" type="number" inputmode="numeric" min="1" value="1" step="1" max="100000">
+<p class="field-help" id="request-vehicle_count-help">For one EV, leave this as 1.</p>
+<p class="wizard-error" id="request-vehicle_count-error" data-error-for="vehicle_count" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-current_battery_level">Current Battery Level <span class="field-optional">Optional</span>
+</label>
+<input id="request-current_battery_level" name="current_battery_level" data-label="Current Battery Level" aria-describedby="request-current_battery_level-error request-current_battery_level-help" type="number" inputmode="numeric" placeholder="Approximate %" min="0" max="100" step="1">
+<p class="field-help" id="request-current_battery_level-help">Approximate percentage, from 0 to 100.</p>
+<p class="wizard-error" id="request-current_battery_level-error" data-error-for="current_battery_level" hidden>
+</p>
+</div>
+<div class="field full">
+<label for="request-charging_details">What happened? <span class="field-optional">Optional</span>
+</label>
+<textarea id="request-charging_details" name="charging_details" data-label="What happened?" aria-describedby="request-charging_details-error" placeholder="Example: Battery is low at office parking, vehicle cannot reach a charger, or fleet needs mobile top-up review." rows="3" maxlength="2000">
+</textarea>
+<p class="wizard-error" id="request-charging_details-error" data-error-for="charging_details" hidden>
+</p>
+</div>
+</div>
+<details class="wizard-optional">
+<summary>More planning details <span>Optional</span>
+</summary>
+<p>Add what you know. You can leave the rest blank.</p>
+<div class="form-grid">
+<div class="field">
+<label for="request-email">Email <span class="field-optional">Optional</span>
+</label>
+<input id="request-email" name="email" data-label="Email" aria-describedby="request-email-error" type="email" autocomplete="email" maxlength="200">
+<p class="wizard-error" id="request-email-error" data-error-for="email" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-company">Company / Community <span class="field-optional">Optional</span>
+</label>
+<input id="request-company" name="company" data-label="Company / Community" aria-describedby="request-company-error" type="text" autocomplete="organization" maxlength="200">
+<p class="wizard-error" id="request-company-error" data-error-for="company" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-connector_type">Connector / Charging Standard <span class="field-optional">Optional</span>
+</label>
+<select id="request-connector_type" name="connector_type" data-label="Connector / Charging Standard" aria-describedby="request-connector_type-error request-connector_type-help">
+<option value="">Select connector status</option>
+<option value="Known connector type">Known connector type</option>
+<option value="Not sure">Not sure</option>
+<option value="To be confirmed by PVG-EV">To be confirmed by PVG-EV</option>
+</select>
+<p class="field-help" id="request-connector_type-help">Not sure? Choose “Not sure” and we can discuss compatibility.</p>
+<p class="wizard-error" id="request-connector_type-error" data-error-for="connector_type" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-battery_status">Battery Status <span class="field-optional">Optional</span>
+</label>
+<select id="request-battery_status" name="battery_status" data-label="Battery Status" aria-describedby="request-battery_status-error">
+<option value="">Select battery status</option>
+<option value="Low battery now">Low battery now</option>
+<option value="Scheduled top-up required">Scheduled top-up required</option>
+<option value="Fleet planning requirement">Fleet planning requirement</option>
+<option value="Commercial site planning requirement">Commercial site planning requirement</option>
+</select>
+<p class="wizard-error" id="request-battery_status-error" data-error-for="battery_status" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-charging_need">Charging Need <span class="field-optional">Optional</span>
+</label>
+<select id="request-charging_need" name="charging_need" data-label="Charging Need" aria-describedby="request-charging_need-error">
+<option value="">Select charging need</option>
+<option value="Immediate assistance">Immediate assistance</option>
+<option value="Same-day charging">Same-day charging</option>
+<option value="Scheduled mobile charging">Scheduled mobile charging</option>
+<option value="Regular fleet charging support">Regular fleet charging support</option>
+<option value="Temporary event charging">Temporary event charging</option>
+<option value="Site assessment for future charging">Site assessment for future charging</option>
+</select>
+<p class="wizard-error" id="request-charging_need-error" data-error-for="charging_need" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-preferred_window">Preferred Charging Window <span class="field-optional">Optional</span>
+</label>
+<select id="request-preferred_window" name="preferred_window" data-label="Preferred Charging Window" aria-describedby="request-preferred_window-error">
+<option value="">Select preferred window</option>
+<option value="Morning">Morning</option>
+<option value="Afternoon">Afternoon</option>
+<option value="Evening">Evening</option>
+<option value="Night / depot downtime">Night / depot downtime</option>
+<option value="Flexible">Flexible</option>
+</select>
+<p class="wizard-error" id="request-preferred_window-error" data-error-for="preferred_window" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-preferred_time">Preferred Time <span class="field-optional">Optional</span>
+</label>
+<input id="request-preferred_time" name="preferred_time" data-label="Preferred Time" aria-describedby="request-preferred_time-error request-preferred_time-help" type="time">
+<p class="field-help" id="request-preferred_time-help">This is a preference; availability still needs confirmation.</p>
+<p class="wizard-error" id="request-preferred_time-error" data-error-for="preferred_time" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-requirement_scope">Requirement Scope <span class="field-optional">Optional</span>
+</label>
+<select id="request-requirement_scope" name="requirement_scope" data-label="Requirement Scope" aria-describedby="request-requirement_scope-error">
+<option value="">Select requirement scope</option>
+<option value="Individual vehicle requirement">Individual vehicle requirement</option>
+<option value="Fleet requirement">Fleet requirement</option>
+<option value="Site or community requirement">Site or community requirement</option>
+<option value="Institutional or pilot requirement">Institutional or pilot requirement</option>
+</select>
+<p class="wizard-error" id="request-requirement_scope-error" data-error-for="requirement_scope" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-target_date">Target Date <span class="field-optional">Optional</span>
+</label>
+<input id="request-target_date" name="target_date" data-label="Target Date" aria-describedby="request-target_date-error" type="date">
+<p class="wizard-error" id="request-target_date-error" data-error-for="target_date" hidden>
+</p>
+</div>
+<div class="field">
+<label for="request-pilot_interest">Pilot Interest <span class="field-optional">Optional</span>
+</label>
+<select id="request-pilot_interest" name="pilot_interest" data-label="Pilot Interest" aria-describedby="request-pilot_interest-error">
+<option value="">Select pilot interest</option>
+<option value="I want to join the Chennai pilot">I want to join the Chennai pilot</option>
+<option value="I want future service updates">I want future service updates</option>
+<option value="I need a commercial discussion">I need a commercial discussion</option>
+<option value="I only want general information">I only want general information</option>
+</select>
+<p class="wizard-error" id="request-pilot_interest-error" data-error-for="pilot_interest" hidden>
+</p>
+</div>
+<div class="field full">
+<label for="request-additional_notes">Additional Notes <span class="field-optional">Optional</span>
+</label>
+<textarea id="request-additional_notes" name="additional_notes" data-label="Additional Notes" aria-describedby="request-additional_notes-error" rows="3" maxlength="2000">
+</textarea>
+<p class="wizard-error" id="request-additional_notes-error" data-error-for="additional_notes" hidden>
+</p>
+</div>
+</div>
+</details>
+<div class="wizard-actions">
+<button class="button secondary" type="button" data-back>← Back</button>
+<button class="button" type="button" data-next>Review your enquiry <span aria-hidden="true">→</span>
+</button>
+</div>
+</fieldset>
+<fieldset data-wizard-step="3" hidden disabled>
+<legend tabindex="-1">Ready to send?</legend>
+<p class="wizard-intro">Check your details before sending. You can edit any section.</p>
+<div class="form-grid">
+</div>
+<div class="wizard-review" data-review>
+</div>
+<label class="checkbox wizard-consent" for="request-consent">
+<input id="request-consent" name="consent" type="checkbox" required value="on" data-label="Consent" aria-describedby="request-consent-error">
+<span>I understand that this is a requirement submission for PVG-EV review and does not confirm service availability, pricing, response time or live charging support. <a href="privacy-policy.html" target="_blank" rel="noopener">Privacy notice</a> <span aria-hidden="true">*</span>
+</span>
+</label>
+<p class="wizard-error" data-error-for="consent" id="request-consent-error" hidden>
+</p>
+<div class="wizard-actions">
+<button class="button secondary" type="button" data-back>← Back</button>
+<button class="button" type="submit">Send enquiry <span aria-hidden="true">↗</span>
+</button>
+</div>
+</fieldset>
+<div class="wizard-honeypot" aria-hidden="true">
+<label>Leave this empty<input name="website" type="text" tabindex="-1" autocomplete="off">
+</label>
+</div>
+<input type="hidden" name="latitude">
+<input type="hidden" name="longitude">
+<input type="hidden" name="gps_accuracy">
+</div>
+<div class="wizard-draft" hidden>
+<span data-draft-status>
+</span>
+<button type="button" class="text-button" data-clear-draft>Start again</button>
+</div>
+<div class="preview-note" hidden>
+</div>
+<p class="wizard-reassurance">An enquiry starts a conversation. It does not confirm a booking.</p>
+<div class="form-result" tabindex="-1" role="status" hidden>
+<h3 data-result-title>
+</h3>
+<p data-result-message>
+</p>
+<p data-reference>
+</p>
+<a class="button" data-whatsapp target="_blank" rel="noopener noreferrer" hidden>Continue in WhatsApp ↗</a>
+</div>
+<noscript>
+<p>Enable JavaScript to use this form, or call <a href="tel:+919751083000">+91 97510 83000</a>.</p>
+</noscript>
+</form>
+    <div class="request-other"><span>Planning for a fleet or a site?</span><a href="fleet-solutions.html">Fleet enquiries ↗</a><a href="contact.html?topic=site">Talk to our team ↗</a></div>
+  </div>
+</div>
+<section class="request-next"><div class="wrap request-next-grid"><div><p class="dv-kicker">A CLEAR NEXT STEP</p><h2>What happens<br> after you enquire?</h2><a href="pilot-programme.html">About the Chennai pilot <span aria-hidden="true">↗</span></a></div><ol><li><span>01</span><div><h3>We review the fit.</h3><p>The team checks your vehicle, location and pilot availability.</p></div></li><li><span>02</span><div><h3>We talk it through.</h3><p>We contact you to understand the details and discuss what’s possible.</p></div></li><li><span>03</span><div><h3>You decide the next step.</h3><p>Timing, pricing and service details are agreed before a visit.</p></div></li></ol></div><p class="wrap request-service-note">Pilot enquiries are subject to confirmation. This form does not provide emergency dispatch.</p></section>
+</main>
+<footer class="site-footer">
+<div class="wrap">
+<div class="footer-top">
+<div><a href="index.html" aria-label="PVG-EV home"><img src="public/assets/pvg-ev/branding/pvg-ev-logo.webp" alt="PVG-EV" width="768" height="512"></a>
+<p>Flexible charging.<br> More possibilities for electric mobility.</p>
+</div>
+<div>
+<h2>Let’s talk</h2><a class="phone" href="tel:+919751083000">+91 97510 83000</a>
+<p>Chennai, Tamil Nadu, India</p><a href="contact.html">Contact the team ↗</a>
+</div>
+<nav aria-label="Footer navigation"><a href="pilot-programme.html">Chennai pilot</a><a href="collaboration.html">PVG-EV × Setrans</a><a href="privacy-policy.html">Privacy</a><a href="terms-and-conditions.html">Terms</a><a href="cookie-policy.html">Cookies & storage</a>
+</nav>
+</div>
+<div class="footer-bottom"><span>© 2026 PVG-EV · An initiative of Prime Ventures Global</span><span>Technology collaboration with Setrans</span>
+</div>
+</div>
+</footer>
+</body>
+</html>
