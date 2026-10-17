@@ -6,7 +6,7 @@ window.PVGFormWizard=function(form){
   const draft=form.querySelector('.wizard-draft'),status=form.querySelector('[data-step-status]');
   const local=['localhost','127.0.0.1','[::1]'].includes(location.hostname),demo=window.PVG_CONFIG?.demo===true;
   const key=`pvg-form-v2:${type}`,storageMode=demo?'demo':local?'local':'live';
-  let index=0,reference=null,busy=false,locationCapture=null;
+  let index=0,reference=null,submissionId=null,submissionData=null,busy=false,locationCapture=null;
   const named=name=>form.elements.namedItem(name);
   const data=()=>Object.fromEntries(fields.filter(f=>f.name&&(!['checkbox','radio'].includes(f.type)||f.checked)).map(f=>[f.name,f.value]));
   const showResult=(title,message)=>{result.hidden=false;result.querySelector('[data-result-title]').textContent=title;result.querySelector('[data-result-message]').textContent=message;result.focus();};
@@ -50,7 +50,7 @@ window.PVGFormWizard=function(form){
   const saveDraft=()=>{
     if(busy)return;
     const values=data();delete values.website;delete values.consent;delete values['consent-to-receive-updates'];
-    try{sessionStorage.setItem(key,JSON.stringify({values,index,reference,mode:storageMode}));draft.hidden=false;draft.querySelector('[data-draft-status]').textContent='Draft saved in this tab.';}catch{/* Forms still work when browser storage is unavailable. */}
+    try{sessionStorage.setItem(key,JSON.stringify({values,index,submissionId,submissionData,mode:storageMode}));draft.hidden=false;draft.querySelector('[data-draft-status]').textContent='Draft saved in this tab.';}catch{/* Forms still work when browser storage is unavailable. */}
   };
   const showStep=(next,focus=true)=>{
     index=Math.max(0,Math.min(next,steps.length-1));
@@ -69,7 +69,7 @@ window.PVGFormWizard=function(form){
     if(fields.includes(event.target)){setError(event.target.name,'');alert.hidden=!steps[index].querySelector('[aria-invalid=true]');reference=null;saveDraft();}
   });
   form.querySelector('[data-clear-draft]').addEventListener('click',()=>{
-    if(busy)return;form.reset();reference=null;locationCapture?.reset();fields.forEach(f=>setError(f.name,''));
+    if(busy)return;form.reset();reference=null;submissionId=null;submissionData=null;locationCapture?.reset();fields.forEach(f=>setError(f.name,''));
     for(const n of ['latitude','longitude','gps_accuracy','gps_location'])if(named(n))named(n).value='';
     try{sessionStorage.removeItem(key);}catch{}
     draft.hidden=true;result.hidden=true;showStep(0,false);steps[0].querySelector('input,select,textarea')?.focus();
@@ -80,7 +80,7 @@ window.PVGFormWizard=function(form){
     const saved=JSON.parse(sessionStorage.getItem(key)||'null');
     if(saved&&saved.mode===storageMode&&saved.values&&typeof saved.values==='object'){
       for(const field of fields){if(!Object.hasOwn(saved.values,field.name)||['consent','consent-to-receive-updates','website'].includes(field.name))continue;if(field.type==='checkbox')field.checked=saved.values[field.name]==='on';else field.value=String(saved.values[field.name]);}
-      index=Number.isInteger(saved.index)?saved.index:0;reference=saved.reference||null;restored=true;
+      index=Number.isInteger(saved.index)?saved.index:0;submissionId=/^[0-9a-f-]{36}$/i.test(saved.submissionId||'')?saved.submissionId:null;submissionData=typeof saved.submissionData==='string'?saved.submissionData:null;restored=true;
     }
   }catch{}
   if(restored){draft.hidden=false;draft.querySelector('[data-draft-status]').textContent='Draft restored. Review before sending.';}
@@ -135,17 +135,17 @@ window.PVGFormWizard=function(form){
     const invalid=validate(form);if(invalid){focusInvalid(invalid);return;}
     const values=data(),error=PVGForm.validate(values,type);
     if(error){showResult('Please check your enquiry',error);return;}
-    reference||=`PVG-${Date.now()}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;
-    const record=PVGForm.buildRecord(values,type,reference),whatsapp=form.querySelector('[data-whatsapp]');
+    const record=PVGForm.buildRecord(values,type,null),whatsapp=form.querySelector('[data-whatsapp]');
+    const currentData=JSON.stringify(record);
+    if(!submissionId||submissionData!==currentData){submissionId=crypto.randomUUID();submissionData=currentData;}
+    reference=null;
     saveDraft();setBusy(true);submit.textContent='Sending…';whatsapp.hidden=true;
     let saved=false;
-    if(demo){saved=true;showResult('Preview completed','Your form is complete. This client preview did not send an enquiry or save your details to PVG-EV.');}
+    if(demo){saved=true;reference='PVG-DEMO';showResult('Preview completed','Your form is complete. This client preview did not send an enquiry or save your details to PVG-EV.');}
     else{
       try{
-        const config=window.PVG_CONFIG;
-        const response=await fetch(local?'/__preview/enquiries':`${config.url.replace(/\/$/,'')}/rest/v1/pvg_ev_charging_requests`,{method:'POST',headers:local?{'Content-Type':'application/json'}:{'Content-Type':'application/json',apikey:config.key,Authorization:`Bearer ${config.key}`,Prefer:'return=minimal'},body:JSON.stringify(record),signal:AbortSignal.timeout(10000)});
-        if(response.ok)saved=true;
-        else if(response.status===409){const detail=await response.json();saved=detail.code==='23505'&&String(detail.message||'').includes('reference');}
+        reference=await PVGSubmit.send(record,submissionId,{config:window.PVG_CONFIG,local});
+        saved=true;
       }catch{/* Preserve the enquiry and offer a retry or WhatsApp handoff. */}
       if(local)showResult(saved?'Preview enquiry saved':'Preview save failed',saved?'Your test enquiry was saved on this computer. No enquiry was sent to PVG-EV.':'Your details are still here. Please retry.');
       else{
@@ -153,7 +153,7 @@ window.PVGFormWizard=function(form){
         showResult(saved?'Enquiry received':'Enquiry not saved',saved?'Your details are ready for the team to review. You may also continue in WhatsApp and press Send there. Availability and booking details still need confirmation.':'We could not confirm your enquiry was saved. Retry, or continue in WhatsApp and press Send there.');
       }
     }
-    result.querySelector('[data-reference]').textContent=`Reference: ${reference}`;
+    result.querySelector('[data-reference]').textContent=reference?`Reference: ${reference}`:'';
     setBusy(false);
     if(saved){
       try{sessionStorage.removeItem(key);}catch{}

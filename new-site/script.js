@@ -30,7 +30,7 @@ for(const form of document.querySelectorAll('[data-form]')){
   const submitArea=form.querySelector('[data-submit-area]');
   const steps=[...form.querySelectorAll('[data-step]')];
   const friendly=form.hasAttribute('data-friendly')?window.PVGRequestForm?.(form):null;
-  let reference=null,locationAttempt=0;
+  let reference=null,submissionId=null,submissionData=null,locationAttempt=0;
   const showResult=(title,message)=>{result.hidden=false;result.querySelector('[data-result-title]').textContent=title;result.querySelector('[data-result-message]').textContent=message;result.focus();};
   const setStep=number=>{steps.forEach(fieldset=>{fieldset.hidden=Number(fieldset.dataset.step)!==number;fieldset.disabled=fieldset.hidden;});submitArea.hidden=number!==2;form.querySelectorAll('[data-progress]').forEach(item=>{if(Number(item.dataset.progress)===number)item.setAttribute('aria-current','step');else item.removeAttribute('aria-current');});friendly?.setStep(number);};
   const validFields=container=>{if(friendly){const invalid=friendly.validate(container);if(invalid){invalid.focus();return false;}return true;}for(const field of container.querySelectorAll('input,select,textarea'))if(!field.checkValidity()){field.reportValidity();return false;}return true;};
@@ -77,24 +77,21 @@ for(const form of document.querySelectorAll('[data-form]')){
     const error=PVGForm.validate(data,type);
     if(error){showResult('Please check your details',error);return;}
     submit.disabled=true;submit.textContent='Submitting…';whatsapp.hidden=true;
-    reference ||= `PVG-${Date.now()}-${crypto.randomUUID().slice(0,8).toUpperCase()}`;
-    const record=PVGForm.buildRecord(data,type,reference);
+    const record=PVGForm.buildRecord(data,type,null);
+    const currentData=JSON.stringify(record);
+    if(!submissionId||submissionData!==currentData){submissionId=crypto.randomUUID();submissionData=currentData;}
+    reference=null;
     let saved=false;
     try{
-      const config=window.PVG_CONFIG;
-      const response=await fetch(localPreview?'/__preview/enquiries':`${config.url.replace(/\/$/,'')}/rest/v1/pvg_ev_charging_requests`,{
-        method:'POST',headers:localPreview?{'Content-Type':'application/json'}:{'Content-Type':'application/json',apikey:config.key,Authorization:`Bearer ${config.key}`,Prefer:'return=minimal'},body:JSON.stringify(record),signal:AbortSignal.timeout(10000)
-      });
-      // A reused reference is idempotent: the original enquiry already exists.
-      if(response.ok)saved=true;
-      else if(response.status===409){const detail=await response.json();saved=detail.code==='23505';}
+      reference=await PVGSubmit.send(record,submissionId,{config:window.PVG_CONFIG,local:localPreview});
+      saved=true;
     }catch{/* Keep the enquiry on the page and offer an explicit alternate route. */}
-    result.querySelector('[data-reference]').textContent=`Reference: ${reference}`;
+    result.querySelector('[data-reference]').textContent=reference?`Reference: ${reference}`:'';
     if(localPreview){
       showResult(saved?'Preview enquiry saved':'Preview save failed',saved?'Your test enquiry was saved on this computer. No message was sent to PVG-EV.':'Your details are still here. Check that the local preview server is running and try again.');
     }else{
       whatsapp.href=`https://wa.me/919751083000?text=${encodeURIComponent(PVGForm.message(data,type,reference))}`;whatsapp.hidden=false;
-      showResult(saved?'Enquiry received':'Enquiry not saved',saved?'Your enquiry is ready for the team to review. You may also continue in WhatsApp. Availability and booking details still need confirmation.':'We could not confirm that your enquiry was saved. Continue in WhatsApp and press Send there, or retry this form. Keep your reference so the team can avoid duplicates.');
+      showResult(saved?'Enquiry received':'Enquiry not saved',saved?'Your enquiry is ready for the team to review. You may also continue in WhatsApp. Availability and booking details still need confirmation.':'We could not confirm that your enquiry was saved. Continue in WhatsApp and press Send there, or retry this form.');
     }
     submit.disabled=saved;submit.textContent=saved?'Enquiry submitted':'Retry enquiry';
     if(saved){form.querySelectorAll('input,select,textarea,.step-next,.step-back,[data-location],[data-clear-location]').forEach(control=>control.disabled=true);friendly?.complete();result.focus();}

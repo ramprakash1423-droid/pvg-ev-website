@@ -60,7 +60,8 @@
     };
   }
   function message(data,type,reference){
-    const lines=[`PVG-EV ${type} enquiry`,`Reference: ${reference}`];
+    const lines=[`PVG-EV ${type} enquiry`];
+    if(reference)lines.push(`Reference: ${reference}`);
     for(const [name,field] of Object.entries(schema[type])){
       if(['website','latitude','longitude','gps_accuracy','consent','consent-to-receive-updates'].includes(name))continue;
       if(field.type==='checkbox'){if(yes(data[name]))lines.push(`${field.label}: Yes`);}
