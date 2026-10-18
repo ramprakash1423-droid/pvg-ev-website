@@ -1,4 +1,6 @@
 /* The supplied PVG-eV artwork, with the full lockup retained in the footer. */
+/* Vector arrows keep the same shape and inherit the text colour on every device. */
+.pvg-arrow{display:inline-block;width:1em;height:1em;flex-shrink:0;vertical-align:-.15em}
 :root{--pvg-header-height:88px}
 .site-header .header-inner,.design-v2 .header-inner{min-height:var(--pvg-header-height)}
 .site-header .brand,.design-v2 .site-header .brand{width:150px;height:75px;overflow:hidden;flex-shrink:0}

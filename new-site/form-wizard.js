@@ -4,6 +4,7 @@ window.PVGFormWizard=function(form){
   const fields=[...form.querySelectorAll('input,select,textarea')],progress=[...form.querySelectorAll('[data-wizard-progress]')];
   const alert=form.querySelector('.wizard-alert'),result=form.querySelector('.form-result'),submit=form.querySelector('[type=submit]');
   const draft=form.querySelector('.wizard-draft'),status=form.querySelector('[data-step-status]');
+  const submitIcon=submit.querySelector('.pvg-arrow')?.cloneNode(true);
   const local=['localhost','127.0.0.1','[::1]'].includes(location.hostname),demo=window.PVG_CONFIG?.demo===true;
   const key=`pvg-form-v2:${type}`,storageMode=demo?'demo':local?'local':'live';
   let index=0,reference=null,submissionId=null,submissionData=null,busy=false,locationCapture=null;
@@ -159,7 +160,10 @@ window.PVGFormWizard=function(form){
       try{sessionStorage.removeItem(key);}catch{}
       draft.hidden=true;form.querySelector('[data-wizard-fields]').hidden=true;status.textContent='Complete';alert.hidden=true;
       progress.forEach(p=>{p.classList.add('complete');p.removeAttribute('aria-current');});
-    }else submit.textContent='Retry enquiry ↗';
+    }else{
+      submit.replaceChildren('Retry enquiry ');
+      if(submitIcon)submit.append(submitIcon.cloneNode(true));
+    }
     result.focus();
   });
   showStep(index,false);
