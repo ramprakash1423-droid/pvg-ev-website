@@ -1,0 +1,24 @@
+/* Give the enquiry the full content width; supporting information follows it. */
+#fleet-enquiry{scroll-margin-top:0;padding-top:36px}
+#fleet-enquiry .form-layout{display:block}
+#fleet-enquiry .enquiry-form{width:100%;max-width:none;padding:32px 38px}
+#fleet-enquiry .form-aside{display:flex;align-items:center;justify-content:space-between;gap:28px;margin-top:20px;padding:20px 24px;background:#eff3e9;border:1px solid #dbe4d2;border-radius:12px}
+#fleet-enquiry .form-aside .notice{margin:0;padding:0;border:0;background:none;flex:1}
+#fleet-enquiry .form-aside .notice strong{font-size:13px}
+#fleet-enquiry .form-aside .notice p{font-size:12px;line-height:1.7;margin:5px 0 0;max-width:760px}
+#fleet-enquiry .form-aside>.text-link{flex-shrink:0;font-size:12px}
+#fleet-enquiry .wizard-progress{gap:20px}
+#fleet-enquiry .wizard-actions [data-next],#fleet-enquiry .wizard-actions [type=submit]{max-width:360px;margin-left:auto}
+#fleet-enquiry .wizard-review{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+#fleet-enquiry .wizard-review dl>div{grid-template-columns:1fr;gap:2px}
+#fleet-enquiry [data-wizard-step="1"]>.form-grid>.field:first-child{grid-column:1/-1}
+@media(min-width:1000px){#fleet-enquiry [data-wizard-step="0"] .form-grid,#fleet-enquiry [data-wizard-step="2"] .form-grid,#fleet-enquiry .wizard-optional .form-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){
+ #fleet-enquiry{padding-top:20px}
+ #fleet-enquiry .enquiry-form{padding:24px 20px}
+ #fleet-enquiry .form-aside{display:block;padding:20px;margin-top:16px}
+ #fleet-enquiry .form-aside>.text-link{display:inline-flex;margin-top:15px}
+ #fleet-enquiry .wizard-progress{gap:8px}
+ #fleet-enquiry .wizard-review{grid-template-columns:1fr}
+ #fleet-enquiry .wizard-actions [data-next],#fleet-enquiry .wizard-actions [type=submit]{max-width:none}
+}

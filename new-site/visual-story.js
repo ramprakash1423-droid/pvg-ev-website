@@ -8,7 +8,7 @@ for(const journey of document.querySelectorAll('[data-journey]')){
  if(!stage||!steps.length||frames.length!==steps.length)continue;
  const motion=matchMedia('(prefers-reduced-motion:reduce)');
  let enabled=false,scheduled=false,current=-1;
- const select=index=>{if(current===index)return;current=index;frames.forEach((frame,i)=>{frame.classList.toggle('is-active',i===index);frame.setAttribute('aria-hidden',String(i!==index));});buttons.forEach((button,i)=>{if(i===index)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');});};
+ const select=index=>{if(current===index)return;current=index;frames.forEach((frame,i)=>{frame.classList.toggle('is-active',i===index);frame.setAttribute('aria-hidden',String(i!==index));});steps.forEach((step,i)=>step.classList.toggle('is-current',i===index));stage.style.setProperty('--story-progress',String((index+1)/steps.length));buttons.forEach((button,i)=>{if(i===index)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');});};
  const stacked=()=>steps[0].getBoundingClientRect().left<stage.getBoundingClientRect().right;
  const update=()=>{
   scheduled=false;if(!enabled)return;
