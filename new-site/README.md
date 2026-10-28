@@ -24,6 +24,14 @@ All four enquiry types (`request`, `contact`, `fleet`, `pilot`) share the existi
 
 Localhost keeps using the local preview server and ignored `.preview/` receipt log. Hosted preview forms send real enquiries. WhatsApp remains an optional visitor-initiated handoff.
 
+## Private enquiry dashboard
+
+The dashboard is a separate project in [../enquiry-dashboard/](../enquiry-dashboard/).
+Live sign-in: https://pvg-ev-dashboard.vercel.app/. It uses the separate PVG-only
+admin account; Google login is not used. See that project's README for local
+preview, build, deployment and access details. Automatic WhatsApp alerts are not
+activated.
+
 Robots exclusions and Vercel no-index headers are retained for client review. The preview URL uses live enquiry storage; the production domain has not been switched.
 
 ## Verified on 17 October 2026

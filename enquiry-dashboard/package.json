@@ -1,0 +1,14 @@
+{
+  "name": "pvg-ev-enquiry-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "node scripts/build-dashboard.mjs",
+    "serve": "node scripts/serve-preview.mjs",
+    "start": "npm run build && npm run serve",
+    "test": "node --test tests/*.test.cjs"
+  }
+}

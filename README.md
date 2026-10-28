@@ -34,3 +34,8 @@ http://localhost:8100/
 ```
 
 Use the local server for validation instead of opening `index.html` directly with `file://`, so shared scripts, routes and browser behavior match the deployed site more closely.
+
+## Separate projects
+
+- [New public website](new-site/) — [client link](https://ramprakash1423-droid.github.io/pvg-ev-website/new-site/).
+- [Private enquiry dashboard](enquiry-dashboard/) — [dashboard sign-in](https://pvg-ev-dashboard.vercel.app/). Includes its own build, preview server, tests and database setup source.

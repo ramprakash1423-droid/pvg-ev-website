@@ -11,7 +11,9 @@
 .contact-intro h1 span:after { content:""; position:absolute; left:0; right:0; bottom:4px; height:9px; background:var(--electric); z-index:-1; }
 .contact-intro-copy { max-width:360px; padding-bottom:5px; }
 .contact-intro-copy>p { font-size:15px; color:#52665c; line-height:1.75; margin-bottom:18px; }
-.contact-start { display:inline-flex; gap:30px; align-items:center; font-size:12px; font-weight:500; padding-bottom:7px; text-decoration:none; border-bottom:1px solid #8c9f91; }
+.contact-start { display:inline-flex; gap:22px; align-items:center; justify-content:center; min-height:46px; padding:11px 20px; font-size:12px; font-weight:500; text-decoration:none; background:#c8ef57; border:1px solid #c8ef57; border-radius:50px; color:#172b20; }
+.contact-start:hover { background:#dcfa90; border-color:#dcfa90; color:#172b20; }
+.contact-start:focus-visible { outline:3px solid #366b51; outline-offset:4px; }
 .contact-start span { font-size:22px; line-height:1; }
 .contact-main { padding-block:43px 65px; }
 .contact-canvas { display:grid; grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr); border:1px solid #d9e2db; border-radius:6px; overflow:hidden; align-items:stretch; }

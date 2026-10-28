@@ -10,3 +10,4 @@ qa-screenshots/
 supabase/.temp/
 
 .preview/
+.dashboard-release/

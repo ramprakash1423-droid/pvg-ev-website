@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://wpaickmgqlahzmdqmkid.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Enquiry dashboard · PVG-EV</title>
+  <link rel="icon" href="public/assets/pvg-ev/branding/favicon-pvg-ev.png">
+  <link rel="stylesheet" href="dashboard.css">
+  <script defer src="site-config.js"></script>
+  <script defer src="dashboard-config.js"></script>
+  <script defer src="form-schema.js"></script>
+  <script defer src="dashboard-core.js"></script>
+  <script defer src="dashboard-auth.js"></script>
+  <script defer src="dashboard.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to enquiries</a>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="logo" href="https://ramprakash1423-droid.github.io/pvg-ev-website/new-site/" aria-label="PVG-EV website"><img src="public/assets/pvg-ev/branding/pvg-ev-logo.webp" width="768" height="512" alt="PVG-EV"></a>
+      <span class="eyebrow sidebar-label">Your workspace</span>
+      <nav aria-label="Enquiry categories" id="category-nav">
+        <button class="nav-item active" type="button" data-type="all" aria-pressed="true"><span class="nav-icon" aria-hidden="true">▦</span> All enquiries <span class="nav-count" id="nav-total">—</span></button>
+        <button class="nav-item" type="button" data-type="request" aria-pressed="false"><span class="nav-icon" aria-hidden="true">ϟ</span> EV charging</button>
+        <button class="nav-item" type="button" data-type="fleet" aria-pressed="false"><span class="nav-icon" aria-hidden="true">▤</span> Fleet enquiries</button>
+        <button class="nav-item" type="button" data-type="contact" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◌</span> Contact messages</button>
+        <button class="nav-item" type="button" data-type="pilot" aria-pressed="false"><span class="nav-icon" aria-hidden="true">◎</span> Pilot programme</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="alert-setup"><span class="tiny-tag">Next step</span><strong>WhatsApp alerts</strong><p>Not connected yet. Future alerts will go to +91 97510 83000.</p></div>
+        <a class="website-link" href="https://ramprakash1423-droid.github.io/pvg-ev-website/new-site/">Open PVG website <span aria-hidden="true">↗︎</span></a>
+        <p class="private-note"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Private team workspace</p>
+      </div>
+    </aside>
+    <main id="main">
+      <header class="topbar">
+        <div><span class="eyebrow">PVG-EV / Operations</span><h1 id="page-title">Enquiry dashboard</h1></div>
+        <div class="account"><span class="avatar" aria-hidden="true">AD</span><div><strong>Admin</strong><span>PVG EV private dashboard</span></div><button id="sign-out" type="button" class="quiet-button" hidden>Sign out</button></div>
+      </header>
+
+      <section id="login-panel" class="login-panel" aria-labelledby="login-heading">
+        <div class="login-art"><span class="eyebrow">Every enquiry. One place.</span><h2>Good service starts<br>with a conversation.</h2><p>See what customers need, plan the next step and keep every enquiry moving.</p><div class="login-checks"><span>All four website forms</span><span>Full customer details</span><span>Clear follow-up statuses</span></div></div>
+        <div class="login-form-wrap"><span class="eyebrow">Private access</span><h2 id="login-heading">Welcome to PVG EV.</h2><p class="muted">This workspace is reserved for your PVG enquiries.</p>
+          <form id="login-form">
+            <label for="admin-username">Username</label><input id="admin-username" name="username" type="text" value="admin" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="64" required>
+            <label for="admin-password">Password</label><input id="admin-password" name="password" type="password" autocomplete="current-password" maxlength="72" required>
+            <button class="primary-button" id="login-submit" disabled type="submit">Sign in</button>
+          </form>
+          <p id="login-message" class="help-text" role="status">Use your PVG dashboard username and password.</p>
+          <a id="preview-link" class="preview-link" href="index.html?preview=1" hidden>Explore the dashboard preview <span aria-hidden="true">↗︎</span></a>
+        </div>
+      </section>
+
+      <div id="workspace" hidden>
+        <div id="preview-banner" class="preview-banner" hidden><div><strong>Design preview</strong><span id="preview-description">Sample enquiries only. No live customer data.</span></div><a href="index.html">View sign-in</a></div>
+        <section class="welcome" aria-labelledby="welcome-heading"><div><span class="eyebrow" id="today-label">Your enquiry inbox</span><h2 id="welcome-heading">Every request deserves<br>a great response.</h2><p id="welcome-note">Your latest enquiries, together in one place.</p></div><button type="button" id="review-new" class="primary-button">Review new enquiries <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></section>
+        <section class="stats" aria-label="Enquiry overview">
+          <button type="button" data-status="all" class="stat"><span>Total enquiries</span><strong id="stat-total">—</strong><small>Across all website forms</small></button>
+          <button type="button" data-status="new" class="stat stat-new"><span><i class="dot" aria-hidden="true"></i> New</span><strong id="stat-new">—</strong><small>Waiting for a first response</small></button>
+          <button type="button" data-status="active" class="stat"><span>In progress</span><strong id="stat-active">—</strong><small>Reviewing or contacted</small></button>
+          <button type="button" data-status="closed" class="stat"><span>Closed</span><strong id="stat-closed">—</strong><small>Follow-up complete</small></button>
+        </section>
+        <div class="inbox-layout">
+          <section class="inbox card" aria-labelledby="inbox-heading">
+            <div class="section-head"><div><h2 id="inbox-heading">All enquiries</h2><p id="results-label" class="muted" role="status">Loading enquiries…</p></div><button type="button" class="icon-button" id="refresh" aria-label="Refresh enquiries"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 3M5 15a8 8 0 0 0 13 3"/></svg></button></div>
+            <div class="filters"><label class="search"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span class="sr-only">Search enquiries</span><input id="search" type="search" placeholder="Search name, phone or reference" maxlength="120" autocomplete="off"></label><div class="filter-selects"><label><span class="sr-only">Filter by status</span><select id="status-filter"><option value="all">All statuses</option><option value="new">New</option><option value="active">In progress</option><option value="reviewing">Reviewing</option><option value="contacted">Contacted</option><option value="closed">Closed</option><option value="spam">Spam</option></select></label><label><span class="sr-only">Filter by date</span><select id="date-filter"><option value="all">Any time</option><option value="today">Today</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select></label><label id="source-filter-wrap" hidden><span class="sr-only">Preview data source</span><select id="source-filter"><option value="sample">Sample enquiries</option><option value="local">Local form tests</option></select></label></div></div>
+            <div id="list-error" class="notice error" role="alert" hidden></div>
+            <div class="list-legend" aria-hidden="true"><span>Customer & requirement</span><span>Status</span></div>
+            <div id="enquiry-list" class="enquiry-list" aria-label="Enquiries"></div>
+            <div id="empty-state" class="empty-state" hidden><span aria-hidden="true">◎</span><h3>No enquiries found</h3><p>Try another search or clear your filters.</p><button class="secondary-button" id="clear-filters" type="button">Clear filters</button></div>
+            <div class="list-footer"><span id="updated-label">Not refreshed yet</span><div class="pagination"><button id="previous-page" class="quiet-button" type="button" disabled aria-label="Previous page">Previous</button><span id="page-label">1</span><button id="next-page" class="quiet-button" type="button" disabled aria-label="Next page">Next</button></div></div>
+          </section>
+          <aside id="detail-panel" class="detail card" aria-label="Selected enquiry"><div class="detail-empty"><span class="eyebrow">The full picture</span><h2>Get to know the request.</h2><p>Select an enquiry to see the customer’s details, location and requirements.</p></div></aside>
+        </div>
+        <p class="workspace-footnote">An enquiry is a request for follow-up. It does not confirm a charging booking.</p>
+      </div>
+      <noscript><p class="notice">Please enable JavaScript to use the enquiry dashboard.</p></noscript>
+      <div id="toast" class="toast" role="status" hidden></div>
+    </main>
+  </div>
+</body>
+</html>
