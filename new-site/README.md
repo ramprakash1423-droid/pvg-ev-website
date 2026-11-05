@@ -1,6 +1,6 @@
 # PVG-EV — New website
 
-The redesigned website, saved separately from the existing website at the repository root. This folder matches the client preview published on 17 October 2026, including the updated logo, responsive pages, mobile image transitions, guided enquiry forms and matching green team profiles.
+The redesigned website, saved separately from the existing website at the repository root. This folder is the production website source for https://www.pvgev.com/, including the updated logo, responsive pages, mobile image transitions, guided enquiry forms and matching green team profiles.
 
 Team order: Clement Fernandez, Fonda Sandra, Johnson Anthony, Cecilia.
 
@@ -32,7 +32,7 @@ admin account; Google login is not used. See that project's README for local
 preview, build, deployment and access details. Automatic WhatsApp alerts are not
 activated.
 
-Robots exclusions and Vercel no-index headers are retained for client review. The preview URL uses live enquiry storage; the production domain has not been switched.
+The public pages are indexable for the production launch. Canonical URLs and the sitemap use https://www.pvgev.com/. The 404 page remains excluded from indexing. Both production and hosted previews use live enquiry storage.
 
 ## Verified on 17 October 2026
 
@@ -52,16 +52,16 @@ Robots exclusions and Vercel no-index headers are retained for client review. Th
 - `form-submit.js`: shared submission client for server-issued short references.
 - `supabase/migrations/`: scoped database changes for this version; excluded from public builds.
 - `tests/`: form validation, location and original field contract checks.
-- `vercel.json`: preview build and response headers.
+- `vercel.json`: production build, canonical domain redirect and response headers.
 
 Generated `dist/`, local receipts, environment files and Vercel account metadata are ignored by Git.
 
-The public GitHub Pages link above serves this `new-site/` folder from `main`. The current Vercel preview is https://pvg-ev-website-6cgyontmk-prakashs-projects-cb68dcaa.vercel.app/.
+GitHub Pages also serves this `new-site/` folder from `main`. Share https://www.pvgev.com/ as the production client link.
 
-## Deploy this version separately
+## Production deployment
 
-Use this folder as the Vercel project root, with `npm run build` as the build command and `dist` as the output directory. A deployment from the repository root continues to use the existing site. Production configuration and switching the live domain are separate actions.
+Vercel project `pvg-ev-website` uses `new-site` as its Root Directory, `npm run build` as the Build Command, and `dist` as the Output Directory. The connected `main` branch publishes this version. The original site files are retained at the repository root. The previous production deployment before the launch was `dpl_DZx9jmYc25VzTkFBohrMRzvZo3Gr` and can be promoted for rollback if needed.
 
 ## Public client website
 
-https://ramprakash1423-droid.github.io/pvg-ev-website/new-site/
+https://www.pvgev.com/

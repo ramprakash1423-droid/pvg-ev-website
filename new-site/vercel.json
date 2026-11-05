@@ -36,10 +36,6 @@
         {
           "key": "Permissions-Policy",
           "value": "geolocation=(self)"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow, noarchive"
         }
       ]
     }
