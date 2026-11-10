@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'dart:async';
+import 'location_picker.dart';
 import 'package:flutter/material.dart';
 import 'experience.dart';
 import 'personal_screens.dart';
@@ -142,7 +144,7 @@ class _BookingScreenState extends State<BookingScreen> {
   final address = TextEditingController(),
       pincode = TextEditingController(),
       notes = TextEditingController();
-  final requestKey =
+  String requestKey =
       'mobile-${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 30)}';
   List<Map<String, dynamic>> vehicles = [], places = [];
   String? selected, selectedPlace, error;
@@ -150,7 +152,12 @@ class _BookingScreenState extends State<BookingScreen> {
   double? latitude, longitude;
   int step = 0;
   bool loading = true, busy = false, locating = false, agreed = false;
-  bool submitted = false;
+  bool submitted = false, draftRestored = false;
+  Timer? draftTimer;
+  Future<void> draftWrite = Future.value();
+  Map<String, dynamic>? availability;
+  String? availabilityError;
+  bool checkingTime = false;
   bool get tariffAvailable {
     final tariff = widget.api.config?['tariff'];
     return tariff is Map &&
@@ -173,10 +180,52 @@ class _BookingScreenState extends State<BookingScreen> {
     latitude = (p?['latitude'] as num?)?.toDouble();
     longitude = (p?['longitude'] as num?)?.toDouble();
     load();
+    for (final controller in [address, pincode, notes]) {
+      controller.addListener(queueDraft);
+    }
+  }
+
+  void queueDraft() {
+    if (loading ||
+        submitted ||
+        busy ||
+        widget.api.config?['mode'] != 'supabase') {
+      return;
+    }
+    draftTimer?.cancel();
+    draftTimer = Timer(const Duration(milliseconds: 600), saveDraft);
+  }
+
+  void saveDraft() {
+    if (loading ||
+        busy ||
+        submitted ||
+        widget.api.config?['mode'] != 'supabase') {
+      return;
+    }
+    final payload = {
+      'vehicle_id': selected,
+      'address': address.text,
+      'pincode': pincode.text,
+      'access_notes': notes.text,
+      'latitude': latitude,
+      'longitude': longitude,
+      'slot': slot?.toUtc().toIso8601String(),
+      'request_key': requestKey,
+    };
+    draftWrite = draftWrite.then((_) async {
+      try {
+        await widget.api.request('/booking-draft', data: payload);
+      } catch (_) {
+        /* Keep the in-memory form available when offline. */
+      }
+    });
   }
 
   @override
   void dispose() {
+    draftTimer?.cancel();
+    if (!submitted) saveDraft();
     for (final c in [address, pincode, notes]) {
       c.dispose();
     }
@@ -203,6 +252,24 @@ class _BookingScreenState extends State<BookingScreen> {
       selected = vehicles.any((v) => v['id'] == want)
           ? want
           : vehicles.firstOrNull?['id'];
+      if (!draftRestored &&
+          widget.prefill == null &&
+          widget.api.config?['mode'] == 'supabase') {
+        final d = await widget.api.request('/booking-draft');
+        if (d['request_key'] is String) {
+          requestKey = d['request_key'];
+          address.text = d['address'] ?? '';
+          pincode.text = d['pincode'] ?? '';
+          notes.text = d['access_notes'] ?? '';
+          if (vehicles.any((v) => v['id'] == d['vehicle_id'])) {
+            selected = d['vehicle_id'];
+          }
+          latitude = (d['latitude'] as num?)?.toDouble();
+          longitude = (d['longitude'] as num?)?.toDouble();
+          slot = DateTime.tryParse(d['slot'] ?? '')?.toLocal();
+        }
+      }
+      draftRestored = true;
       error = null;
     } catch (e) {
       error = errorText(e);
@@ -235,7 +302,10 @@ class _BookingScreenState extends State<BookingScreen> {
     } catch (e) {
       error = errorText(e);
     }
-    if (mounted) setState(() => locating = false);
+    if (mounted) {
+      setState(() => locating = false);
+      queueDraft();
+    }
   }
 
   Future<void> chooseTime() async {
@@ -249,6 +319,30 @@ class _BookingScreenState extends State<BookingScreen> {
       lastDate: now.add(const Duration(days: 30)),
     );
     if (day == null || !mounted) return;
+    if (widget.api.config?['mode'] == 'supabase' &&
+        RegExp(r'^600\d{3}$').hasMatch(pincode.text)) {
+      setState(() {
+        checkingTime = true;
+        availabilityError = null;
+      });
+      try {
+        final date =
+            '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+        final data = await widget.api.request(
+          '/availability?pincode=${pincode.text}&date=$date',
+        );
+        if (!mounted) return;
+        setState(() => availability = data);
+        if (data['state'] == 'outside_area') {
+          setState(() => error = data['message']);
+          return;
+        }
+      } catch (e) {
+        if (mounted) setState(() => availabilityError = errorText(e));
+      } finally {
+        if (mounted) setState(() => checkingTime = false);
+      }
+    }
     final time = await showTimePicker(
       context: context,
       initialTime: slot == null
@@ -256,10 +350,15 @@ class _BookingScreenState extends State<BookingScreen> {
           : TimeOfDay.fromDateTime(slot!),
     );
     if (time == null || !mounted) return;
+    if (time.hour < 6 || time.hour >= 23) {
+      setState(() => error = 'Choose a visit between 6:00 AM and 11:00 PM.');
+      return;
+    }
     setState(() {
       slot = DateTime(day.year, day.month, day.day, time.hour, time.minute);
       error = null;
     });
+    queueDraft();
   }
 
   bool validateStep() {
@@ -285,6 +384,7 @@ class _BookingScreenState extends State<BookingScreen> {
       error = null;
       agreed = false;
     });
+    queueDraft();
     if (scroll.hasClients) scroll.jumpTo(0);
   }
 
@@ -305,6 +405,8 @@ class _BookingScreenState extends State<BookingScreen> {
       error = null;
     });
     try {
+      draftTimer?.cancel();
+      await draftWrite;
       final b = await widget.api.request(
         '/bookings',
         data: {
@@ -468,7 +570,10 @@ class _BookingScreenState extends State<BookingScreen> {
               style: const TextStyle(fontSize: 12),
             ),
             selected: selected == v['id'],
-            onTap: () => setState(() => selected = v['id']),
+            onTap: () {
+              setState(() => selected = v['id']);
+              queueDraft();
+            },
           ),
         ),
       ),
@@ -580,6 +685,27 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
             ),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () async {
+                final pin = await pickChargingPin(
+                  context,
+                  latitude: latitude,
+                  longitude: longitude,
+                );
+                if (pin != null && mounted) {
+                  setState(() {
+                    latitude = pin.latitude;
+                    longitude = pin.longitude;
+                  });
+                  queueDraft();
+                }
+              },
+              icon: const Icon(Icons.map_outlined, size: 18),
+              label: const Text('Choose exact pin on map'),
+            ),
+          ),
           if (latitude != null)
             Align(
               alignment: Alignment.centerLeft,
@@ -602,7 +728,7 @@ class _BookingScreenState extends State<BookingScreen> {
         children: [
           sectionLabel(Icons.schedule_outlined, 'Preferred visit time'),
           OutlinedButton.icon(
-            onPressed: chooseTime,
+            onPressed: checkingTime ? null : chooseTime,
             icon: const Icon(Icons.calendar_month_outlined, size: 18),
             label: Text(
               slot == null
@@ -611,8 +737,34 @@ class _BookingScreenState extends State<BookingScreen> {
             ),
           ),
           const SizedBox(height: 6),
+          if (checkingTime) const LinearProgressIndicator(),
+          if (availabilityError != null)
+            Notice(availabilityError!, error: true),
+          if (availability != null) ...[
+            Notice(availability!['message']),
+            if ((availability!['slots'] as List? ?? []).isNotEmpty)
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: (availability!['slots'] as List)
+                    .take(16)
+                    .map(
+                      (value) => ChoiceChip(
+                        label: Text(timeLabel(value)),
+                        selected: slot?.toUtc().toIso8601String() == value,
+                        onSelected: (_) {
+                          setState(
+                            () => slot = DateTime.parse(value).toLocal(),
+                          );
+                          queueDraft();
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+          ],
           const Text(
-            'Your time is a preference until PVG confirms the visit.',
+            'Service hours: 6:00 AM–11:00 PM. Your preferred time is confirmed when PVG assigns the charging team.',
             style: TextStyle(color: muted, fontSize: 12, height: 1.4),
           ),
         ],

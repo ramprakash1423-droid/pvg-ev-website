@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'api.dart';
+import 'visit_controls.dart';
 import 'ui.dart';
 import 'experience.dart';
 import 'personal_screens.dart';
@@ -604,6 +605,8 @@ class _BookingDetailState extends State<BookingDetail>
                             },
                       child: const Text('Cancel visit'),
                     ),
+                  if (api.config?['mode'] == 'supabase')
+                    VisitControls(api: api, booking: b, onChanged: load),
                   if (b['dispute'] != null)
                     Notice('Your concern: ${b['dispute']}'),
                   if (error != null) Notice(error!, error: true),

@@ -10,6 +10,8 @@ An active visit becomes the main Home experience. Tracking shows the real destin
 
 Booking uses three compact steps: choose an EV, select the place and preferred time, and review. Home has no pricing or energy selector. The agreed tariff is disclosed at review; the actual bill is calculated only after the technician submits meter evidence. Small controls and short transitions respect reduced-motion preferences.
 
+Service hours are **6:00 AM–11:00 PM IST**. Customers can check their area, place a parking pin on a map, resume an unfinished booking, request a new time before departure, and send a visit-linked support request. Staff can respond, publish delays/failed-visit reasons and configure service hours/coverage. Missing real fleet or team data stays subject to confirmation. Customer sessions restore using a server-validated cookie on web and secure device storage on mobile.
+
 ## Projects
 
 - `customer-app/`: Flutter iOS, Android and browser customer experience.
@@ -45,7 +47,7 @@ The service requires privately supplied `pvg-service/.local/supabase.json` with 
 - ₹300 visit fee + ₹20/kWh + 18% tax, per PVG's instruction.
 - Default mode uses Supabase; sample mode is explicit and separate for automated/local development tests.
 - Customer mobile login requires a genuine SMS code. Vehicle and technician records must be entered by PVG.
-- GPS currently comes from the assigned technician's foreground website, with permission. Physical-phone use needs a secured HTTPS service. No background tracking, road ETA or push-notification delivery is claimed.
+- GPS currently comes from the assigned technician's foreground website, with permission. Physical-phone use needs a secured HTTPS service. Screen wake lock is requested where supported; background tracking, road ETA and closed-app push delivery are not claimed.
 - Payments are Razorpay **Test Mode**. No real money is collected. Zoho Books is not configured.
 - Setrans still controls charging equipment. Status and delivered energy are technician-reported; there is no charger API integration.
 - The API is a local pilot and deliberately refuses production mode. GitHub contains source code, not a publicly deployed customer/payment service.
@@ -59,4 +61,4 @@ node --test pvg-service/test/*.test.mjs
 node --test enquiry-dashboard/tests/*.test.cjs
 ```
 
-15 Flutter tests cover the booking-to-tracking handoff, active Home, missing GPS, destination-only mapping, stale readings, small screens, pricing and customer acceptance. Database workflow checks use a rolled-back transaction; fixture data is not retained in Supabase. See the service README for the optional private database verification command.
+17 Flutter tests cover the booking-to-tracking handoff, active Home, missing GPS, destination-only mapping, stale readings, small screens, pricing and customer acceptance. 46 service tests, 10 dashboard tests and 41 Supabase workflow checks also passed. Database workflow checks use a rolled-back transaction; fixture data is not retained in Supabase. See the service README for the optional private database verification command.

@@ -489,11 +489,11 @@ class HelpScreen extends StatelessWidget {
           ),
           (
             'Can I see the charging van on a map?',
-            'Not yet. Visit stages are updated by your technician. The app does not currently receive vehicle GPS or live charger telemetry from Setrans.',
+            'Yes. After assignment, you can see your technician’s shared phone location and the last update time. Sharing needs their permission and an open dashboard. If updates stop, the map identifies the last known location. Charger readings still come from the technician, not a Setrans connection.',
           ),
           (
             'Can I change or cancel a visit?',
-            'You can cancel a requested or confirmed visit before departure from the visit details. For a time change or a job already in progress, contact PVG with your visit reference.',
+            'You can cancel a requested or confirmed visit before departure from the visit details. Use Change visit time before departure to request a new time. PVG will reconfirm the assignment. For a job already in progress, send a support request from its details.',
           ),
           (
             'What if my reading looks wrong?',

@@ -10,6 +10,7 @@ import 'auth_screen.dart';
 import 'booking_screen.dart';
 import 'booking_detail.dart';
 import 'tracking_experience.dart';
+import 'service_availability.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -184,9 +185,11 @@ class _CustomerHomeState extends State<CustomerHome>
   Future<void> load({bool silent = false}) async {
     if (refreshing) return;
     refreshing = true;
-    final owner = api.user?['id'];
     try {
+      await api.restoreSession();
+      final owner = api.user?['id'];
       if (api.config == null) await api.loadConfig();
+
       if (api.signedIn) {
         final data = await Future.wait<dynamic>([
           api.bookings(),
@@ -195,7 +198,32 @@ class _CustomerHomeState extends State<CustomerHome>
           api.request('/preferences'),
         ]);
         if (mounted && api.signedIn && api.user?['id'] == owner) {
+          final prior = bookings.isEmpty ? null : updates.firstOrNull;
           bookings = data[0];
+          final newest = updates.firstOrNull;
+          if (prior != null &&
+              newest != null &&
+              newest['created_at'] != prior['created_at'] &&
+              newest['action'] != 'gps_started' &&
+              newest['action'] != 'gps_stopped') {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  eventLabels[newest['action']] ??
+                      'Your charging visit has an update.',
+                ),
+                action: SnackBarAction(
+                  label: 'View',
+                  onPressed: () {
+                    final b = bookings
+                        .where((b) => b['id'] == newest['booking_id'])
+                        .firstOrNull;
+                    if (b != null) open(b);
+                  },
+                ),
+              ),
+            );
+          }
           vehicles = data[1];
           places = (data[2]['places'] as List)
               .map((p) => Map<String, dynamic>.from(p))
@@ -571,12 +599,27 @@ class _CustomerHomeState extends State<CustomerHome>
     }
     return [
       ServiceBanner(reducedMotion: reduceMotion),
-      TextButton.icon(
-        onPressed: previewTracking,
-        icon: const Icon(Icons.route_outlined, size: 18),
-        label: const Text('Track my charging vehicle'),
-      ),
-      const SizedBox(height: 4),
+      if (prefs['booking_draft'] != null) ...[
+        const SizedBox(height: 12),
+        Panel(
+          child: Row(
+            children: [
+              const Icon(Icons.edit_note, size: 20),
+              const SizedBox(width: 10),
+              const Expanded(
+                child: Text(
+                  'Your unfinished booking is saved.',
+                  style: TextStyle(fontSize: 12),
+                ),
+              ),
+              TextButton(onPressed: () => book(), child: const Text('Resume')),
+            ],
+          ),
+        ),
+      ],
+      const SizedBox(height: 12),
+      ServiceAvailability(api: api, onBook: bookHome),
+      const SizedBox(height: 12),
       Panel(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
         child: Column(
@@ -1003,8 +1046,20 @@ class _CustomerHomeState extends State<CustomerHome>
         padding: const EdgeInsets.only(top: 24),
         child: OutlinedButton(
           onPressed: () async {
-            await api.signOut();
-            if (mounted) setState(() => tab = 0);
+            try {
+              await api.signOut();
+              if (mounted) setState(() => tab = 0);
+            } catch (e) {
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Could not sign out. Check your connection and try again.',
+                    ),
+                  ),
+                );
+              }
+            }
           },
           child: const Text('Sign out'),
         ),

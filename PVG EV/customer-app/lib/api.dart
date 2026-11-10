@@ -2,10 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'session_storage.dart';
+import 'http_client.dart'
+    if (dart.library.js_interop) 'http_client_web.dart'
+    as transport;
 
 class PvgApi extends ChangeNotifier {
   PvgApi({http.Client? client, String? endpoint})
-    : _client = client ?? http.Client(),
+    : _client = client ?? transport.createClient(),
+      persistent = client == null,
       baseUrl =
           endpoint ??
           const String.fromEnvironment(
@@ -13,6 +18,10 @@ class PvgApi extends ChangeNotifier {
             defaultValue: 'http://127.0.0.1:8201',
           );
   final http.Client _client;
+  final bool persistent;
+  final SessionStorage storage = const SessionStorage();
+  bool _restored = false, _cookieSession = false;
+  bool get cookieMode => kIsWeb && persistent;
   final String baseUrl;
   String? _token;
   Map<String, dynamic>? user;
@@ -23,7 +32,7 @@ class PvgApi extends ChangeNotifier {
   http.Client? _liveClient;
   int _liveGeneration = 0;
   bool _disposed = false;
-  bool get signedIn => _token != null;
+  bool get signedIn => _token != null || _cookieSession;
   bool get isPreview => config?['mode'] == 'local_preview';
   Uri uri(String path) => Uri.parse('$baseUrl/api$path');
 
@@ -62,7 +71,7 @@ class PvgApi extends ChangeNotifier {
     } catch (_) {
       throw Exception('The PVG service returned an unexpected response.');
     }
-    if (response.statusCode == 401 && _token != null) {
+    if (response.statusCode == 401 && signedIn) {
       _clearSession();
     }
     if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -73,6 +82,7 @@ class PvgApi extends ChangeNotifier {
 
   Future<void> loadConfig() async {
     config = await request('/config');
+    if (signedIn) startLiveUpdates();
     notifyListeners();
   }
 
@@ -91,9 +101,25 @@ class PvgApi extends ChangeNotifier {
   Future<void> verifyOtp(String challenge, String code) async {
     final result = await request(
       '/auth/verify',
-      data: {'challenge_id': challenge, 'code': code},
+      data: {
+        'challenge_id': challenge,
+        'code': code,
+        if (cookieMode) 'client': 'web',
+      },
     );
-    _token = result['token'] as String;
+    _applySession(result);
+    if (persistent && !kIsWeb && _token != null) {
+      try {
+        await storage.write(_token!);
+      } catch (_) {
+        /* Current sign-in remains usable. */
+      }
+    }
+  }
+
+  void _applySession(Map<String, dynamic> result) {
+    _token = result['token'] as String? ?? _token;
+    _cookieSession = cookieMode;
     user = Map<String, dynamic>.from(result['user']);
     _expiry?.cancel();
     _expiry = Timer(
@@ -102,6 +128,25 @@ class PvgApi extends ChangeNotifier {
     );
     startLiveUpdates();
     notifyListeners();
+  }
+
+  Future<void> restoreSession() async {
+    if (_restored || !persistent) return;
+    _restored = true;
+    try {
+      if (!kIsWeb) {
+        _token = await storage.read();
+        if (_token == null) return;
+      }
+      final result = await request('/auth/session');
+      _applySession(result);
+    } catch (_) {
+      _token = null;
+      _cookieSession = false;
+      user = null;
+      // A temporary connection error must not delete a stored valid session.
+      _restored = false;
+    }
   }
 
   void startLiveUpdates() {
@@ -114,11 +159,11 @@ class PvgApi extends ChangeNotifier {
 
   Future<void> _listen(int generation) async {
     while (!_disposed && signedIn && generation == _liveGeneration) {
-      final client = http.Client();
+      final client = transport.createClient();
       _liveClient = client;
       try {
         final request = http.Request('GET', uri('/events'));
-        request.headers['Authorization'] = 'Bearer $_token';
+        if (_token != null) request.headers['Authorization'] = 'Bearer $_token';
         request.headers['Accept'] = 'text/event-stream';
         final response = await client
             .send(request)
@@ -160,9 +205,10 @@ class PvgApi extends ChangeNotifier {
   Future<void> signOut() async {
     try {
       if (signedIn) await request('/auth/logout', data: {});
-    } finally {
-      _clearSession();
+    } catch (_) {
+      if (cookieMode) rethrow;
     }
+    _clearSession();
   }
 
   void _clearSession() {
@@ -170,6 +216,8 @@ class PvgApi extends ChangeNotifier {
     _liveClient?.close();
     _liveClient = null;
     _token = null;
+    _cookieSession = false;
+    if (persistent && !kIsWeb) unawaited(storage.clear().catchError((_) {}));
     user = null;
     _expiry?.cancel();
     notifyListeners();
@@ -192,7 +240,7 @@ class PvgApi extends ChangeNotifier {
     final response = await _client
         .get(
           uri('/bookings/$bookingId/receipt'),
-          headers: {'Authorization': 'Bearer $_token'},
+          headers: {if (_token != null) 'Authorization': 'Bearer $_token'},
         )
         .timeout(const Duration(seconds: 20));
     if (response.statusCode != 200) {

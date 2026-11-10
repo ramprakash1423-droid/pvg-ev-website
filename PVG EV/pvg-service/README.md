@@ -12,7 +12,19 @@ Private `.local/supabase.json` contains `database_url` (mode 0600). Never commit
 
 Customer login in this mode requires real SMS verification. Demo login, simulated payments and sample GPS are rejected. Staff admin login validates the existing PVG dashboard credential without changing its password; technician credentials are salted and hashed. Razorpay remains **Test Mode**, and Zoho remains unconnected. Payment verification never bypasses customer acceptance.
 
-Verification: 40 service tests, 10 dashboard tests, 10 Flutter tests, and 25 real Supabase workflow assertions passed. Database assertions ran in a rolled-back transaction and retained no test bookings. A live database notification was received through the secured listener. The real admin login was checked in the browser. Real handset SMS/GPS and hosted deployment are still pending. Run database contract verification with `node scripts/verify-supabase.mjs`; it requires the private connection file and deliberately rolls back test rows. Sequence values can advance during verification.
+Verification: 46 service tests, 10 dashboard tests, 17 Flutter tests, and 41 real Supabase workflow assertions passed. Database assertions run in a rolled-back transaction and retain no test bookings. The actual service-hours row is saved independently as 06:00–23:00 IST with empty coverage until PVG configures its areas. Run `node scripts/verify-supabase.mjs` with the private connection file to repeat the rollback verification. Sequence values can advance during verification.
+
+## Current service experience — 10 November 2026
+
+`CustomerExperience` uses the existing private tables for service settings, booking drafts, rescheduling, support and customer-visible service notes. The additional `20261110030000_service_hours.sql` and `20261110040000_require_service_window.sql` migrations have been applied. They insert the PVG service-hours setting when absent and leave the visit planning duration unconfigured until PVG confirms it. No technician or vehicle rows have been invented.
+
+- Public `GET /api/availability` exposes hours and request slots derived from actual coverage, vehicles, staff and bookings, not names or private addresses. Missing configuration produces a confirmation-required response.
+- Admin `GET/POST /api/service-settings` configures IST hours, visit window and service pincodes.
+- Customer `GET/POST /api/booking-draft` stores only their own draft. Creating a booking and clearing its draft are atomic.
+- Version-checked `POST /api/bookings/:id/reschedule` works before departure and releases the old assignment. `.../support` creates a customer request or an admin response. `.../service-update` lets authorized staff publish a delay or cancel a failed pre-charging visit with a reason. These controls do not add admin approval to customer billing.
+- Real customer sessions last seven days. Web OTP verification returns an HttpOnly/SameSite cookie without exposing the bearer token to JavaScript; cookie mutations require an allowed origin. Native clients keep their bearer token in platform secure storage. `GET /api/auth/session` validates restoration and logout revokes the session. The HTTP cookie is local-pilot-only; an eventual HTTPS deployment must add Secure and a deliberate production origin configuration.
+- Technician phone GPS stays permission-based. The website requests screen wake lock where supported; old positions become last-known when the browser pauses GPS. Background handset GPS and closed-app notifications are not implemented.
+
 
 The historical notes below describe earlier sample-mode checks; they are not current real customer data.
 
@@ -46,7 +58,7 @@ To test payment behavior without contacting Razorpay, start with `PVG_PAYMENT_MO
 
 `requested → assigned → on_the_way → arrived → charging → awaiting_acceptance → awaiting_payment → paid`
 
-- Admin assigns one of three sample vehicle slots and a technician, confirms compatibility, and cannot approve a bill on behalf of the customer.
+- Admin assigns an actual configured vehicle and technician in Supabase mode (sample slots exist only in explicit sample mode), confirms compatibility, and cannot approve a bill on behalf of the customer.
 - Technician sees only assigned jobs, advances progress and uploads session kWh/photo or cumulative start/end readings with both photos. The price comes from the booking tariff snapshot.
 - Customer sees only their own jobs. Acceptance requires the exact latest reading, booking version, total and explicit consent. The accepted record is immutable and invoice creation is idempotent.
 - A dispute goes to staff; corrected evidence must be accepted again by the customer. Cancellation is permitted before the technician departs.

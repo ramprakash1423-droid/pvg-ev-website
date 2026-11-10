@@ -93,6 +93,11 @@ class EmptyState extends StatelessWidget {
 }
 
 const eventLabels = {
+  'rescheduled': 'New visit time requested',
+  'support_requested': 'Support request received',
+  'support_updated': 'PVG replied to your support request',
+  'service_update': 'An update from your charging team',
+  'visit_unavailable': 'Visit could not proceed',
   'gps_started': 'Technician enabled GPS sharing',
   'gps_stopped': 'GPS sharing stopped',
   'requested': 'Charging visit requested',

@@ -101,13 +101,13 @@ export class PostgresStore {
     return await this.newSession(user);
   }
   async newSession(user) {
-    const token = randomBytes(32).toString('hex');
+    const token = randomBytes(32).toString('hex'), lifetime=user.role==='customer'?7*86400:3600;
     await this.db.prepare('DELETE FROM sessions WHERE expires<?').run(Date.now());
-    await this.db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(sha(token), user.id, Date.now() + 3600000);
+    await this.db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(sha(token), user.id, Date.now() + lifetime*1000);
     return {
       token,
       user: safeUser(user),
-      expires_in: 3600
+      expires_in: lifetime
     };
   }
   async authenticate(token) {

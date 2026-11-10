@@ -5,6 +5,7 @@ import {resolve, extname, sep} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {Store, ApiError, ensure, DEMO_TARIFF, id} from './domain.mjs';
 import {RazorpayTest, TwoFactorSms} from './providers.mjs';
+import {CustomerExperience,validateVisitTime} from './customer-experience.mjs';
 import {receiptPdf} from './receipt.mjs';
 import {PostgresDatabase} from './postgres.mjs';
 import {PostgresStore} from './postgres-store.mjs';
@@ -58,6 +59,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
   });
   if (seed&&!real) await store.seed(photo);
   if(real){await store.tariff();void store.db.listen();}
+  const experience=real?new CustomerExperience(store):null;
   const streams=new Map();
   const send=(res,event)=>{if(!res.destroyed)res.write(`data: ${JSON.stringify(event)}\n\n`);};
   if(real){
@@ -130,6 +132,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         ensure(origins.has(req.headers.origin), 'This origin is not allowed.', 403);
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
         res.setHeader('Vary', 'Origin');
+        res.setHeader('Access-Control-Allow-Credentials','true');
         res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
       }
@@ -181,6 +184,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         });
         return;
       }
+      if(path==='/api/availability'&&req.method==='GET'){ensure(real,'Real scheduling is not configured.',503);json(res,200,await experience.availability(Object.fromEntries(url.searchParams)));return;}
       if (path === '/api/health' && req.method === 'GET') {
         json(res, 200, {
           ok: true,
@@ -240,7 +244,8 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
           return;
         }
         if (path === '/api/auth/verify') {
-          json(res, 200, await store.verifyOtp(input.challenge_id, input.code));
+          const auth=await store.verifyOtp(input.challenge_id,input.code);
+          if(input.client==='web'){res.setHeader('Set-Cookie',`pvg_customer=${auth.token}; HttpOnly; SameSite=Strict; Path=/api; Max-Age=${auth.expires_in}`);const {token,...publicAuth}=auth;json(res,200,publicAuth);}else json(res,200,auth);
           return;
         }
       }
@@ -276,7 +281,10 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         }
         throw new ApiError(404, 'Endpoint not found.');
       }
-      const token = req.headers.authorization?.replace(/^Bearer /, '');
+      const bearer=req.headers.authorization?.replace(/^Bearer /,'');
+      const cookie=req.headers.cookie?.split(';').map(v=>v.trim()).find(v=>v.startsWith('pvg_customer='))?.slice(13);
+      const token=bearer||cookie;
+      if(!bearer&&cookie&&req.method!=='GET')ensure(req.headers.origin&&origins.has(req.headers.origin),'A trusted origin is required.',403);
       const user = await store.authenticate(token);
       if(path==='/api/events'&&req.method==='GET'){
         ensure(real,'Live events are not enabled in sample mode.',404);
@@ -287,6 +295,9 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         const heartbeat=setInterval(async()=>{if(checking)return;checking=true;try{await store.authenticate(token);res.write(': heartbeat\n\n');}catch{send(res,{kind:'session_expired'});res.end();}finally{checking=false;}},20000);
         res.on('close',()=>{clearInterval(heartbeat);streams.delete(res);});return;
       }
+      if(path==='/api/auth/session'&&req.method==='GET'){ensure(user.role==='customer','Customer session required.',403);const session=await store.db.prepare('SELECT expires FROM sessions WHERE hash=?').get((await import('./domain.mjs')).sha(token));json(res,200,{user:{id:user.id,name:user.name,phone:user.phone,role:user.role},expires_in:Math.max(0,Math.floor((session.expires-Date.now())/1000))});return;}
+      if(path==='/api/service-settings'&&['GET','POST'].includes(req.method)){ensure(real,'Real scheduling is not configured.',503);store.role(user,'admin');json(res,200,req.method==='POST'?await experience.saveSettings(user,input):await experience.settings());return;}
+      if(path==='/api/booking-draft'&&['GET','POST'].includes(req.method)){ensure(real,'Draft saving is not configured.',503);json(res,200,await experience.draft(user,req.method==='POST'?input:undefined));return;}
       if (path === '/api/me' && req.method === 'GET') {
         json(res, 200, {
           id: user.id,
@@ -298,6 +309,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
       }
       if (path === '/api/auth/logout' && req.method === 'POST') {
         await store.logout(token);
+        res.setHeader('Set-Cookie','pvg_customer=; HttpOnly; SameSite=Strict; Path=/api; Max-Age=0');
         for(const [stream,client]of streams)if(client.token===token){send(stream,{kind:'session_expired'});stream.end();}
         json(res, 200, {
           ok: true
@@ -361,7 +373,13 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         return;
       }
       if (path === '/api/bookings' && req.method === 'POST') {
-        json(res, 201, await store.createBooking(user, input));
+        if(real)validateVisitTime(input.slot,await experience.settings());
+        const booking=real?await store.tx(async()=>{
+          const created=await store.createBooking(user,input);
+          await experience.draft(user,{clear:true});
+          return created;
+        }):await store.createBooking(user,input);
+        json(res,201,booking);
         return;
       }
       const gps = (/^\/api\/bookings\/([a-zA-Z0-9_-]+)\/tracking(?:\/(start|stop))?$/).exec(path);
@@ -379,7 +397,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         json(res, 200, await store[method](user, bookingId, input));
         return;
       }
-      const match = (/^\/api\/bookings\/([a-zA-Z0-9_-]+)(?:\/(assign|status|reading|accept|dispute|cancel|payment-order|payment-refresh|receipt))?$/).exec(path);
+      const match = (/^\/api\/bookings\/([a-zA-Z0-9_-]+)(?:\/(assign|status|reading|accept|dispute|cancel|reschedule|support|service-update|payment-order|payment-refresh|receipt))?$/).exec(path);
       if (match) {
         const [, bookingId, action] = match;
         if (!action && req.method === 'GET') {
@@ -396,6 +414,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
           return;
         }
         ensure(req.method === 'POST', 'Method not allowed.', 405);
+        if(['reschedule','support','service-update'].includes(action)){ensure(real,'Real visit controls are not configured.',503);json(res,200,await experience[action==='service-update'?'serviceUpdate':action](user,bookingId,input));return;}
         if (action === 'payment-order') {
           json(res, 200, await preparePayment(user, bookingId, url.origin));
           return;

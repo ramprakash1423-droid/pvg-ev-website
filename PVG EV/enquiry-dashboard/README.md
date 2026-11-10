@@ -143,3 +143,12 @@ an approved WhatsApp Business API sender/provider is still needed separately.
 `operations.html`, `operations.css` and `operations.js` add admin/technician booking operations inside this existing dashboard project. The original enquiry inbox remains available. Use the sibling `pvg-service` locally to run operations; the existing Supabase enquiry RPCs and authentication configuration are unchanged.
 
 The new customer app is in `../customer-app/`. The pilot supports assignment, manual technician progress, meter-photo submission, customer acceptance and test-payment status. No normal admin billing approval is present. Staff preview accounts and prices are sample-only. These uncommitted source additions have not been deployed to the production dashboard. See `../pvg-service/README.md` for provider status and the production prerequisites.
+
+
+## Operations improvements — 10 November 2026
+
+The local operations website now includes service hours/coverage, visit-linked support responses, delay updates and failed-visit explanations. Actual service hours are 06:00–23:00 IST; real fleet/team records and coverage must be entered before availability can be calculated. Support appears under Needs attention. No admin approval was added to reading acceptance or payment.
+
+Technician GPS sharing requests screen wake lock on supported browsers, retains its sharing intent while hidden, and resumes fresh updates on return. Mobile browsers may suspend GPS while locked or in the background; the customer receives a last-known label, not invented motion. Explicit stop, completion, cancellation, reassignment and logout end sharing. Staff access remains scoped to their role/assignments.
+
+The original hosted website-enquiry dashboard remains linked from operations. The new booking service is still local and uses Supabase; no production deployment or Clickacook configuration change is part of this update.
