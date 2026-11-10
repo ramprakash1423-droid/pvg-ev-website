@@ -1,0 +1,2 @@
+// Public anonymous browser key. Every enquiry operation requires a server-validated PVG session.
+window.PVG_CONFIG = { url: window.PVG_EV_SUPABASE_URL || "https://wpaickmgqlahzmdqmkid.supabase.co", key: window.PVG_EV_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwYWlja21ncWxhaHptZHFta2lkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3NDI2NDIsImV4cCI6MjA5NTMxODY0Mn0.GPHi7wHHIYKPlHkogpxaEZG8Sq8TnpWZcsad0s0-wfo" };

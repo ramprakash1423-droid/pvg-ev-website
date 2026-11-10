@@ -1,0 +1,16 @@
+{
+  "name": "pvg-operations-service",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "PVG_DATA_MODE=supabase node src/server.mjs",
+    "start:sample": "PVG_DATA_MODE=sample node src/server.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
+}
