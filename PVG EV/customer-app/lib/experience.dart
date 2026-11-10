@@ -14,7 +14,7 @@ class SectionTitle extends StatelessWidget {
     final heading = Text(
       title,
       style: const TextStyle(
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: FontWeight.w700,
         letterSpacing: -.6,
       ),
@@ -23,7 +23,7 @@ class SectionTitle extends StatelessWidget {
         ? null
         : TextButton(onPressed: onTap, child: Text(action!));
     return Padding(
-      padding: const EdgeInsets.only(top: 19, bottom: 10),
+      padding: const EdgeInsets.only(top: 14, bottom: 8),
       child: LayoutBuilder(
         builder: (context, box) {
           if (link != null &&
@@ -64,18 +64,18 @@ class EmptyState extends StatelessWidget {
     child: Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(12),
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: softLime,
           ),
-          child: Icon(icon, size: 32),
+          child: Icon(icon, size: 25),
         ),
         const SizedBox(height: 16),
         Text(
           title,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
         Text(
@@ -84,30 +84,12 @@ class EmptyState extends StatelessWidget {
           style: const TextStyle(color: muted, fontSize: 13),
         ),
         if (action != null) ...[
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
           PrimaryButton(action!, onPressed: onTap),
         ],
       ],
     ),
   );
-}
-
-Map<String, dynamic> estimateBill(Map<String, dynamic>? tariff, double kwh) {
-  final rate = (tariff?['unit_rate_paise'] as num?)?.toInt() ?? 2200;
-  final visit = (tariff?['visit_fee_paise'] as num?)?.toInt() ?? 25000;
-  final taxRate = (tariff?['tax_basis_points'] as num?)?.toInt() ?? 0;
-  final milli = (kwh * 1000).round();
-  final energy = (milli * rate / 1000).round();
-  final tax = ((visit + energy) * taxRate / 10000).round();
-  return {
-    'energy_milli': milli,
-    'unit_rate_paise': rate,
-    'energy_paise': energy,
-    'visit_fee_paise': visit,
-    'tax_basis_points': taxRate,
-    'tax_paise': tax,
-    'total_paise': visit + energy + tax,
-  };
 }
 
 const eventLabels = {

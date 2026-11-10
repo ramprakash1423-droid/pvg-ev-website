@@ -197,7 +197,7 @@ class _VisitTrackingState extends State<VisitTracking> {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -265,7 +265,7 @@ class _VisitTrackingState extends State<VisitTracking> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
-                height: widget.prominent ? 320 : 260,
+                height: widget.prominent ? 280 : 240,
                 child: Stack(
                   children: [
                     FlutterMap(

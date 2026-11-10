@@ -111,7 +111,7 @@ void main() {
       await tester.pumpWidget(PvgCustomerApp(api: api));
       await tester.pumpAndSettle();
       expect(find.byType(TrackingExperience), findsOneWidget);
-      expect(find.text('Your day.\nFully charged.'), findsNothing);
+      expect(find.text('Your day. Fully charged.'), findsNothing);
       expect(find.text('Your charging team is assigned.'), findsOneWidget);
       expect(find.text('TEST REG'), findsOneWidget);
       expect(tester.takeException(), isNull);

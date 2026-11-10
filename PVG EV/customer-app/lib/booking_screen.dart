@@ -82,7 +82,7 @@ class _AddEvState extends State<_AddEv> {
           const SizedBox(height: 16),
           const Text(
             'Make it yours.',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 24),
           TextFormField(
@@ -129,15 +129,9 @@ class _AddEvState extends State<_AddEv> {
 }
 
 class BookingScreen extends StatefulWidget {
-  const BookingScreen({
-    super.key,
-    required this.api,
-    this.prefill,
-    this.initialEnergy,
-  });
+  const BookingScreen({super.key, required this.api, this.prefill});
   final PvgApi api;
   final Map<String, dynamic>? prefill;
-  final double? initialEnergy;
   @override
   State<BookingScreen> createState() => _BookingScreenState();
 }
@@ -147,7 +141,6 @@ class _BookingScreenState extends State<BookingScreen> {
   final scroll = ScrollController();
   final address = TextEditingController(),
       pincode = TextEditingController(),
-      units = TextEditingController(text: '15'),
       notes = TextEditingController();
   final requestKey =
       'mobile-${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 30)}';
@@ -158,6 +151,17 @@ class _BookingScreenState extends State<BookingScreen> {
   int step = 0;
   bool loading = true, busy = false, locating = false, agreed = false;
   bool submitted = false;
+  bool get tariffAvailable {
+    final tariff = widget.api.config?['tariff'];
+    return tariff is Map &&
+        ['unit_rate_paise', 'visit_fee_paise', 'tax_basis_points'].every(
+          (key) =>
+              tariff[key] is num &&
+              (tariff[key] as num).isFinite &&
+              tariff[key] >= 0,
+        );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -168,27 +172,16 @@ class _BookingScreenState extends State<BookingScreen> {
     notes.text = p?['access_notes'] ?? '';
     latitude = (p?['latitude'] as num?)?.toDouble();
     longitude = (p?['longitude'] as num?)?.toDouble();
-    units.text =
-        (widget.initialEnergy ??
-                ((p?['estimate']?['energy_milli'] as num?)?.toDouble() ??
-                        15000) /
-                    1000)
-            .toString();
-    units.addListener(update);
     load();
   }
 
   @override
   void dispose() {
-    for (final c in [address, pincode, units, notes]) {
+    for (final c in [address, pincode, notes]) {
       c.dispose();
     }
     scroll.dispose();
     super.dispose();
-  }
-
-  void update() {
-    if (mounted) setState(() {});
   }
 
   Future<void> load({bool newest = false}) async {
@@ -269,10 +262,6 @@ class _BookingScreenState extends State<BookingScreen> {
     });
   }
 
-  Map<String, dynamic> get bill => estimateBill(
-    widget.api.config?['tariff'],
-    (double.tryParse(units.text) ?? 0).clamp(0, 200),
-  );
   bool validateStep() {
     if (!form.currentState!.validate()) return false;
     if (step == 0 && selected == null) {
@@ -300,7 +289,9 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Future<void> submit() async {
-    if (busy || submitted || !agreed || selected == null) return;
+    if (busy || submitted || !agreed || selected == null || !tariffAvailable) {
+      return;
+    }
     if (slot == null || !slot!.isAfter(DateTime.now())) {
       go(1);
       setState(
@@ -324,7 +315,6 @@ class _BookingScreenState extends State<BookingScreen> {
           'latitude': latitude,
           'longitude': longitude,
           'slot': slot!.toUtc().toIso8601String(),
-          'estimated_kwh': units.text.trim(),
           'access_notes': notes.text.trim(),
         },
       );
@@ -344,34 +334,125 @@ class _BookingScreenState extends State<BookingScreen> {
     if (mounted) setState(() => busy = false);
   }
 
-  List<Widget> energyStep() => [
-    const Kicker('01 / YOUR CHARGE'),
-    const SizedBox(height: 12),
-    const Text(
-      'Set up your charge',
-      style: TextStyle(
-        fontSize: 26,
-        height: 1.1,
-        letterSpacing: -1.2,
-        fontWeight: FontWeight.w700,
-      ),
+  Widget stepIntro(String title, String description, IconData icon) => Panel(
+    color: forest,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, color: lime, size: 20),
+            const SizedBox(width: 8),
+            const Expanded(
+              child: Kicker('CHARGING AT YOUR DOORSTEP', color: lime),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            height: 1.2,
+            letterSpacing: -.4,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          description,
+          style: const TextStyle(
+            color: Color(0xffcbd8d1),
+            fontSize: 12,
+            height: 1.5,
+          ),
+        ),
+      ],
     ),
-    const SizedBox(height: 12),
-    const Text(
-      'Choose an EV and roughly how much energy you need. You only pay for the delivered units.',
-      style: TextStyle(color: muted, fontSize: 13),
+  );
+
+  Widget sectionLabel(IconData icon, String title) => Padding(
+    padding: const EdgeInsets.only(bottom: 14),
+    child: Row(
+      children: [
+        Icon(icon, size: 18),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget nextStep(IconData icon, String title, String description) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: softLime,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, size: 17),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                description,
+                style: const TextStyle(color: muted, fontSize: 12, height: 1.4),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+
+  List<Widget> vehicleStep() => [
+    stepIntro(
+      'Which EV are we charging?',
+      'Choose your vehicle. We’ll bring the charging to you.',
+      Icons.electric_car_outlined,
     ),
     const SectionTitle('Your vehicle'),
+    if (vehicles.isEmpty)
+      const Panel(
+        child: Text(
+          'Add your EV once to book visits faster. You can choose “Not sure” if you don’t know the connector.',
+          style: TextStyle(color: muted, fontSize: 13, height: 1.5),
+        ),
+      ),
     for (final v in vehicles)
       Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Material(
           color: selected == v['id'] ? softLime : Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+            side: BorderSide(color: selected == v['id'] ? forest : line),
+          ),
+          clipBehavior: Clip.antiAlias,
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
-              vertical: 7,
+              vertical: 2,
             ),
             leading: Icon(
               selected == v['id']
@@ -391,202 +472,181 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
         ),
       ),
-    TextButton.icon(
-      onPressed: () async {
-        if (await showAddEv(context, widget.api) == true) {
-          await load(newest: true);
-        }
-      },
-      icon: const Icon(Icons.add),
-      label: Text(vehicles.isEmpty ? 'Add your first EV' : 'Add another EV'),
-    ),
-    const SectionTitle('Energy required'),
-    Wrap(
-      spacing: 8,
-      children: [10, 15, 25, 40]
-          .map(
-            (n) => ChoiceChip(
-              label: Text('$n kWh'),
-              selected: double.tryParse(units.text) == n,
-              selectedColor: lime,
-              onSelected: (_) => units.text = n.toString(),
-            ),
-          )
-          .toList(),
-    ),
-    const SizedBox(height: 16),
-    TextFormField(
-      controller: units,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      decoration: const InputDecoration(
-        labelText: 'Or enter your energy need',
-        suffixText: 'kWh',
+    Align(
+      alignment: Alignment.centerLeft,
+      child: TextButton.icon(
+        onPressed: () async {
+          if (await showAddEv(context, widget.api) == true) {
+            await load(newest: true);
+          }
+        },
+        icon: const Icon(Icons.add),
+        label: Text(vehicles.isEmpty ? 'Add your first EV' : 'Add another EV'),
       ),
-      validator: (v) {
-        final n = double.tryParse(v ?? '');
-        return !RegExp(r'^\d{1,4}(\.\d{1,3})?$').hasMatch(v ?? '') ||
-                n == null ||
-                n <= 0 ||
-                n > 200
-            ? 'Enter 0.001–200 kWh (up to 3 decimals)'
-            : null;
-      },
     ),
-    const Notice(
-      'Not sure? Start with an estimate. Actual charging depends on your battery, connector and the charging vehicle. PVG checks compatibility before confirmation.',
-    ),
+    const SectionTitle('Your visit, made simple'),
     Panel(
-      color: forest,
-      child: Row(
+      child: Column(
         children: [
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Kicker('SAMPLE ESTIMATE', color: lime),
-                SizedBox(height: 7),
-                Text(
-                  'Includes visit fee',
-                  style: TextStyle(color: Color(0xffb7cdbf), fontSize: 12),
-                ),
-              ],
-            ),
+          nextStep(
+            Icons.local_shipping_outlined,
+            'Follow your charging vehicle',
+            'Once assigned, see your technician, location updates and visit status.',
           ),
-          Text(
-            money(bill['total_paise']),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.w700,
-            ),
+          const Divider(height: 16, color: line),
+          nextStep(
+            Icons.fact_check_outlined,
+            'Charge first. Review, then pay.',
+            'Your bill uses the actual meter reading. Accept the units before payment.',
           ),
         ],
       ),
     ),
   ];
   List<Widget> placeStep() => [
-    const Kicker('02 / PLACE & TIME'),
-    const SizedBox(height: 12),
-    const Text(
-      'Choose place & time',
-      style: TextStyle(
-        fontSize: 26,
-        height: 1.1,
-        letterSpacing: -1.2,
-        fontWeight: FontWeight.w700,
-      ),
+    stepIntro(
+      'Where should we meet you?',
+      'Choose a place and preferred time. PVG will confirm availability in the Chennai pilot area.',
+      Icons.place_outlined,
     ),
-    const SizedBox(height: 12),
-    const Text(
-      'Chennai pilot area · visit time subject to confirmation.',
-      style: TextStyle(color: muted, fontSize: 13),
-    ),
-    if (places.isNotEmpty) ...[
-      const SectionTitle('Use a saved place'),
-      Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: places
-            .map(
-              (p) => ChoiceChip(
-                avatar: const Icon(Icons.place_outlined, size: 16),
-                selected: selectedPlace == p['id'],
-                selectedColor: lime,
-                label: Text(p['label']),
-                onSelected: (_) => choosePlace(p),
+    const SizedBox(height: 16),
+    Panel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          sectionLabel(Icons.location_on_outlined, 'Charging address'),
+          if (places.isNotEmpty) ...[
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: places
+                  .map(
+                    (p) => ChoiceChip(
+                      avatar: const Icon(Icons.place_outlined, size: 16),
+                      selected: selectedPlace == p['id'],
+                      selectedColor: lime,
+                      label: Text(p['label']),
+                      onSelected: (_) => choosePlace(p),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 16),
+          ],
+          TextFormField(
+            controller: address,
+            onChanged: clearPin,
+            maxLength: 400,
+            minLines: 2,
+            maxLines: 3,
+            textCapitalization: TextCapitalization.sentences,
+            decoration: const InputDecoration(
+              labelText: 'Full address & landmark',
+              counterText: '',
+            ),
+            validator: (v) =>
+                v!.trim().length < 8 ? 'Enter the full charging address' : null,
+          ),
+          const SizedBox(height: 14),
+          TextFormField(
+            controller: pincode,
+            onChanged: clearPin,
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            decoration: const InputDecoration(
+              labelText: 'Chennai pincode',
+              counterText: '',
+            ),
+            validator: (v) => !RegExp(r'^600\d{3}$').hasMatch(v!.trim())
+                ? 'Use a Chennai pincode (600xxx)'
+                : null,
+          ),
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: locating ? null : gps,
+              icon: Icon(
+                latitude == null
+                    ? Icons.my_location
+                    : Icons.check_circle_outline,
               ),
-            )
-            .toList(),
-      ),
-    ],
-    const SectionTitle('Charging address'),
-    TextFormField(
-      controller: address,
-      onChanged: clearPin,
-      maxLength: 400,
-      maxLines: 3,
-      decoration: const InputDecoration(labelText: 'Full address & landmark'),
-      validator: (v) =>
-          v!.trim().length < 8 ? 'Enter the full charging address' : null,
-    ),
-    const SizedBox(height: 10),
-    TextFormField(
-      controller: pincode,
-      onChanged: clearPin,
-      keyboardType: TextInputType.number,
-      maxLength: 6,
-      decoration: const InputDecoration(labelText: 'Chennai pincode'),
-      validator: (v) => !RegExp(r'^600\d{3}$').hasMatch(v!.trim())
-          ? 'Use a Chennai pincode (600xxx)'
-          : null,
-    ),
-    OutlinedButton.icon(
-      onPressed: locating ? null : gps,
-      icon: Icon(
-        latitude == null ? Icons.my_location : Icons.check_circle_outline,
-      ),
-      label: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Text(
-          locating
-              ? 'Finding your location…'
-              : latitude == null
-              ? 'Attach my current location'
-              : 'GPS location attached',
-        ),
+              label: Text(
+                locating
+                    ? 'Finding your location…'
+                    : latitude == null
+                    ? 'Attach my current location'
+                    : 'GPS location attached',
+              ),
+            ),
+          ),
+          if (latitude != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: () => clearPin(''),
+                child: const Text('Remove GPS location'),
+              ),
+            ),
+          const Text(
+            'At this address now? Add GPS to help your technician find you. Otherwise, the address is enough.',
+            style: TextStyle(color: muted, fontSize: 12, height: 1.4),
+          ),
+        ],
       ),
     ),
-    if (latitude != null)
-      TextButton(
-        onPressed: () => clearPin(''),
-        child: const Text('Remove GPS location'),
-      ),
-    const Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        'Optional: attach GPS only when you are at this address. You can book from somewhere else using the address alone.',
-        style: TextStyle(color: muted, fontSize: 12),
-      ),
-    ),
-    const SectionTitle('When works for you?'),
-    OutlinedButton.icon(
-      onPressed: chooseTime,
-      icon: const Icon(Icons.calendar_month_outlined),
-      label: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Text(
-          slot == null
-              ? 'Choose a date & time'
-              : timeLabel(slot!.toIso8601String()),
-        ),
+    const SizedBox(height: 14),
+    Panel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          sectionLabel(Icons.schedule_outlined, 'Preferred visit time'),
+          OutlinedButton.icon(
+            onPressed: chooseTime,
+            icon: const Icon(Icons.calendar_month_outlined, size: 18),
+            label: Text(
+              slot == null
+                  ? 'Choose a date & time'
+                  : timeLabel(slot!.toIso8601String()),
+            ),
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            'Your time is a preference until PVG confirms the visit.',
+            style: TextStyle(color: muted, fontSize: 12, height: 1.4),
+          ),
+        ],
       ),
     ),
-    const SizedBox(height: 18),
-    TextFormField(
-      controller: notes,
-      maxLines: 2,
-      maxLength: 1000,
-      decoration: const InputDecoration(
-        labelText: 'Parking / access instructions (optional)',
-        hintText: 'Gate number, parking level, entry directions…',
+    const SizedBox(height: 14),
+    Panel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          sectionLabel(Icons.notes_outlined, 'Help us find your parking spot'),
+          TextFormField(
+            controller: notes,
+            maxLines: 2,
+            maxLength: 1000,
+            decoration: const InputDecoration(
+              labelText: 'Parking / access instructions (optional)',
+              hintText: 'Gate number, parking level, entry directions…',
+              counterText: '',
+            ),
+          ),
+        ],
       ),
     ),
   ];
   List<Widget> reviewStep() {
     final v = vehicles.firstWhere((v) => v['id'] == selected);
     return [
-      const Kicker('03 / REVIEW & REQUEST'),
-      const SizedBox(height: 12),
-      const Text(
-        'Review your visit',
-        style: TextStyle(
-          fontSize: 26,
-          height: 1.1,
-          letterSpacing: -1.2,
-          fontWeight: FontWeight.w700,
-        ),
+      stepIntro(
+        'Ready to request your visit?',
+        'Check the details below. You can follow your visit as soon as the request is placed.',
+        Icons.checklist_outlined,
       ),
-      const SizedBox(height: 18),
+      const SizedBox(height: 16),
       Panel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -604,7 +664,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 TextButton(onPressed: () => go(0), child: const Text('Edit')),
               ],
             ),
-            const Divider(height: 30),
+            const Divider(height: 24),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -642,20 +702,58 @@ class _BookingScreenState extends State<BookingScreen> {
           ],
         ),
       ),
-      const SectionTitle('Your estimated bill'),
-      Panel(child: BillLines(bill, estimated: true)),
-      Notice(
-        widget.api.isPreview
-            ? 'Sample tariff only. Your final bill uses actual delivered energy and the agreed tariff. You review the meter evidence and accept the final bill before payment. Live rates and tax setup are pending.'
-            : 'Your final bill uses the actual energy delivered and this agreed tariff. Review the meter photo and accept the units and final total before paying.',
+      const SectionTitle('Payment comes after charging'),
+      Panel(
+        child: nextStep(
+          Icons.fact_check_outlined,
+          'You review. You approve.',
+          'Your technician shares the meter photo and delivered units. The app calculates the final bill for you to accept and pay.',
+        ),
       ),
+      if (tariffAvailable)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Text(
+            'Charging rate: ${money(widget.api.config!['tariff']['unit_rate_paise'])} per kWh · Visit fee: ${money(widget.api.config!['tariff']['visit_fee_paise'])} · ${(widget.api.config!['tariff']['tax_basis_points'] as num) / 100}% tax. No payment is taken when you request a visit.',
+            style: const TextStyle(fontSize: 12, color: muted),
+          ),
+        )
+      else ...[
+        const Notice(
+          'The current charging rate could not be loaded. Please reload it before confirming your visit.',
+          error: true,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton(
+            onPressed: busy
+                ? null
+                : () async {
+                    try {
+                      await widget.api.loadConfig();
+                      if (mounted) {
+                        setState(() {
+                          error = null;
+                          agreed = false;
+                        });
+                      }
+                    } catch (e) {
+                      if (mounted) setState(() => error = errorText(e));
+                    }
+                  },
+            child: const Text('Reload charging rate'),
+          ),
+        ),
+      ],
       CheckboxListTile(
         contentPadding: EdgeInsets.zero,
         controlAffinity: ListTileControlAffinity.leading,
         value: agreed,
-        onChanged: busy ? null : (v) => setState(() => agreed = v!),
+        onChanged: busy || !tariffAvailable
+            ? null
+            : (v) => setState(() => agreed = v!),
         title: const Text(
-          'I accept this tariff and understand that PVG must confirm my visit time.',
+          'I agree to the charging rate and visit fee, and understand that PVG will confirm my visit time.',
           style: TextStyle(fontSize: 13),
         ),
       ),
@@ -692,7 +790,7 @@ class _BookingScreenState extends State<BookingScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(22, 0, 22, 18),
+            padding: const EdgeInsets.fromLTRB(18, 10, 18, 16),
             child: Row(
               children: List.generate(
                 3,
@@ -703,18 +801,27 @@ class _BookingScreenState extends State<BookingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
+                          duration: Duration(
+                            milliseconds:
+                                MediaQuery.disableAnimationsOf(context)
+                                ? 0
+                                : 200,
+                          ),
                           height: 4,
                           decoration: BoxDecoration(
-                            color: i <= step ? forest : line,
+                            color: i < step
+                                ? forest
+                                : i == step
+                                ? lime
+                                : line,
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          ['EV & energy', 'Place & time', 'Review'][i],
+                          '${i + 1}. ${['Your EV', 'Place & time', 'Review'][i]}',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: i == step ? forest : muted,
                           ),
@@ -729,21 +836,24 @@ class _BookingScreenState extends State<BookingScreen> {
           Expanded(
             child: Form(
               key: form,
-              child: ListView(
-                controller: scroll,
-                padding: const EdgeInsets.fromLTRB(22, 4, 22, 24),
-                children: [
-                  if (loading)
-                    const LinearProgressIndicator()
-                  else
-                    ...[energyStep, placeStep, reviewStep][step](),
-                  if (error != null) Notice(error!, error: true),
-                  if (error != null && loading == false && vehicles.isEmpty)
-                    TextButton(
-                      onPressed: load,
-                      child: const Text('Reload vehicles'),
-                    ),
-                ],
+              child: MotionEntrance(
+                key: ValueKey(step),
+                child: ListView(
+                  controller: scroll,
+                  padding: const EdgeInsets.fromLTRB(18, 4, 18, 20),
+                  children: [
+                    if (loading)
+                      const LinearProgressIndicator()
+                    else
+                      ...[vehicleStep, placeStep, reviewStep][step](),
+                    if (error != null) Notice(error!, error: true),
+                    if (error != null && loading == false && vehicles.isEmpty)
+                      TextButton(
+                        onPressed: load,
+                        child: const Text('Reload vehicles'),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -752,22 +862,38 @@ class _BookingScreenState extends State<BookingScreen> {
               color: Colors.white,
               border: Border(top: BorderSide(color: line)),
             ),
-            padding: const EdgeInsets.fromLTRB(22, 14, 22, 12),
+            padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
             child: SafeArea(
               top: false,
-              child: PrimaryButton(
-                step == 2 ? 'Request charging visit' : 'Continue',
-                busy: busy,
-                onPressed: loading || locating || (step == 2 && !agreed)
-                    ? null
-                    : () {
-                        if (step == 2) {
-                          submit();
-                        } else if (validateStep()) {
-                          go(step + 1);
-                        }
-                      },
-                icon: step == 2 ? Icons.bolt : Icons.arrow_forward,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Step ${step + 1} of 3',
+                      style: const TextStyle(fontSize: 11, color: muted),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 3,
+                    child: PrimaryButton(
+                      step == 2 ? 'Request charging visit' : 'Continue',
+                      busy: busy,
+                      onPressed:
+                          loading ||
+                              locating ||
+                              (step == 2 && (!agreed || !tariffAvailable))
+                          ? null
+                          : () {
+                              if (step == 2) {
+                                submit();
+                              } else if (validateStep()) {
+                                go(step + 1);
+                              }
+                            },
+                      icon: step == 2 ? Icons.bolt : Icons.arrow_forward,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

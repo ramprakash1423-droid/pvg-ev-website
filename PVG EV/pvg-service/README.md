@@ -4,7 +4,7 @@ A runnable Node 24 pilot for the Flutter customer app and the existing PVG dashb
 
 ## Current Supabase mode — 10 November 2026
 
-`npm start` now uses real Supabase records; sample data requires the explicit `npm run start:sample` command. The local server is not publicly deployed. Current tariff: ₹300 visit + ₹50/kWh + 18% tax on both, configured from the owner’s instruction. A 15 kWh estimate is ₹1,239. No sample customers, vehicles, bookings or GPS positions are imported into Supabase. Add real vehicles and technicians under **Vehicles & team**.
+`npm start` now uses real Supabase records; sample data requires the explicit `npm run start:sample` command. The local server is not publicly deployed. Current tariff: ₹300 visit + ₹20/kWh + 18% tax on both, configured from the owner’s instruction. Bookings do not require an energy quantity and contain no price estimate. The bill is calculated only from a technician’s submitted reading; a delivered 15 kWh session totals ₹708. No sample customers, vehicles, bookings or GPS positions are imported into Supabase. Add real vehicles and technicians under **Vehicles & team**.
 
 The applied migration is `supabase/migrations/20261110010000_pvg_app.sql`. It creates the private `pvg_app` schema, 16 tables, RLS, grants and change triggers in the existing project. Do not rerun it blindly: the initial policies and triggers are not idempotent. The approved `pvg_app_runtime` login is restricted to PVG tables. It has no Clickacook table access or access to `auth.users`. Only the existing PVG admin login/logout functions are additionally callable. Existing Clickacook credentials and auth/provider configuration remain unchanged.
 

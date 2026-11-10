@@ -114,10 +114,10 @@ class _PlacesScreenState extends State<PlacesScreen> {
           const Text(
             'Your places.\nYour convenience.',
             style: TextStyle(
-              fontSize: 31,
+              fontSize: 23,
               fontWeight: FontWeight.w700,
               height: 1.1,
-              letterSpacing: -1,
+              letterSpacing: -.6,
             ),
           ),
           const SizedBox(height: 12),
@@ -144,7 +144,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
                             p['label'],
                             style: const TextStyle(
                               fontWeight: FontWeight.w700,
-                              fontSize: 18,
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -399,7 +399,7 @@ class HelpScreen extends StatelessWidget {
                 'A little guidance.\nA smoother charge.',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 28,
+                  fontSize: 22,
                   height: 1.1,
                   fontWeight: FontWeight.w700,
                 ),
@@ -484,8 +484,8 @@ class HelpScreen extends StatelessWidget {
             'kWh is the energy delivered to your battery. kW is the speed at which energy is supplied. Your final energy charge uses the delivered kWh shown in the technician’s evidence.',
           ),
           (
-            'Is the estimate the final price?',
-            'No. It is based on the energy you request plus the visit fee and configured tax. Your final bill uses the actual delivered energy. The price and tax breakdown are shown before you book.',
+            'When is my bill calculated?',
+            'After charging, your technician submits the meter photo and delivered units. Your bill is calculated automatically using the agreed charging rate, visit fee and tax. Review and accept the units before paying.',
           ),
           (
             'Can I see the charging van on a map?',

@@ -17,80 +17,49 @@ void main() {
   runApp(PvgCustomerApp(api: PvgApi()));
 }
 
-class PvgCustomerApp extends StatelessWidget {
+class PvgCustomerApp extends StatefulWidget {
   const PvgCustomerApp({super.key, required this.api});
   final PvgApi api;
+  @override
+  State<PvgCustomerApp> createState() => _PvgCustomerAppState();
+}
+
+class _PvgCustomerAppState extends State<PvgCustomerApp> {
+  bool reducedMotion = false;
+  void updateMotion(bool value) {
+    if (mounted && value != reducedMotion) {
+      setState(() => reducedMotion = value);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
     title: 'PVG EV · Energy on your terms',
-    theme: ThemeData(
-      useMaterial3: true,
-      scaffoldBackgroundColor: canvas,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: forest,
-        primary: forest,
-        secondary: lime,
-        surface: canvas,
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white,
-        foregroundColor: forest,
-        centerTitle: false,
-        scrolledUnderElevation: 0,
-        titleTextStyle: TextStyle(
-          color: forest,
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.all(17),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: line),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: line),
-        ),
-      ),
-      textTheme: const TextTheme(
-        bodyMedium: TextStyle(color: forest, height: 1.45),
-        bodyLarge: TextStyle(color: forest),
-      ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.white,
-        indicatorColor: const Color(0xffe8f3d1),
-        labelTextStyle: WidgetStateProperty.resolveWith(
-          (s) => TextStyle(
-            fontSize: 11,
-            fontWeight: s.contains(WidgetState.selected)
-                ? FontWeight.w700
-                : FontWeight.w500,
-            color: forest,
-          ),
-        ),
-      ),
-    ),
+    theme: pvgTheme(),
     builder: (context, child) => ColoredBox(
       color: const Color(0xffe4e9ec),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 540),
-          child: child!,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              disableAnimations:
+                  reducedMotion || MediaQuery.disableAnimationsOf(context),
+            ),
+            child: child!,
+          ),
         ),
       ),
     ),
-    home: CustomerHome(api: api),
+    home: CustomerHome(api: widget.api, onMotionChanged: updateMotion),
   );
 }
 
 class CustomerHome extends StatefulWidget {
-  const CustomerHome({super.key, required this.api});
+  const CustomerHome({super.key, required this.api, this.onMotionChanged});
   final PvgApi api;
+  final ValueChanged<bool>? onMotionChanged;
   @override
   State<CustomerHome> createState() => _CustomerHomeState();
 }
@@ -101,7 +70,6 @@ class _CustomerHomeState extends State<CustomerHome>
   bool loading = true, refreshing = false, trackingDisconnected = false;
   String? error;
   String filter = 'Active', search = '';
-  double planEnergy = 15;
   String? homePlaceId, homeEvId;
   List<Map<String, dynamic>> bookings = [], vehicles = [], places = [];
   Map<String, dynamic> prefs = {};
@@ -206,6 +174,7 @@ class _CustomerHomeState extends State<CustomerHome>
         vehicles = [];
         places = [];
         prefs = {};
+        widget.onMotionChanged?.call(false);
         homePlaceId = null;
         homeEvId = null;
       }
@@ -232,6 +201,7 @@ class _CustomerHomeState extends State<CustomerHome>
               .map((p) => Map<String, dynamic>.from(p))
               .toList();
           prefs = data[3];
+          widget.onMotionChanged?.call(prefs['reduced_motion'] == true);
         }
       }
       error = null;
@@ -255,13 +225,12 @@ class _CustomerHomeState extends State<CustomerHome>
     return false;
   }
 
-  Future<void> book({Map<String, dynamic>? prefill, double? energy}) async {
+  Future<void> book({Map<String, dynamic>? prefill}) async {
     if (!await signIn() || !mounted) return;
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) =>
-            BookingScreen(api: api, prefill: prefill, initialEnergy: energy),
+        builder: (_) => BookingScreen(api: api, prefill: prefill),
       ),
     );
     await load();
@@ -329,7 +298,10 @@ class _CustomerHomeState extends State<CustomerHome>
   Future<void> preference(Map<String, dynamic> data) async {
     try {
       final p = await api.request('/preferences', data: data);
-      if (mounted) setState(() => prefs = p);
+      if (mounted) {
+        setState(() => prefs = p);
+        widget.onMotionChanged?.call(prefs['reduced_motion'] == true);
+      }
     } catch (e) {
       if (mounted) showMessage(context, errorText(e));
     }
@@ -422,7 +394,6 @@ class _CustomerHomeState extends State<CustomerHome>
       if (homePlace != null) 'saved_place_id': homePlace!['id'],
       if (homeVehicle != null) 'ev': homeVehicle,
     },
-    energy: planEnergy,
   );
 
   Future<void> pickHomePlace() async {
@@ -443,7 +414,7 @@ class _CustomerHomeState extends State<CustomerHome>
             children: [
               const Text(
                 'Where should we charge?',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 6),
               const Text(
@@ -509,7 +480,7 @@ class _CustomerHomeState extends State<CustomerHome>
             children: [
               const Text(
                 'Choose your EV',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 6),
               const Text(
@@ -553,20 +524,6 @@ class _CustomerHomeState extends State<CustomerHome>
     }
   }
 
-  Future<void> planTopUp() async {
-    final energy = await showModalBottomSheet<double>(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      constraints: const BoxConstraints(maxWidth: 540),
-      builder: (_) => EstimateSheet(
-        tariff: api.config?['tariff'],
-        initialEnergy: planEnergy,
-      ),
-    );
-    if (mounted && energy != null) setState(() => planEnergy = energy);
-  }
-
   Widget heading(String kicker, String title, String subtitle) => Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 20),
     child: Column(
@@ -575,7 +532,7 @@ class _CustomerHomeState extends State<CustomerHome>
         Text(
           title,
           style: const TextStyle(
-            fontSize: 27,
+            fontSize: 22,
             fontWeight: FontWeight.w700,
             letterSpacing: -.7,
             height: 1.15,
@@ -597,7 +554,6 @@ class _CustomerHomeState extends State<CustomerHome>
     final pending = bookings.where(needsAction).toList();
     final current = bookings.where(active).toList();
     final focus = pending.firstOrNull ?? current.firstOrNull;
-    final quote = estimateBill(api.config?['tariff'], planEnergy);
     if (focus != null) {
       return [
         SectionTitle(
@@ -620,21 +576,9 @@ class _CustomerHomeState extends State<CustomerHome>
         icon: const Icon(Icons.route_outlined, size: 18),
         label: const Text('Track my charging vehicle'),
       ),
-      const SizedBox(height: 14),
-      if (focus != null) ...[
-        SectionTitle(
-          pending.isNotEmpty ? 'Ready for your review' : 'Your current visit',
-          action: 'View all',
-          onTap: () => setState(() {
-            tab = 1;
-            filter = 'Active';
-          }),
-        ),
-        jobCard(focus, prominent: true),
-        const SizedBox(height: 14),
-      ],
+      const SizedBox(height: 4),
       Panel(
-        padding: const EdgeInsets.fromLTRB(16, 17, 16, 16),
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -644,7 +588,7 @@ class _CustomerHomeState extends State<CustomerHome>
                   child: Text(
                     'Book doorstep charging',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -.3,
                     ),
@@ -671,105 +615,25 @@ class _CustomerHomeState extends State<CustomerHome>
                   : '${homeVehicle!['registration']} · ${homeVehicle!['connector']}',
               onTap: pickHomeEv,
             ),
-            const Divider(height: 1, color: line),
-            const SizedBox(height: 14),
-            Row(
+            const SizedBox(height: 8),
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(
-                  child: Text(
-                    'Energy to add',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    visualDensity: VisualDensity.compact,
-                    minimumSize: const Size(48, 36),
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                  ),
-                  onPressed: planTopUp,
-                  child: const Text('Adjust', style: TextStyle(fontSize: 12)),
-                ),
-              ],
-            ),
-            Wrap(
-              spacing: 7,
-              runSpacing: 4,
-              children: [
-                for (final kwh in {
-                  10,
-                  15,
-                  25,
-                  planEnergy.toInt(),
-                }.toList()..sort())
-                  ChoiceChip(
-                    label: Text(
-                      '$kwh kWh',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                    selected: planEnergy.toInt() == kwh,
-                    selectedColor: const Color(0xffe8f3d1),
-                    backgroundColor: Colors.white,
-                    showCheckmark: false,
-                    side: BorderSide(
-                      color: planEnergy.toInt() == kwh ? forest : line,
-                    ),
-                    onSelected: (_) =>
-                        setState(() => planEnergy = kwh.toDouble()),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Row(
-              children: [
+                Icon(Icons.schedule_outlined, size: 16, color: muted),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    api.isPreview
-                        ? 'Sample estimate'
-                        : 'Estimated total · incl. tax',
-                    style: TextStyle(color: muted, fontSize: 12),
-                  ),
-                ),
-                Text(
-                  money(quote['total_paise']),
-                  style: const TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -.4,
+                    'Choose your preferred visit time next. We’ll bring the charger to you.',
+                    style: TextStyle(fontSize: 12, color: muted),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 11),
-            Theme(
-              data: Theme.of(
-                context,
-              ).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                tilePadding: EdgeInsets.zero,
-                childrenPadding: const EdgeInsets.only(bottom: 12),
-                title: const Text(
-                  'See your price breakdown',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                ),
-                subtitle: const Text(
-                  'Energy + doorstep visit + tax',
-                  style: TextStyle(fontSize: 10, color: muted),
-                ),
-                children: [BillLines(quote, estimated: true)],
-              ),
-            ),
+            const SizedBox(height: 12),
             PrimaryButton(
               'Continue to booking',
               onPressed: bookHome,
               icon: Icons.arrow_forward_rounded,
-            ),
-            const SizedBox(height: 8),
-            const Center(
-              child: Text(
-                'Choose your time next · pay after charging',
-                style: TextStyle(fontSize: 10, color: muted),
-              ),
             ),
           ],
         ),
@@ -792,9 +656,9 @@ class _CustomerHomeState extends State<CustomerHome>
             }),
           ),
           QuickAction(
-            icon: Icons.calculate_outlined,
-            label: 'Estimate',
-            onTap: planTopUp,
+            icon: Icons.notifications_none_rounded,
+            label: 'Updates',
+            onTap: notifications,
           ),
           QuickAction(
             icon: Icons.support_agent_outlined,
@@ -803,8 +667,6 @@ class _CustomerHomeState extends State<CustomerHome>
           ),
         ],
       ),
-      const SizedBox(height: 14),
-      TariffOverview(tariff: api.config?['tariff']),
       const SizedBox(height: 18),
       ChargingJourney(onHelp: help),
       const SizedBox(height: 14),
@@ -832,7 +694,7 @@ class _CustomerHomeState extends State<CustomerHome>
       const SizedBox(height: 14),
       Text(
         api.isPreview
-            ? 'Local preview · sample prices and visits. No real vehicle is dispatched.'
+            ? 'Local preview · no real vehicle is dispatched.'
             : 'Chennai doorstep charging · Your visit is confirmed after assignment.',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 10, color: muted),
@@ -969,7 +831,7 @@ class _CustomerHomeState extends State<CustomerHome>
                 Text(
                   v['model'],
                   style: const TextStyle(
-                    fontSize: 23,
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -.7,
                   ),
@@ -1056,7 +918,7 @@ class _CustomerHomeState extends State<CustomerHome>
                     .substring(0, 1)
                     .toUpperCase(),
                 style: const TextStyle(
-                  fontSize: 22,
+                  fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: forest,
                 ),
@@ -1071,7 +933,7 @@ class _CustomerHomeState extends State<CustomerHome>
                     api.user?['name'] ?? '',
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -1157,7 +1019,7 @@ class _CustomerHomeState extends State<CustomerHome>
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      toolbarHeight: 62,
+      toolbarHeight: 54,
       titleSpacing: 18,
       title: Row(
         children: [
@@ -1213,33 +1075,37 @@ class _CustomerHomeState extends State<CustomerHome>
     ),
     body: RefreshIndicator(
       onRefresh: load,
-      child: ListView(
+      child: MotionEntrance(
         key: ValueKey(tab),
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
-        children: [
-          if (loading) const LinearProgressIndicator(),
-          if (error != null) ...[
-            Notice(error!, error: true),
-            TextButton(onPressed: load, child: const Text('Try again')),
-          ],
-          ...[home, visits, garage, account][tab](),
-          if (tab != 0) ...[
-            const SizedBox(height: 18),
-            Center(
-              child: Text(
-                api.isPreview
-                    ? 'PVG EV · Local preview'
-                    : 'PVG EV · Energy at your doorstep',
-                style: TextStyle(fontSize: 10, color: muted),
+        disabled: reduceMotion,
+        child: ListView(
+          key: PageStorageKey('customer-tab-$tab'),
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 20),
+          children: [
+            if (loading) const LinearProgressIndicator(),
+            if (error != null) ...[
+              Notice(error!, error: true),
+              TextButton(onPressed: load, child: const Text('Try again')),
+            ],
+            ...[home, visits, garage, account][tab](),
+            if (tab != 0) ...[
+              const SizedBox(height: 18),
+              Center(
+                child: Text(
+                  api.isPreview
+                      ? 'PVG EV · Local preview'
+                      : 'PVG EV · Energy at your doorstep',
+                  style: TextStyle(fontSize: 10, color: muted),
+                ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     ),
     bottomNavigationBar: NavigationBar(
-      height: 68,
+      height: 62,
       selectedIndex: tab < 2 ? tab : tab + 1,
       onDestinationSelected: (i) {
         if (i == 2) {
@@ -1261,13 +1127,13 @@ class _CustomerHomeState extends State<CustomerHome>
         ),
         NavigationDestination(
           icon: Container(
-            width: 44,
-            height: 40,
+            width: 36,
+            height: 32,
             decoration: BoxDecoration(
               color: lime,
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.bolt_rounded, color: forest, size: 27),
+            child: const Icon(Icons.bolt_rounded, color: forest, size: 21),
           ),
           label: 'Book',
         ),
@@ -1353,10 +1219,10 @@ class _UpdatesScreenState extends State<UpdatesScreen> {
           const Text(
             'A clear picture.\nEvery step.',
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 23,
               height: 1.1,
               fontWeight: FontWeight.w700,
-              letterSpacing: -1,
+              letterSpacing: -.6,
             ),
           ),
           const SizedBox(height: 14),

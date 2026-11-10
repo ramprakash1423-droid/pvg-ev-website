@@ -7,19 +7,10 @@ class ServiceBanner extends StatelessWidget {
   const ServiceBanner({super.key, required this.reducedMotion});
   final bool reducedMotion;
   @override
-  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
-    tween: Tween(begin: reducedMotion ? 1 : 0, end: 1),
-    duration: Duration(milliseconds: reducedMotion ? 0 : 550),
-    curve: Curves.easeOutCubic,
-    builder: (context, value, child) => Opacity(
-      opacity: value,
-      child: Transform.translate(
-        offset: Offset(0, 12 * (1 - value)),
-        child: child,
-      ),
-    ),
+  Widget build(BuildContext context) => MotionEntrance(
+    disabled: reducedMotion,
     child: ClipRRect(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(18),
       child: Stack(
         children: [
           Positioned.fill(
@@ -46,7 +37,7 @@ class ServiceBanner extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(22),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -74,22 +65,22 @@ class ServiceBanner extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 26),
+                const SizedBox(height: 14),
                 const Text(
-                  'Your day.\nFully charged.',
+                  'Your day. Fully charged.',
                   style: TextStyle(
-                    fontSize: 33,
+                    fontSize: 24,
                     height: 1.02,
                     fontWeight: FontWeight.w700,
-                    letterSpacing: -1.3,
+                    letterSpacing: -.65,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 const SizedBox(
-                  width: 240,
+                  width: 280,
                   child: Text(
-                    'Energy delivered where you park.\nMore time for what matters.',
+                    'Doorstep charging. On your schedule.',
                     style: TextStyle(
                       color: Color(0xffe0e9df),
                       fontSize: 12,
@@ -97,7 +88,7 @@ class ServiceBanner extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 14),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -114,7 +105,7 @@ class ServiceBanner extends StatelessWidget {
     ),
   );
   Widget _heroPill(IconData icon, String label) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
     decoration: BoxDecoration(
       color: const Color(0x221fff99),
       border: Border.all(color: const Color(0x33ffffff)),
@@ -136,73 +127,6 @@ class ServiceBanner extends StatelessWidget {
   );
 }
 
-class TariffOverview extends StatelessWidget {
-  const TariffOverview({super.key, required this.tariff});
-  final Map<String, dynamic>? tariff;
-  @override
-  Widget build(BuildContext context) {
-    if (tariff == null) return const SizedBox.shrink();
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: const Color(0xffeaf2df),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xffdce8cb)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Kicker('Clear pricing. Before you book.', color: forest),
-          const SizedBox(height: 15),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _price(
-                  money(tariff!['unit_rate_paise']),
-                  'per kWh delivered',
-                  Icons.bolt_rounded,
-                ),
-              ),
-              Container(width: 1, height: 44, color: const Color(0xffcbd9bc)),
-              const SizedBox(width: 18),
-              Expanded(
-                child: _price(
-                  money(tariff!['visit_fee_paise']),
-                  'per doorstep visit',
-                  Icons.local_shipping_outlined,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 13),
-          Text(
-            '${(tariff!['tax_basis_points'] as num? ?? 0) / 100}% tax applies to energy + visit fee.',
-            style: const TextStyle(fontSize: 11, color: muted),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _price(String amount, String label, IconData icon) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Icon(icon, size: 19, color: forest),
-      const SizedBox(height: 6),
-      Text(
-        amount,
-        style: const TextStyle(
-          fontSize: 23,
-          fontWeight: FontWeight.w700,
-          letterSpacing: -.6,
-        ),
-      ),
-      Text(label, style: const TextStyle(fontSize: 10, color: muted)),
-    ],
-  );
-}
-
 class ChargingJourney extends StatelessWidget {
   const ChargingJourney({super.key, required this.onHelp});
   final VoidCallback onHelp;
@@ -216,7 +140,7 @@ class ChargingJourney extends StatelessWidget {
         const Text(
           'Every step, in your hands.',
           style: TextStyle(
-            fontSize: 22,
+            fontSize: 18,
             fontWeight: FontWeight.w700,
             letterSpacing: -.7,
           ),
@@ -338,12 +262,12 @@ class SelectionRow extends StatelessWidget {
     onTap: onTap,
     borderRadius: BorderRadius.circular(12),
     child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 4),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
       child: Row(
         children: [
           Container(
-            width: 38,
-            height: 38,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
               color: const Color(0xffedf3ef),
               borderRadius: BorderRadius.circular(12),
@@ -418,14 +342,14 @@ class QuickAction extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                width: 46,
-                height: 46,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: line),
                 ),
-                child: Icon(icon, size: 21, color: forest),
+                child: Icon(icon, size: 18, color: forest),
               ),
               const SizedBox(height: 8),
               Text(
@@ -467,8 +391,7 @@ class CompactVisitCard extends StatelessWidget {
       'awaiting_payment': 'View bill & pay',
       'disputed': 'View reading query',
     }[b['status']];
-    final bill =
-        b['invoice']?['bill'] ?? b['reading']?['bill'] ?? b['estimate'];
+    final bill = b['invoice']?['bill'] ?? b['reading']?['bill'];
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
@@ -595,90 +518,6 @@ class CompactVisitCard extends StatelessWidget {
                 ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class EstimateSheet extends StatefulWidget {
-  const EstimateSheet({
-    super.key,
-    required this.tariff,
-    required this.initialEnergy,
-  });
-  final Map<String, dynamic>? tariff;
-  final double initialEnergy;
-  @override
-  State<EstimateSheet> createState() => _EstimateSheetState();
-}
-
-class _EstimateSheetState extends State<EstimateSheet> {
-  late double energy = widget.initialEnergy;
-  @override
-  Widget build(BuildContext context) {
-    final bill = estimateBill(widget.tariff, energy);
-    return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(22, 8, 22, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Plan your top-up',
-              style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.w700,
-                letterSpacing: -.5,
-              ),
-            ),
-            const SizedBox(height: 6),
-            const Text(
-              'Adjust the energy to see your estimated total.',
-              style: TextStyle(color: muted, fontSize: 13),
-            ),
-            const SizedBox(height: 25),
-            Row(
-              children: [
-                const Icon(Icons.bolt, color: forest),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    '${energy.toInt()} kWh',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 29,
-                    ),
-                  ),
-                ),
-                Text(
-                  money(bill['total_paise']),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                  ),
-                ),
-              ],
-            ),
-            Slider(
-              value: energy,
-              min: 5,
-              max: 60,
-              divisions: 11,
-              label: '${energy.toInt()} kWh',
-              semanticFormatterCallback: (v) => '${v.toInt()} kilowatt hours',
-              onChanged: (v) => setState(() => energy = v),
-            ),
-            BillLines(bill, estimated: true),
-            const Notice(
-              'Final charges use actual delivered energy and the agreed tariff. You accept the meter reading and final bill before paying.',
-            ),
-            PrimaryButton(
-              'Use this estimate',
-              onPressed: () => Navigator.pop(context, energy),
-            ),
-          ],
         ),
       ),
     );

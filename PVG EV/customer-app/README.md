@@ -33,10 +33,10 @@ The iPhone simulator reaches the host service using localhost. For Android emula
 ## Included in the customer experience
 
 - Guest browsing and mobile SMS sign-in. No-SMS preview access exists only in explicit sample mode.
-- Saved EV and connector details, charging address, opt-in GPS with manual address fallback, requested time and configured price estimate.
+- Saved EV and connector details, charging address, opt-in GPS with manual address fallback, requested time, with no advance energy quantity or price estimate.
 - Customer bookings, technician progress, session or cumulative meter evidence, itemised charges, disputes, explicit customer acceptance and locked billing.
 - Test payment integration, verified-payment status and downloadable PDF test receipt.
-- White/forest/lime home with a photographic hero, transparent tariff card, four-step service guide, expandable bill breakdown, address and EV pickers, energy shortcuts, estimate sheet, quick actions, and reduced-motion preference. A central Book action stays available in the five-item bottom navigation.
+- White/forest/lime home with a photographic hero, four-step service guide, address and EV pickers, compact quick actions, and reduced-motion preference. Home contains no prices, calculators or energy-quantity selections. Booking requests a visit; final charges appear only after the technician submits delivered units and evidence. A central Book action stays available in the five-item bottom navigation.
 - Three-step booking: EV/energy, place/time, and itemized review. Explicit consent and a future time are required; the customer never pays while submitting the request.
 - Per-customer saved places with access notes, optional GPS, edit/remove and shortcuts. Manually editing an address clears stale coordinates.
 - EV editing, removal from the garage, preferred vehicle, and rebooking from history. Existing visit vehicle/address snapshots are preserved.
@@ -44,7 +44,7 @@ The iPhone simulator reaches the host service using localhost. For Android emula
 - Editable profile name, charging guide, visit checklist, FAQs, and customer-initiated call/WhatsApp support.
 - Android/iOS/web projects. iPhone simulator and browser preview verified.
 
-The current configured tariff is **₹50/kWh + ₹300 visit fee + 18% tax**, supplied by the owner. The 15 kWh estimate is ₹1,239. The home image illustrates the service; it is not a live vehicle feed. Actual vehicle registrations and technicians must be entered by PVG.
+The current configured tariff is **₹20/kWh + ₹300 visit fee + 18% tax**, supplied by the owner. There is no advance estimate. Actual delivered units are billed automatically by the server; for example, a submitted 15 kWh reading totals ₹708 including the visit fee and tax. The home image illustrates the service; it is not a live vehicle feed. Actual vehicle registrations and technicians must be entered by PVG.
 
 Supabase changes reach the signed-in app through an authenticated event stream. Reconnection refreshes the latest data; polling remains a fallback. Tracking shows actual assigned-technician GPS only after consent and a valid phone reading. No fabricated location or ETA is displayed. The 320 px layout with enlarged text, booking selections, acceptance controls and stale-location handling are covered by ten passing Flutter tests.
 

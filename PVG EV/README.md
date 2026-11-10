@@ -8,6 +8,8 @@ Book a doorstep visit → open **Track my charging vehicle** → PVG assigns a t
 
 An active visit becomes the main Home experience. Tracking shows the real destination pin (when supplied), the assigned technician, vehicle registration, support/contact actions and the latest service events. A charging-vehicle marker is shown only when valid GPS has arrived. Missing assignments and interrupted GPS have explicit waiting/last-known states. No invented bookings, routes, arrival estimates or fleet locations are inserted.
 
+Booking uses three compact steps: choose an EV, select the place and preferred time, and review. Home has no pricing or energy selector. The agreed tariff is disclosed at review; the actual bill is calculated only after the technician submits meter evidence. Small controls and short transitions respect reduced-motion preferences.
+
 ## Projects
 
 - `customer-app/`: Flutter iOS, Android and browser customer experience.
@@ -40,7 +42,7 @@ The service requires privately supplied `pvg-service/.local/supabase.json` with 
 
 ## Actual configuration and remaining work
 
-- ₹300 visit fee + ₹50/kWh + 18% tax, per PVG's instruction.
+- ₹300 visit fee + ₹20/kWh + 18% tax, per PVG's instruction.
 - Default mode uses Supabase; sample mode is explicit and separate for automated/local development tests.
 - Customer mobile login requires a genuine SMS code. Vehicle and technician records must be entered by PVG.
 - GPS currently comes from the assigned technician's foreground website, with permission. Physical-phone use needs a secured HTTPS service. No background tracking, road ETA or push-notification delivery is claimed.
@@ -57,4 +59,4 @@ node --test pvg-service/test/*.test.mjs
 node --test enquiry-dashboard/tests/*.test.cjs
 ```
 
-13 Flutter tests cover the booking-to-tracking handoff, active Home, missing GPS, destination-only mapping, stale readings, small screens, pricing and customer acceptance. Database workflow checks use a rolled-back transaction; fixture data is not retained in Supabase. See the service README for the optional private database verification command.
+15 Flutter tests cover the booking-to-tracking handoff, active Home, missing GPS, destination-only mapping, stale readings, small screens, pricing and customer acceptance. Database workflow checks use a rolled-back transaction; fixture data is not retained in Supabase. See the service README for the optional private database verification command.

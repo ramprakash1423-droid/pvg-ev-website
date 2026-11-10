@@ -16,8 +16,8 @@ try{
   const c=await s.user('verify-customer'),other=await s.user('verify-other'),tech=await s.user('verify-tech'),admin=await s.user('verify-admin');
   const ev=await s.addEv(c,{model:'Verification EV',registration:'VERIFY',connector:'CCS2'});
   const fleet=await s.addFleet(admin,{name:'Rollback vehicle',registration:'VERIFY 1',compatibility:'CCS2'});
-  let b=await s.createBooking(c,{vehicle_id:ev.id,address:'Rollback-only verification address',pincode:'600020',slot:new Date(Date.now()+86400000).toISOString(),estimated_kwh:'15',request_key:'rollback-verification-001'});
-  check(b.estimate.total_paise,123900);check(b.is_demo,false);check(b.tracking.state,'awaiting_assignment');
+  let b=await s.createBooking(c,{vehicle_id:ev.id,address:'Rollback-only verification address',pincode:'600020',slot:new Date(Date.now()+86400000).toISOString(),request_key:'rollback-verification-001'});
+  check(b.estimate,null);check(b.tariff.unit_rate_paise,2000);check(b.reading,null);check(b.invoice,null);check(b.is_demo,false);check(b.tracking.state,'awaiting_assignment');
   await rejects(()=>s.detail(other,b.id),404);
   b=await s.assign(admin,b.id,{version:b.version,technician_id:tech.id,fleet_id:fleet.id,slot:b.slot,compatibility_confirmed:true});
   check(b.fleet_registration,'VERIFY 1');check(b.technician.name,tech.name);
@@ -34,11 +34,11 @@ try{
   const photo='data:image/png;base64,'+(await readFile(new URL('../fixtures/demo-meter.png',import.meta.url))).toString('base64');
   b=await s.submitReading(tech,b.id,{version:b.version,kind:'session',units:'15',photo});
   check(b.status,'awaiting_acceptance');check(b.tracking.position,null);
-  await rejects(()=>s.accept(other,b.id,{version:b.version,accepted:true,reading_id:b.reading.id,total_paise:123900}),404);
-  b=await s.accept(c,b.id,{version:b.version,accepted:true,reading_id:b.reading.id,total_paise:123900});
-  check(b.status,'awaiting_payment');check(b.invoice.is_demo,false);check(b.invoice.bill.total_paise,123900);
-  const order=await s.paymentOrder(c,b.id);check(order.amount_paise,123900);
-  await s.paymentEvent({id:'rollback-payment',type:'payment.captured',order_id:order.id,amount_paise:123900,currency:'INR'});
+  await rejects(()=>s.accept(other,b.id,{version:b.version,accepted:true,reading_id:b.reading.id,total_paise:70800}),404);
+  b=await s.accept(c,b.id,{version:b.version,accepted:true,reading_id:b.reading.id,total_paise:70800});
+  check(b.status,'awaiting_payment');check(b.invoice.is_demo,false);check(b.invoice.bill.total_paise,70800);
+  const order=await s.paymentOrder(c,b.id);check(order.amount_paise,70800);
+  await s.paymentEvent({id:'rollback-payment',type:'payment.captured',order_id:order.id,amount_paise:70800,currency:'INR'});
   check((await s.detail(c,b.id)).status,'paid');
   const place=await s.savePlace(c,{label:'Verification',address:'Rollback-only address',pincode:'600020'});check((await s.places(c))[0].id,place.id);
   await rejects(()=>s.savePlace(other,{label:'Bad',address:'Not an owner address',pincode:'600020'},place.id),404);

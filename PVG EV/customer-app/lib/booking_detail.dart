@@ -404,9 +404,9 @@ class _BookingDetailState extends State<BookingDetail>
                           ? 'Let’s plan your recharge.'
                           : 'Your doorstep visit',
                       style: const TextStyle(
-                        fontSize: 26,
+                        fontSize: 21,
                         fontWeight: FontWeight.w700,
-                        letterSpacing: -1,
+                        letterSpacing: -.6,
                         height: 1.15,
                       ),
                     ),
@@ -446,7 +446,7 @@ class _BookingDetailState extends State<BookingDetail>
                         Text(
                           b['ev']['model'],
                           style: const TextStyle(
-                            fontSize: 19,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -515,11 +515,11 @@ class _BookingDetailState extends State<BookingDetail>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Kicker('BOOKING ESTIMATE'),
+                          const Kicker('BILLED AFTER CHARGING'),
                           const SizedBox(height: 10),
-                          BillLines(
-                            Map<String, dynamic>.from(b['estimate']),
-                            estimated: true,
+                          const Text(
+                            'Your bill will appear after the technician submits the delivered units and meter photo. Review and accept it before paying.',
+                            style: TextStyle(fontSize: 13, color: muted),
                           ),
                         ],
                       ),

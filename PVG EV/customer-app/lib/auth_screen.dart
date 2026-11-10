@@ -76,24 +76,24 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Welcome to PVG EV')),
     body: ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       children: [
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         const Align(
           alignment: Alignment.centerLeft,
           child: CircleAvatar(
-            radius: 36,
+            radius: 24,
             backgroundColor: lime,
-            child: Icon(Icons.bolt_rounded, color: forest, size: 46),
+            child: Icon(Icons.bolt_rounded, color: forest, size: 30),
           ),
         ),
-        const SizedBox(height: 26),
+        const SizedBox(height: 18),
         Text(
           challenge == null ? 'Power your day.' : 'Check your messages.',
           style: const TextStyle(
-            fontSize: 32,
+            fontSize: 23,
             fontWeight: FontWeight.w700,
-            letterSpacing: -1,
+            letterSpacing: -.6,
           ),
         ),
         const SizedBox(height: 8),
@@ -103,7 +103,7 @@ class _SignInScreenState extends State<SignInScreen> {
               : 'Enter the six-digit code for +91 ${phone.text}.',
           style: const TextStyle(color: muted),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         Form(
           key: form,
           child: Column(

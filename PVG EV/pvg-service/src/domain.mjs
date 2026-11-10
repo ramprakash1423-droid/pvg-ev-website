@@ -221,10 +221,9 @@ export class Store {
     ensure(typeof (input.access_notes||'')==='string'&&(input.access_notes||'').length<=1000,'Access instructions are too long.');
     const hasCoords=input.latitude!=null||input.longitude!=null;
     ensure(!hasCoords||(typeof input.latitude==='number'&&typeof input.longitude==='number'&&Math.abs(input.latitude)<=90&&Math.abs(input.longitude)<=180),'Choose a valid location.');
-    const milli=energyMilli(input.estimated_kwh);const quote=billFor(milli,DEMO_TARIFF);
     return this.tx(()=>{
       const seq=this.db.prepare('SELECT COALESCE(MAX(seq),2000)+1 AS n FROM bookings').get().n,bookingId=id('booking');
-      const data={created_at:now(),updated_at:now(),status:'requested',ev:JSON.parse(ev.data),address:input.address.trim(),pincode:input.pincode,latitude:input.latitude??null,longitude:input.longitude??null,slot:new Date(date).toISOString(),access_notes:input.access_notes||'',tariff:{...DEMO_TARIFF},estimate:quote,is_demo:true};
+      const data={created_at:now(),updated_at:now(),status:'requested',ev:JSON.parse(ev.data),address:input.address.trim(),pincode:input.pincode,latitude:input.latitude??null,longitude:input.longitude??null,slot:new Date(date).toISOString(),access_notes:input.access_notes||'',tariff:{...DEMO_TARIFF},estimate:null,billing_basis:'metered_after_charging',is_demo:true};
       this.db.prepare('INSERT INTO bookings VALUES(?,?,?,?,?,?,?,?,?,?)').run(bookingId,seq,user.id,null,null,'requested',1,input.request_key,fingerprint,JSON.stringify(data));
       this.audit(bookingId,user,'requested');return this.detail(user,bookingId);
     });

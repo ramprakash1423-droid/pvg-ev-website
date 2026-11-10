@@ -442,10 +442,8 @@ export class PostgresStore {
     ensure(typeof (input.access_notes || '') === 'string' && (input.access_notes || '').length <= 1000, 'Access instructions are too long.');
     const hasCoords = input.latitude != null || input.longitude != null;
     ensure(!hasCoords || typeof input.latitude === 'number' && typeof input.longitude === 'number' && Math.abs(input.latitude) <= 90 && Math.abs(input.longitude) <= 180, 'Choose a valid location.');
-    const milli = energyMilli(input.estimated_kwh);
     const tariff = await this.tariff();
     ensure(tariff, 'PVG pricing is not configured yet. Please contact support.',503);
-    const quote = billFor(milli, tariff);
     return await this.tx(async () => {
       const seq = (await this.db.prepare("SELECT nextval('pvg_app.booking_reference') AS n").get()).n, bookingId = id('booking');
       const data = {
@@ -462,7 +460,8 @@ export class PostgresStore {
         tariff: {
           ...tariff
         },
-        estimate: quote,
+        estimate: null,
+        billing_basis: 'metered_after_charging',
         is_demo: false
       };
       await this.db.prepare('INSERT INTO bookings VALUES(?,?,?,?,?,?,?,?,?,?)').run(bookingId, seq, user.id, null, null, 'requested', 1, input.request_key, fingerprint, JSON.stringify(data));

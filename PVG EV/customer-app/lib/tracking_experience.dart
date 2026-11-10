@@ -76,10 +76,10 @@ class TrackingExperience extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: forest,
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(18),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,23 +108,31 @@ class TrackingExperience extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 14),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 25,
-                  height: 1.12,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  letterSpacing: -.8,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                copy,
-                style: const TextStyle(
-                  fontSize: 12,
-                  height: 1.55,
-                  color: Color(0xffd3e2da),
+              MotionEntrance(
+                key: ValueKey(status ?? 'no-booking'),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 21,
+                        height: 1.12,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        letterSpacing: -.8,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      copy,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        height: 1.55,
+                        color: Color(0xffd3e2da),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if (b != null) ...[
@@ -160,7 +168,7 @@ class TrackingExperience extends StatelessWidget {
           const _WaitingMap(),
         const SizedBox(height: 12),
         Panel(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -169,8 +177,8 @@ class TrackingExperience extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    width: 48,
-                    height: 48,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       color: const Color(0xffedf5dc),
                       borderRadius: BorderRadius.circular(15),
@@ -180,7 +188,7 @@ class TrackingExperience extends StatelessWidget {
                           ? Icons.person_search_outlined
                           : Icons.person_outline,
                       color: forest,
-                      size: 26,
+                      size: 22,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -207,7 +215,7 @@ class TrackingExperience extends StatelessWidget {
                   ),
                 ],
               ),
-              const Divider(height: 30, color: line),
+              const Divider(height: 22, color: line),
               _detail(
                 Icons.local_shipping_outlined,
                 b?['fleet_name'] ?? 'Charging vehicle not assigned',
@@ -252,7 +260,7 @@ class TrackingExperience extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Panel(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -409,22 +417,22 @@ class _WaitingMap extends StatelessWidget {
   const _WaitingMap();
   @override
   Widget build(BuildContext context) => Container(
-    constraints: const BoxConstraints(minHeight: 245),
-    padding: const EdgeInsets.all(30),
+    constraints: const BoxConstraints(minHeight: 190),
+    padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: const Color(0xffe7eee8),
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(18),
       border: Border.all(color: line),
     ),
     child: const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.location_searching_rounded, color: forest, size: 40),
+        Icon(Icons.location_searching_rounded, color: forest, size: 30),
         SizedBox(height: 16),
         Text(
           'Your live map starts with a booking.',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
         ),
         SizedBox(height: 8),
         Text(

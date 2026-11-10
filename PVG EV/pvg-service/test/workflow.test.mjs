@@ -131,3 +131,23 @@ test('personalization endpoints save across fresh sessions and enforce customer 
 });
 
 test('sample login credentials are generated separately for every local instance',t=>{const a=fixture(t),b=fixture(t);assert.notEqual(a.store.previewAccounts.admin.password,b.store.previewAccounts.admin.password);assert.notEqual(a.store.previewAccounts.technician.password,b.store.previewAccounts.technician.password);assert.equal(a.store.login('arun',a.store.previewAccounts.technician.password).user.role,'technician');});
+
+
+test('visit requests need no energy quantity and create no advance bill',t=>{
+  const f=fixture(t);
+  const input={vehicle_id:f.store.evs(f.customer)[0].id,address:'Unit test charging address',pincode:'600020',slot:new Date(Date.now()+4*86400000).toISOString(),request_key:'metered-visit-test'};
+  const b=f.store.createBooking(f.customer,input);
+  assert.equal(b.estimate,null);assert.equal(b.reading,null);assert.equal(b.invoice,null);
+  assert.equal(b.billing_basis,'metered_after_charging');
+  assert.equal(b.tariff.unit_rate_paise,DEMO_TARIFF.unit_rate_paise);
+  assert.equal(f.store.createBooking(f.customer,input).id,b.id);
+  fails(()=>f.store.paymentOrder(f.customer,b.id),409);
+});
+
+test('actual delivered units use the configured twenty-rupee rate with visit fee and tax',()=>{
+  const tariff={unit_rate_paise:2000,visit_fee_paise:30000,tax_basis_points:1800};
+  const bill=billFor(energyMilli('15'),tariff);
+  assert.equal(bill.energy_paise,30000);assert.equal(bill.tax_paise,10800);assert.equal(bill.total_paise,70800);
+  const fractional=billFor(energyMilli('12.501'),tariff);
+  assert.equal(fractional.energy_paise,25002);assert.equal(fractional.total_paise,64902);
+});

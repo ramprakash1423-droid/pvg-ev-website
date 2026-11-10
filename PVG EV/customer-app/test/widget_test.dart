@@ -9,10 +9,119 @@ import 'package:pvg_customer/main.dart';
 import 'package:pvg_customer/booking_detail.dart';
 import 'package:pvg_customer/booking_screen.dart';
 import 'package:pvg_customer/personal_screens.dart';
+import 'package:pvg_customer/ui.dart';
 
 void main() {
   testWidgets(
-    'home pickers carry the selected place, EV and estimate into booking',
+    'home has no pricing or energy choices and survives repeated tab changes',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final api = PvgApi(
+        client: MockClient(
+          (r) async => http.Response(
+            jsonEncode({
+              'mode': 'supabase',
+              'realtime': false,
+              'tariff': {
+                'unit_rate_paise': 2000,
+                'visit_fee_paise': 30000,
+                'tax_basis_points': 1800,
+              },
+            }),
+            200,
+          ),
+        ),
+      );
+      await tester.pumpWidget(PvgCustomerApp(api: api));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('₹'), findsNothing);
+      expect(find.byType(ChoiceChip), findsNothing);
+      expect(find.text('Estimate'), findsNothing);
+      expect(find.text('See your price breakdown'), findsNothing);
+      await tester.drag(find.byType(ListView).first, const Offset(0, -180));
+      await tester.pumpAndSettle();
+      final offset = tester
+          .state<ScrollableState>(find.byType(Scrollable).first)
+          .position
+          .pixels;
+      expect(offset, greaterThan(0));
+      for (var i = 0; i < 3; i++) {
+        await tester.tap(find.text('Garage'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Home'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        expect(
+          tester
+              .state<ScrollableState>(find.byType(Scrollable).first)
+              .position
+              .pixels,
+          closeTo(offset, 1),
+        );
+        expect(find.textContaining('₹'), findsNothing);
+        expect(find.byType(ChoiceChip), findsNothing);
+      }
+      await tester.pumpWidget(const SizedBox());
+      api.dispose();
+    },
+  );
+
+  testWidgets(
+    'saved reduce-motion preference follows the customer into booking',
+    (tester) async {
+      final api = PvgApi(
+        client: MockClient(
+          (r) async => http.Response(
+            jsonEncode(switch (r.url.path) {
+              '/api/auth/verify' => {
+                'token': 'unit-test',
+                'user': {'id': 'customer', 'role': 'customer', 'name': 'Test'},
+                'expires_in': 3600,
+              },
+              '/api/config' => {
+                'mode': 'supabase',
+                'realtime': false,
+                'tariff': {},
+              },
+              '/api/preferences' => {'reduced_motion': true},
+              '/api/bookings' => {'bookings': []},
+              '/api/evs' => {'vehicles': []},
+              '/api/places' => {'places': []},
+              _ => {},
+            }),
+            200,
+          ),
+        ),
+      );
+      await api.verifyOtp('test', '123456');
+      await tester.pumpWidget(PvgCustomerApp(api: api));
+      await tester.pumpAndSettle();
+      expect(
+        MediaQuery.disableAnimationsOf(
+          tester.element(find.byType(CustomerHome)),
+        ),
+        isTrue,
+      );
+      await tester.tap(find.text('Book'));
+      await tester.pumpAndSettle();
+      expect(find.byType(BookingScreen), findsOneWidget);
+      expect(
+        MediaQuery.disableAnimationsOf(
+          tester.element(find.byType(BookingScreen)),
+        ),
+        isTrue,
+      );
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      api.dispose();
+    },
+  );
+
+  testWidgets(
+    'home pickers carry the selected place and EV into a visit request',
     (tester) async {
       tester.view.physicalSize = const Size(390, 844);
       tester.view.devicePixelRatio = 1;
@@ -84,13 +193,6 @@ void main() {
       await tester.tap(find.widgetWithText(ListTile, 'MG ZS EV'));
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
-        find.text('25 kWh').hitTestable(),
-        100,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(find.text('25 kWh'));
-      await tester.pump();
-      await tester.scrollUntilVisible(
         find.text('Continue to booking').hitTestable(),
         100,
         scrollable: find.byType(Scrollable).first,
@@ -100,7 +202,8 @@ void main() {
       final screen = tester.widget<BookingScreen>(find.byType(BookingScreen));
       expect(screen.prefill?['id'], 'work1');
       expect(screen.prefill?['ev']['id'], 'ev2');
-      expect(screen.initialEnergy, 25);
+      expect(find.text('Energy required'), findsNothing);
+      expect(find.textContaining('₹'), findsNothing);
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
       expect(
@@ -153,10 +256,12 @@ void main() {
     },
   );
   testWidgets(
-    'three-step booking reuses a place and requires a future slot and explicit consent',
+    'compact booking requires a future slot, loaded tariff and explicit consent',
     (tester) async {
-      tester.view.physicalSize = const Size(390, 844);
+      tester.view.physicalSize = const Size(320, 740);
       tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       Map<String, dynamic>? submitted;
@@ -179,6 +284,13 @@ void main() {
         client: MockClient((r) async {
           final path = r.url.path;
           final result = switch (path) {
+            '/api/config' => {
+              'tariff': {
+                'unit_rate_paise': 2000,
+                'visit_fee_paise': 30000,
+                'tax_basis_points': 1800,
+              },
+            },
             '/api/evs' => {
               'vehicles': [ev],
             },
@@ -196,15 +308,7 @@ void main() {
                   .add(const Duration(days: 1))
                   .toIso8601String(),
               'address': place['address'],
-              'estimate': {
-                'energy_milli': 10000,
-                'unit_rate_paise': 2200,
-                'energy_paise': 22000,
-                'visit_fee_paise': 25000,
-                'tax_basis_points': 1800,
-                'tax_paise': 8460,
-                'total_paise': 55460,
-              },
+              'estimate': null,
               'tariff': {'tax_note': 'Configured tax'},
               'events': [],
               'tracking': {'state': 'awaiting_assignment', 'position': null},
@@ -214,25 +318,23 @@ void main() {
           return http.Response(jsonEncode(result), 200);
         }),
       );
-      api.config = {
-        'tariff': {
-          'unit_rate_paise': 2200,
-          'visit_fee_paise': 25000,
-          'tax_basis_points': 1800,
-        },
-      };
+      api.config = {'tariff': {}};
       await tester.pumpWidget(
-        MaterialApp(home: BookingScreen(api: api, initialEnergy: 10)),
+        MaterialApp(
+          theme: pvgTheme(),
+          home: BookingScreen(api: api),
+        ),
       );
       await tester.pumpAndSettle();
+      expect(find.textContaining('₹'), findsNothing);
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Home'));
+      await tester.tap(find.widgetWithText(ChoiceChip, 'Home'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Continue'));
       await tester.pumpAndSettle();
       expect(submitted, isNull);
-      final dateButton = find.text('Choose a date & time');
+      final dateButton = find.text('Choose a date & time').hitTestable();
       await tester.scrollUntilVisible(
         dateButton,
         250,
@@ -251,6 +353,17 @@ void main() {
         'Request charging visit',
       );
       expect(tester.widget<FilledButton>(submit).onPressed, isNull);
+      final reloadRate = find.text('Reload charging rate').hitTestable();
+      await tester.scrollUntilVisible(
+        reloadRate,
+        150,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(tester.takeException(), isNull);
+      await tester.tap(reloadRate);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('₹20.00 per kWh'), findsOneWidget);
+      expect(tester.widget<FilledButton>(submit).onPressed, isNull);
       await tester.scrollUntilVisible(
         find.byType(CheckboxListTile).hitTestable(),
         150,
@@ -263,7 +376,8 @@ void main() {
       expect(submitted?['vehicle_id'], 'ev1');
       expect(submitted?['address'], place['address']);
       expect(submitted?['latitude'], 13.1);
-      expect(submitted?['estimated_kwh'], '10.0');
+      expect(submitted!.containsKey('estimated_kwh'), isFalse);
+      expect(find.text('BOOKING ESTIMATE'), findsNothing);
       expect(
         DateTime.parse(submitted!['slot']).isAfter(DateTime.now()),
         isTrue,
@@ -339,7 +453,7 @@ void main() {
       );
       await tester.pumpWidget(PvgCustomerApp(api: api));
       await tester.pumpAndSettle();
-      expect(find.text('Your day.\nFully charged.'), findsOneWidget);
+      expect(find.text('Your day. Fully charged.'), findsOneWidget);
       await tester.scrollUntilVisible(
         find.text('Continue to booking').hitTestable(),
         100,
