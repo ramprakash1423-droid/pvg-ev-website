@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'visit_schedule.dart';
 import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 
 const forest = Color(0xff12352a),
@@ -11,7 +12,7 @@ String money(dynamic paise) =>
 String errorText(Object error) =>
     error.toString().replaceFirst('Exception: ', '');
 String timeLabel(dynamic value) {
-  final d = DateTime.parse(value as String).toLocal();
+  final d = indiaWallTime(DateTime.parse(value as String));
   const months = [
     'Jan',
     'Feb',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'api.dart';
 import 'ui.dart';
+import 'visit_schedule.dart';
 
 class ServiceAvailability extends StatefulWidget {
   const ServiceAvailability({
@@ -19,6 +20,8 @@ class _ServiceAvailabilityState extends State<ServiceAvailability> {
   Map<String, dynamic>? result;
   String? error;
   bool busy = false, expanded = false;
+  VisitSchedule? get schedule =>
+      VisitSchedule.from(result?['settings'] ?? widget.api.config?['service']);
   @override
   void dispose() {
     pin.dispose();
@@ -56,10 +59,15 @@ class _ServiceAvailabilityState extends State<ServiceAvailability> {
           children: [
             const Icon(Icons.schedule_outlined, size: 18),
             const SizedBox(width: 8),
-            const Expanded(
+            Expanded(
               child: Text(
-                '6:00 AM – 11:00 PM',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                schedule == null
+                    ? 'Service hours to be confirmed'
+                    : '${schedule!.hoursLabel} IST',
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             TextButton(

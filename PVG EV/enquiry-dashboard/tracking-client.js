@@ -1,6 +1,6 @@
 // One explicitly enabled visit at a time. No GPS is requested during login or page load.
 export class GpsSharing {
-  constructor({api,geo,onChange,clock=()=>Date.now(),every=setInterval,cancel=clearInterval}) {
+  constructor({api,geo,onChange,clock=()=>Date.now(),every=(...args)=>globalThis.setInterval(...args),cancel=id=>globalThis.clearInterval(id)}) {
     Object.assign(this,{api,geo,onChange,clock,every,cancel});
     this.generation=0;this.bookingId=null;this.messageBookingId=null;this.sessionId=null;this.watchId=null;this.interval=null;this.message='';this.sending=false;this.lastSent=0;this.phase='idle';
   }

@@ -12,7 +12,7 @@ Private `.local/supabase.json` contains `database_url` (mode 0600). Never commit
 
 Customer login in this mode requires real SMS verification. Demo login, simulated payments and sample GPS are rejected. Staff admin login validates the existing PVG dashboard credential without changing its password; technician credentials are salted and hashed. Razorpay remains **Test Mode**, and Zoho remains unconnected. Payment verification never bypasses customer acceptance.
 
-Verification: 46 service tests, 10 dashboard tests, 17 Flutter tests, and 41 real Supabase workflow assertions passed. Database assertions run in a rolled-back transaction and retain no test bookings. The actual service-hours row is saved independently as 06:00–23:00 IST with empty coverage until PVG configures its areas. Run `node scripts/verify-supabase.mjs` with the private connection file to repeat the rollback verification. Sequence values can advance during verification.
+Verification: 54 service tests, 10 dashboard tests, 34 Flutter tests, and 41 real Supabase workflow assertions passed. Database assertions run in a rolled-back transaction and retain no test bookings. The actual service-hours row is saved independently as 06:00–23:00 IST with empty coverage until PVG configures its areas. Run `node scripts/verify-supabase.mjs` with the private connection file to repeat the rollback verification. Sequence values can advance during verification.
 
 ## Current service experience — 10 November 2026
 
@@ -111,3 +111,21 @@ Only the latest fix is stored, without a route history. Coordinate range, numeri
 The local server explicitly enables a labelled sample source; `Store` defaults to rejecting it. Production mode remains blocked. Sample coordinates are test data, never proof of a vehicle's position. The GPS verification suite covers permission boundaries, consent, stale/invalid/out-of-order fixes, lease replacement, ending sessions, HTTP routing and browser capture-controller behavior. All 39 service tests and 9 Flutter tests passed for this feature. No Clickacook provider configuration or live deployment changed.
 
 Recovery checks cover denied GPS permission, a failed sharing start, retry controls after a panel refresh, booking-scoped error messages and successful upload after a temporary connection failure. A technician can retry after correcting permission or connection settings; no automatic permission prompt is triggered by dashboard refresh.
+
+
+## Assignment consistency — 11 November 2026
+
+Assignment now uses the same configured planning duration as availability and validates IST operating hours, including enough time before closing. An unset duration requires admin configuration; it does not silently become a two-hour booking. Public app configuration exposes only the service-hour/duration fields. The 54 service tests pass, including isolated regression checks for one-hour/three-hour windows and closing time; those tests create no live database rows.
+
+
+Customer parking pins now have a conservative 150 km Chennai sanity check. This is an obvious-mismatch guard, not a service-coverage claim. Customers can update/remove an owned pin before departure with version checks; the audit contains no coordinates. Technician GPS is not moved or replaced by this rule.
+
+At the owner's request, the current service window was set to a provisional 180 minutes including travel/service. This is a planning assumption, not measured PVG duration or a completion guarantee. Setrans lists multiple 10–30 kW mobile variants (https://www.setrans.co.in/mobile-charging-station.htm), and SparXcharge explains duration depends on EV/battery/charger (https://sparxcharge.com/calculator/); neither establishes a universal 180-minute service window. PVG should tune it using actual job timings. Operating hours remain 06:00–23:00 IST, and coverage pincodes remain unconfirmed.
+
+
+The real browser GPS test exposed a host-timer receiver error (Illegal invocation). Default timers are now called through globalThis so they retain their browser receiver; a branded-host regression covers start, periodic fresh fixes and stop cleanup. No simulated GPS was substituted for the browser failure.
+
+
+Controlled real GPS verification: the in-app browser supplied no fix after permission, while Chrome with one-time permission supplied a genuine device fix with 35 m accuracy. Supabase persisted the fix and the iPhone simulator displayed it. Later fixes were intermittent, so the app marked the point last-known/stale. Temporary Mac sharing was explicitly stopped and its stored point cleared. Continuous physical-phone tracking still needs a road test. No private coordinates are committed.
+
+The owner confirmed no charging had occurred. No readings, invoices or payment orders were created to claim a completed live flow. Razorpay Test authentication was checked read-only; actual units acceptance and checkout remain unverified until genuine charging evidence is available.

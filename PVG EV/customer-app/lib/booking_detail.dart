@@ -81,7 +81,13 @@ class _BookingDetailState extends State<BookingDetail>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && !busy) load();
+    if (state == AppLifecycleState.resumed && !busy) {
+      if (booking?['status'] == 'awaiting_payment') {
+        action('payment-refresh', {});
+      } else {
+        load();
+      }
+    }
   }
 
   Future<void> load() async {
@@ -221,7 +227,7 @@ class _BookingDetailState extends State<BookingDetail>
         if (mounted) {
           showMessage(
             context,
-            'Complete test checkout, then tap Check payment status.',
+            'Complete test checkout and return here. We’ll check the payment status automatically.',
           );
         }
       } else {
@@ -634,7 +640,7 @@ class _BookingDetailState extends State<BookingDetail>
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              '${_events[e['action']] ?? e['action']}\n${timeLabel(e['created_at'])}',
+                              '${_events[e['action']] ?? eventLabel(e['action'])}\n${timeLabel(e['created_at'])}',
                               style: const TextStyle(
                                 fontSize: 12,
                                 height: 1.6,

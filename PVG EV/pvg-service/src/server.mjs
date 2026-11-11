@@ -168,7 +168,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         return;
       }
       if (path === '/api/config' && req.method === 'GET') {
-        if(real){json(res,200,{mode:'supabase',database:'supabase_postgres',realtime:true,tariff:await store.tariff(),service_area:'Chennai',integrations:{otp:sms?'twofactor':'not_configured',sms_available:!!sms,payments:payments?'razorpay_test':'not_configured',zoho:'not_connected',setrans:'manual'}});return;}
+        if(real){const settings=await experience.settings();json(res,200,{mode:'supabase',database:'supabase_postgres',realtime:true,tariff:await store.tariff(),service:settings?{open_minutes:settings.open_minutes,close_minutes:settings.close_minutes,visit_minutes:settings.visit_minutes}:null,service_area:'Chennai',integrations:{otp:sms?'twofactor':'not_configured',sms_available:!!sms,payments:payments?'razorpay_test':'not_configured',zoho:'not_connected',setrans:'manual'}});return;}
         json(res, 200, {
           mode: 'local_preview',
           tariff: DEMO_TARIFF,
@@ -397,7 +397,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
         json(res, 200, await store[method](user, bookingId, input));
         return;
       }
-      const match = (/^\/api\/bookings\/([a-zA-Z0-9_-]+)(?:\/(assign|status|reading|accept|dispute|cancel|reschedule|support|service-update|payment-order|payment-refresh|receipt))?$/).exec(path);
+      const match = (/^\/api\/bookings\/([a-zA-Z0-9_-]+)(?:\/(assign|status|reading|accept|dispute|cancel|reschedule|location|support|service-update|payment-order|payment-refresh|receipt))?$/).exec(path);
       if (match) {
         const [, bookingId, action] = match;
         if (!action && req.method === 'GET') {
@@ -414,7 +414,7 @@ export async function createApplication({dbPath = ':memory:', seed = true, photo
           return;
         }
         ensure(req.method === 'POST', 'Method not allowed.', 405);
-        if(['reschedule','support','service-update'].includes(action)){ensure(real,'Real visit controls are not configured.',503);json(res,200,await experience[action==='service-update'?'serviceUpdate':action](user,bookingId,input));return;}
+        if(['reschedule','location','support','service-update'].includes(action)){ensure(real,'Real visit controls are not configured.',503);json(res,200,await experience[action==='service-update'?'serviceUpdate':action](user,bookingId,input));return;}
         if (action === 'payment-order') {
           json(res, 200, await preparePayment(user, bookingId, url.origin));
           return;

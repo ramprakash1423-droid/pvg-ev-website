@@ -61,4 +61,7 @@ node --test pvg-service/test/*.test.mjs
 node --test enquiry-dashboard/tests/*.test.cjs
 ```
 
-17 Flutter tests cover the booking-to-tracking handoff, active Home, missing GPS, destination-only mapping, stale readings, small screens, pricing and customer acceptance. 46 service tests, 10 dashboard tests and 41 Supabase workflow checks also passed. Database workflow checks use a rolled-back transaction; fixture data is not retained in Supabase. See the service README for the optional private database verification command.
+34 Flutter tests cover the booking-to-tracking handoff, active Home, missing GPS, destination-only mapping, stale readings, small screens, pricing and customer acceptance. 54 service tests, 10 dashboard tests and 41 Supabase workflow checks also passed. Database workflow checks use a rolled-back transaction; fixture data is not retained in Supabase. See the service README for the optional private database verification command.
+
+
+The current runtime has an owner-authorized provisional 180-minute travel/service planning window. It is adjustable and is not an arrival or full-charge guarantee. The controlled real simulator journey verified SMS sign-in, booking persistence, assignment updates and one genuine Mac location fix through Chrome. Location updates on the Mac were intermittent and stale labels were verified. Continuous physical-phone tracking, actual delivered-energy evidence, acceptance and checkout still require a completed real charging visit.

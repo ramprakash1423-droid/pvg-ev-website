@@ -51,8 +51,17 @@ Stop, cancellation, completion, reassignment and staff sign-out clear the curren
 
 ## Verification and remaining setup
 
-`flutter analyze` and all 17 Flutter tests pass. Tests cover pricing-free Home, active tracking, missing/stale GPS, small screens with enlarged text, booking validation, customer acceptance, area checks and support submissions. The local browser layout and real Supabase availability response were checked.
+`flutter analyze` and all 34 Flutter tests pass. Tests cover pricing-free Home, active tracking, missing/stale GPS, small screens with enlarged text, booking validation, customer acceptance, area checks and support submissions. The local browser layout and real Supabase availability response were checked.
 
 Real technician names/numbers, vehicle registrations and coverage pincodes are still required. Physical-phone GPS and SMS delivery need handset testing over a secured hosted service. Localhost is accessible only on the development computer. The service intentionally refuses production mode and the app rejects HTTP in release mode.
 
 Closed-app push notifications, address search/reverse geocoding, road ETA/routing, production payments, refunds and Zoho Books remain pending. The map supports manual pins and consent-based GPS now. In-app updates are not push delivery. No Clickacook provider settings or live payments were changed.
+
+
+## Flow fixes — 11 November 2026
+
+Successful OTP sign-in keeps its in-memory session if device storage is unavailable; fresh launches still validate saved sessions. Booking and rescheduling use configured hours in explicit IST and send UTC instants. Returning to an unpaid bill reconciles the provider status automatically, while the manual status check remains available.
+
+All 34 Flutter tests and the iOS simulator build pass. The controlled real pilot verified customer SMS sign-in, booking persistence, actual staff/vehicle assignment and a genuine Mac location fix propagated through Supabase to the iPhone simulator. Location updates were intermittent; last-known/stale states and explicit sharing stop were verified. Physical-phone tracking and actual energy evidence, acceptance and checkout remain unverified until a completed charging visit.
+
+An outside-Chennai simulator pin was detected and removed through the customer controls while preserving the written address. GPS/map validation now prevents obvious destination mismatches, and no replacement point is invented. Automated regression fixtures are separate from real pilot records and do not populate Supabase.

@@ -1,4 +1,5 @@
 import {ensure,id,now} from './domain.mjs';
+import {validateChargingPin} from './location-validation.mjs';
 const IST=330*60000;
 const hourLabel=m=>`${(Math.floor(m/60)%12)||12}:${String(m%60).padStart(2,'0')} ${m<720?'AM':'PM'}`;
 export function validateVisitTime(value, settings, clock=Date.now()) {
@@ -58,6 +59,18 @@ export class CustomerExperience {
       const old=JSON.parse(row.data);
       await this.store.save(row,{status:'requested',slot:new Date(input.slot).toISOString(),previous_slot:old.slot,technician_id:null,fleet_id:null,fleet_name:null,fleet_registration:null,compatibility_confirmed:false,service_note:null});
       await this.store.audit(bookingId,user,'rescheduled',{note:'New preferred time requested; assignment will be reconfirmed.'});return this.store.detail(user,bookingId);
+    });
+  }
+  async location(user,bookingId,input){
+    return this.store.tx(async()=>{
+      this.store.role(user,'customer');const row=await this.store.row(bookingId);
+      await this.store.canRead(user,row);await this.store.checkVersion(row,input);
+      ensure(['requested','assigned'].includes(row.status),'The vehicle has already departed. Contact support to change the parking pin.',409);
+      ensure(Object.hasOwn(input,'latitude')&&Object.hasOwn(input,'longitude'),'Choose or remove the parking pin explicitly.');
+      validateChargingPin(input.latitude,input.longitude);
+      await this.store.save(row,{latitude:input.latitude??null,longitude:input.longitude??null});
+      await this.store.audit(bookingId,user,'location_updated',{note:input.latitude==null?'Customer removed the parking pin; use their address.':'Customer updated the parking pin.'});
+      return this.store.detail(user,bookingId);
     });
   }
   async support(user,bookingId,input){

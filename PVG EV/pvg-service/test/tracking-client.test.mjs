@@ -39,3 +39,29 @@ test('temporary upload failure retries with a fresh GPS fix and ending the visit
   fail=false;f.advance();await f.point();assert.match(gpsPanelState(booking,f.gps).message,/last sent/);
   const ended=gpsPanelState({...booking,tracking:{eligible:false,state:'ended'}},f.gps);assert.equal(ended.active,false);assert.equal(ended.message,'Tracking ended');await f.gps.stop();
 });
+
+test('default timers retain their host receiver while geolocation retains its own receiver',async t=>{
+  let tick,cleared=false,watchCleared=false,time=Date.now();const calls=[];
+  t.mock.method(globalThis,'setInterval',function(fn,delay){
+    assert.equal(this,globalThis,'native host timer must not receive GpsSharing as its receiver');
+    assert.equal(delay,15000);tick=fn;return 42;
+  });
+  t.mock.method(globalThis,'clearInterval',function(timer){
+    assert.equal(this,globalThis,'native host timer cancellation needs the host receiver');
+    assert.equal(timer,42);cleared=true;
+  });
+  const geo={
+    watchPosition(){assert.equal(this,geo);return 7;},
+    clearWatch(watch){assert.equal(this,geo);assert.equal(watch,7);watchCleared=true;},
+    getCurrentPosition(ok){assert.equal(this,geo);ok({timestamp:time,coords:{latitude:13,longitude:80,accuracy:15}});},
+  };
+  const gps=new GpsSharing({api:async(path,data)=>{calls.push({path,data});return {session_id:'isolated-session'};},geo,onChange:()=>{},clock:()=>time});
+  await gps.start('owned-visit');
+  assert.equal(gps.phase,'sharing');assert.equal(gps.bookingId,'owned-visit');
+  assert.ok(tick);assert.equal(calls.some(c=>c.path.endsWith('/stop')),false);
+  time+=15000;tick();await new Promise(r=>setImmediate(r));
+  assert.equal(calls.at(-1).path,'/bookings/owned-visit/tracking');
+  await gps.stop();
+  assert.equal(cleared,true);assert.equal(watchCleared,true);assert.equal(gps.bookingId,null);
+  assert.equal(calls.at(-1).path,'/bookings/owned-visit/tracking/stop');
+});

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'api.dart';
 import 'ui.dart';
 import 'experience.dart';
+import 'location_validation.dart';
 
 Future<Position> locateCustomer() async {
   if (!await Geolocator.isLocationServiceEnabled()) {
@@ -21,12 +22,16 @@ Future<Position> locateCustomer() async {
       'Location permission was not granted. You can still enter an address.',
     );
   }
-  return Geolocator.getCurrentPosition(
+  final position = await Geolocator.getCurrentPosition(
     locationSettings: const LocationSettings(
       accuracy: LocationAccuracy.high,
       timeLimit: Duration(seconds: 15),
     ),
   );
+  if (!isChennaiPin(position.latitude, position.longitude)) {
+    throw Exception(chennaiPinError);
+  }
+  return position;
 }
 
 Future<bool?> editPlace(
@@ -234,6 +239,7 @@ class _PlaceEditorState extends State<PlaceEditor> {
   void clearCoordinates(String _) => setState(() {
     latitude = null;
     longitude = null;
+    if (error == chennaiPinError) error = null;
   });
   Future<void> gps() async {
     setState(() {
@@ -252,6 +258,11 @@ class _PlaceEditorState extends State<PlaceEditor> {
 
   Future<void> save() async {
     if (!form.currentState!.validate()) return;
+    final pinError = chargingPinValidationError(latitude, longitude);
+    if (pinError != null) {
+      setState(() => error = pinError);
+      return;
+    }
     setState(() {
       busy = true;
       error = null;
@@ -348,11 +359,13 @@ class _PlaceEditorState extends State<PlaceEditor> {
                   : 'GPS attached · update',
             ),
           ),
-          if (latitude != null)
+          if (latitude != null || longitude != null)
             TextButton(
               onPressed: () => clearCoordinates(''),
               child: const Text('Remove GPS location'),
             ),
+          if (chargingPinValidationError(latitude, longitude) != null)
+            const Notice(chennaiPinError, error: true),
           const Notice(
             'GPS is optional. Attach it only when you are at this address. Editing the address clears the pin so it cannot point to an old location.',
           ),

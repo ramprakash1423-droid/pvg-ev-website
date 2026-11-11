@@ -7,6 +7,8 @@ import 'personal_screens.dart';
 import 'api.dart';
 import 'booking_detail.dart';
 import 'ui.dart';
+import 'visit_schedule.dart';
+import 'location_validation.dart';
 
 Future<bool?> showAddEv(
   BuildContext context,
@@ -150,6 +152,7 @@ class _BookingScreenState extends State<BookingScreen> {
   String? selected, selectedPlace, error;
   DateTime? slot;
   double? latitude, longitude;
+  String? get pinError => chargingPinValidationError(latitude, longitude);
   int step = 0;
   bool loading = true, busy = false, locating = false, agreed = false;
   bool submitted = false, draftRestored = false;
@@ -158,6 +161,9 @@ class _BookingScreenState extends State<BookingScreen> {
   Map<String, dynamic>? availability;
   String? availabilityError;
   bool checkingTime = false;
+  VisitSchedule? get schedule => VisitSchedule.from(
+    availability?['settings'] ?? widget.api.config?['service'],
+  );
   bool get tariffAvailable {
     final tariff = widget.api.config?['tariff'];
     return tariff is Map &&
@@ -203,6 +209,7 @@ class _BookingScreenState extends State<BookingScreen> {
         widget.api.config?['mode'] != 'supabase') {
       return;
     }
+    if (pinError != null) return;
     final payload = {
       'vehicle_id': selected,
       'address': address.text,
@@ -266,7 +273,7 @@ class _BookingScreenState extends State<BookingScreen> {
           }
           latitude = (d['latitude'] as num?)?.toDouble();
           longitude = (d['longitude'] as num?)?.toDouble();
-          slot = DateTime.tryParse(d['slot'] ?? '')?.toLocal();
+          slot = DateTime.tryParse(d['slot'] ?? '')?.toUtc();
         }
       }
       draftRestored = true;
@@ -285,11 +292,16 @@ class _BookingScreenState extends State<BookingScreen> {
     latitude = (p['latitude'] as num?)?.toDouble();
     longitude = (p['longitude'] as num?)?.toDouble();
   });
-  void clearPin(String _) => setState(() {
-    latitude = null;
-    longitude = null;
-    selectedPlace = null;
-  });
+  void clearPin(String _) {
+    setState(() {
+      latitude = null;
+      longitude = null;
+      selectedPlace = null;
+      if (error == chennaiPinError) error = null;
+    });
+    queueDraft();
+  }
+
   Future<void> gps() async {
     setState(() {
       locating = true;
@@ -309,14 +321,32 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Future<void> chooseTime() async {
-    final now = DateTime.now();
+    if (schedule == null) {
+      try {
+        await widget.api.loadConfig();
+      } catch (e) {
+        if (mounted) setState(() => error = errorText(e));
+        return;
+      }
+    }
+    if (!mounted) return;
+    if (schedule == null) {
+      setState(
+        () =>
+            error = 'PVG service hours could not be loaded. Please try again.',
+      );
+      return;
+    }
+    final now = DateTime.now(), today = indiaCalendarDay(DateTime.now());
     final day = await showDatePicker(
       context: context,
+      helpText: 'Choose visit date · India time',
+      currentDate: today,
       initialDate: slot != null && slot!.isAfter(now)
-          ? slot!
-          : now.add(const Duration(days: 1)),
-      firstDate: now,
-      lastDate: now.add(const Duration(days: 30)),
+          ? indiaCalendarDay(slot!)
+          : visitCalendarDayAfter(today, 1),
+      firstDate: today,
+      lastDate: visitCalendarDayAfter(today, 30),
     );
     if (day == null || !mounted) return;
     if (widget.api.config?['mode'] == 'supabase' &&
@@ -343,19 +373,22 @@ class _BookingScreenState extends State<BookingScreen> {
         if (mounted) setState(() => checkingTime = false);
       }
     }
+    if (!mounted) return;
+    final hours = schedule!;
     final time = await showTimePicker(
       context: context,
-      initialTime: slot == null
-          ? const TimeOfDay(hour: 10, minute: 0)
-          : TimeOfDay.fromDateTime(slot!),
+      helpText: 'Visit time · India (IST)',
+      initialTime: slot == null ? hours.initialTime : indiaClock(slot!),
     );
     if (time == null || !mounted) return;
-    if (time.hour < 6 || time.hour >= 23) {
-      setState(() => error = 'Choose a visit between 6:00 AM and 11:00 PM.');
+    final selectedInstant = indiaVisitInstant(day, time);
+    final problem = hours.validate(selectedInstant);
+    if (problem != null) {
+      setState(() => error = problem);
       return;
     }
     setState(() {
-      slot = DateTime(day.year, day.month, day.day, time.hour, time.minute);
+      slot = selectedInstant;
       error = null;
     });
     queueDraft();
@@ -367,12 +400,20 @@ class _BookingScreenState extends State<BookingScreen> {
       setState(() => error = 'Add an EV to continue.');
       return false;
     }
-    if (step == 1 &&
-        (slot == null ||
-            !slot!.isAfter(DateTime.now()) ||
-            slot!.isAfter(DateTime.now().add(const Duration(days: 31))))) {
-      setState(() => error = 'Choose a future visit time within 30 days.');
-      return false;
+    if (step == 1) {
+      if (pinError != null) {
+        setState(() => error = pinError);
+        return false;
+      }
+      final problem =
+          schedule?.validate(slot) ??
+          (schedule == null
+              ? 'PVG service hours could not be loaded. Please try again.'
+              : null);
+      if (problem != null) {
+        setState(() => error = problem);
+        return false;
+      }
     }
     return true;
   }
@@ -392,12 +433,19 @@ class _BookingScreenState extends State<BookingScreen> {
     if (busy || submitted || !agreed || selected == null || !tariffAvailable) {
       return;
     }
-    if (slot == null || !slot!.isAfter(DateTime.now())) {
+    if (pinError != null) {
       go(1);
-      setState(
-        () =>
-            error = 'Your selected time has passed. Please choose a new time.',
-      );
+      setState(() => error = pinError);
+      return;
+    }
+    final timeProblem =
+        schedule?.validate(slot) ??
+        (schedule == null
+            ? 'PVG service hours could not be loaded. Please try again.'
+            : null);
+    if (timeProblem != null) {
+      go(1);
+      setState(() => error = timeProblem);
       return;
     }
     setState(() {
@@ -706,7 +754,7 @@ class _BookingScreenState extends State<BookingScreen> {
               label: const Text('Choose exact pin on map'),
             ),
           ),
-          if (latitude != null)
+          if (latitude != null || longitude != null)
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton(
@@ -714,6 +762,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 child: const Text('Remove GPS location'),
               ),
             ),
+          if (pinError != null) const Notice(chennaiPinError, error: true),
           const Text(
             'At this address now? Add GPS to help your technician find you. Otherwise, the address is enough.',
             style: TextStyle(color: muted, fontSize: 12, height: 1.4),
@@ -753,9 +802,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         label: Text(timeLabel(value)),
                         selected: slot?.toUtc().toIso8601String() == value,
                         onSelected: (_) {
-                          setState(
-                            () => slot = DateTime.parse(value).toLocal(),
-                          );
+                          setState(() => slot = DateTime.parse(value).toUtc());
                           queueDraft();
                         },
                       ),
@@ -763,9 +810,11 @@ class _BookingScreenState extends State<BookingScreen> {
                     .toList(),
               ),
           ],
-          const Text(
-            'Service hours: 6:00 AM–11:00 PM. Your preferred time is confirmed when PVG assigns the charging team.',
-            style: TextStyle(color: muted, fontSize: 12, height: 1.4),
+          Text(
+            schedule == null
+                ? 'Service hours are loading. Your preferred time will be confirmed by PVG.'
+                : 'Service hours: ${schedule!.hoursLabel} IST. Your preferred time is confirmed when PVG assigns the charging team.',
+            style: const TextStyle(color: muted, fontSize: 12, height: 1.4),
           ),
         ],
       ),

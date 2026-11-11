@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'ui.dart';
+import 'location_validation.dart';
 
 /// No customer GPS is requested here. This shows the assigned technician's feed.
 class VisitTracking extends StatefulWidget {
@@ -50,8 +51,16 @@ class _VisitTrackingState extends State<VisitTracking> {
           (position!['latitude'] as num).toDouble(),
           (position!['longitude'] as num).toDouble(),
         );
+  bool get invalidDestination {
+    final lat = widget.booking['latitude'], lon = widget.booking['longitude'];
+    return (lat != null || lon != null) &&
+        (lat is! num || lon is! num || !isChennaiPin(lat, lon));
+  }
+
   LatLng? get destination =>
-      widget.booking['latitude'] == null || widget.booking['longitude'] == null
+      invalidDestination ||
+          widget.booking['latitude'] == null ||
+          widget.booking['longitude'] == null
       ? null
       : LatLng(
           (widget.booking['latitude'] as num).toDouble(),
@@ -235,6 +244,7 @@ class _VisitTrackingState extends State<VisitTracking> {
             const Notice(
               'Sample location only. No real vehicle or phone is being tracked.',
             ),
+          if (invalidDestination) const Notice(chennaiPinError, error: true),
           if (v == null && d == null)
             Container(
               width: double.infinity,

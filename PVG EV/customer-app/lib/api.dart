@@ -8,18 +8,22 @@ import 'http_client.dart'
     as transport;
 
 class PvgApi extends ChangeNotifier {
-  PvgApi({http.Client? client, String? endpoint})
-    : _client = client ?? transport.createClient(),
-      persistent = client == null,
-      baseUrl =
-          endpoint ??
-          const String.fromEnvironment(
-            'PVG_API_URL',
-            defaultValue: 'http://127.0.0.1:8201',
-          );
+  PvgApi({
+    http.Client? client,
+    String? endpoint,
+    SessionStorage? sessionStorage,
+  }) : _client = client ?? transport.createClient(),
+       persistent = client == null || sessionStorage != null,
+       storage = sessionStorage ?? const SessionStorage(),
+       baseUrl =
+           endpoint ??
+           const String.fromEnvironment(
+             'PVG_API_URL',
+             defaultValue: 'http://127.0.0.1:8201',
+           );
   final http.Client _client;
   final bool persistent;
-  final SessionStorage storage = const SessionStorage();
+  final SessionStorage storage;
   bool _restored = false, _cookieSession = false;
   bool get cookieMode => kIsWeb && persistent;
   final String baseUrl;
@@ -126,12 +130,13 @@ class PvgApi extends ChangeNotifier {
       Duration(seconds: result['expires_in'] as int),
       _clearSession,
     );
+    _restored = true;
     startLiveUpdates();
     notifyListeners();
   }
 
   Future<void> restoreSession() async {
-    if (_restored || !persistent) return;
+    if (_restored || signedIn || !persistent) return;
     _restored = true;
     try {
       if (!kIsWeb) {

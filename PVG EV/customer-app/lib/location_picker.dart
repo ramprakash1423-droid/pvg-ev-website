@@ -3,25 +3,34 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'personal_screens.dart';
 import 'ui.dart';
+import 'location_validation.dart';
 
 Future<LatLng?> pickChargingPin(
   BuildContext context, {
   double? latitude,
   double? longitude,
+  TileProvider? tileProvider,
 }) => Navigator.push<LatLng>(
   context,
   MaterialPageRoute(
     builder: (_) => _LocationPicker(
-      initial: latitude != null && longitude != null
+      initial:
+          latitude != null &&
+              longitude != null &&
+              isChennaiPin(latitude, longitude)
           ? LatLng(latitude, longitude)
           : null,
+      initialError: chargingPinValidationError(latitude, longitude),
+      tileProvider: tileProvider,
     ),
   ),
 );
 
 class _LocationPicker extends StatefulWidget {
-  const _LocationPicker({this.initial});
+  const _LocationPicker({this.initial, this.initialError, this.tileProvider});
   final LatLng? initial;
+  final String? initialError;
+  final TileProvider? tileProvider;
   @override
   State<_LocationPicker> createState() => _LocationPickerState();
 }
@@ -35,6 +44,7 @@ class _LocationPickerState extends State<_LocationPicker> {
   void initState() {
     super.initState();
     point = widget.initial;
+    error = widget.initialError;
   }
 
   @override
@@ -78,9 +88,18 @@ class _LocationPickerState extends State<_LocationPicker> {
               FlutterMap(
                 mapController: map,
                 options: MapOptions(
-                  initialCenter: point ?? const LatLng(13.0827, 80.2707),
+                  initialCenter:
+                      point ??
+                      const LatLng(chennaiMapLatitude, chennaiMapLongitude),
                   initialZoom: point == null ? 11 : 16,
-                  onTap: (_, position) => setState(() => point = position),
+                  onTap: (_, position) => setState(() {
+                    final valid = isChennaiPin(
+                      position.latitude,
+                      position.longitude,
+                    );
+                    point = valid ? position : null;
+                    error = valid ? null : chennaiPinError;
+                  }),
                   interactionOptions: const InteractionOptions(
                     flags:
                         InteractiveFlag.drag |
@@ -90,6 +109,7 @@ class _LocationPickerState extends State<_LocationPicker> {
                 ),
                 children: [
                   TileLayer(
+                    tileProvider: widget.tileProvider,
                     urlTemplate: const String.fromEnvironment(
                       'PVG_MAP_TILES',
                       defaultValue:

@@ -285,6 +285,7 @@ void main() {
           final path = r.url.path;
           final result = switch (path) {
             '/api/config' => {
+              'service': {'open_minutes': 360, 'close_minutes': 1380},
               'tariff': {
                 'unit_rate_paise': 2000,
                 'visit_fee_paise': 30000,
@@ -318,7 +319,10 @@ void main() {
           return http.Response(jsonEncode(result), 200);
         }),
       );
-      api.config = {'tariff': {}};
+      api.config = {
+        'tariff': {},
+        'service': {'open_minutes': 360, 'close_minutes': 1380},
+      };
       await tester.pumpWidget(
         MaterialApp(
           theme: pvgTheme(),

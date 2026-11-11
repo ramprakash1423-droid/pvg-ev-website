@@ -1,6 +1,8 @@
 // Supabase/PostgreSQL implementation of the PVG workflow. No sample seeding.
 import {createHash, randomBytes, randomUUID, scryptSync, timingSafeEqual} from 'node:crypto';
 import {ApiError,ensure,sha,now,id,energyMilli,billFor,photoData} from './domain.mjs';
+import {validateVisitTime} from './customer-experience.mjs';
+import {validateChargingPin} from './location-validation.mjs';
 const TRACKABLE=new Set(['assigned','on_the_way','arrived','charging']);
 function passwordHash(password, salt = randomBytes(16).toString('hex')) {
   return `${salt}:${scryptSync(password, salt, 32).toString('hex')}`;
@@ -226,8 +228,7 @@ export class PostgresStore {
     ensure(typeof input.address === 'string' && input.address.trim().length >= 8 && input.address.length <= 400, 'Enter the complete charging address.');
     ensure((/^600\d{3}$/).test(input.pincode), 'Use a Chennai pincode (600xxx).');
     ensure(typeof (input.access_notes ?? '') === 'string' && (input.access_notes ?? '').length <= 1000, 'Access instructions are too long.');
-    const hasCoords = input.latitude != null || input.longitude != null;
-    ensure(!hasCoords || Number.isFinite(input.latitude) && Number.isFinite(input.longitude) && Math.abs(input.latitude) <= 90 && Math.abs(input.longitude) <= 180, 'Choose a valid location.');
+    validateChargingPin(input.latitude,input.longitude);
     const place = {
       id: placeId || id('place'),
       label: input.label.trim(),
@@ -440,8 +441,7 @@ export class PostgresStore {
     const date = Date.parse(input.slot);
     ensure(Number.isFinite(date) && date > Date.now() && date < Date.now() + 31 * 86400000, 'Choose a future time within the next 30 days.');
     ensure(typeof (input.access_notes || '') === 'string' && (input.access_notes || '').length <= 1000, 'Access instructions are too long.');
-    const hasCoords = input.latitude != null || input.longitude != null;
-    ensure(!hasCoords || typeof input.latitude === 'number' && typeof input.longitude === 'number' && Math.abs(input.latitude) <= 90 && Math.abs(input.longitude) <= 180, 'Choose a valid location.');
+    validateChargingPin(input.latitude,input.longitude);
     const tariff = await this.tariff();
     ensure(tariff, 'PVG pricing is not configured yet. Please contact support.',503);
     return await this.tx(async () => {
@@ -486,10 +486,14 @@ export class PostgresStore {
       ensure((await this.user(input.technician_id))?.role === 'technician', 'Select a technician.');
       const fleet = await this.db.prepare('SELECT data FROM fleet WHERE id=?').get(input.fleet_id);
       ensure(fleet && JSON.parse(fleet.data).available, 'Select an available vehicle.');
-      const date = Date.parse(input.slot);
-      ensure(Number.isFinite(date) && date > Date.now() && date < Date.now() + 31 * 86400000, 'Select a future arrival window within 30 days.');
+      const settingsRow=await this.db.prepare("SELECT data FROM settings WHERE id='service'").get();
+      const settings=settingsRow?JSON.parse(settingsRow.data):null;
+      ensure(settings&&Number.isInteger(settings.visit_minutes)&&settings.visit_minutes>=30&&settings.visit_minutes<=240,'Set the travel and service window under Vehicles & team before assigning a visit.',409);
+      const date = validateVisitTime(input.slot,settings);
+      const local = new Date(date+330*60000);
+      ensure(local.getUTCHours()*60+local.getUTCMinutes()+settings.visit_minutes<=settings.close_minutes,'Choose an arrival time that leaves the configured service window before closing.',409);
       const active = await this.db.prepare("SELECT data FROM bookings WHERE id!=? AND status NOT IN ('cancelled','paid') AND (fleet_id=? OR technician_id=?)").all(bookingId, input.fleet_id, input.technician_id);
-      ensure(!active.some(r => Math.abs(Date.parse(JSON.parse(r.data).slot) - date) < 120 * 60000), 'That vehicle or technician already has a booking in this two-hour service window.', 409);
+      ensure(!active.some(r => Math.abs(Date.parse(JSON.parse(r.data).slot) - date) < settings.visit_minutes * 60000), 'That vehicle or technician already has a booking in the configured service window.', 409);
       await this.save(row, {
         status: 'assigned',
         technician_id: input.technician_id,

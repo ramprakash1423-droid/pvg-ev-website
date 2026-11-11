@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'api.dart';
 import 'ui.dart';
+import 'visit_schedule.dart';
+import 'location_picker.dart';
+import 'location_validation.dart';
 
 class VisitControls extends StatefulWidget {
   const VisitControls({
@@ -37,24 +40,43 @@ class _VisitControlsState extends State<VisitControls> {
   }
 
   Future<void> reschedule() async {
-    final now = DateTime.now();
+    if (VisitSchedule.from(widget.api.config?['service']) == null) {
+      try {
+        await widget.api.loadConfig();
+      } catch (e) {
+        if (mounted) setState(() => error = errorText(e));
+        return;
+      }
+    }
+    if (!mounted) return;
+    final hours = VisitSchedule.from(widget.api.config?['service']);
+    if (hours == null) {
+      setState(
+        () =>
+            error = 'PVG service hours could not be loaded. Please try again.',
+      );
+      return;
+    }
+    final today = indiaCalendarDay(DateTime.now());
     final day = await showDatePicker(
       context: context,
-      firstDate: now,
-      lastDate: now.add(const Duration(days: 30)),
-      initialDate: now.add(const Duration(days: 1)),
+      helpText: 'Choose visit date · India time',
+      currentDate: today,
+      firstDate: today,
+      lastDate: visitCalendarDayAfter(today, 30),
+      initialDate: visitCalendarDayAfter(today, 1),
     );
     if (day == null || !mounted) return;
     final time = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 10, minute: 0),
+      helpText: 'Visit time · India (IST)',
+      initialTime: hours.initialTime,
     );
     if (time == null || !mounted) return;
-    final slot = DateTime(day.year, day.month, day.day, time.hour, time.minute);
-    if (!slot.isAfter(now) || time.hour < 6 || time.hour >= 23) {
-      setState(
-        () => error = 'Choose a future time between 6:00 AM and 11:00 PM.',
-      );
+    final slot = indiaVisitInstant(day, time);
+    final problem = hours.validate(slot);
+    if (problem != null) {
+      setState(() => error = problem);
       return;
     }
     final confirmed = await showDialog<bool>(
@@ -79,6 +101,19 @@ class _VisitControlsState extends State<VisitControls> {
     if (confirmed == true && mounted) {
       await send('reschedule', {'slot': slot.toUtc().toIso8601String()});
     }
+  }
+
+  Future<void> updatePin() async {
+    final pin = await pickChargingPin(
+      context,
+      latitude: (widget.booking['latitude'] as num?)?.toDouble(),
+      longitude: (widget.booking['longitude'] as num?)?.toDouble(),
+    );
+    if (pin == null || !mounted) return;
+    await send('location', {
+      'latitude': pin.latitude,
+      'longitude': pin.longitude,
+    });
   }
 
   Future<void> support() async {
@@ -162,6 +197,14 @@ class _VisitControlsState extends State<VisitControls> {
   @override
   Widget build(BuildContext context) {
     final b = widget.booking, ticket = b['support_request'];
+    final latitude = b['latitude'] as num?, longitude = b['longitude'] as num?;
+    final hasPin = latitude != null || longitude != null;
+    final pinNeedsCorrection =
+        hasPin &&
+        (latitude == null ||
+            longitude == null ||
+            !isChennaiPin(latitude, longitude));
+    final canChangeVisit = ['requested', 'assigned'].contains(b['status']);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -169,12 +212,34 @@ class _VisitControlsState extends State<VisitControls> {
           Notice('From your charging team: ${b['service_note']['message']}'),
         if (b['failure_reason'] != null)
           Notice('Visit could not proceed: ${b['failure_reason']}'),
-        if (['requested', 'assigned'].contains(b['status']))
+        if (pinNeedsCorrection)
+          Notice(
+            canChangeVisit
+                ? 'Your saved parking pin is outside the Chennai area. Update or remove it so your team has the correct destination.'
+                : 'Your saved parking pin needs correction. Contact PVG support to confirm your parking entrance.',
+            error: true,
+          ),
+        if (canChangeVisit) ...[
           TextButton.icon(
             onPressed: busy ? null : reschedule,
             icon: const Icon(Icons.edit_calendar_outlined, size: 18),
             label: const Text('Change visit time'),
           ),
+          TextButton.icon(
+            onPressed: busy ? null : updatePin,
+            icon: const Icon(Icons.edit_location_alt_outlined, size: 18),
+            label: Text(hasPin ? 'Update parking pin' : 'Add parking pin'),
+          ),
+          if (hasPin)
+            TextButton.icon(
+              onPressed: busy
+                  ? null
+                  : () =>
+                        send('location', {'latitude': null, 'longitude': null}),
+              icon: const Icon(Icons.location_off_outlined, size: 18),
+              label: const Text('Remove parking pin'),
+            ),
+        ],
         if (ticket != null)
           Panel(
             child: Column(

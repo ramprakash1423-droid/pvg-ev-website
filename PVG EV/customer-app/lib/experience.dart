@@ -93,6 +93,7 @@ class EmptyState extends StatelessWidget {
 }
 
 const eventLabels = {
+  'location_updated': 'You updated the parking pin',
   'rescheduled': 'New visit time requested',
   'support_requested': 'Support request received',
   'support_updated': 'PVG replied to your support request',
