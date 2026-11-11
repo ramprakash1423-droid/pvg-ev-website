@@ -65,3 +65,21 @@ Successful OTP sign-in keeps its in-memory session if device storage is unavaila
 All 34 Flutter tests and the iOS simulator build pass. The controlled real pilot verified customer SMS sign-in, booking persistence, actual staff/vehicle assignment and a genuine Mac location fix propagated through Supabase to the iPhone simulator. Location updates were intermittent; last-known/stale states and explicit sharing stop were verified. Physical-phone tracking and actual energy evidence, acceptance and checkout remain unverified until a completed charging visit.
 
 An outside-Chennai simulator pin was detected and removed through the customer controls while preserving the written address. GPS/map validation now prevents obvious destination mismatches, and no replacement point is invented. Automated regression fixtures are separate from real pilot records and do not populate Supabase.
+
+## Mobile UI polish — 11 November 2026
+
+Tracking now leads with a compact status and actual-location map, followed by a stage-specific action, team details and visit progress. Booking uses concise steps, one parking-pin section and field-local errors that move focus to the first problem. Visit and garage cards are compact, and secondary text has stronger contrast.
+
+Updates refresh from the live event stream, group by day, show relevant staff messages and separate GPS session audit activity. Session loss clears private cached activity and late responses cannot restore it. Evidence previews open at full size; units review, payment and receipt use a safe-area bottom action bar after charging.
+
+All 46 Flutter checks pass, including small screens, enlarged text, location truthfulness, explicit acceptance and session-privacy cases. Simulator screens were checked using the existing real booking. No invented GPS, readings or payment records were added. Actual acceptance/payment still awaits a completed charging visit.
+
+## ChargeZone UI comparison — 11 November 2026
+
+The [official ChargeZone Play listing](https://play.google.com/store/apps/details?id=com.chargezone&hl=en_IN) and its published screenshots informed this pass: map-led content, a compact location/status surface, small quick actions, EV identity details and persistent central navigation. PVG keeps its forest/lime identity and uses its own assets.
+
+For doorstep charging, the app combines the visit status and actual location into one card, keeps dispatched visits primary even when an older bill needs action, and separates a compact billing reminder. The Home guide expands on demand so it does not bury booking controls. GPS details disclose their source/freshness, and a failed map layer has an explicit retry. Dates/coverage and meter evidence are revalidated after changes or conflicts.
+
+ChargeZone is a station-network product; PVG currently uses technician-reported Setrans visits. Live charger availability/power/SOC, remote charger control, background phone GPS, road arrival estimates, production payments, closed-app push and official Zoho invoices are not supplied by this visual update. The app does not invent those capabilities, station pins or live readings.
+
+Final verification for this pass: all 53 Flutter tests passed, `flutter analyze` reported no issues, and the running iPhone simulator was visually checked with the existing real Supabase booking. The current tracking preview has no technician GPS fix; it correctly shows a waiting state. No live readings or payment records were fabricated.

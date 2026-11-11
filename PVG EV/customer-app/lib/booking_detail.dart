@@ -25,6 +25,7 @@ class _BookingDetailState extends State<BookingDetail>
   String? error;
   bool busy = false, accepted = false, evidenceReady = false;
   bool fetching = false;
+  int evidenceValidation = 0;
   Timer? timer;
   StreamSubscription<Map<String, dynamic>>? liveUpdates;
   bool liveDisconnected = false;
@@ -95,32 +96,52 @@ class _BookingDetailState extends State<BookingDetail>
     fetching = true;
     try {
       final b = await api.request('/bookings/${widget.bookingId}');
-      if (booking?['reading']?['id'] != b['reading']?['id'] ||
-          booking?['version'] != b['version']) {
-        accepted = false;
-      }
-      booking = b;
-      evidenceReady = false;
-      if (b['reading'] != null) {
-        for (final data in [
-          b['reading']['photo'],
-          if (b['reading']['start_photo'] != null) b['reading']['start_photo'],
-        ]) {
-          final codec = await ui.instantiateImageCodec(
-            base64Decode((data as String).split(',').last),
-          );
-          final frame = await codec.getNextFrame();
-          frame.image.dispose();
-          codec.dispose();
-        }
-        evidenceReady = true;
-      }
+      await applyBooking(b);
       error = null;
     } catch (e) {
       error = errorText(e);
     }
     fetching = false;
     if (mounted) setState(() {});
+  }
+
+  Future<void> applyBooking(Map<String, dynamic> next) async {
+    final previous = booking?['reading'];
+    final reading = next['reading'];
+    if (previous?['id'] != reading?['id'] ||
+        booking?['version'] != next['version'] ||
+        previous?['photo'] != reading?['photo'] ||
+        previous?['start_photo'] != reading?['start_photo']) {
+      accepted = false;
+    }
+    final validation = ++evidenceValidation;
+    booking = next;
+    evidenceReady = false;
+    if (reading == null) return;
+    try {
+      for (final data in [
+        reading['photo'],
+        if (reading['start_photo'] != null) reading['start_photo'],
+      ]) {
+        final codec = await ui.instantiateImageCodec(
+          base64Decode((data as String).split(',').last),
+        );
+        try {
+          final frame = await codec.getNextFrame();
+          frame.image.dispose();
+        } finally {
+          codec.dispose();
+        }
+      }
+      // A slower older decode must not authorize a newer reading.
+      if (validation == evidenceValidation && identical(booking, next)) {
+        evidenceReady = true;
+      }
+    } catch (_) {
+      throw Exception(
+        'The meter photo could not be verified. Refresh before accepting.',
+      );
+    }
   }
 
   Future<void> refreshTracking() async {
@@ -156,10 +177,17 @@ class _BookingDetailState extends State<BookingDetail>
   }
 
   Future<void> loadWithoutClearingError() async {
+    accepted = false;
+    evidenceReady = false;
+    // Revoke the earlier image check while recovering a version conflict.
+    evidenceValidation++;
     try {
-      booking = await api.request('/bookings/${widget.bookingId}');
-      accepted = false;
-    } catch (_) {}
+      final next = await api.request('/bookings/${widget.bookingId}');
+      await applyBooking(next);
+    } catch (_) {
+      // Keep the action error visible. The acceptance control stays disabled
+      // until the current reading's evidence has loaded successfully.
+    }
   }
 
   Future<void> accept() async {
@@ -288,77 +316,245 @@ class _BookingDetailState extends State<BookingDetail>
     if (mounted) setState(() => busy = false);
   }
 
-  Widget photo(String data, String caption) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(caption, style: const TextStyle(color: muted, fontSize: 12)),
-      const SizedBox(height: 8),
-      ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.memory(
-          base64Decode(data.split(',').last),
-          width: double.infinity,
-          fit: BoxFit.contain,
-          errorBuilder: (_, e, s) => const Notice(
-            'Photo could not be loaded. Refresh before accepting.',
-            error: true,
-          ),
+  void inspectPhoto(String data, String caption) => showDialog<void>(
+    context: context,
+    builder: (ctx) => Dialog.fullscreen(
+      backgroundColor: midnight,
+      child: SafeArea(
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(caption, style: const TextStyle(color: Colors.white)),
+              subtitle: const Text(
+                'Pinch to zoom',
+                style: TextStyle(color: lime),
+              ),
+              trailing: IconButton(
+                tooltip: 'Close photo',
+                onPressed: () => Navigator.pop(ctx),
+                icon: const Icon(Icons.close, color: Colors.white),
+              ),
+            ),
+            Expanded(
+              child: InteractiveViewer(
+                minScale: .7,
+                maxScale: 5,
+                child: Center(
+                  child: Image.memory(
+                    base64Decode(data.split(',').last),
+                    semanticLabel: caption,
+                    errorBuilder: (_, e, s) =>
+                        const Notice('Photo could not be loaded.', error: true),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-      const SizedBox(height: 15),
-      TextButton.icon(
-        onPressed: () => showDialog<void>(
-          context: context,
-          builder: (ctx) => Dialog.fullscreen(
-            backgroundColor: midnight,
-            child: SafeArea(
-              child: Column(
+    ),
+  );
+
+  Widget photo(String data, String caption) => Material(
+    color: canvas,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+      side: const BorderSide(color: line),
+    ),
+    clipBehavior: Clip.antiAlias,
+    child: InkWell(
+      onTap: () => inspectPhoto(data, caption),
+      child: Semantics(
+        button: true,
+        label: 'Inspect $caption photo',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Image.memory(
+              base64Decode(data.split(',').last),
+              height: 132,
+              fit: BoxFit.contain,
+              errorBuilder: (_, e, s) => const SizedBox(
+                height: 132,
+                child: Center(child: Icon(Icons.broken_image_outlined)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
                 children: [
-                  ListTile(
-                    title: Text(
-                      caption,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    subtitle: const Text(
-                      'Pinch or scroll to zoom',
-                      style: TextStyle(color: lime),
-                    ),
-                    trailing: IconButton(
-                      tooltip: 'Close photo',
-                      onPressed: () => Navigator.pop(ctx),
-                      icon: const Icon(Icons.close, color: Colors.white),
-                    ),
-                  ),
                   Expanded(
-                    child: InteractiveViewer(
-                      minScale: .7,
-                      maxScale: 5,
-                      child: Center(
-                        child: Image.memory(
-                          base64Decode(data.split(',').last),
-                          semanticLabel: caption,
-                          errorBuilder: (_, e, s) => const Notice(
-                            'Photo could not be loaded.',
-                            error: true,
-                          ),
-                        ),
+                    child: Text(
+                      caption,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: forest,
                       ),
                     ),
                   ),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.zoom_in_rounded, size: 18, color: forest),
                 ],
               ),
             ),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  Widget reviewFooter(Map<String, dynamic> b) {
+    final status = b['status'];
+    final bill = status == 'awaiting_acceptance'
+        ? (b['reading']?['bill'])
+        : (b['invoice']?['bill'] ?? b['reading']?['bill']);
+    return Material(
+      elevation: 8,
+      color: Colors.white,
+      child: SafeArea(
+        top: false,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height * .43,
+          ),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(18, 10, 18, 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (error != null) Notice(error!, error: true),
+                if (status == 'awaiting_acceptance') ...[
+                  CheckboxListTile(
+                    key: const Key('accept-units-checkbox'),
+                    value: accepted,
+                    onChanged: busy || !evidenceReady
+                        ? null
+                        : (v) => setState(() => accepted = v!),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(
+                      'I accept ${b['reading']['bill']['energy_milli'] / 1000} kWh and ${money(b['reading']['bill']['total_paise'])}.',
+                      style: const TextStyle(fontSize: 12, color: forest),
+                    ),
+                  ),
+                  if (!evidenceReady)
+                    const Text(
+                      'Meter evidence must load before you can accept.',
+                      style: TextStyle(fontSize: 12, color: muted),
+                    ),
+                ],
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final amount = Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          status == 'paid'
+                              ? 'PAID · TEST'
+                              : 'TOTAL · TEST MODE',
+                          style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: muted,
+                            letterSpacing: .7,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Text(
+                          money(bill?['total_paise']),
+                          style: const TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w700,
+                            color: forest,
+                          ),
+                        ),
+                      ],
+                    );
+                    final button = PrimaryButton(
+                      status == 'awaiting_acceptance'
+                          ? 'Accept units & continue'
+                          : status == 'paid'
+                          ? 'Download test receipt'
+                          : 'Pay ${money(bill?['total_paise'])} · test',
+                      busy: busy,
+                      icon: status == 'paid'
+                          ? Icons.download_outlined
+                          : status == 'awaiting_payment'
+                          ? Icons.lock_outline
+                          : Icons.arrow_forward_rounded,
+                      onPressed: status == 'awaiting_acceptance'
+                          ? accepted && evidenceReady
+                                ? accept
+                                : null
+                          : status == 'paid'
+                          ? receipt
+                          : pay,
+                    );
+                    if (constraints.maxWidth < 320 ||
+                        MediaQuery.textScalerOf(context).scale(13) > 18) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [amount, const SizedBox(height: 8), button],
+                      );
+                    }
+                    return Row(
+                      children: [
+                        amount,
+                        const SizedBox(width: 12),
+                        Expanded(child: button),
+                      ],
+                    );
+                  },
+                ),
+                if (status == 'awaiting_acceptance')
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: busy ? null : dispute,
+                      child: const Text(
+                        'Report a mismatch',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+                if (status == 'awaiting_payment')
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      onPressed: busy
+                          ? null
+                          : () => action('payment-refresh', {}),
+                      icon: const Icon(Icons.refresh_rounded, size: 16),
+                      label: const Text(
+                        'Check payment status',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
-        icon: const Icon(Icons.zoom_in),
-        label: const Text('Inspect meter photo'),
       ),
-    ],
-  );
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final b = booking;
+    final hasFooter =
+        b != null &&
+        [
+          'awaiting_acceptance',
+          'awaiting_payment',
+          'paid',
+        ].contains(b['status']) &&
+        (b['reading']?['bill'] != null || b['invoice']?['bill'] != null);
     return Scaffold(
+      bottomNavigationBar: hasFooter ? reviewFooter(b) : null,
       appBar: AppBar(
         title: Text(
           travellingStatuses.contains(b?['status'])
@@ -442,10 +638,88 @@ class _BookingDetailState extends State<BookingDetail>
                           'Pull down to refresh the latest update from your technician.',
                       style: const TextStyle(color: muted, fontSize: 13),
                     ),
-                    const SizedBox(height: 22),
-                    VisitProgress(booking: b),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 16),
+                    if (b['reading'] == null) ...[
+                      VisitProgress(booking: b),
+                      const SizedBox(height: 16),
+                    ],
                   ],
+                  if (b['reading'] != null)
+                    Panel(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Kicker(
+                            'CHARGING RECORD · REVISION ${b['reading']['revision']}',
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '${b['reading']['bill']['energy_milli'] / 1000} kWh delivered',
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w700,
+                              color: forest,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          const Text(
+                            'Tap a photo to inspect the meter.',
+                            style: TextStyle(fontSize: 12, color: muted),
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (b['reading']['start_photo'] != null) ...[
+                                Expanded(
+                                  child: photo(
+                                    b['reading']['start_photo'],
+                                    'Starting meter',
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                              ],
+                              Expanded(
+                                child: photo(
+                                  b['reading']['photo'],
+                                  b['reading']['kind'] == 'cumulative'
+                                      ? 'Ending meter'
+                                      : 'Delivered energy',
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          if (b['reading']['kind'] == 'cumulative')
+                            Text(
+                              '${b['reading']['end_milli'] / 1000} − ${b['reading']['start_milli'] / 1000} = ${b['reading']['bill']['energy_milli'] / 1000} kWh',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          if ((b['reading']['notes'] ?? '').isNotEmpty)
+                            Notice(b['reading']['notes']),
+                          BillLines(
+                            Map<String, dynamic>.from(b['reading']['bill']),
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    Panel(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Kicker('BILLED AFTER CHARGING'),
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Your bill will appear after the technician submits the delivered units and meter photo. Review and accept it before paying.',
+                            style: TextStyle(fontSize: 13, color: muted),
+                          ),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 16),
                   Panel(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -482,102 +756,6 @@ class _BookingDetailState extends State<BookingDetail>
                     ),
                   ),
                   const SizedBox(height: 18),
-                  if (b['reading'] != null)
-                    Panel(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Kicker(
-                            'CHARGING RECORD · REVISION ${b['reading']['revision']}',
-                          ),
-                          const SizedBox(height: 16),
-                          if (b['reading']['start_photo'] != null)
-                            photo(
-                              b['reading']['start_photo'],
-                              'Starting meter',
-                            ),
-                          photo(
-                            b['reading']['photo'],
-                            b['reading']['kind'] == 'cumulative'
-                                ? 'Ending meter'
-                                : 'Session energy delivered',
-                          ),
-                          if (b['reading']['kind'] == 'cumulative')
-                            Text(
-                              '${b['reading']['end_milli'] / 1000} − ${b['reading']['start_milli'] / 1000} = ${b['reading']['bill']['energy_milli'] / 1000} kWh',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          if ((b['reading']['notes'] ?? '').isNotEmpty)
-                            Notice(b['reading']['notes']),
-                          BillLines(
-                            Map<String, dynamic>.from(b['reading']['bill']),
-                          ),
-                        ],
-                      ),
-                    )
-                  else
-                    Panel(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Kicker('BILLED AFTER CHARGING'),
-                          const SizedBox(height: 10),
-                          const Text(
-                            'Your bill will appear after the technician submits the delivered units and meter photo. Review and accept it before paying.',
-                            style: TextStyle(fontSize: 13, color: muted),
-                          ),
-                        ],
-                      ),
-                    ),
-                  if (b['status'] == 'awaiting_acceptance') ...[
-                    CheckboxListTile(
-                      key: const Key('accept-units-checkbox'),
-                      value: accepted,
-                      onChanged: busy || !evidenceReady
-                          ? null
-                          : (v) => setState(() => accepted = v!),
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(
-                        'I accept ${b['reading']['bill']['energy_milli'] / 1000} kWh and the total of ${money(b['reading']['bill']['total_paise'])}.',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    PrimaryButton(
-                      'Accept units & continue',
-                      busy: busy,
-                      onPressed: accepted && evidenceReady ? accept : null,
-                    ),
-                    TextButton(
-                      onPressed: busy ? null : dispute,
-                      child: const Text('Report a mismatch'),
-                    ),
-                  ],
-                  if (b['status'] == 'awaiting_payment') ...[
-                    const SizedBox(height: 20),
-                    PrimaryButton(
-                      'Pay ${money(b['invoice']['bill']['total_paise'])} · test',
-                      busy: busy,
-                      icon: Icons.lock_outline,
-                      onPressed: pay,
-                    ),
-                    TextButton(
-                      onPressed: busy
-                          ? null
-                          : () => action('payment-refresh', {}),
-                      child: const Text('Check payment status'),
-                    ),
-                  ],
-                  if (b['status'] == 'paid') ...[
-                    const SizedBox(height: 20),
-                    PrimaryButton(
-                      'Download test receipt',
-                      busy: busy,
-                      icon: Icons.download_outlined,
-                      onPressed: receipt,
-                    ),
-                  ],
                   if (['requested', 'assigned'].contains(b['status']))
                     TextButton(
                       onPressed: busy
@@ -615,7 +793,7 @@ class _BookingDetailState extends State<BookingDetail>
                     VisitControls(api: api, booking: b, onChanged: load),
                   if (b['dispute'] != null)
                     Notice('Your concern: ${b['dispute']}'),
-                  if (error != null) Notice(error!, error: true),
+                  if (error != null && !hasFooter) Notice(error!, error: true),
                   TextButton.icon(
                     onPressed: () => Navigator.push(
                       context,

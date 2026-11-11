@@ -11,6 +11,8 @@ import 'booking_screen.dart';
 import 'booking_detail.dart';
 import 'tracking_experience.dart';
 import 'service_availability.dart';
+import 'update_presentation.dart';
+import 'updates_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -106,6 +108,7 @@ class _CustomerHomeState extends State<CustomerHome>
   }
 
   int get unread => updates
+      .where(isCustomerUpdate)
       .where(
         (e) =>
             prefs['updates_read_at'] == null ||
@@ -198,9 +201,9 @@ class _CustomerHomeState extends State<CustomerHome>
           api.request('/preferences'),
         ]);
         if (mounted && api.signedIn && api.user?['id'] == owner) {
-          final prior = bookings.isEmpty ? null : updates.firstOrNull;
+          final prior = updates.where(isCustomerUpdate).firstOrNull;
           bookings = data[0];
-          final newest = updates.firstOrNull;
+          final newest = updates.where(isCustomerUpdate).firstOrNull;
           if (prior != null &&
               newest != null &&
               newest['created_at'] != prior['created_at'] &&
@@ -208,6 +211,9 @@ class _CustomerHomeState extends State<CustomerHome>
               newest['action'] != 'gps_stopped') {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
+                persist: false,
+                showCloseIcon: true,
+                behavior: SnackBarBehavior.floating,
                 content: Text(
                   eventLabels[newest['action']] ??
                       'Your charging visit has an update.',
@@ -553,7 +559,7 @@ class _CustomerHomeState extends State<CustomerHome>
   }
 
   Widget heading(String kicker, String title, String subtitle) => Padding(
-    padding: const EdgeInsets.only(top: 8, bottom: 20),
+    padding: const EdgeInsets.only(top: 6, bottom: 14),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -581,14 +587,53 @@ class _CustomerHomeState extends State<CustomerHome>
   List<Widget> home() {
     final pending = bookings.where(needsAction).toList();
     final current = bookings.where(active).toList();
-    final focus = pending.firstOrNull ?? current.firstOrNull;
+    final dispatch = current.where(
+      (b) => ['on_the_way', 'arrived', 'charging'].contains(b['status']),
+    );
+    final upcoming = current.where(
+      (b) => ['requested', 'assigned'].contains(b['status']),
+    );
+    final focus =
+        dispatch.firstOrNull ?? upcoming.firstOrNull ?? pending.firstOrNull;
+    final otherAttention = pending
+        .where((b) => b['id'] != focus?['id'])
+        .toList();
     if (focus != null) {
       return [
         SectionTitle(
-          'Track my charging vehicle',
+          'Your charging visit',
           action: 'All visits',
           onTap: () => setState(() => tab = 1),
         ),
+        if (otherAttention.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Panel(
+              padding: const EdgeInsets.fromLTRB(10, 2, 6, 2),
+              color: softLime,
+              child: Row(
+                children: [
+                  const Icon(Icons.fact_check_outlined, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      otherAttention.length == 1
+                          ? '${otherAttention.first['reference']} needs your attention'
+                          : '${otherAttention.length} visits need your attention',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => open(otherAttention.first),
+                    child: const Text('Review'),
+                  ),
+                ],
+              ),
+            ),
+          ),
         TrackingExperience(
           booking: focus,
           connectionLost: trackingDisconnected,
@@ -749,10 +794,9 @@ class _CustomerHomeState extends State<CustomerHome>
     final visible = bookings
         .where(
           (b) =>
-              (filter == 'All' ||
-                  filter == 'Active' && active(b) ||
+              (filter == 'Active' && active(b) ||
                   filter == 'History' && !active(b) ||
-                  filter == 'To do' && needsAction(b)) &&
+                  filter == 'Needs action' && needsAction(b)) &&
               '${b['reference']} ${b['ev']['model']} ${b['address']}'
                   .toLowerCase()
                   .contains(search.toLowerCase()),
@@ -762,7 +806,7 @@ class _CustomerHomeState extends State<CustomerHome>
       heading(
         'YOUR CHARGING JOURNEY',
         'My visits',
-        'Follow progress, review units and find your receipts.',
+        'Upcoming visits, charging updates and receipts.',
       ),
       if (!api.signedIn)
         EmptyState(
@@ -783,7 +827,7 @@ class _CustomerHomeState extends State<CustomerHome>
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
-          children: ['Active', 'To do', 'History', 'All']
+          children: ['Active', 'History', 'Needs action']
               .map(
                 (s) => ChoiceChip(
                   label: Text(s),
@@ -794,7 +838,7 @@ class _CustomerHomeState extends State<CustomerHome>
               )
               .toList(),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(height: 12),
         if (visible.isEmpty)
           EmptyState(
             icon: Icons.event_available_outlined,
@@ -816,7 +860,7 @@ class _CustomerHomeState extends State<CustomerHome>
     heading(
       'THE ELECTRIC LIFE',
       'My garage',
-      'Save your vehicles once. Pick your favourite for faster bookings.',
+      'Your EVs, ready for the next visit.',
     ),
     if (!api.signedIn)
       EmptyState(
@@ -833,113 +877,140 @@ class _CustomerHomeState extends State<CustomerHome>
           title: 'Meet your new garage.',
           text: 'Add your first EV to get started.',
         ),
-      for (final v in vehicles)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 15),
-          child: Panel(
-            color: prefs['default_vehicle_id'] == v['id']
-                ? softLime
-                : Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: forest,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(
-                        Icons.electric_car_rounded,
-                        color: lime,
-                        size: 32,
-                      ),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      tooltip: 'Edit ${v['model']}',
-                      onPressed: () => editEv(v),
-                      icon: const Icon(Icons.edit_outlined),
-                    ),
-                    IconButton(
-                      tooltip: 'Remove ${v['model']}',
-                      onPressed: () => archive(v),
-                      icon: const Icon(Icons.delete_outline),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 19),
-                Text(
-                  v['model'],
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -.7,
-                  ),
-                ),
-                Text(
-                  v['registration'],
-                  style: const TextStyle(
-                    color: muted,
-                    fontSize: 12,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    const Icon(Icons.ev_station_outlined, size: 18),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        '${v['connector']} connector',
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                    ),
-                  ],
-                ),
-                TextButton.icon(
-                  onPressed: () => preference({'default_vehicle_id': v['id']}),
-                  icon: Icon(
-                    prefs['default_vehicle_id'] == v['id']
-                        ? Icons.star_rounded
-                        : Icons.star_border_rounded,
-                  ),
-                  label: Text(
-                    prefs['default_vehicle_id'] == v['id']
-                        ? 'Preferred EV'
-                        : 'Make preferred',
-                  ),
-                ),
-                PrimaryButton(
-                  'Charge this EV',
-                  onPressed: () => book(prefill: {'ev': v}),
-                  icon: Icons.bolt,
-                ),
-              ],
-            ),
-          ),
-        ),
-      const SizedBox(height: 8),
-      OutlinedButton.icon(
-        onPressed: () => editEv(),
-        icon: const Icon(Icons.add),
-        label: const Padding(
-          padding: EdgeInsets.all(14),
-          child: Text('Add another EV'),
+      for (final v in vehicles) vehicleCard(v),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: OutlinedButton.icon(
+          onPressed: () => editEv(),
+          icon: const Icon(Icons.add, size: 17),
+          label: Text(vehicles.isEmpty ? 'Add your EV' : 'Add another EV'),
         ),
       ),
     ],
-    const Notice(
-      'Saved connector details help plan the visit. PVG confirms compatibility before assigning a charging vehicle.',
-    ),
-    TextButton(
-      onPressed: help,
-      child: const Text('Not sure about your connector?'),
+    const SizedBox(height: 10),
+    Panel(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.ev_station_outlined, size: 21),
+        title: const Text('Need help with your connector?'),
+        subtitle: const Text('PVG confirms compatibility before assignment.'),
+        trailing: const Icon(Icons.chevron_right, size: 18),
+        onTap: help,
+      ),
     ),
   ];
+
+  Widget vehicleCard(Map<String, dynamic> v) {
+    final preferred = prefs['default_vehicle_id'] == v['id'];
+    final unknown =
+        v['connector'] == null ||
+        (v['connector'] as String).toLowerCase().contains('not sure');
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Panel(
+        color: preferred ? softLime : Colors.white,
+        padding: const EdgeInsets.fromLTRB(12, 10, 8, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: forest,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.electric_car_outlined,
+                    color: lime,
+                    size: 23,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        v['model'],
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        v['registration'],
+                        style: const TextStyle(color: muted, fontSize: 11),
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuButton<String>(
+                  tooltip: 'Manage ${v['model']}',
+                  icon: const Icon(Icons.more_horiz, size: 21),
+                  onSelected: (action) {
+                    if (action == 'edit') editEv(v);
+                    if (action == 'remove') archive(v);
+                    if (action == 'preferred') {
+                      preference({'default_vehicle_id': v['id']});
+                    }
+                  },
+                  itemBuilder: (_) => [
+                    const PopupMenuItem(value: 'edit', child: Text('Edit EV')),
+                    if (!preferred)
+                      const PopupMenuItem(
+                        value: 'preferred',
+                        child: Text('Make preferred'),
+                      ),
+                    const PopupMenuItem(
+                      value: 'remove',
+                      child: Text('Remove EV'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                if (preferred)
+                  const Chip(
+                    avatar: Icon(Icons.star_rounded, size: 14, color: forest),
+                    label: Text('Preferred', style: TextStyle(fontSize: 10)),
+                    visualDensity: VisualDensity.compact,
+                    side: BorderSide.none,
+                  ),
+                if (unknown)
+                  TextButton.icon(
+                    onPressed: () => editEv(v),
+                    icon: const Icon(Icons.ev_station_outlined, size: 15),
+                    label: const Text('Confirm connector'),
+                  )
+                else
+                  Text(
+                    '${v['connector']} connector',
+                    style: const TextStyle(fontSize: 11, color: muted),
+                  ),
+              ],
+            ),
+            PrimaryButton(
+              'Charge this EV',
+              onPressed: () => book(prefill: {'ev': v}),
+              icon: Icons.bolt,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   List<Widget> account() => [
     heading(
       'MADE PERSONAL',
@@ -951,10 +1022,11 @@ class _CustomerHomeState extends State<CustomerHome>
     else ...[
       Panel(
         color: forest,
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             CircleAvatar(
-              radius: 26,
+              radius: 22,
               backgroundColor: lime,
               child: Text(
                 (api.user?['name'] as String? ?? 'P')
@@ -998,7 +1070,9 @@ class _CustomerHomeState extends State<CustomerHome>
           ],
         ),
       ),
-      const SizedBox(height: 18),
+      const SizedBox(height: 14),
+      const Kicker('Preferences & places'),
+      const SizedBox(height: 8),
       Panel(
         padding: EdgeInsets.zero,
         child: Column(
@@ -1014,7 +1088,7 @@ class _CustomerHomeState extends State<CustomerHome>
             ListTile(
               leading: const Icon(Icons.notifications_none),
               title: const Text('Visit updates'),
-              subtitle: const Text('Your activity, here in the app'),
+              subtitle: const Text('Progress and messages from PVG'),
               trailing: const Icon(Icons.chevron_right),
               onTap: notifications,
             ),
@@ -1036,7 +1110,7 @@ class _CustomerHomeState extends State<CustomerHome>
       child: ListTile(
         leading: const Icon(Icons.support_agent),
         title: const Text('Help & charging guide'),
-        subtitle: const Text('Get ready for a smoother visit'),
+        subtitle: const Text('Visit help, billing and contact options'),
         trailing: const Icon(Icons.chevron_right),
         onTap: help,
       ),
@@ -1163,6 +1237,7 @@ class _CustomerHomeState extends State<CustomerHome>
       height: 62,
       selectedIndex: tab < 2 ? tab : tab + 1,
       onDestinationSelected: (i) {
+        ScaffoldMessenger.of(context).clearSnackBars();
         if (i == 2) {
           bookHome();
         } else {
@@ -1203,142 +1278,6 @@ class _CustomerHomeState extends State<CustomerHome>
           label: 'You',
         ),
       ],
-    ),
-  );
-}
-
-class UpdatesScreen extends StatefulWidget {
-  const UpdatesScreen({super.key, required this.api, required this.onOpen});
-  final PvgApi api;
-  final Future<void> Function(Map<String, dynamic>) onOpen;
-  @override
-  State<UpdatesScreen> createState() => _UpdatesScreenState();
-}
-
-class _UpdatesScreenState extends State<UpdatesScreen> {
-  List<Map<String, dynamic>> items = [];
-  String? readAt, error;
-  bool loading = true, marking = false;
-  @override
-  void initState() {
-    super.initState();
-    load();
-  }
-
-  Future<void> load() async {
-    try {
-      final results = await Future.wait<dynamic>([
-        widget.api.bookings(),
-        widget.api.request('/preferences'),
-      ]);
-      final next = <Map<String, dynamic>>[];
-      for (final b in results[0]) {
-        for (final e in b['events']) {
-          next.add({...Map<String, dynamic>.from(e), 'booking': b});
-        }
-      }
-      next.sort(
-        (a, b) =>
-            (b['created_at'] as String).compareTo(a['created_at'] as String),
-      );
-      items = next;
-      readAt = results[1]['updates_read_at'];
-      error = null;
-    } catch (e) {
-      error = errorText(e);
-    }
-    if (mounted) setState(() => loading = false);
-  }
-
-  Future<void> mark() async {
-    setState(() => marking = true);
-    try {
-      await widget.api.request('/updates/read', data: {});
-      await load();
-    } catch (e) {
-      error = errorText(e);
-    }
-    if (mounted) setState(() => marking = false);
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Your updates')),
-    body: RefreshIndicator(
-      onRefresh: load,
-      child: ListView(
-        padding: const EdgeInsets.all(22),
-        children: [
-          const Kicker('STAY IN THE LOOP'),
-          const SizedBox(height: 10),
-          const Text(
-            'A clear picture.\nEvery step.',
-            style: TextStyle(
-              fontSize: 23,
-              height: 1.1,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -.6,
-            ),
-          ),
-          const SizedBox(height: 14),
-          const Text(
-            'Visit activity appears here when you refresh. These are in-app updates, not push notifications.',
-            style: TextStyle(color: muted, fontSize: 13),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: marking ? null : mark,
-              child: const Text('Mark all as read'),
-            ),
-          ),
-          if (loading) const LinearProgressIndicator(),
-          if (error != null) Notice(error!, error: true),
-          if (!loading && items.isEmpty)
-            const EmptyState(
-              icon: Icons.notifications_none,
-              title: 'All quiet for now.',
-              text: 'Your first booking will start your activity timeline.',
-            ),
-          for (final e in items)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Material(
-                color:
-                    readAt == null ||
-                        DateTime.parse(
-                          e['created_at'],
-                        ).isAfter(DateTime.parse(readAt!))
-                    ? softLime
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(18),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(15),
-                  leading: const Icon(Icons.bolt_outlined),
-                  title: Text(
-                    eventLabel(e['action']),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      '${e['booking']['reference']} · ${timeLabel(e['created_at'])}',
-                      style: const TextStyle(fontSize: 11),
-                    ),
-                  ),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () async {
-                    await widget.onOpen(e['booking']);
-                    await load();
-                  },
-                ),
-              ),
-            ),
-        ],
-      ),
     ),
   );
 }

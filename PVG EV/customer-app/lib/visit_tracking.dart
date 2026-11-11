@@ -15,9 +15,11 @@ class VisitTracking extends StatefulWidget {
     this.tileProvider,
     this.onRefresh,
     this.prominent = false,
+    this.embedded = false,
+    this.showIdentity = true,
   });
   final Map<String, dynamic> booking;
-  final bool connectionLost, prominent;
+  final bool connectionLost, prominent, embedded, showIdentity;
   final TileProvider? tileProvider;
   final VoidCallback? onRefresh;
   @override
@@ -27,8 +29,12 @@ class VisitTracking extends StatefulWidget {
 class _VisitTrackingState extends State<VisitTracking> {
   final map = MapController();
   final snapshotAge = Stopwatch();
+  final tileReset = StreamController<void>.broadcast();
+  final failedTileImages = <ImageProvider>{};
   Timer? ageTimer;
   bool ready = false, follow = true, tileError = false;
+  bool retryingMap = false;
+  int tileGeneration = 0;
   @override
   void initState() {
     super.initState();
@@ -118,6 +124,19 @@ class _VisitTrackingState extends State<VisitTracking> {
         tracking['server_time']) {
       snapshotAge.reset();
     }
+    final oldLat = oldWidget.booking['latitude'],
+        oldLon = oldWidget.booking['longitude'];
+    final oldHadMap =
+        oldWidget.booking['tracking']?['position'] != null ||
+        (oldLat is num && oldLon is num && isChennaiPin(oldLat, oldLon));
+    if (oldWidget.booking['id'] != widget.booking['id'] ||
+        oldWidget.tileProvider != widget.tileProvider ||
+        oldHadMap != (vehicle != null || destination != null)) {
+      tileGeneration++;
+      tileError = false;
+      retryingMap = false;
+      failedTileImages.clear();
+    }
     if (vehicle == null && destination == null) ready = false;
     if (follow && ready) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -128,10 +147,44 @@ class _VisitTrackingState extends State<VisitTracking> {
 
   @override
   void dispose() {
+    tileGeneration++;
     ageTimer?.cancel();
     snapshotAge.stop();
+    unawaited(tileReset.close());
+    failedTileImages.clear();
     map.dispose();
     super.dispose();
+  }
+
+  Future<void> retryMap() async {
+    if (!mounted || retryingMap || (vehicle == null && destination == null)) {
+      return;
+    }
+    final failures = failedTileImages.toList();
+    failedTileImages.clear();
+    final generation = ++tileGeneration;
+    setState(() {
+      retryingMap = true;
+      tileError = false;
+    });
+    // Rebuild the callback with this attempt's generation before resetting tiles.
+    await WidgetsBinding.instance.endOfFrame;
+    // Finish evicting failed cached images before the layer creates new streams.
+    await Future.wait(
+      failures.map((image) async {
+        try {
+          await image.evict();
+        } catch (_) {
+          // The layer reset still retries providers which do not cache images.
+        }
+      }),
+    );
+    if (!mounted || generation != tileGeneration || tileReset.isClosed) return;
+    tileReset.add(null);
+    await Future<void>.delayed(Duration.zero);
+    if (mounted && generation == tileGeneration) {
+      setState(() => retryingMap = false);
+    }
   }
 
   Future<void> openMap() async {
@@ -168,6 +221,7 @@ class _VisitTrackingState extends State<VisitTracking> {
         v = vehicle,
         d = destination,
         sample = t['source'] == 'sample';
+    final generation = tileGeneration;
     final title = sample
         ? 'Sample GPS preview'
         : widget.connectionLost
@@ -193,253 +247,343 @@ class _VisitTrackingState extends State<VisitTracking> {
               (outdated
                   ? 'No recent GPS updates. This pin may no longer be current.'
                   : 'Updates automatically while your technician shares their location.');
-    return Panel(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.local_shipping_outlined, color: forest),
-              const SizedBox(width: 9),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          if (widget.booking['fleet_name'] != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                '${widget.booking['fleet_name']} · ${widget.booking['technician']?['name'] ?? 'PVG technician'}',
-                style: const TextStyle(color: muted, fontSize: 12),
-              ),
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.local_shipping_outlined,
+              color: forest,
+              size: widget.prominent ? 18 : 24,
             ),
-          const SizedBox(height: 10),
-          if (p != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+            const SizedBox(width: 9),
+            Expanded(
               child: Text(
-                'Last GPS update · $ageLabel',
+                title,
                 style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: outdated ? const Color(0xff9a5918) : forest,
+                  fontSize: widget.prominent ? 13 : 15,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-          if (widget.connectionLost && widget.onRefresh != null)
-            TextButton.icon(
-              onPressed: widget.onRefresh,
-              icon: const Icon(Icons.refresh, size: 18),
-              label: const Text('Retry location update'),
+          ],
+        ),
+        if (widget.showIdentity && widget.booking['fleet_name'] != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              '${widget.booking['fleet_name']} · ${widget.booking['technician']?['name'] ?? 'PVG technician'}',
+              style: const TextStyle(color: muted, fontSize: 12),
             ),
-          if (sample)
-            const Notice(
-              'Sample location only. No real vehicle or phone is being tracked.',
-            ),
-          if (invalidDestination) const Notice(chennaiPinError, error: true),
-          if (v == null && d == null)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: canvas,
-                borderRadius: BorderRadius.circular(12),
+          ),
+        const SizedBox(height: 10),
+        if (p != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              'Last GPS update · $ageLabel',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: outdated ? const Color(0xff9a5918) : forest,
               ),
-              child: Column(
-                children: [
-                  Icon(
-                    t['state'] == 'awaiting_assignment'
-                        ? Icons.assignment_outlined
-                        : Icons.location_searching,
-                    color: muted,
-                    size: 32,
+            ),
+          ),
+        if (widget.connectionLost && widget.onRefresh != null)
+          TextButton.icon(
+            onPressed: widget.onRefresh,
+            icon: const Icon(Icons.refresh, size: 18),
+            label: const Text('Retry location update'),
+          ),
+        if (sample)
+          const Notice(
+            'Sample location only. No real vehicle or phone is being tracked.',
+          ),
+        if (invalidDestination) const Notice(chennaiPinError, error: true),
+        if (v == null && d == null)
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(widget.prominent ? 12 : 20),
+            decoration: BoxDecoration(
+              color: canvas,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: widget.prominent
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        t['state'] == 'awaiting_assignment'
+                            ? Icons.assignment_outlined
+                            : Icons.location_searching,
+                        color: muted,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          message,
+                          style: const TextStyle(
+                            color: muted,
+                            fontSize: 12,
+                            height: 1.45,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      Icon(
+                        t['state'] == 'awaiting_assignment'
+                            ? Icons.assignment_outlined
+                            : Icons.location_searching,
+                        color: muted,
+                        size: 32,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        message,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: muted, fontSize: 13),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    message,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: muted, fontSize: 13),
+          )
+        else ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(
+              height: widget.prominent ? 300 : 240,
+              child: Stack(
+                children: [
+                  FlutterMap(
+                    mapController: map,
+                    options: MapOptions(
+                      initialCenter: v ?? d!,
+                      initialZoom: 14,
+                      minZoom: 3,
+                      maxZoom: 18,
+                      onMapReady: () {
+                        ready = true;
+                        recenter();
+                      },
+                      onPositionChanged: (_, gesture) {
+                        if (gesture && follow) setState(() => follow = false);
+                      },
+                      interactionOptions: const InteractionOptions(
+                        flags:
+                            InteractiveFlag.drag |
+                            InteractiveFlag.pinchZoom |
+                            InteractiveFlag.doubleTapZoom,
+                      ),
+                    ),
+                    children: [
+                      TileLayer(
+                        reset: tileReset.stream,
+                        evictErrorTileStrategy: EvictErrorTileStrategy.dispose,
+                        tileDisplay: MediaQuery.disableAnimationsOf(context)
+                            ? const TileDisplay.instantaneous()
+                            : const TileDisplay.fadeIn(),
+                        tileProvider: widget.tileProvider,
+                        urlTemplate: const String.fromEnvironment(
+                          'PVG_MAP_TILES',
+                          defaultValue:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        ),
+                        userAgentPackageName: 'com.pvgev.customer',
+                        panBuffer: 0,
+                        errorTileCallback: (tile, error, stack) {
+                          if (!mounted || generation != tileGeneration) return;
+                          failedTileImages.add(tile.imageProvider);
+                          if (!tileError) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (mounted && generation == tileGeneration) {
+                                setState(() => tileError = true);
+                              }
+                            });
+                          }
+                        },
+                      ),
+                      MarkerLayer(
+                        markers: [
+                          if (v != null)
+                            Marker(
+                              point: v,
+                              width: 44,
+                              height: 44,
+                              child: pin(
+                                Icons.local_shipping,
+                                outdated
+                                    ? 'Last reported vehicle position'
+                                    : 'Charging vehicle position',
+                                outdated ? muted : forest,
+                              ),
+                            ),
+                          if (d != null)
+                            Marker(
+                              point: d,
+                              width: 38,
+                              height: 38,
+                              child: pin(
+                                Icons.home,
+                                'Your charging address',
+                                const Color(0xff426e9b),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: Material(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      elevation: 2,
+                      child: IconButton(
+                        tooltip: v == null
+                            ? 'Show charging address'
+                            : 'Follow vehicle',
+                        onPressed: () {
+                          setState(() => follow = true);
+                          recenter();
+                        },
+                        icon: Icon(
+                          follow ? Icons.gps_fixed : Icons.gps_not_fixed,
+                          color: forest,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: ColoredBox(
+                      color: const Color(0xeeffffff),
+                      child: InkWell(
+                        onTap: () => launchUrl(
+                          Uri.parse('https://www.openstreetmap.org/copyright'),
+                          mode: LaunchMode.externalApplication,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text(
+                            '© OpenStreetMap contributors',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(fontSize: 10, color: forest),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            message,
+            style: TextStyle(
+              fontSize: 12,
+              color: outdated ? const Color(0xff9a5918) : muted,
+            ),
+          ),
+          if (widget.prominent && (p != null || d == null))
+            ExpansionTile(
+              key: const Key('location-details'),
+              title: const Text(
+                'Location details',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              ),
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: EdgeInsets.zero,
+              dense: true,
+              expansionAnimationStyle: MediaQuery.disableAnimationsOf(context)
+                  ? AnimationStyle.noAnimation
+                  : null,
+              shape: const Border(),
+              collapsedShape: const Border(),
+              children: locationDetails(p, v, d),
             )
-          else ...[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: SizedBox(
-                height: widget.prominent ? 280 : 240,
-                child: Stack(
-                  children: [
-                    FlutterMap(
-                      mapController: map,
-                      options: MapOptions(
-                        initialCenter: v ?? d!,
-                        initialZoom: 14,
-                        minZoom: 3,
-                        maxZoom: 18,
-                        onMapReady: () {
-                          ready = true;
-                          recenter();
-                        },
-                        onPositionChanged: (_, gesture) {
-                          if (gesture && follow) setState(() => follow = false);
-                        },
-                        interactionOptions: const InteractionOptions(
-                          flags:
-                              InteractiveFlag.drag |
-                              InteractiveFlag.pinchZoom |
-                              InteractiveFlag.doubleTapZoom,
-                        ),
-                      ),
-                      children: [
-                        TileLayer(
-                          tileProvider: widget.tileProvider,
-                          urlTemplate: const String.fromEnvironment(
-                            'PVG_MAP_TILES',
-                            defaultValue:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          ),
-                          userAgentPackageName: 'com.pvgev.customer',
-                          panBuffer: 0,
-                          errorTileCallback: (_, error, stack) {
-                            if (!tileError) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (mounted) setState(() => tileError = true);
-                              });
-                            }
-                          },
-                        ),
-                        MarkerLayer(
-                          markers: [
-                            if (v != null)
-                              Marker(
-                                point: v,
-                                width: 44,
-                                height: 44,
-                                child: pin(
-                                  Icons.local_shipping,
-                                  outdated
-                                      ? 'Last reported vehicle position'
-                                      : 'Charging vehicle position',
-                                  outdated ? muted : forest,
-                                ),
-                              ),
-                            if (d != null)
-                              Marker(
-                                point: d,
-                                width: 38,
-                                height: 38,
-                                child: pin(
-                                  Icons.home,
-                                  'Your charging address',
-                                  const Color(0xff426e9b),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      right: 8,
-                      top: 8,
-                      child: Material(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        elevation: 2,
-                        child: IconButton(
-                          tooltip: v == null
-                              ? 'Show charging address'
-                              : 'Follow vehicle',
-                          onPressed: () {
-                            setState(() => follow = true);
-                            recenter();
-                          },
-                          icon: Icon(
-                            follow ? Icons.gps_fixed : Icons.gps_not_fixed,
-                            color: forest,
-                          ),
-                        ),
+          else if (!widget.prominent)
+            ...locationDetails(p, v, d),
+          if (tileError || retryingMap)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      retryingMap
+                          ? 'Retrying map tiles…'
+                          : 'Some map tiles could not load. GPS updates are separate.',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: muted,
+                        height: 1.4,
                       ),
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: ColoredBox(
-                        color: const Color(0xeeffffff),
-                        child: InkWell(
-                          onTap: () => launchUrl(
-                            Uri.parse(
-                              'https://www.openstreetmap.org/copyright',
-                            ),
-                            mode: LaunchMode.externalApplication,
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(6),
-                            child: Text(
-                              '© OpenStreetMap contributors',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(fontSize: 10, color: forest),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 6),
+                  TextButton.icon(
+                    onPressed: retryingMap ? null : retryMap,
+                    icon: const Icon(Icons.refresh, size: 16),
+                    label: Text(retryingMap ? 'Retrying…' : 'Retry map'),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              message,
-              style: TextStyle(
-                fontSize: 12,
-                color: outdated ? const Color(0xff9a5918) : muted,
-              ),
-            ),
-            const SizedBox(height: 6),
-            if (p != null)
-              Text(
-                'Captured ${timeLabel(p['captured_at'])} · GPS accuracy ±${(p['accuracy'] as num).round()} m',
-                style: const TextStyle(fontSize: 11, color: muted),
-              ),
-            if (d != null && v != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Text(
-                  '${const Distance().as(LengthUnit.Kilometer, v, d).toStringAsFixed(1)} km straight-line distance · not a road ETA',
-                  style: const TextStyle(fontSize: 11, color: muted),
-                ),
-              ),
-            if (d == null)
-              const Padding(
-                padding: EdgeInsets.only(top: 5),
-                child: Text(
-                  'Your address has no GPS pin. The map shows the vehicle only.',
-                  style: TextStyle(fontSize: 11, color: muted),
-                ),
-              ),
-            if (tileError)
-              const Notice(
-                'Map tiles could not load. You can still open the received coordinates in Maps.',
-              ),
-            if (v != null)
-              TextButton.icon(
-                onPressed: openMap,
-                icon: const Icon(Icons.open_in_new, size: 17),
-                label: const Text('Open latest location in Maps'),
-              ),
-          ],
         ],
-      ),
+      ],
     );
+    final padding = EdgeInsets.all(widget.prominent ? 12 : 16);
+    return widget.embedded
+        ? Padding(padding: padding, child: content)
+        : Panel(padding: padding, child: content);
   }
+
+  List<Widget> locationDetails(
+    Map<String, dynamic>? p,
+    LatLng? v,
+    LatLng? d,
+  ) => [
+    if (p != null)
+      Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Text(
+          'Captured ${timeLabel(p['captured_at'])} · GPS accuracy ±${(p['accuracy'] as num).round()} m',
+          style: const TextStyle(fontSize: 11, color: muted),
+        ),
+      ),
+    if (d != null && v != null)
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Text(
+          '${const Distance().as(LengthUnit.Kilometer, v, d).toStringAsFixed(1)} km straight-line distance · not a road ETA',
+          style: const TextStyle(fontSize: 11, color: muted),
+        ),
+      ),
+    if (d == null)
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Text(
+          invalidDestination
+              ? 'Your parking pin needs correction. The map shows the vehicle only.'
+              : 'Your address has no GPS pin. The map shows the vehicle only.',
+          style: const TextStyle(fontSize: 11, color: muted),
+        ),
+      ),
+    if (v != null)
+      TextButton.icon(
+        onPressed: openMap,
+        icon: const Icon(Icons.open_in_new, size: 17),
+        label: const Text('Open latest location in Maps'),
+      ),
+  ];
 }

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 const forest = Color(0xff12352a),
     lime = Color(0xffcef25b),
     canvas = Color(0xfff5f7f8),
-    muted = Color(0xff6b7b70),
+    muted = Color(0xff56685e),
     line = Color(0xffe5eaec);
 String money(dynamic paise) =>
     '₹${((paise as num? ?? 0) / 100).toStringAsFixed(2)}';

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:async';
 import 'location_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show ScrollCacheExtent;
 import 'experience.dart';
 import 'personal_screens.dart';
 import 'api.dart';
@@ -143,6 +144,16 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   final form = GlobalKey<FormState>();
   final scroll = ScrollController();
+  final addressKey = GlobalKey<FormFieldState<String>>();
+  final pincodeKey = GlobalKey<FormFieldState<String>>();
+  final vehicleKey = GlobalKey(),
+      parkingPinKey = GlobalKey(),
+      timeKey = GlobalKey();
+  final pageErrorKey = GlobalKey();
+  final addressFocus = FocusNode(), pincodeFocus = FocusNode();
+  final visitTimeFocus = FocusNode(), addVehicleFocus = FocusNode();
+  String? vehicleError, locationError, timeError, coverageError;
+  bool validatePlaceFields = false;
   final address = TextEditingController(),
       pincode = TextEditingController(),
       notes = TextEditingController();
@@ -159,11 +170,38 @@ class _BookingScreenState extends State<BookingScreen> {
   Timer? draftTimer;
   Future<void> draftWrite = Future.value();
   Map<String, dynamic>? availability;
-  String? availabilityError;
+  String? availabilityError, availabilityDate, availabilityPincode;
+  int availabilityRevision = 0;
   bool checkingTime = false;
+  Map<String, dynamic>? get scopedAvailability =>
+      availabilityDate != null &&
+          availabilityPincode == pincode.text.trim() &&
+          availability?['date'] == availabilityDate
+      ? availability
+      : null;
   VisitSchedule? get schedule => VisitSchedule.from(
-    availability?['settings'] ?? widget.api.config?['service'],
+    scopedAvailability?['settings'] ?? widget.api.config?['service'],
   );
+
+  void clearAvailability() {
+    availabilityRevision++;
+    availability = null;
+    availabilityDate = null;
+    availabilityPincode = null;
+    availabilityError = null;
+    checkingTime = false;
+  }
+
+  String dateKey(DateTime day) =>
+      '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+
+  bool currentLookup(int revision, String date, String pin) =>
+      mounted &&
+      step == 1 &&
+      availabilityRevision == revision &&
+      availabilityDate == date &&
+      availabilityPincode == pin &&
+      pincode.text.trim() == pin;
   bool get tariffAvailable {
     final tariff = widget.api.config?['tariff'];
     return tariff is Map &&
@@ -237,6 +275,14 @@ class _BookingScreenState extends State<BookingScreen> {
       c.dispose();
     }
     scroll.dispose();
+    for (final node in [
+      addressFocus,
+      pincodeFocus,
+      visitTimeFocus,
+      addVehicleFocus,
+    ]) {
+      node.dispose();
+    }
     super.dispose();
   }
 
@@ -291,6 +337,9 @@ class _BookingScreenState extends State<BookingScreen> {
     notes.text = p['access_notes'];
     latitude = (p['latitude'] as num?)?.toDouble();
     longitude = (p['longitude'] as num?)?.toDouble();
+    locationError = null;
+    coverageError = null;
+    clearAvailability();
   });
   void clearPin(String _) {
     setState(() {
@@ -298,6 +347,9 @@ class _BookingScreenState extends State<BookingScreen> {
       longitude = null;
       selectedPlace = null;
       if (error == chennaiPinError) error = null;
+      locationError = null;
+      coverageError = null;
+      clearAvailability();
     });
     queueDraft();
   }
@@ -305,14 +357,14 @@ class _BookingScreenState extends State<BookingScreen> {
   Future<void> gps() async {
     setState(() {
       locating = true;
-      error = null;
+      locationError = null;
     });
     try {
       final p = await locateCustomer();
       latitude = p.latitude;
       longitude = p.longitude;
     } catch (e) {
-      error = errorText(e);
+      locationError = errorText(e);
     }
     if (mounted) {
       setState(() => locating = false);
@@ -321,19 +373,27 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Future<void> chooseTime() async {
+    setState(() {
+      clearAvailability();
+      timeError = null;
+      coverageError = null;
+    });
+    final revision = availabilityRevision;
     if (schedule == null) {
       try {
         await widget.api.loadConfig();
       } catch (e) {
-        if (mounted) setState(() => error = errorText(e));
+        if (mounted && step == 1 && revision == availabilityRevision) {
+          setState(() => timeError = errorText(e));
+        }
         return;
       }
     }
-    if (!mounted) return;
+    if (!mounted || step != 1 || revision != availabilityRevision) return;
     if (schedule == null) {
       setState(
-        () =>
-            error = 'PVG service hours could not be loaded. Please try again.',
+        () => timeError =
+            'PVG service hours could not be loaded. Please try again.',
       );
       return;
     }
@@ -348,61 +408,133 @@ class _BookingScreenState extends State<BookingScreen> {
       firstDate: today,
       lastDate: visitCalendarDayAfter(today, 30),
     );
-    if (day == null || !mounted) return;
+    if (day == null ||
+        !mounted ||
+        step != 1 ||
+        revision != availabilityRevision) {
+      return;
+    }
+    final date = dateKey(day), pin = pincode.text.trim();
+    setState(() {
+      availabilityDate = date;
+      availabilityPincode = pin;
+      if (slot != null && dateKey(indiaCalendarDay(slot!)) != date) slot = null;
+    });
     if (widget.api.config?['mode'] == 'supabase' &&
-        RegExp(r'^600\d{3}$').hasMatch(pincode.text)) {
-      setState(() {
-        checkingTime = true;
-        availabilityError = null;
-      });
+        RegExp(r'^600\d{3}$').hasMatch(pin)) {
+      setState(() => checkingTime = true);
       try {
-        final date =
-            '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
         final data = await widget.api.request(
-          '/availability?pincode=${pincode.text}&date=$date',
+          '/availability?pincode=$pin&date=$date',
         );
-        if (!mounted) return;
-        setState(() => availability = data);
+        if (!currentLookup(revision, date, pin)) return;
+        if (data['date'] != date) {
+          throw Exception(
+            'PVG returned times for a different date. Please check again.',
+          );
+        }
+        final slots = (data['slots'] as List? ?? []).whereType<String>().where((
+          value,
+        ) {
+          final instant = DateTime.tryParse(value);
+          return instant != null && dateKey(indiaCalendarDay(instant)) == date;
+        }).toList();
+        setState(() => availability = {...data, 'slots': slots});
         if (data['state'] == 'outside_area') {
-          setState(() => error = data['message']);
+          setState(() => coverageError = data['message']);
+          reveal(pincodeKey, focus: pincodeFocus);
           return;
         }
       } catch (e) {
-        if (mounted) setState(() => availabilityError = errorText(e));
+        if (currentLookup(revision, date, pin)) {
+          setState(() {
+            availability = null;
+            availabilityError = errorText(e);
+          });
+        }
       } finally {
-        if (mounted) setState(() => checkingTime = false);
+        if (currentLookup(revision, date, pin)) {
+          setState(() => checkingTime = false);
+        }
       }
     }
-    if (!mounted) return;
+    if (!mounted || !currentLookup(revision, date, pin)) return;
     final hours = schedule!;
     final time = await showTimePicker(
       context: context,
       helpText: 'Visit time · India (IST)',
       initialTime: slot == null ? hours.initialTime : indiaClock(slot!),
     );
-    if (time == null || !mounted) return;
+    if (time == null || !currentLookup(revision, date, pin)) return;
     final selectedInstant = indiaVisitInstant(day, time);
     final problem = hours.validate(selectedInstant);
     if (problem != null) {
-      setState(() => error = problem);
+      setState(() => timeError = problem);
       return;
     }
     setState(() {
       slot = selectedInstant;
-      error = null;
+      timeError = null;
     });
     queueDraft();
   }
 
+  String? addressProblem(String? value) => (value ?? '').trim().length < 8
+      ? 'Enter the full charging address'
+      : null;
+  String? pincodeProblem(String? value) =>
+      !RegExp(r'^600\d{3}$').hasMatch((value ?? '').trim())
+      ? 'Use a Chennai pincode (600xxx)'
+      : null;
+
+  void reveal(GlobalKey key, {FocusNode? focus}) {
+    final visibleStep = step;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted || step != visibleStep) return;
+      final duration = MediaQuery.disableAnimationsOf(context)
+          ? Duration.zero
+          : const Duration(milliseconds: 220);
+      final target = key.currentContext;
+      if (target != null) {
+        await Scrollable.ensureVisible(
+          target,
+          alignment: .15,
+          duration: duration,
+        );
+      } else if (scroll.hasClients) {
+        if (duration == Duration.zero) {
+          scroll.jumpTo(scroll.position.maxScrollExtent);
+        } else {
+          await scroll.animateTo(
+            scroll.position.maxScrollExtent,
+            duration: duration,
+            curve: Curves.easeOut,
+          );
+        }
+      }
+      if (mounted && step == visibleStep) focus?.requestFocus();
+    });
+  }
+
   bool validateStep() {
-    if (!form.currentState!.validate()) return false;
     if (step == 0 && selected == null) {
-      setState(() => error = 'Add an EV to continue.');
+      setState(() => vehicleError = 'Add or choose an EV to continue.');
+      reveal(vehicleKey, focus: addVehicleFocus);
       return false;
     }
     if (step == 1) {
+      setState(() => validatePlaceFields = true);
+      form.currentState?.validate();
+      if (addressProblem(address.text) != null) {
+        reveal(addressKey, focus: addressFocus);
+        return false;
+      }
+      if (pincodeProblem(pincode.text) != null || coverageError != null) {
+        reveal(pincodeKey, focus: pincodeFocus);
+        return false;
+      }
       if (pinError != null) {
-        setState(() => error = pinError);
+        reveal(parkingPinKey);
         return false;
       }
       final problem =
@@ -411,7 +543,8 @@ class _BookingScreenState extends State<BookingScreen> {
               ? 'PVG service hours could not be loaded. Please try again.'
               : null);
       if (problem != null) {
-        setState(() => error = problem);
+        setState(() => timeError = problem);
+        reveal(timeKey, focus: visitTimeFocus);
         return false;
       }
     }
@@ -421,8 +554,14 @@ class _BookingScreenState extends State<BookingScreen> {
   void go(int next) {
     FocusScope.of(context).unfocus();
     setState(() {
+      if (step != next) {
+        availabilityRevision++;
+        checkingTime = false;
+      }
       step = next;
       error = null;
+      vehicleError = null;
+      timeError = null;
       agreed = false;
     });
     queueDraft();
@@ -435,7 +574,7 @@ class _BookingScreenState extends State<BookingScreen> {
     }
     if (pinError != null) {
       go(1);
-      setState(() => error = pinError);
+      reveal(parkingPinKey);
       return;
     }
     final timeProblem =
@@ -445,7 +584,8 @@ class _BookingScreenState extends State<BookingScreen> {
             : null);
     if (timeProblem != null) {
       go(1);
-      setState(() => error = timeProblem);
+      setState(() => timeError = timeProblem);
+      reveal(timeKey, focus: visitTimeFocus);
       return;
     }
     setState(() {
@@ -480,45 +620,62 @@ class _BookingScreenState extends State<BookingScreen> {
       }
     } catch (e) {
       error = errorText(e);
+      reveal(pageErrorKey);
     }
     if (mounted) setState(() => busy = false);
   }
 
-  Widget stepIntro(String title, String description, IconData icon) => Panel(
-    color: forest,
-    child: Column(
+  Widget stepIntro(String title, String description, IconData icon) => Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Icon(icon, color: lime, size: 20),
-            const SizedBox(width: 8),
-            const Expanded(
-              child: Kicker('CHARGING AT YOUR DOORSTEP', color: lime),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            height: 1.2,
-            letterSpacing: -.4,
-            fontWeight: FontWeight.w700,
+        Container(
+          width: 34,
+          height: 34,
+          decoration: BoxDecoration(
+            color: softLime,
+            borderRadius: BorderRadius.circular(10),
           ),
+          child: Icon(icon, size: 19, color: forest),
         ),
-        const SizedBox(height: 8),
-        Text(
-          description,
-          style: const TextStyle(
-            color: Color(0xffcbd8d1),
-            fontSize: 12,
-            height: 1.5,
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -.4,
+                ),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                description,
+                style: const TextStyle(fontSize: 12, color: muted, height: 1.4),
+              ),
+            ],
           ),
         ),
       ],
+    ),
+  );
+
+  Widget fieldError(String text) => Semantics(
+    liveRegion: true,
+    child: Padding(
+      padding: const EdgeInsets.only(top: 7),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 12,
+          height: 1.4,
+          color: Theme.of(context).colorScheme.error,
+        ),
+      ),
     ),
   );
 
@@ -538,54 +695,95 @@ class _BookingScreenState extends State<BookingScreen> {
     ),
   );
 
-  Widget nextStep(IconData icon, String title, String description) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Row(
+  Widget parkingPinSection() {
+    final hasPin = latitude != null || longitude != null;
+    return Column(
+      key: parkingPinKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: softLime,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Icon(icon, size: 17),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
+        Row(
+          children: [
+            Icon(
+              hasPin && pinError == null
+                  ? Icons.location_on
+                  : Icons.place_outlined,
+              size: 18,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                pinError != null
+                    ? 'Parking pin needs attention'
+                    : hasPin
+                    ? 'Parking pin attached'
+                    : 'Parking pin · optional',
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 3),
-              Text(
-                description,
-                style: const TextStyle(color: muted, fontSize: 12, height: 1.4),
+            ),
+            if (hasPin)
+              IconButton(
+                tooltip: 'Remove GPS location',
+                onPressed: locating ? null : () => clearPin(''),
+                icon: const Icon(Icons.close, size: 18),
               ),
-            ],
-          ),
+          ],
         ),
+        const Text(
+          'Use GPS only when you are at this address.',
+          style: TextStyle(fontSize: 12, color: muted),
+        ),
+        Wrap(
+          spacing: 12,
+          children: [
+            TextButton.icon(
+              onPressed: locating ? null : gps,
+              icon: const Icon(Icons.my_location, size: 17),
+              label: Text(locating ? 'Finding location…' : 'Use GPS'),
+            ),
+            TextButton.icon(
+              onPressed: locating
+                  ? null
+                  : () async {
+                      final pin = await pickChargingPin(
+                        context,
+                        latitude: latitude,
+                        longitude: longitude,
+                      );
+                      if (pin != null && mounted) {
+                        setState(() {
+                          latitude = pin.latitude;
+                          longitude = pin.longitude;
+                          locationError = null;
+                        });
+                        queueDraft();
+                      }
+                    },
+              icon: const Icon(Icons.map_outlined, size: 17),
+              label: const Text('Choose on map'),
+            ),
+          ],
+        ),
+        if (pinError != null || locationError != null)
+          fieldError(pinError ?? locationError!),
       ],
-    ),
-  );
+    );
+  }
 
   List<Widget> vehicleStep() => [
     stepIntro(
-      'Which EV are we charging?',
-      'Choose your vehicle. We’ll bring the charging to you.',
+      'Choose your EV',
+      'Select the vehicle for this visit.',
       Icons.electric_car_outlined,
     ),
-    const SectionTitle('Your vehicle'),
+    SizedBox(key: vehicleKey),
+    if (vehicleError != null) fieldError(vehicleError!),
     if (vehicles.isEmpty)
       const Panel(
         child: Text(
-          'Add your EV once to book visits faster. You can choose “Not sure” if you don’t know the connector.',
+          'Add your EV to continue. Unsure of the connector? Choose “Not sure”.',
           style: TextStyle(color: muted, fontSize: 13, height: 1.5),
         ),
       ),
@@ -614,12 +812,15 @@ class _BookingScreenState extends State<BookingScreen> {
               style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             subtitle: Text(
-              '${v['registration']} · ${v['connector']}',
+              "${v['registration']} · ${v['connector'] == 'Not sure' ? 'Connector to confirm' : v['connector']}",
               style: const TextStyle(fontSize: 12),
             ),
             selected: selected == v['id'],
             onTap: () {
-              setState(() => selected = v['id']);
+              setState(() {
+                selected = v['id'];
+                vehicleError = null;
+              });
               queueDraft();
             },
           ),
@@ -628,6 +829,7 @@ class _BookingScreenState extends State<BookingScreen> {
     Align(
       alignment: Alignment.centerLeft,
       child: TextButton.icon(
+        focusNode: addVehicleFocus,
         onPressed: () async {
           if (await showAddEv(context, widget.api) == true) {
             await load(newest: true);
@@ -637,32 +839,51 @@ class _BookingScreenState extends State<BookingScreen> {
         label: Text(vehicles.isEmpty ? 'Add your first EV' : 'Add another EV'),
       ),
     ),
-    const SectionTitle('Your visit, made simple'),
-    Panel(
-      child: Column(
-        children: [
-          nextStep(
-            Icons.local_shipping_outlined,
-            'Follow your charging vehicle',
-            'Once assigned, see your technician, location updates and visit status.',
-          ),
-          const Divider(height: 16, color: line),
-          nextStep(
-            Icons.fact_check_outlined,
-            'Charge first. Review, then pay.',
-            'Your bill uses the actual meter reading. Accept the units before payment.',
-          ),
-        ],
+    const Padding(
+      padding: EdgeInsets.only(top: 12),
+      child: Text(
+        'Track your team after assignment. Review the meter reading before paying.',
+        style: TextStyle(fontSize: 12, color: muted, height: 1.4),
       ),
     ),
   ];
+  List<Widget> availabilityOptions() {
+    final result = scopedAvailability;
+    if (result == null) return [];
+    final slots = result['slots'] as List? ?? [];
+    return [
+      Notice(result['message'] as String),
+      if (slots.isNotEmpty)
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: slots
+              .take(16)
+              .map(
+                (value) => ChoiceChip(
+                  label: Text(timeLabel(value)),
+                  selected: slot?.toUtc().toIso8601String() == value,
+                  onSelected: (_) {
+                    if (!identical(scopedAvailability, result)) return;
+                    setState(() {
+                      slot = DateTime.parse(value).toUtc();
+                      timeError = null;
+                    });
+                    queueDraft();
+                  },
+                ),
+              )
+              .toList(),
+        ),
+    ];
+  }
+
   List<Widget> placeStep() => [
     stepIntro(
-      'Where should we meet you?',
-      'Choose a place and preferred time. PVG will confirm availability in the Chennai pilot area.',
+      'Place & time',
+      'Tell us where to bring your charger.',
       Icons.place_outlined,
     ),
-    const SizedBox(height: 16),
     Panel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -687,6 +908,13 @@ class _BookingScreenState extends State<BookingScreen> {
             const SizedBox(height: 16),
           ],
           TextFormField(
+            key: addressKey,
+            focusNode: addressFocus,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (_) => pincodeFocus.requestFocus(),
+            autovalidateMode: validatePlaceFields
+                ? AutovalidateMode.onUserInteraction
+                : AutovalidateMode.disabled,
             controller: address,
             onChanged: clearPin,
             maxLength: 400,
@@ -697,86 +925,41 @@ class _BookingScreenState extends State<BookingScreen> {
               labelText: 'Full address & landmark',
               counterText: '',
             ),
-            validator: (v) =>
-                v!.trim().length < 8 ? 'Enter the full charging address' : null,
+            validator: addressProblem,
           ),
           const SizedBox(height: 14),
           TextFormField(
+            key: pincodeKey,
+            focusNode: pincodeFocus,
+            textInputAction: TextInputAction.done,
+            autovalidateMode: validatePlaceFields
+                ? AutovalidateMode.onUserInteraction
+                : AutovalidateMode.disabled,
             controller: pincode,
             onChanged: clearPin,
             keyboardType: TextInputType.number,
             maxLength: 6,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: 'Chennai pincode',
               counterText: '',
+              errorText: coverageError,
             ),
-            validator: (v) => !RegExp(r'^600\d{3}$').hasMatch(v!.trim())
-                ? 'Use a Chennai pincode (600xxx)'
-                : null,
+            validator: pincodeProblem,
           ),
-          const SizedBox(height: 10),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-              onPressed: locating ? null : gps,
-              icon: Icon(
-                latitude == null
-                    ? Icons.my_location
-                    : Icons.check_circle_outline,
-              ),
-              label: Text(
-                locating
-                    ? 'Finding your location…'
-                    : latitude == null
-                    ? 'Attach my current location'
-                    : 'GPS location attached',
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton.icon(
-              onPressed: () async {
-                final pin = await pickChargingPin(
-                  context,
-                  latitude: latitude,
-                  longitude: longitude,
-                );
-                if (pin != null && mounted) {
-                  setState(() {
-                    latitude = pin.latitude;
-                    longitude = pin.longitude;
-                  });
-                  queueDraft();
-                }
-              },
-              icon: const Icon(Icons.map_outlined, size: 18),
-              label: const Text('Choose exact pin on map'),
-            ),
-          ),
-          if (latitude != null || longitude != null)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton(
-                onPressed: () => clearPin(''),
-                child: const Text('Remove GPS location'),
-              ),
-            ),
-          if (pinError != null) const Notice(chennaiPinError, error: true),
-          const Text(
-            'At this address now? Add GPS to help your technician find you. Otherwise, the address is enough.',
-            style: TextStyle(color: muted, fontSize: 12, height: 1.4),
-          ),
+          const Divider(height: 24, color: line),
+          parkingPinSection(),
         ],
       ),
     ),
     const SizedBox(height: 14),
     Panel(
+      key: timeKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           sectionLabel(Icons.schedule_outlined, 'Preferred visit time'),
           OutlinedButton.icon(
+            focusNode: visitTimeFocus,
             onPressed: checkingTime ? null : chooseTime,
             icon: const Icon(Icons.calendar_month_outlined, size: 18),
             label: Text(
@@ -787,33 +970,13 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
           const SizedBox(height: 6),
           if (checkingTime) const LinearProgressIndicator(),
-          if (availabilityError != null)
-            Notice(availabilityError!, error: true),
-          if (availability != null) ...[
-            Notice(availability!['message']),
-            if ((availability!['slots'] as List? ?? []).isNotEmpty)
-              Wrap(
-                spacing: 6,
-                runSpacing: 6,
-                children: (availability!['slots'] as List)
-                    .take(16)
-                    .map(
-                      (value) => ChoiceChip(
-                        label: Text(timeLabel(value)),
-                        selected: slot?.toUtc().toIso8601String() == value,
-                        onSelected: (_) {
-                          setState(() => slot = DateTime.parse(value).toUtc());
-                          queueDraft();
-                        },
-                      ),
-                    )
-                    .toList(),
-              ),
-          ],
+          if (timeError != null) fieldError(timeError!),
+          if (availabilityError != null) fieldError(availabilityError!),
+          ...availabilityOptions(),
           Text(
             schedule == null
-                ? 'Service hours are loading. Your preferred time will be confirmed by PVG.'
-                : 'Service hours: ${schedule!.hoursLabel} IST. Your preferred time is confirmed when PVG assigns the charging team.',
+                ? 'Service hours are loading.'
+                : '${schedule!.hoursLabel} IST · PVG confirms your preferred time.',
             style: const TextStyle(color: muted, fontSize: 12, height: 1.4),
           ),
         ],
@@ -824,7 +987,7 @@ class _BookingScreenState extends State<BookingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          sectionLabel(Icons.notes_outlined, 'Help us find your parking spot'),
+          sectionLabel(Icons.notes_outlined, 'Parking instructions'),
           TextFormField(
             controller: notes,
             maxLines: 2,
@@ -843,11 +1006,10 @@ class _BookingScreenState extends State<BookingScreen> {
     final v = vehicles.firstWhere((v) => v['id'] == selected);
     return [
       stepIntro(
-        'Ready to request your visit?',
-        'Check the details below. You can follow your visit as soon as the request is placed.',
+        'Review your visit',
+        'Confirm the details and charging rate.',
         Icons.checklist_outlined,
       ),
-      const SizedBox(height: 16),
       Panel(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -903,12 +1065,11 @@ class _BookingScreenState extends State<BookingScreen> {
           ],
         ),
       ),
-      const SectionTitle('Payment comes after charging'),
-      Panel(
-        child: nextStep(
-          Icons.fact_check_outlined,
-          'You review. You approve.',
-          'Your technician shares the meter photo and delivered units. The app calculates the final bill for you to accept and pay.',
+      const Padding(
+        padding: EdgeInsets.only(top: 14),
+        child: Text(
+          'Pay after charging. Check the delivered units and meter photo, then accept your final bill.',
+          style: TextStyle(fontSize: 12, color: muted, height: 1.4),
         ),
       ),
       if (tariffAvailable)
@@ -954,7 +1115,7 @@ class _BookingScreenState extends State<BookingScreen> {
             ? null
             : (v) => setState(() => agreed = v!),
         title: const Text(
-          'I agree to the charging rate and visit fee, and understand that PVG will confirm my visit time.',
+          'I agree to this rate and visit fee. PVG will confirm my visit time.',
           style: TextStyle(fontSize: 13),
         ),
       ),
@@ -1041,13 +1202,15 @@ class _BookingScreenState extends State<BookingScreen> {
                 key: ValueKey(step),
                 child: ListView(
                   controller: scroll,
+                  scrollCacheExtent: const ScrollCacheExtent.pixels(1200),
                   padding: const EdgeInsets.fromLTRB(18, 4, 18, 20),
                   children: [
                     if (loading)
                       const LinearProgressIndicator()
                     else
                       ...[vehicleStep, placeStep, reviewStep][step](),
-                    if (error != null) Notice(error!, error: true),
+                    if (error != null)
+                      Notice(error!, key: pageErrorKey, error: true),
                     if (error != null && loading == false && vehicles.isEmpty)
                       TextButton(
                         onPressed: load,
@@ -1082,6 +1245,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       onPressed:
                           loading ||
                               locating ||
+                              checkingTime ||
                               (step == 2 && (!agreed || !tariffAvailable))
                           ? null
                           : () {

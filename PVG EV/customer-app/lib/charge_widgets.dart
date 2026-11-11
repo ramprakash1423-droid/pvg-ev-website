@@ -132,20 +132,26 @@ class ChargingJourney extends StatelessWidget {
   final VoidCallback onHelp;
   @override
   Widget build(BuildContext context) => Panel(
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    padding: EdgeInsets.zero,
+    child: ExpansionTile(
+      key: const PageStorageKey('doorstep-guide'),
+      expansionAnimationStyle: MediaQuery.disableAnimationsOf(context)
+          ? AnimationStyle.noAnimation
+          : const AnimationStyle(duration: Duration(milliseconds: 200)),
+      shape: const Border(),
+      collapsedShape: const Border(),
+      tilePadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
+      childrenPadding: const EdgeInsets.fromLTRB(14, 4, 14, 12),
+      leading: const Icon(Icons.route_outlined, size: 21),
+      title: const Text(
+        'How doorstep charging works',
+        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+      ),
+      subtitle: const Text(
+        'Book · track · review · pay',
+        style: TextStyle(fontSize: 11, color: muted),
+      ),
       children: [
-        const Kicker('A smoother way to recharge'),
-        const SizedBox(height: 9),
-        const Text(
-          'Every step, in your hands.',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -.7,
-          ),
-        ),
-        const SizedBox(height: 20),
         _step(
           '01',
           Icons.pin_drop_outlined,
@@ -171,20 +177,12 @@ class ChargingJourney extends StatelessWidget {
           'Pay after accepting. Keep every visit in your history.',
           last: true,
         ),
-        const SizedBox(height: 10),
-        TextButton(
-          onPressed: onHelp,
-          child: const Row(
-            children: [
-              Icon(Icons.help_outline, size: 17),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  'Your charging questions, answered',
-                  style: TextStyle(fontSize: 12),
-                ),
-              ),
-            ],
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: onHelp,
+            icon: const Icon(Icons.help_outline, size: 17),
+            label: const Text('Help & charging guide'),
           ),
         ),
       ],
@@ -379,65 +377,70 @@ class CompactVisitCard extends StatelessWidget {
   final Map<String, dynamic> booking;
   final VoidCallback onOpen, onAgain;
   final bool highlight;
+
   @override
   Widget build(BuildContext context) {
     final b = booking;
-    final action = {
-      'assigned': 'Track vehicle',
-      'on_the_way': 'Track vehicle',
-      'arrived': 'View location',
-      'charging': 'View location',
-      'awaiting_acceptance': 'Review units & bill',
-      'awaiting_payment': 'View bill & pay',
-      'disputed': 'View reading query',
-    }[b['status']];
+    final action =
+        {
+          'requested': 'View request',
+          'assigned': 'Track vehicle',
+          'on_the_way': 'Track vehicle',
+          'arrived': 'View visit',
+          'charging': 'View visit',
+          'awaiting_acceptance': 'Review units & bill',
+          'awaiting_payment': 'View bill & pay',
+          'disputed': 'View reading query',
+          'paid': 'Book again',
+          'cancelled': 'Book again',
+        }[b['status']] ??
+        'View visit';
     final bill = b['invoice']?['bill'] ?? b['reading']?['bill'];
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Material(
         color: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: highlight ? const Color(0xffd6e5ba) : line),
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(color: highlight ? const Color(0xffb7cd8a) : line),
         ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onOpen,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-                child: Row(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
                     Expanded(
                       child: Text(
                         b['reference'],
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: FontWeight.w700,
+                          color: muted,
                         ),
                       ),
                     ),
                     Flexible(child: StatusChip(b['status'])),
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
+                const SizedBox(height: 8),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: 42,
-                      height: 42,
+                      width: 32,
+                      height: 32,
                       decoration: BoxDecoration(
-                        color: const Color(0xfff2f5f3),
-                        borderRadius: BorderRadius.circular(12),
+                        color: canvas,
+                        borderRadius: BorderRadius.circular(9),
                       ),
-                      child: const Icon(Icons.electric_car_outlined, size: 24),
+                      child: const Icon(Icons.electric_car_outlined, size: 20),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 9),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -445,78 +448,56 @@ class CompactVisitCard extends StatelessWidget {
                           Text(
                             b['ev']['model'],
                             style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 3),
                           Text(
                             timeLabel(b['slot']),
-                            style: const TextStyle(color: muted, fontSize: 11),
+                            style: const TextStyle(fontSize: 11, color: muted),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 3),
                           Text(
                             b['address'],
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(color: muted, fontSize: 11),
+                            style: const TextStyle(fontSize: 11, color: muted),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(
-                      Icons.chevron_right_rounded,
-                      size: 19,
-                      color: muted,
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    if (bill != null)
+                      Expanded(
+                        child: Text(
+                          money(bill['total_paise']),
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
+                    else
+                      const Spacer(),
+                    Flexible(
+                      child: TextButton.icon(
+                        onPressed: ['paid', 'cancelled'].contains(b['status'])
+                            ? onAgain
+                            : onOpen,
+                        iconAlignment: IconAlignment.end,
+                        icon: const Icon(Icons.arrow_forward_rounded, size: 15),
+                        label: Text(action),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              if (action != null || b['status'] == 'paid')
-                Container(
-                  color: highlight
-                      ? const Color(0xfff4f8e9)
-                      : const Color(0xfff7f9f8),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 3,
-                  ),
-                  child: Row(
-                    children: [
-                      if (bill != null)
-                        Expanded(
-                          child: Text(
-                            [
-                                  'assigned',
-                                  'on_the_way',
-                                  'arrived',
-                                  'charging',
-                                ].contains(b['status'])
-                                ? b['fleet_name'] ?? 'Vehicle assigned'
-                                : money(bill['total_paise']),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      Flexible(
-                        child: TextButton(
-                          onPressed: b['status'] == 'paid' ? onAgain : onOpen,
-                          child: Text(
-                            action ?? 'Book again',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

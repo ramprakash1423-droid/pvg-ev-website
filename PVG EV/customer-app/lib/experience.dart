@@ -27,7 +27,7 @@ class SectionTitle extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, box) {
           if (link != null &&
-              (box.maxWidth < 380 ||
+              (box.maxWidth < 320 ||
                   MediaQuery.textScalerOf(context).scale(14) > 16)) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
